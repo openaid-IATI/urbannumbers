@@ -9,6 +9,7 @@
 	<!-- include the site stylesheet -->
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/bootstrap.min.css">
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/all.css">
+	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/urbannumbers.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_template_directory_uri(); ?>/style.css"  />
 	<script src="http://fast.fonts.net/jsapi/68a30854-f7c3-46a7-89ca-8e9e74e69a2a.js"></script>
 	<?php wp_head(); ?>

@@ -110,10 +110,12 @@ if (have_posts()) : ?>
 			<?php endwhile; ?>
 		</div>
 		<?php endif; ?>
-		<div id="homepage-map" class="map-holder shadow">
-			
-			<a href="#" class="btn btn-sm btn-blue">Basemaps</a>
-		</div>
+
+		<?php 
+		$curmapname = "main";
+		include( TEMPLATEPATH .'/map.php' ); 
+		?>
+		
 	</section>
 	<!-- area -->
 	<section class="area">
@@ -203,4 +205,16 @@ if (have_posts()) : ?>
 			</div>
 		</div>
 	</section>
+
+	<?php get_template_part("footer", "scripts"); ?>
+
+	<script>
+
+		var map = new OipaMap();
+		map.set_map("main-map");
+
+	</script>
+
+
+
 <?php get_footer(); ?>

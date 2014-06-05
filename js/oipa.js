@@ -1,4 +1,5 @@
 
+
 var Oipa = {
 	pageType: null,
 	visualisations : new Array(),
@@ -115,20 +116,23 @@ function OipaMap(){
 	this.map = null;
 	this.selection = null;
 	this.slider = null;
+	this.basemap = "zimmerman2014.hmj09g6h";
+	this.tl = null;
 
 	this.set_map = function(div_id){
+
 		$("#"+div_id).css("min-height", "300px");
 		this.map = L.map(div_id, {
 		    attributionControl: false, 
 		    scrollWheelZoom: false,
 		    zoom: 3,
 		    minZoom: 2,
-		    maxZoom:6,
+		    maxZoom:12,
 		    continuousWorld: 'true'
 		}).setView([10.505, 25.09], 3);
 
-		L.tileLayer('https://{s}.tiles.mapbox.com/v3/zimmerman2014.hmj09g6h/{z}/{x}/{y}.png', {
-	    	maxZoom: 6
+		this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
+	    	maxZoom: 12
 		}).addTo(this.map);
 	}
 
@@ -137,8 +141,10 @@ function OipaMap(){
 	}
 
 	this.change_basemap = function(basemap_id){
-
+		this.tl._url = "https://{s}.tiles.mapbox.com/v3/"+basemap_id+"/{z}/{x}/{y}.png";
+		this.tl.redraw();
 	}
+
 
 }
 

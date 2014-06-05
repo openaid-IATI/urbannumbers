@@ -1,4 +1,5 @@
 <?php
+include( TEMPLATEPATH .'/constants.php' );
 
 //Staging restrictions
 if (file_exists(sys_get_temp_dir().'/staging-restrictions.php')) {
