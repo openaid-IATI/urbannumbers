@@ -71,11 +71,11 @@ get_header(); the_post(); ?>
 
 		var leftmap = new OipaMap();
 		leftmap.set_map("left-map");
-		leftmap.map.setZoom(10);
 
 		var rightmap = new OipaMap();
 		rightmap.set_map("right-map");
-		rightmap.map.setView(10);
+
+		$("#compare-cities-randomize").click();
 
 	</script>
 <?php get_footer(); ?>
