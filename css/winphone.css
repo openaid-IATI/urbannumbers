@@ -1,0 +1,9 @@
+.chk-checked,
+.chk-area,
+.sub-logo,
+.container-box .btn-zoom,
+.logo,
+[class^='icon']{
+	background-image: url(../images/sprite@2x.png);
+	background-size: 450px 300px;
+}

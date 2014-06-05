@@ -1,0 +1,16 @@
+.btn-gray{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#9da1b0', endColorstr='#868a94',GradientType=0 );}
+.btn-gray:active,
+.btn-gray:focus,
+.btn-gray:hover{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#868a94', endColorstr='#9da1b0',GradientType=0 );}
+.btn-primary{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b1b6', endColorstr='#00858a',GradientType=0 );}
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:hover{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b1b6', endColorstr='#005559',GradientType=0 );}
+.btn-blue{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#626882', endColorstr='#383d4d',GradientType=0 );}
+#header .btn-group:hover .btn-blue,
+#header .btn-group.open .btn-blue,
+.btn-blue:active,
+.btn-blue:focus,
+.btn-blue:hover{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#626882', endColorstr='#282c38',GradientType=0 );}
+.box-container .box .holder{filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );}
+.popup .modal-content .close{filter:none;}
