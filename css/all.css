@@ -248,6 +248,16 @@ img.aligncenter{
 /* ---------------------------------------------------------
 2. Common site styles
 ---------------------------------------------------------*/
+
+/* dashboard styling */
+
+.heading-container .container-dashboard{
+	padding:28px 20px 3px 48px;
+	max-width:1202px;
+	}
+	
+	
+
 /* btns styling */
 .btn{
 	padding:7px 12px 8px;
