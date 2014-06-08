@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: City compare
+Template Name: Dashboard
 */
 get_header(); the_post(); ?>
 	<div id="main">
