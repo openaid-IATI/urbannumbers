@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Dashboard
+Template Name: City comparison
 */
 get_header(); the_post(); ?>
 	<div id="main">
@@ -123,7 +123,7 @@ get_header(); the_post(); ?>
 						<section class="main-block">
 				<header class="heading-container">
 					<div class="container-dashboard">
-						<h1>My favorite city data</h1>
+						<h1>My favourite city data</h1>
 						<p>Review and share favourited data</p>
 					</div>	
 				</header>
