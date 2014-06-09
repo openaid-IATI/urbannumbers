@@ -754,7 +754,8 @@ get_header(); the_post(); ?>
 			</div>
 		</div>
 		<?php endif; ?>
-	</div>
+	</div>	</div>
+
 
 
 <?php get_template_part("footer", "scripts"); ?>
