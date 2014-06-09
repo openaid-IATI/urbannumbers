@@ -53,6 +53,8 @@ get_header(); the_post(); ?>
 								</header>
 								<div class="box-content">
 									<div class="widget">
+																			<img src="<?php echo get_template_directory_uri(); ?>/images/img29.png" alt="">
+
 									</div>
 								</div>
 								<!--Start minicontroller -->
@@ -78,6 +80,8 @@ get_header(); the_post(); ?>
 								</header>
 								<div class="box-content">
 									<div class="widget">
+																			<img src="<?php echo get_template_directory_uri(); ?>/images/img29.png" alt="">
+
 									</div>
 								</div>
 								<!--Start minicontroller -->
