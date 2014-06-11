@@ -57,42 +57,12 @@ get_header(); the_post(); ?>
 							<a class="opener" href="#">REGION <span class="caret"></span></a>
 							<div class="slide slide-region">
 								<div class="heading-holder"><span class="heading">Choose region</span></div>
+								<nav id="regions-pagination" class="pagination">
+									
+								</nav>
 								<div class="slide-content">
-									<div class="holder">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Northern America
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Latin America
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Europe
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Africa
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Asia
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Oceania
-													</label>
-												</div>
-											</div>
-										</div>
+									<div id="regions-filters" class="holder">
+										
 									</div>
 								</div>
 								<div class="btns-holder">
@@ -109,170 +79,12 @@ get_header(); the_post(); ?>
 							<a class="opener" href="#">COUNTRY <span class="caret"></span></a>
 							<div class="slide">
 								<div class="heading-holder"><span class="heading">Choose country</span></div>
-								<nav class="pagination">
-									<a href="#" class="btn-prev">&lt; previous</a>
-									<ul>
-										<li class="active"><a href="#">a</a></li>
-										<li><a href="#">b</a></li>
-										<li><a href="#">c</a></li>
-										<li><a href="#">d</a></li>
-										<li><a href="#">e</a></li>
-										<li><a href="#">f</a></li>
-										<li><a href="#">g</a></li>
-										<li><a href="#">h</a></li>
-										<li><a href="#">i</a></li>
-										<li><a href="#">j</a></li>
-										<li><a href="#">k</a></li>
-										<li><a href="#">l</a></li>
-										<li><a href="#">m</a></li>
-										<li><a href="#">n</a></li>
-										<li><a href="#">o</a></li>
-										<li><a href="#">p</a></li>
-										<li><a href="#">q</a></li>
-										<li><a href="#">r</a></li>
-										<li><a href="#">s</a></li>
-										<li><a href="#">t</a></li>
-										<li><a href="#">u</a></li>
-										<li><a href="#">v</a></li>
-										<li><a href="#">w</a></li>
-										<li><a href="#">x</a></li>
-										<li><a href="#">y</a></li>
-										<li><a href="#">z</a></li>
-									</ul>
-									<a href="#" class="btn-next">next &gt;</a>
+								<nav id="countries-pagination" class="pagination">
+									
 								</nav>
 								<div class="slide-content">
-									<div class="holder">
-										<div class="row">
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Country name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Country name
-													</label>
-												</div>
-											</div>
-										</div>
+									<div id="countries-filters" class="holder">
+										
 									</div>
 								</div>
 								<div class="btns-holder">
@@ -289,170 +101,12 @@ get_header(); the_post(); ?>
 							<a class="opener" href="#">CITY <span class="caret"></span></a>
 							<div class="slide">
 								<div class="heading-holder"><span class="heading">Choose city</span></div>
-								<nav class="pagination">
-									<a href="#" class="btn-prev">&lt; previous</a>
-									<ul>
-										<li class="active"><a href="#">a</a></li>
-										<li><a href="#">b</a></li>
-										<li><a href="#">c</a></li>
-										<li><a href="#">d</a></li>
-										<li><a href="#">e</a></li>
-										<li><a href="#">f</a></li>
-										<li><a href="#">g</a></li>
-										<li><a href="#">h</a></li>
-										<li><a href="#">i</a></li>
-										<li><a href="#">j</a></li>
-										<li><a href="#">k</a></li>
-										<li><a href="#">l</a></li>
-										<li><a href="#">m</a></li>
-										<li><a href="#">n</a></li>
-										<li><a href="#">o</a></li>
-										<li><a href="#">p</a></li>
-										<li><a href="#">q</a></li>
-										<li><a href="#">r</a></li>
-										<li><a href="#">s</a></li>
-										<li><a href="#">t</a></li>
-										<li><a href="#">u</a></li>
-										<li><a href="#">v</a></li>
-										<li><a href="#">w</a></li>
-										<li><a href="#">x</a></li>
-										<li><a href="#">y</a></li>
-										<li><a href="#">z</a></li>
-									</ul>
-									<a href="#" class="btn-next">next &gt;</a>
+								<nav id="cities-pagination" class="pagination">
+									
 								</nav>
 								<div class="slide-content">
-									<div class="holder">
-										<div class="row">
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> City name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> City name
-													</label>
-												</div>
-											</div>
-										</div>
+									<div id="cities-filters" class="holder">
+										
 									</div>
 								</div>
 								<div class="btns-holder">
@@ -469,150 +123,12 @@ get_header(); the_post(); ?>
 							<a class="opener" href="#">ADD INDICATORS <span class="caret"></span></a>
 							<div class="slide">
 								<div class="heading-holder"><span class="heading">Add indicators</span></div>
-								<nav class="pagination">
-									<a href="#" class="btn-prev">&lt; previous</a>
-									<ul>
-										<li class="active"><a href="#">1</a></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li class="style01"><a href="#">...</a></li>
-									</ul>
-									<a href="#" class="btn-next">next &gt;</a>
+								<nav id="indicators-pagination" class="pagination">
+									
 								</nav>
 								<div class="slide-content">
-									<div class="holder">
-										<div class="row">
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" checked> Indicator name
-													</label>
-												</div>
-												<div class="checkbox">
-													<label>
-														<input type="checkbox"> Indicator name
-													</label>
-												</div>
-											</div>
-										</div>
+									<div id="indicators-filters" class="holder">
+
 									</div>
 								</div>
 								<div class="btns-holder">
@@ -629,77 +145,12 @@ get_header(); the_post(); ?>
 							<a class="opener" href="#">TIMELINE <span class="caret"></span></a>
 							<div class="slide">
 								<div class="heading-holder"><span class="heading">Choose year</span></div>
-								<nav class="pagination">
-									<a href="#" class="btn-prev">&lt; previous</a>
-									<ul>
-										<li class="active"><a href="#">1950</a></li>
-										<li><a href="#">1960</a></li>
-										<li><a href="#">1970</a></li>
-										<li><a href="#">1980</a></li>
-										<li><a href="#">1990</a></li>
-										<li><a href="#">2000</a></li>
-										<li><a href="#">2010</a></li>
-									</ul>
-									<a href="#" class="btn-next">next &gt;</a>
+								<nav id="year-pagination" class="pagination">
+									
 								</nav>
 								<div class="slide-content">
-									<div class="holder">
-										<div class="row">
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1950
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio" checked="checked"> 1951
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1952
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1953
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1954
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1955
-													</label>
-												</div>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-6">
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1956
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1957
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1958
-													</label>
-												</div>
-												<div class="radio">
-													<label>
-														<input name="radio1" type="radio"> 1959
-													</label>
-												</div>
-											</div>
-										</div>
+									<div id="years-filters" class="holder">
+										
 									</div>
 								</div>
 								<div class="btns-holder">
@@ -720,7 +171,7 @@ get_header(); the_post(); ?>
 			$curmapname = "main";
 			include( TEMPLATEPATH .'/map.php' ); 
 			?>
-
+		</div>
 
 		<?php if( have_rows('blocks') ): ?>
 		<div class="main">
@@ -761,8 +212,16 @@ get_header(); the_post(); ?>
 <?php get_template_part("footer", "scripts"); ?>
 
 <script>
+	
 	var map = new OipaMap();
 	map.set_map("main-map");
+
+	Oipa.pageType = "indicators";
+	Oipa.mainSelection = new OipaIndicatorSelection(1);
+	var filter = new OipaFilters();
+	filter.selection = Oipa.mainSelection;
+	filter.init();
+
 </script>
 
 <?php get_footer(); ?>

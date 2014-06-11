@@ -12,8 +12,8 @@ get_header(); the_post(); ?>
 			<div class="container-heading">
 				<!-- container-heading -->
 				<div class="row">
-					<div class="col-md-6 col-sm-6 col-xs-6"><span id="compare-left-title" class="heading">Barcelona</span></div>
-					<div class="col-md-6 col-sm-6 col-xs-6"><span id="compare-right-title" class="heading">Jakarta</span></div>
+					<div class="col-md-6 col-sm-6 col-xs-6"><span id="compare-left-title" class="heading"></span></div>
+					<div class="col-md-6 col-sm-6 col-xs-6"><span id="compare-right-title" class="heading"></span></div>
 				</div>
 				<!-- action-list -->
 				<ul class="action-list">
@@ -69,13 +69,22 @@ get_header(); the_post(); ?>
 
 	<script>
 
+		var filter_div = "";
+
 		var leftmap = new OipaMap();
 		leftmap.set_map("left-map");
+		leftmap.compare_left_right = "left";
 
 		var rightmap = new OipaMap();
 		rightmap.set_map("right-map");
+		rightmap.compare_left_right = "right";
 
-		$("#compare-cities-randomize").click();
+
+		Oipa.pageType = "compare";
+		Oipa.mainSelection = new OipaCompareSelection(1);
+		var filter = new OipaFilters();
+		filter.selection = Oipa.mainSelection;
+		filter.init();
 
 	</script>
 <?php get_footer(); ?>

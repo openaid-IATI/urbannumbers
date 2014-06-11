@@ -6,3 +6,18 @@
 	z-index: 9999;
 }
 
+.filter-page{
+	display: none;
+}
+
+.filter-page.filter-page-1{
+	display: block;
+}
+
+.pagination-btn-previous{
+	min-width: 78px;
+}
+
+.pagination-btn-next{
+	min-width: 47px;
+}
