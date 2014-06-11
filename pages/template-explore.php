@@ -205,7 +205,7 @@ get_header(); the_post(); ?>
 			</div>
 		</div>
 		<?php endif; ?>
-	</div>	</div>
+	</div>
 
 
 

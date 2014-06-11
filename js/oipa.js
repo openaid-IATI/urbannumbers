@@ -185,14 +185,14 @@ var OipaCompare = {
 		// choose 2 random ones
 		var city_id_1 = get_random_city_within_selection(left_cities);
 		var city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
-
+		console.log(caller);
 		console.log(left_cities);
 		console.log(right_cities);
 
 		var city_1 = leftmap.set_city(city_id_1);
-		OipaCompare.item1 = city_1;
+		this.item1 = city_1;
 		var city_2 = rightmap.set_city(city_id_2);
-		OipaCompare.item2 = city_2;
+		this.item2 = city_2;
 	}
 }
 
@@ -355,6 +355,7 @@ function OipaFilters(){
 		var columns = 4;
 		var filter = this;
 
+
 		if (Oipa.pageType === "compare"){
 
 			this.create_filter_attributes(data.countries, columns, 'left-countries');
@@ -364,6 +365,8 @@ function OipaFilters(){
 			this.create_filter_attributes(data.cities, columns, 'right-cities');
 
 			this.create_filter_attributes(data.indicators, 2, 'indicators');
+
+			if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(); }
 
 		} else if (Oipa.pageType === "indicators") {
 
@@ -474,7 +477,6 @@ function OipaFilters(){
 		$("#"+attribute_type+"-pagination").html(this.paginate(1, page_counter));
 		$("#"+attribute_type+"-filters").html(html);
 		this.load_paginate_listeners(attribute_type, page_counter);
-		if (Oipa.pageType === "compare" && this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(); }
 		this.update_selection_after_filter_load();
 	};
 

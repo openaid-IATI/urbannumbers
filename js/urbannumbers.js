@@ -23,7 +23,7 @@ $(".compare-filters-save-button").click(function(e){
 $("#compare-cities-randomize").click(function(e){
 
 	e.preventDefault();
-	randomize();
+	OipaCompare.randomize();
 
 });
 
