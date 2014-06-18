@@ -21,3 +21,286 @@
 .pagination-btn-next{
 	min-width: 47px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* year blocks */
+#map-timeline-wrapper{
+  position: absolute;
+  height: 4em;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 1500;
+}
+
+.timeline-cpi{
+  display: none;
+}
+#map-timeline{
+  position: absolute;
+  width: 1416px;
+  left: 50%;
+  margin-left:-708px;
+  bottom:0;
+  height:4em;
+  padding: 0;
+}
+
+#timeline-left, #timeline-right{
+  position: absolute;
+  width: 50%;
+  background-color: #000;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+  filter: alpha(opacity=40);
+  opacity: 0.4;
+  height: 4em;
+  display:block;
+  overflow: hidden;
+}
+
+#timeline-left{
+  left: 0;
+  margin-left:-708px;
+}
+
+#timeline-right{
+  right: 0;
+  margin-right:-708px;
+}
+
+#map-slider-left-filler{
+
+}
+
+.slider-year{
+  display:inline-block;
+  background-color: #000;
+  height: 100%;
+  width:14px;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+  filter: alpha(opacity=40);
+  opacity: 0.4;
+}
+
+.slider-year.active{
+  background-color: #B20000;
+  opacity: 0.9;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
+}
+
+.slider-year-inner-left{
+  background-color: #FFF;
+  width: 2px;
+  float: left;
+  height:100%;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+}
+
+#year-1950{
+  width: 16px;
+}
+
+.slider-year-inner-white{
+  background-color: #FFF;
+  width: 2px;
+  float: right;
+  height:100%;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+}
+
+.slider-active{
+  background-color:#D3F101;
+}
+
+.slider-year.slider-active.active{
+  background-color: #D3F101;
+  opacity: 0.9;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
+}
+
+/* the real slider tooltip drawing */
+#map-slider-tooltip{
+  position: absolute;
+  width: 99%;
+  margin:0 0.5% 4em;
+  bottom: 4em;
+  left: 0;
+  z-index: 1600;
+}
+
+#map-slider-tooltip a{
+  position: absolute;
+}
+
+#map-slider-tooltip a > div{
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  font-family: 'HelveticaNeueW01-75Bold';
+  margin-left: -1.68em;
+  bottom:0.4em;
+  border: 1px solid #D3D3D3;
+  background-color: white;
+  color: #505D59;
+  font-size: 1.7em;
+  z-index: 2;
+  padding: 0.5em;
+
+   -webkit-box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
+   -moz-box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
+   box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
+}
+
+#map-slider-tooltip a > div:before {
+  position: absolute;
+  display: inline-block;
+  border-left: 0.6em solid transparent;
+  border-top: 1.3em solid #FFF;
+  border-right: 0.6em solid transparent;
+  left: -0.62em;
+  top: 1.6em;
+  content: '';
+
+}
+
+
+
+
+
+
+
+
+@media (min-width: 980px) and (max-width: 1439px) {
+
+	.slider-year-inner-left, .slider-year-inner-white{
+	  width: 1px;
+	}
+
+	#year-1950{
+	  width: 10px;
+	}
+
+	.slider-year{
+	  width: 9px;
+	}
+
+	#map-timeline{
+	  width: 910px;
+	  left: 50%;
+	  margin-left:-455px;
+	}
+
+	#timeline-left, #timeline-right{
+	  min-height: 4em;
+	  overflow: hidden;
+	  width: 50%;
+	  background-color: #000;
+	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	  filter: alpha(opacity=40);
+	  opacity: 0.4;
+	}
+
+	#timeline-left{
+	  left:0;
+	  margin-left:-455px;
+	}
+
+	#timeline-right{
+	  right: 0;
+	  margin-right:-455px;
+	}
+
+}
+
+
+@media (max-width: 979px) { 
+
+	#year-1950{
+		width: 8px;
+	}
+
+	.slider-year-inner-left, .slider-year-inner-white{
+		width: 1px;
+	}
+
+	.slider-year{
+		width: 7px;
+	}
+
+	#map-timeline{
+		width: 708px;
+		left: 50%;
+		margin-left:-354px;
+	}
+
+	#timeline-left{
+		left:0;
+		margin-left:-354px;
+	}
+
+	#timeline-right{
+		right: 0;
+		margin-right:-354px;
+	}
+
+}
+
+
+
+/* Portrait tablet to landscape and desktop */
+@media (max-width: 760px) { 
+
+	#year-1950{
+		width: 6px;
+	}
+
+	.slider-year-inner-left, .slider-year-inner-white{
+		width: 1px;
+	}
+
+	.slider-year{
+		width: 5px;
+	}
+
+	#map-timeline{
+		width: 506px;
+		left: 50%;
+		margin-left:-253px;
+	}
+
+	#timeline-left{
+		left:0;
+		margin-left:-253px;
+	}
+
+	#timeline-right{
+		right: 0;
+		margin-right:-253px;
+	}
+
+}    
+   
+

@@ -33,6 +33,188 @@
 	<![endif]-->
 </head>
 <body>
+
+<div id="hoover-wrapper"></div>
+<div id="urbannumbers-login">
+	<div class="standard-page-content page-login">
+
+		<?php 
+		$form_action = site_url() . "/wp-login.php";
+
+		if (isset($_GET["login"])){
+			if($_GET["login"] == "failed"){
+				?>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="login-error">
+							The entered username or password incorrect.
+						</div>
+					</div>
+				</div>
+
+				<?php
+			} 
+		}
+		?>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Log in</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<form name="login-form" id="sidebar-login-form" class="standard-form" action="<?php echo $form_action; ?>" method="post">
+					
+					<div class="form-group">
+						<label><?php _e( 'Username', 'urbannumbers' ); ?></label>
+						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" /></label>
+					</div>
+
+					<div class="form-group">
+						<label><?php _e( 'Password', 'urbannumbers' ); ?></label>
+						<input type="password" name="pwd" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
+					</div>
+
+					<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="sidebar-rememberme" value="forever" tabindex="99" /> <?php _e( 'Remember me', 'buddypress' ); ?></label></p>
+
+					<input type="submit" name="wp-submit" id="sidebar-wp-submit" class="btn btn-default" value="<?php _e( 'Sign in', 'urbannumbers' ); ?>" tabindex="100" />
+
+					<br><a id="lost-password-login" href="#" title="Lost Password">Lost Password</a>
+				</form>
+			</div>
+		</div>
+
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="dotted-wrapper">
+				  <span style="background-color: white; position: relative; top: -0.8em;">
+				    <?php _e( 'Or', 'urbannumbers' ); ?>
+				  </span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="login-register">
+					> <a id="register-button" href="<?php echo site_url(); ?>/register/"><?php _e( 'Register', 'urbannumbers' ); ?></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="login-socialauth"><?php // do_action( 'wordpress_social_login' ); ?> </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="urbannumbers-register">
+	
+
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Register</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<form action="" name="signup_form" id="signup_form" class="standard-form" method="post" enctype="multipart/form-data">
+					
+					<div class="form-group">
+						<label><?php _e( 'Username', 'urbannumbers' ); ?></label>
+						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" /></label>
+					</div>
+
+					<div class="form-group">
+						<label><?php _e( 'Password', 'urbannumbers' ); ?></label>
+						<input type="password" name="pwd" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
+					</div>
+
+					<div class="form-group">
+						<label><?php _e( 'E-mail', 'urbannumbers' ); ?></label>
+						<input type="email" name="email" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
+					</div>
+
+					<input type="submit" name="wp-submit" id="sidebar-wp-submit" class="btn btn-default" value="<?php _e( 'Register', 'urbannumbers' ); ?>" tabindex="100" />
+
+			
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<div id="urbannumbers-lostpassword">
+	<div class="row lost-password-login-form">
+
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Lost password</h1>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+
+			<form name="lostpasswordform" id="lostpasswordform" action="<?php echo wp_lostpassword_url( '/password-retrieval/' ); ?>" method="post">
+				<div class="form-group">
+					<label for="user_login">Username or E-mail:</label>
+					<input type="text" name="user_login" id="user_login" class="input form-control" value="" size="20">
+				</div>
+				<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large fbkp-default-button" value="Get New Password"></p>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<style>
+#urbannumbers-login, #urbannumbers-lostpassword, #urbannumbers-register{
+	width:500px;
+	height: 500px;
+	display: none;
+	position: absolute;
+	top: 100px;
+	left: 0;
+	right: 0;
+	background-color: white;
+	z-index: 999;
+	padding: 4em;
+	margin-left:auto;
+    margin-right:auto;
+}
+
+#sidebar-wp-submit{
+	background-color: #ccc;
+}
+
+#hoover-wrapper{
+	display: none;
+	background-color: #333;
+	opacity: 0.7;
+	width: 100%;
+	height: 9999px;
+	position: absolute;
+	z-index: 998;
+}
+</style>
+
+
+
+
+
 	<!-- main container of all the page elements -->
 	<div id="wrapper">
 		<div class="w1">
@@ -42,7 +224,7 @@
 				<strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
 				<!-- Split button -->
 				<div class="btn-group add-nav">
-					<button type="button" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>Sign in or register</button>
+					<button id="header-login-register-button" type="button" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>Sign in or register</button>
 					<button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 						<span class="sr-only">Toggle Dropdown</span>

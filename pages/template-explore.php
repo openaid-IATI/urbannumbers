@@ -68,7 +68,7 @@ get_header(); the_post(); ?>
 								<div class="btns-holder">
 									<div class="holder">
 										<ul class="btns-list">
-											<li><a href="#" class="btn btn-blue">Save</a></li>
+											<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
 											<li><a href="#" class="btn btn-gray btn-close">Cancel</a></li>
 										</ul>
 									</div>
@@ -90,7 +90,7 @@ get_header(); the_post(); ?>
 								<div class="btns-holder">
 									<div class="holder">
 										<ul class="btns-list">
-											<li><a href="#" class="btn btn-blue">Save</a></li>
+											<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
 											<li><a href="#" class="btn btn-gray btn-close">Cancel</a></li>
 										</ul>
 									</div>
@@ -112,7 +112,7 @@ get_header(); the_post(); ?>
 								<div class="btns-holder">
 									<div class="holder">
 										<ul class="btns-list">
-											<li><a href="#" class="btn btn-blue">Save</a></li>
+											<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
 											<li><a href="#" class="btn btn-gray btn-close">Cancel</a></li>
 										</ul>
 									</div>
@@ -134,29 +134,7 @@ get_header(); the_post(); ?>
 								<div class="btns-holder">
 									<div class="holder">
 										<ul class="btns-list">
-											<li><a href="#" class="btn btn-blue">Save</a></li>
-											<li><a href="#" class="btn btn-gray btn-close">Cancel</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<a class="opener" href="#">TIMELINE <span class="caret"></span></a>
-							<div class="slide">
-								<div class="heading-holder"><span class="heading">Choose year</span></div>
-								<nav id="year-pagination" class="pagination">
-									
-								</nav>
-								<div class="slide-content">
-									<div id="years-filters" class="holder">
-										
-									</div>
-								</div>
-								<div class="btns-holder">
-									<div class="holder">
-										<ul class="btns-list">
-											<li><a href="#" class="btn btn-blue">Save</a></li>
+											<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
 											<li><a href="#" class="btn btn-gray btn-close">Cancel</a></li>
 										</ul>
 									</div>
@@ -166,11 +144,30 @@ get_header(); the_post(); ?>
 					</ul>
 				</div>
 			</div>
-			
+			<div id="map-wrapper">
 			<?php 
 			$curmapname = "main";
 			include( TEMPLATEPATH .'/map.php' ); 
 			?>
+				<?php if(!is_page("city-prosperity")){ ?>
+			    <div id="map-timeline-wrapper">
+			        <div id="timeline-left"></div>
+			        <div id="map-timeline">
+			            <div id="map-slider-tooltip">
+			            	<a style="left: 57%; z-index: 1;"><div class="active">2007</div></a>
+			            </div>
+
+			            <?php for ($i = 1950; $i < 2051;$i++){   
+			            echo '<div class="slider-year';
+			            echo '" id="year-' . $i . '">';
+			            if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
+			            echo '<div class="slider-year-inner-white"></div></div>'; 
+			            } ?>
+			        </div>
+			        <div id="timeline-right"></div>
+			    </div>
+			    <?php } ?>
+			</div>
 		</div>
 
 		<?php if( have_rows('blocks') ): ?>
@@ -213,11 +210,15 @@ get_header(); the_post(); ?>
 
 <script>
 	
-	var map = new OipaMap();
-	map.set_map("main-map");
-
 	Oipa.pageType = "indicators";
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
+	
+
+	var map = new OipaMap();
+	map.set_map("main-map");
+	map.selection = Oipa.mainSelection;
+	Oipa.maps.push(map);
+	
 	var filter = new OipaFilters();
 	filter.selection = Oipa.mainSelection;
 	filter.init();

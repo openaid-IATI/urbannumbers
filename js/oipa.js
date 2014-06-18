@@ -75,6 +75,7 @@ function OipaMap(){
 	this.basemap = "zimmerman2014.hmj09g6h";
 	this.tl = null;
 	this.compare_left_right = null;
+	this.circles = {};
 
 	this.set_map = function(div_id){
 
@@ -98,7 +99,6 @@ function OipaMap(){
 			if (this.compare_left_right == "left"){
 				// load map on left selection city
 				if (filter.selection.left.cities.length > 1){
-					console.log(filter.selection);
 					this.set_map(filter.selection.left.cities[0].id);
 				}
 			}
@@ -110,7 +110,155 @@ function OipaMap(){
 			}
 		}
 
+		if (Oipa.pageType == "indicators"){
+			
+			// get url
+			var url = this.get_indicator_url();
 
+			// get data
+			this.get_indicator_data(url);
+			
+			// put data on map
+
+			// load timeline
+
+			// etc
+		}
+
+
+	};
+
+	this.get_indicator_url = function(){
+
+		var dlmtr = ',';
+		var str_region = get_parameters_from_selection(this.selection.regions);
+		var str_country = get_parameters_from_selection(this.selection.countries);
+		var str_city = get_parameters_from_selection(this.selection.cities);
+		var str_indicators = get_parameters_from_selection(this.selection.indicators);
+
+		return search_url + 'indicator-data/?format=json?countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
+	}
+
+	this.get_indicator_data = function(url){
+
+		// filters
+		var thismap = this;
+		
+		$.support.cors = true;
+
+		if(window.XDomainRequest){
+		var xdr = new XDomainRequest();
+		xdr.open("get", url);
+		xdr.onprogress = function () { };
+		xdr.ontimeout = function () { };
+		xdr.onerror = function () { };
+		xdr.onload = function() {
+			var jsondata = $.parseJSON(xdr.responseText);
+			if (jsondata === null || typeof (jsondata) === 'undefined')
+			{
+				jsondata = $.parseJSON(jsondata.firstChild.textContent);
+				thismap.show_indicator_data_on_map(jsondata);
+				
+			}
+		};
+		setTimeout(function () {xdr.send();}, 0);
+		} else {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				contentType: "application/json",
+				dataType: 'json',
+				success: function(data){
+					thismap.show_indicator_data_on_map(data);
+
+				}
+			});
+		}
+
+	};
+	
+	this.show_indicator_data_on_map = function(data){
+
+		var thismap = this.map;
+		var circles = this.circles;
+
+		circles.indicators = {};
+		circles.countries = {};
+
+		// data containing multiple indicators
+		$.each(data, function(mainkey, mainvalue){
+
+			
+
+			// key = indicator_id
+			var cities_or_countries = null;
+			if (Object.keys(mainvalue.cities).length > 0){
+				cities_or_countries = mainvalue.cities;
+			} else {
+				cities_or_countries = mainvalue.countries;
+			}
+
+			// city or country
+			$.each(cities_or_countries, function(key, value){
+
+			    if (value.longitude == null || value.latitude == null){return true;}
+			    try{
+
+			        //main indicator info
+			        circles.indicators[mainvalue.indicator] = {};
+			        circles.indicators[mainvalue.indicator].description = mainvalue.indicator_friendly;
+			        circles.indicators[mainvalue.indicator].type_data = mainvalue.type_data;
+
+			        circles.indicators[mainvalue.indicator].max_value = mainvalue.max_value;
+			        
+			        // circle info
+			        if(!circles.countries[key]){circles.countries[key] = {};}
+			        if(!circles.countries[key][mainvalue.indicator]){circles.countries[key][mainvalue.indicator] = {};}
+
+			        circles.countries[key][mainvalue.indicator].years = value.years;
+
+			        var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
+			            color: '#fff', //circles.indicators[mainvalue.indicator].color,
+			            weight: '5',
+			            fillColor: 'red', //circles.indicators[mainvalue.indicator].color,
+			            fillOpacity: 0.7
+			        }).setRadius(100000).addTo(thismap);
+
+			        
+			        //circles.countries[key][mainvalue.indicator].circle = circle;
+
+
+			        // main country info
+			        circles.countries[key].countryname = mainvalue.name;
+			        //circles.countries[key].countryregion = value.region;
+			      
+			        
+			    }catch(err){
+
+			        console.log(err);
+			    }
+			});
+		});
+
+		console.log(thismap);
+	};
+
+	this.update_indicator_timeline = function(){
+		
+		$('.slider-year').removeClass('slider-active');
+		
+		for (var i=1950;i<2051;i++){
+			var curyear = "y" + i;
+			// TO DO
+			$.each(indicator_data, function(key, value){
+				if (value.years){
+					if (curyear in value.years){
+						$("#year-" + i).addClass("slider-active");
+						return false;
+					}
+				}   
+			});
+		}
 	};
 
 	this.change_basemap = function(basemap_id){
@@ -185,9 +333,6 @@ var OipaCompare = {
 		// choose 2 random ones
 		var city_id_1 = get_random_city_within_selection(left_cities);
 		var city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
-		console.log(caller);
-		console.log(left_cities);
-		console.log(right_cities);
 
 		var city_1 = leftmap.set_city(city_id_1);
 		this.item1 = city_1;
@@ -223,7 +368,6 @@ function OipaFilters(){
 	this.firstLoad = true;
 
 	this.update_selection_object = function(){
-
 		// set selection as filter and load results
 		this.selection.sectors = this.get_checked_by_filter("sectors");
 		this.selection.countries = this.get_checked_by_filter("countries");
@@ -233,7 +377,7 @@ function OipaFilters(){
 		this.selection.cities = this.get_checked_by_filter("cities");
 		this.selection.reporting_organisations = this.get_checked_by_filter("reporting_organisations");
 
-		// reload visualisations / maps --> should be call to Oipa object?
+		
 	};
 
 	this.update_compare_selection_object = function(){
@@ -242,8 +386,6 @@ function OipaFilters(){
 		this.selection.right.countries = this.get_checked_by_filter("right-countries");
 		this.selection.right.cities = this.get_checked_by_filter("right-cities");
 		this.selection.indicators = this.get_checked_by_filter("indicators");
-
-		// reload visualisations / maps --> should be call to Oipa object?
 
 
 	};
@@ -280,8 +422,17 @@ function OipaFilters(){
 
 	this.save = function(){
 		
+	
 		// update OipaSelection object
-		this.update_compare_selection_object();
+		if (Oipa.pageType === "compare"){
+			this.update_compare_selection_object();
+		} else if (Oipa.pageType === "indicators"){
+			this.update_selection_object();
+		} else if (Oipa.pageType === "projects") {
+			this.update_selection_object();
+		}		
+
+		console.log(this.selection);
 
 		// reload maps
 		Oipa.refresh_maps();

@@ -16,6 +16,10 @@ $("#right-map .change-basemap-link").click(function(e){
 	rightmap.change_basemap(basemap_id);
 });
 
+$(".filters-save-button").click(function(e){
+	filter.save();
+});
+
 $(".compare-filters-save-button").click(function(e){
 	filter.save();
 });
@@ -59,9 +63,33 @@ function OipaCompareFilters() {
 
 
 
+$("#header-login-register-button").click(function(e){
+	e.preventDefault();
+
+	$("#hoover-wrapper").show();
+	$("#urbannumbers-login").show();
+
+});
 
 
+$("#lost-password-login").click(function(e){
+	e.preventDefault();
+	$("#urbannumbers-login").hide();
+	$("#urbannumbers-lostpassword").show();
+
+});
 
 
+$("#register-button").click(function(e){
+	e.preventDefault();	
+	$("#urbannumbers-register").show();
+	$("#urbannumbers-login").hide();
+});
+
+$("#delete-account-button").click(function(e){
+	e.preventDefault();
+	$("#hoover-wrapper").show();
+	$("#urbannumbers-remove-account").show();
+});
 
 
