@@ -208,12 +208,22 @@ if (have_posts()) : ?>
 
 	<?php get_template_part("footer", "scripts"); ?>
 
-	<script>
+<script>
+	
+	Oipa.pageType = "indicators";
+	Oipa.mainSelection = new OipaIndicatorSelection(1);
+	Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
+	
+	var map = new OipaIndicatorMap();
+	map.set_map("main-map");
+	map.init();
+	
+	map.selection = Oipa.mainSelection;
+	Oipa.maps.push(map);
+	
+	map.refresh();
 
-		var map = new OipaMap();
-		map.set_map("main-map");
-
-	</script>
+</script>
 
 
 

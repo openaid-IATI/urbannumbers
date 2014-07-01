@@ -1,5 +1,5 @@
 <!-- container-sort -->
-			<div class="container-sort">
+			<div id="indicator-filter-wrapper" class="container-sort">
 				<!-- action-list -->
 				<ul class="action-list">
 					<li>
@@ -61,7 +61,7 @@
 										<div class="btns-holder">
 											<div class="holder">
 												<ul class="btns-list">
-													<li><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></li>
+													<li><a href="#" class="compare-filters-save-button btn btn-blue btn-close">Save</a></li>
 													<li><a href="#" class="compare-filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
 												</ul>
 											</div>
@@ -83,7 +83,7 @@
 										<div class="btns-holder">
 											<div class="holder">
 												<ul class="btns-list">
-													<li><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></li>
+													<li><a href="#" class="compare-filters-save-button btn btn-blue btn-close">Save</a></li>
 													<li><a href="#" class="compare-filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
 												</ul>
 											</div>
@@ -110,7 +110,7 @@
 										<div class="btns-holder">
 											<div class="holder">
 												<ul class="btns-list">
-													<li><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></li>
+													<li><a href="#" class="compare-filters-save-button btn btn-blue btn-close">Save</a></li>
 													<li><a href="#" class="compare-filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
 												</ul>
 											</div>
@@ -132,7 +132,7 @@
 										<div class="btns-holder">
 											<div class="holder">
 												<ul class="btns-list">
-													<li><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></li>
+													<li><a href="#" class="compare-filters-save-button btn btn-blue btn-close">Save</a></li>
 													<li><a href="#" class="compare-filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
 												</ul>
 											</div>

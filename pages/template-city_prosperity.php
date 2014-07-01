@@ -68,88 +68,10 @@ get_header(); the_post(); ?>
 				<div class="info-box"><img alt="" src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder7.png"></div>
 				<div class="info-box"><img alt="" src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder8.png"></div>
 			</div>
-			<div class="map-holder">
-				<img src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder-map8.jpg" alt="">
-				<div class="dropdown">
-					<a class="btn btn-blue" data-toggle="dropdown" href="#">Basemaps</a>
-					<div class="dropdown-menu dropdown-box" role="menu">
-						<ul class="visual-list">
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img19.jpg" alt="">
-									<div class="text-holder">
-										<p>Satellietbeelden</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img20.jpg" alt="">
-									<div class="text-holder">
-										<p>Satellietbeelden met labels </p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img21.jpg" alt="">
-									<div class="text-holder">
-										<p>Straten</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img22.jpg" alt="">
-									<div class="text-holder">
-										<p>Topografisch</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img23.jpg" alt="">
-									<div class="text-holder">
-										<p>Terrein met labels</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img24.jpg" alt="">
-									<div class="text-holder">
-										<p>Lichtgrijs canvas</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img25.jpg" alt="">
-									<div class="text-holder">
-										<p>National Geographic</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img26.jpg" alt="">
-									<div class="text-holder">
-										<p>Oceanen</p>
-									</div>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<img src="<?php echo get_template_directory_uri(); ?>/images/img27.jpg" alt="">
-									<div class="text-holder">
-										<p>OpenStreetMap</p>
-									</div>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<?php 
+			$curmapname = "main";
+			include( TEMPLATEPATH .'/map.php' ); 
+			?>
 			<!-- visual-row -->
 			<div class="visual-row">
 				<div class="holder">
@@ -205,4 +127,25 @@ get_header(); the_post(); ?>
 			<?php endif; ?>
 		</div>
 	</div>
+
+
+<?php get_template_part("footer", "scripts"); ?>
+
+<script>
+	
+	Oipa.pageType = "indicators";
+	Oipa.mainSelection = new OipaIndicatorSelection(1);
+	Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
+	
+	var map = new OipaIndicatorMap();
+	map.set_map("main-map");
+	map.init();
+	
+	map.selection = Oipa.mainSelection;
+	Oipa.maps.push(map);
+	
+	map.refresh();
+
+</script>
+
 <?php get_footer(); ?>

@@ -69,20 +69,23 @@ get_header(); the_post(); ?>
 
 	<script>
 
+		Oipa.pageType = "compare";
+		Oipa.mainSelection = new OipaCompareSelection(1);
+
 		var filter_div = "";
 
 		var leftmap = new OipaMap();
 		leftmap.set_map("left-map");
 		leftmap.compare_left_right = "left";
+		Oipa.maps.push(leftmap);
 
 		var rightmap = new OipaMap();
 		rightmap.set_map("right-map");
 		rightmap.compare_left_right = "right";
+		Oipa.maps.push(rightmap);
+		
 
-
-		Oipa.pageType = "compare";
-		Oipa.mainSelection = new OipaCompareSelection(1);
-		var filter = new OipaFilters();
+		var filter = new OipaCompareFilters();
 		filter.selection = Oipa.mainSelection;
 		filter.init();
 

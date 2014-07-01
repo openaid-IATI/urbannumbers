@@ -20,14 +20,25 @@ $(".filters-save-button").click(function(e){
 	filter.save();
 });
 
+$("#reset-filters").click(function(e){
+	filter.reset_filters();
+});
+
 $(".compare-filters-save-button").click(function(e){
 	filter.save();
+
 });
 
 $("#compare-cities-randomize").click(function(e){
 
 	e.preventDefault();
 	OipaCompare.randomize();
+
+});
+
+$("#indicator-filter-wrapper .filter-open").click(function(e){
+	var filtername = $(this).attr("name");
+	filter.reload_specific_filter(filtername);
 
 });
 
@@ -51,14 +62,6 @@ $("#opener-left-cities").click(function(e){
 $("#opener-right-cities").click(function(e){
 	filter.reload_specific_filter("right-cities", null);
 });
-
-
-function OipaCompareFilters() {
-	OipaCompareFilters.prototype = Object.create(OipaFilters.prototype);
-
-
-}
-
 
 
 

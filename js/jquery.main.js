@@ -16,7 +16,7 @@ function initSidebarCheck() {
 	var twocolumns = document.getElementById('twocolumns');
 	var sidebar = document.getElementById('sidebar');
 
-	if(!sidebar) twocolumns.className += ' full-width';
+	if(!sidebar && twocolumns) twocolumns.className += ' full-width';
 }
 
 function initDoubleClick() {

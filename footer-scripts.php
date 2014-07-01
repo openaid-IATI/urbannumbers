@@ -10,5 +10,8 @@ var standard_basemap = "zimmerman2014.hmj09g6h";
 
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/nouislider.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers.js"></script>

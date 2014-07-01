@@ -1,5 +1,5 @@
 
-function OipaSelection(main){
+function OipaSelection(main, has_default_reporter){
 	this.cities = [];
 	this.countries = [];
 	this.regions = [];
@@ -7,15 +7,29 @@ function OipaSelection(main){
 	this.budgets = [];
 	this.query = [];
 	this.indicators = [];
-	this.reporting_organisation = [];
+	this.reporting_organisations = [];
+	this.start_actual_years = [];
+	this.start_planned_years = [];
+	this.donors = [];
+	this.search = [];
+
+	this.group_by = "";
 	this.url = null;
 
-	if (main){
+	if (main === 1){
 		this.url = new OipaUrl();
 	}
+	if (has_default_reporter === 1){
+		if (Oipa.default_organisation_id){
+			this.reporting_organisations.push({"id": Oipa.default_organisation_id, "name": Oipa.default_organisation_name});
+		}
+	}
+	
 }
 
 var Oipa = {
+	default_organisation_id: null,
+	default_organisation_name: null,
 	pageType: null,
 	mainSelection: new OipaSelection(1),
 	maps : [],
@@ -28,6 +42,12 @@ var Oipa = {
 	refresh_visualisations : function(){
 		for (var i = 0; i < this.visualisations.length; i++){
 			this.visualisations[i].refresh();
+		}
+	},
+	lists: [],
+	refresh_lists : function(){
+		for (var i = 0; i < this.lists.length; i++){
+			this.lists[i].refresh();
 		}
 	}
 };
@@ -44,102 +64,385 @@ function OipaIndicatorSelection(main){
 	}
 }
 
-function OipaCompareSelection(main){
-	this.left = [];
-	this.left.cities = [];
-	this.left.countries = [];
-	this.left.regions = [];
 
-	this.right = [];
-	this.right.cities = [];
-	this.right.countries = [];
-	this.right.regions = [];
 
-	this.indicators = [];
+function OipaList(){
 
-	if (main){
-		this.url = new OipaUrl();
+	this.offset = 0;
+	this.limit = 10;
+	this.amount = 0;
+	this.order_by = null;
+	this.order_asc_desc = null;
+	this.selection = null;
+	this.query = null;
+
+	this.list_div = "#oipa-list";
+	this.pagination_div = "#oipa-list-pagination";
+	this.activity_count_div = "#project-list-amount";
+
+	this.init = function(){
+
+		var thislist = this;
+		// init pagination
+		// generate pagination html and add to this.pagination_div
+		
+		
+
+		$(this.pagination_div).bootpag({
+		   total: 5,
+		   page: 1,
+		   maxVisible: 6
+		}).on('page', function(event, num){
+		    thislist.go_to_page(num);
+		});
+
+		this.load_listeners();
+
+		this.extra_init();
 	}
+
+	this.extra_init = function(){
+		// override
+	}
+
+	this.refresh = function(data){
+		
+		if (!data){
+			// get url
+			var url = this.get_url();
+
+			// get data
+			this.get_data(url);
+
+		} else {
+			// set amount of results
+			this.update_list(data);
+			this.update_pagination(data);
+			this.load_listeners();
+			
+		}
+	}
+
+	this.reset_pars = function(){
+		this.query = null;
+		this.offset = 0;
+		this.limit = 10;
+		this.amount = 0;
+		this.order_by = null;
+		this.order_asc_desc = null;
+		this.refresh();
+	}
+
+	this.get_url = function(){
+		// overriden in children, unused if called correctly
+		return search_url + 'activity-list/?format=json&limit=10';
+	};
+
+	this.get_data = function(url){
+
+		// filters
+		var thislist = this;
+		$.support.cors = true;
+
+		if(window.XDomainRequest){
+			var xdr = new XDomainRequest();
+			xdr.open("get", url);
+			xdr.onprogress = function () { };
+			xdr.ontimeout = function () { };
+			xdr.onerror = function () { };
+			xdr.onload = function() {
+				thislist.refresh(xdr.responseText);
+			};
+			setTimeout(function () {xdr.send();}, 0);
+		} else {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				dataType: 'html',
+				success: function(data){
+					thislist.refresh(data);
+				}
+			});
+		}
+	};
+
+	this.update_list = function(data){
+		// generate list html and add to this.list_div
+		$(this.list_div).html(data);
+	};
+
+	this.load_listeners = function(){
+		// override
+	}
+
+	this.update_pagination = function(data){
+
+		var total = $(this.list_div + " .list-amount-input").val();
+		this.amount = total;
+
+		var total_pages = Math.ceil(this.amount / this.limit);
+		var current_page = Math.ceil(this.offset / this.limit) + 1;
+		$(this.pagination_div).bootpag({total: total_pages});
+	};
+
+	this.go_to_page = function(page_id){
+		this.offset = (page_id * this.limit) - this.limit;
+		this.refresh();
+	};
+}
+
+function OipaMainStats(){
+	this.reporting_organisation = null;
+
+	this.get_total_projects = function(reporting_organisation, data){
+
+		
+
+		if(data){
+			$("#homepage-total-projects").text(data[reporting_organisation]);
+		} else {
+
+			var url = search_url + 'activity-aggregate-any/?format=json&group_by=reporting-org';
+			var stats = this;
+			$.support.cors = true;
+
+			if(window.XDomainRequest){
+			var xdr = new XDomainRequest();
+			xdr.open("get", url);
+			xdr.onprogress = function () { };
+			xdr.ontimeout = function () { };
+			xdr.onerror = function () { };
+			xdr.onload = function() {
+				var jsondata = $.parseJSON(xdr.responseText);
+				if (jsondata === null || typeof (jsondata) === 'undefined')
+				{
+					jsondata = $.parseJSON(jsondata.firstChild.textContent);
+					stats.get_total_projects(reporting_organisation, jsondata); 
+				}
+			};
+			setTimeout(function () {xdr.send();}, 0);
+			} else {
+				$.ajax({
+					type: 'GET',
+					url: url,
+					contentType: "application/json",
+					dataType: 'json',
+					success: function(data){
+						stats.get_total_projects(reporting_organisation, data);
+					}
+				});
+			}
+		}
+	};
+
+	this.get_total_budget = function(reporting_organisation, data){
+
+		if(data){
+			$("#homepage-total-budget").text("US$ " + comma_formatted(data[reporting_organisation]));
+		} else {
+
+			var url = search_url + 'activity-aggregate-any/?format=json&group_by=reporting-org&aggregation_key=total-budget';
+			var stats = this;
+			$.support.cors = true;
+
+			if(window.XDomainRequest){
+			var xdr = new XDomainRequest();
+			xdr.open("get", url);
+			xdr.onprogress = function () { };
+			xdr.ontimeout = function () { };
+			xdr.onerror = function () { };
+			xdr.onload = function() {
+				var jsondata = $.parseJSON(xdr.responseText);
+				if (jsondata === null || typeof (jsondata) === 'undefined')
+				{
+					jsondata = $.parseJSON(jsondata.firstChild.textContent);
+					stats.get_total_budget(reporting_organisation, jsondata); 
+				}
+			};
+			setTimeout(function () {xdr.send();}, 0);
+			} else {
+				$.ajax({
+					type: 'GET',
+					url: url,
+					contentType: "application/json",
+					dataType: 'json',
+					success: function(data){
+						stats.get_total_budget(reporting_organisation, data);
+					}
+				});
+			}
+		}
+	};
 }
 
 function OipaProjectList(){
-	this.offset = 0;
-	this.per_page = 25;
-	this.order_by = null;
+	this.only_regional = false;
+	this.only_country = false;
+
+	this.get_url = function(){
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		
+		if(Oipa.pageType == "activities"){
+			project_path = "/projects";
+		} else {
+			project_path = "/projects-on-detail";
+		}
+
+		var extra_par = "";
+		var desc = "";
+		if (this.only_country == true){ extra_par = "&countries__code__gte=0"; }
+		else if (this.only_regional == true){ extra_par = "&regions__code__gte=0"; }
+		else if(this.only_global == true){ extra_par = "&regions=None&countries=None"; }
+		if(this.order_asc_desc == "desc"){ desc = "-"; }
+		if(this.order_by){ extra_par += "&order_by=" + desc + this.order_by; }
+		if(this.query){ extra_par += "&query=" + this.query; }
+		var url = site_url + ajax_path + project_path + "/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
+		url = replacelaceAll(url, " ", "%20");
+		return url;
+	};
+
+	
 }
+OipaProjectList.prototype = new OipaList();
+
+function OipaCountryList(){
+	this.get_url = function(){
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var extra_par = "";
+		if(this.order_by){ extra_par += "&order_by=" + this.order_by; }
+		if(this.order_asc_desc){ extra_par += "&order_asc_desc=" + this.order_asc_desc; }
+		if(this.query) {extra_par += "&query=" + this.query; }
+		return site_url + ajax_path + "/countries/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
+	};
+}
+OipaCountryList.prototype = new OipaList();
+
+function OipaRegionList(){
+	this.get_url = function(){
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var extra_par = "";
+		if(this.order_by){ extra_par += "&order_by=" + this.order_by; }
+		if(this.order_asc_desc){ extra_par += "&order_asc_desc=" + this.order_asc_desc; }
+		return site_url + ajax_path + "/regions/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
+	};
+}
+OipaRegionList.prototype = new OipaList();
+
+function OipaSectorList(){
+	this.get_url = function(){
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var extra_par = "";
+		if(this.order_by){ extra_par += "&order_by=" + this.order_by; }
+		if(this.order_asc_desc){ extra_par += "&order_asc_desc=" + this.order_asc_desc; }
+		return site_url + ajax_path + "/sectors/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
+	};
+}
+OipaSectorList.prototype = new OipaList();
+
+function OipaDonorList(){
+	this.get_url = function(){
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var extra_par = "";
+		if(this.order_by){ extra_par += "&order_by=" + this.order_by; }
+		if(this.order_asc_desc){ extra_par += "&order_asc_desc=" + this.order_asc_desc; }
+		if(this.query) {extra_par += "&query=" + this.query; }
+		return site_url + ajax_path + "/donors/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
+	};
+}
+OipaDonorList.prototype = new OipaList();
+
 
 function OipaMap(){
 	this.map = null;
 	this.selection = null;
 	this.slider = null;
-	this.basemap = "zimmerman2014.hmj09g6h";
+	this.basemap = "zimmerman2014.hmpkg505";
 	this.tl = null;
 	this.compare_left_right = null;
 	this.circles = {};
+	this.markers = [];
+	this.vistype = "circles";
+	this.selected_year = null;
 
-	this.set_map = function(div_id){
+	if(standard_basemap){
+		this.basemap = standard_basemap;
+	}
 
-		$("#"+div_id).css("min-height", "300px");
-		this.map = L.map(div_id, {
+	this.set_map = function(div_id, zoomposition){
+
+		var mapoptions = {
 			attributionControl: false,
 			scrollWheelZoom: false,
 			zoom: 3,
 			minZoom: 2,
 			maxZoom:12,
 			continuousWorld: 'false'
-		}).setView([10.505, 25.09], 3);
+		}
+
+		if(zoomposition){
+			mapoptions.zoomControl = false;
+		}
+
+		$("#"+div_id).css("min-height", "200px");
+		this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
+
+		if (zoomposition){
+			new L.Control.Zoom({ position: zoomposition }).addTo(this.map);
+		}
 
 		this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
 			maxZoom: 12
 		}).addTo(this.map);
 	};
 
-	this.refresh = function(){
-		if (Oipa.pageType == "compare"){
+	this.refresh = function(data){
+
+
+		if (!data){
 			if (this.compare_left_right == "left"){
 				// load map on left selection city
-				if (filter.selection.left.cities.length > 1){
-					this.set_map(filter.selection.left.cities[0].id);
+				if (filter.selection.left.cities.length > 0){
+					this.set_city(filter.selection.left.cities[0].id);
 				}
-			}
-			if (this.compare_left_right == "right"){
+			} else if (this.compare_left_right == "right"){
 				// load map on right selection city
-				if (filter.selection.right.cities.length > 1){
-					this.set_map(filter.selection.right.cities[0].id);
+				if (filter.selection.right.cities.length > 0){
+					this.set_city(filter.selection.right.cities[0].id);
 				}
+			} else {
+				
+				// get url
+				var url = this.get_url();
+
+				// get data
+				this.get_data(url);
+
 			}
+		} else {
+			// show data
+			this.show_data_on_map(data);
+
 		}
-
-		if (Oipa.pageType == "indicators"){
-			
-			// get url
-			var url = this.get_indicator_url();
-
-			// get data
-			this.get_indicator_data(url);
-			
-			// put data on map
-
-			// load timeline
-
-			// etc
-		}
-
 
 	};
 
-	this.get_indicator_url = function(){
+	this.get_url = function(){
 
-		var dlmtr = ',';
-		var str_region = get_parameters_from_selection(this.selection.regions);
-		var str_country = get_parameters_from_selection(this.selection.countries);
-		var str_city = get_parameters_from_selection(this.selection.cities);
-		var str_indicators = get_parameters_from_selection(this.selection.indicators);
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var api_call = "activities";
 
-		return search_url + 'indicator-data/?format=json?countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
-	}
+		if (this.selection.group_by == "activity"){
+			api_call = "activities";
+		} else if(this.selection.group_by == "country"){
+			api_call = "country-activities";
+		} else if(this.selection.group_by == "region"){
+			api_call = "region-activities";
+		}
 
-	this.get_indicator_data = function(url){
+		return search_url + api_call + '/?format=json' + parameters;
+	};
+
+	this.get_data = function(url){
 
 		// filters
 		var thismap = this;
@@ -157,7 +460,7 @@ function OipaMap(){
 			if (jsondata === null || typeof (jsondata) === 'undefined')
 			{
 				jsondata = $.parseJSON(jsondata.firstChild.textContent);
-				thismap.show_indicator_data_on_map(jsondata);
+				thismap.refresh(jsondata);
 				
 			}
 		};
@@ -169,78 +472,124 @@ function OipaMap(){
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(data){
-					thismap.show_indicator_data_on_map(data);
+					thismap.refresh(data);
 
 				}
 			});
 		}
-
 	};
 	
-	this.show_indicator_data_on_map = function(data){
+	
+	this.delete_markers = function(){
+		for (var i = 0; i < this.markers.length; i++) {
+			this.map.removeLayer(this.markers[i]);
+		}
+	};
 
-		var thismap = this.map;
-		var circles = this.circles;
+	this.show_data_on_map = function(data){
 
-		circles.indicators = {};
-		circles.countries = {};
+		this.delete_markers();
 
-		// data containing multiple indicators
-		$.each(data, function(mainkey, mainvalue){
+		if (this.selection.group_by == "activity"){
 
+		} else if(this.selection.group_by == "country"){
 			
+			// For 0 -> 9, create markers in a circle
+		    for (var i = 0; i < data.objects.length; i++) {
+		        if (data.objects[i].id === null){ continue; }
+		        // Use a little math to position markers.
+		        // Replace this with your own code.
 
-			// key = indicator_id
-			var cities_or_countries = null;
-			if (Object.keys(mainvalue.cities).length > 0){
-				cities_or_countries = mainvalue.cities;
-			} else {
-				cities_or_countries = mainvalue.countries;
-			}
+		        
 
-			// city or country
-			$.each(cities_or_countries, function(key, value){
+				
+		        curmarker = L.marker([
+		            data.objects[i].latitude,
+		            data.objects[i].longitude
+		        ], {
+		            icon: L.divIcon({
+		                // Specify a class name we can refer to in CSS.
+		                className: 'country-marker-icon',
+		                // Define what HTML goes in each marker.
+		                html: data.objects[i].total_projects,
+		                // Set a markers width and height.
+		                iconSize: [36, 44],
+		                iconAnchor: [18, 34],
+		            })
+		        }).bindPopup('<div class="country-marker-popup-header"><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">'+data.objects[i].name+'</a></div><table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td>' + data.objects[i].total_projects + '</td></tr><tr><td>BUDGET:</td><td>$ ' + comma_formatted(data.objects[i].total_budget) + '</td></tr></table><a class="country-marker-popup-zoom" name="'+data.objects[i].id+'" country_name="'+data.objects[i].name+'" latitude="' + data.objects[i].latitude + '" longitude="' + data.objects[i].longitude + '" onclick="map.zoom_on_dom(this);">+ ZOOM IN</a>', { minWidth: 300, maxWidth: 300, offset: L.point(173, 69), closeButton: false, className: "country-popup"})
+		        .addTo(this.map);
 
-			    if (value.longitude == null || value.latitude == null){return true;}
-			    try{
-
-			        //main indicator info
-			        circles.indicators[mainvalue.indicator] = {};
-			        circles.indicators[mainvalue.indicator].description = mainvalue.indicator_friendly;
-			        circles.indicators[mainvalue.indicator].type_data = mainvalue.type_data;
-
-			        circles.indicators[mainvalue.indicator].max_value = mainvalue.max_value;
-			        
-			        // circle info
-			        if(!circles.countries[key]){circles.countries[key] = {};}
-			        if(!circles.countries[key][mainvalue.indicator]){circles.countries[key][mainvalue.indicator] = {};}
-
-			        circles.countries[key][mainvalue.indicator].years = value.years;
-
-			        var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
-			            color: '#fff', //circles.indicators[mainvalue.indicator].color,
-			            weight: '5',
-			            fillColor: 'red', //circles.indicators[mainvalue.indicator].color,
-			            fillOpacity: 0.7
-			        }).setRadius(100000).addTo(thismap);
-
-			        
-			        //circles.countries[key][mainvalue.indicator].circle = circle;
+		        this.markers.push(curmarker);
+		    }
 
 
-			        // main country info
-			        circles.countries[key].countryname = mainvalue.name;
-			        //circles.countries[key].countryregion = value.region;
-			      
-			        
-			    }catch(err){
+		} else if(this.selection.group_by == "region"){
 
-			        console.log(err);
-			    }
-			});
-		});
+			this.map.setView([10.505, 25.09], 2);
+		    
+		    for (var i = 0; i < data.objects.length; i++) {
+		      	curmarker = L.marker([
+	                data.objects[i].latitude,
+	                data.objects[i].longitude
+	            ], {
+	                icon: L.divIcon({
+	                  // Specify a class name we can refer to in CSS.
+	                  className: 'global-marker-icon',
+	                  // Define what HTML goes in each marker.
+	                  html: '<div class="region-map-item-wrapper"><div class="region-map-activity-count">'+data.objects[i].total_projects+'</div><div class="region-map-name">'+data.objects[i].name+'</div></div>',
+	                  // Set a markers width and height.
+	                  iconSize: [150, 44],
+	                  iconAnchor: [18, 34],
+	              })
+	            }).bindPopup('<table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td>'+data.objects[i].total_projects+'</td></tr><tr><td>BUDGET:</td><td>$'+comma_formatted(data.objects[i].total_budget)+'</td></tr></table>', { minWidth: 300, maxWidth: 300, offset: L.point(215, 134), closeButton: false, className: "region-popup"})
+	            .addTo(this.map);
 
-		console.log(thismap);
+		        this.markers.push(curmarker);
+		    }
+		} else if(this.selection.group_by == "global"){
+		    this.map.setView([10.505, 25.09], 2);
+		    curmarker = L.marker([
+		        25, -121.31
+		    ], {
+		        icon: L.divIcon({
+		            // Specify a class name we can refer to in CSS.
+		            className: 'region-marker-icon',
+		            // Define what HTML goes in each marker.
+		            html: '<div class="global-map-item-wrapper"><div class="global-map-activity-count">899</div><div class="global-map-name">TO DO</div></div>',
+		            // Set a markers width and height.
+		            iconSize: [150, 44],
+		            iconAnchor: [18, 34],
+		        })
+		    })
+		    .addTo(this.map);
+
+		    this.markers.push(curmarker);
+		
+		} else if(this.selection.group_by == "other"){
+			this.map.setView([10.505, 25.09], 2);
+		    curmarker = L.marker([
+		        60, -41.31
+		    ], {
+		        icon: L.divIcon({
+		            // Specify a class name we can refer to in CSS.
+		            className: 'other-projects-marker-icon',
+		            // Define what HTML goes in each marker.
+		            html: '<div class="other-projects-map-inner">OTHER PROJECTS<br>$ 1.000.000</div>',
+		            // Set a markers width and height.
+		            iconSize: [150, 44],
+		            iconAnchor: [18, 34],
+		        })
+		    })
+		    .addTo(this.map);
+
+		    this.markers.push(curmarker);
+		}
+
+		this.load_map_listeners();
+	};
+
+	this.load_map_listeners = function(){
+		// no default listeners, this function should be overriden.
 	};
 
 	this.update_indicator_timeline = function(){
@@ -269,7 +618,7 @@ function OipaMap(){
 	this.set_city = function(city_id) {
 		var city = new OipaCity();
 		city.id = city_id;
-
+		var thismap = this;
 		url = search_url + "cities/?format=json&id=" + city_id;
 
 		$.support.cors = true;
@@ -285,7 +634,7 @@ function OipaMap(){
 			if (jsondata == null || typeof (jsondata) == 'undefined')
 			{
 				jsondata = $.parseJSON(data.firstChild.textContent);
-				city.set_compare_data(jsondata);
+				city.set_compare_data(jsondata, thismap.compare_left_right);
 			}
 			
 		}
@@ -298,57 +647,47 @@ function OipaMap(){
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(data){
-					city.set_compare_data(data);
+					city.set_compare_data(data, thismap.compare_left_right);
 				}
 			});
 		}
 
 		return city;
-	}
+	};
+
+	this.zoom_on_dom = function(curelem){
+		var latitude = curelem.getAttribute("latitude");
+		var longitude = curelem.getAttribute("longitude");
+		var country_id = curelem.getAttribute("name");
+		var country_name = curelem.getAttribute("country_name");
+
+		this.map.setView([latitude, longitude], 6);
+		Oipa.mainSelection.countries.push({"id": country_id, "name": country_name});
+		Oipa.refresh_maps();
+		Oipa.refresh_lists();
+	};
 }
 
-var OipaCompare = {
-	item1 : null,
-	item2 : null,
-	refresh_state : 0,
-	refresh_comparison: function(){
-		leftmap.map.setView(this.item1.latlng, 10);
-		rightmap.map.setView(this.item2.latlng, 10);
-		$("#compare-left-title").text(this.item1.name);
-		$("#compare-right-title").text(this.item2.name);
-	},
-	randomize: function(){
-		// get cities
-		var left_cities = [];
-		$("#left-cities-filters input").each(function(){
-			left_cities.push($(this).val());
-		});
-
-		var right_cities = [];
-		$("#right-cities-filters input").each(function(){
-			right_cities.push($(this).val());
-		});
 
 
-		// choose 2 random ones
-		var city_id_1 = get_random_city_within_selection(left_cities);
-		var city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
 
-		var city_1 = leftmap.set_city(city_id_1);
-		this.item1 = city_1;
-		var city_2 = rightmap.set_city(city_id_2);
-		this.item2 = city_2;
-	}
-}
 
 function OipaCity(){
 	this.id = null;
 	this.name = null;
 	this.latlng = null;
 
-	this.set_compare_data = function(data){
+	this.set_compare_data = function(data, map_left_right){
+
 		this.name = data.objects[0].name;
 		this.latlng = geo_point_to_latlng(data.objects[0].location);
+
+		if(map_left_right == "left"){
+			OipaCompare.item1 = this;
+		} else if (map_left_right == "right"){
+			OipaCompare.item2 = this;
+		}
+
 		OipaCompare.refresh_state++;
 		if (OipaCompare.refresh_state > 1){
 			
@@ -366,52 +705,12 @@ function OipaFilters(){
 	this.data = null;
 	this.selection = null;
 	this.firstLoad = true;
-
-	this.update_selection_object = function(){
-		// set selection as filter and load results
-		this.selection.sectors = this.get_checked_by_filter("sectors");
-		this.selection.countries = this.get_checked_by_filter("countries");
-		this.selection.budgets = this.get_checked_by_filter("budgets");
-		this.selection.regions = this.get_checked_by_filter("regions");
-		this.selection.indicators = this.get_checked_by_filter("indicators");
-		this.selection.cities = this.get_checked_by_filter("cities");
-		this.selection.reporting_organisations = this.get_checked_by_filter("reporting_organisations");
-
-		
-	};
-
-	this.update_compare_selection_object = function(){
-		this.selection.left.countries = this.get_checked_by_filter("left-countries");
-		this.selection.left.cities = this.get_checked_by_filter("left-cities");
-		this.selection.right.countries = this.get_checked_by_filter("right-countries");
-		this.selection.right.cities = this.get_checked_by_filter("right-cities");
-		this.selection.indicators = this.get_checked_by_filter("indicators");
-
-
-	};
-
-	this.get_compare_selection = function(){
-		var new_selection = new OipaCompareSelection();
-		new_selection.left.countries = this.get_checked_by_filter("left-countries");
-		new_selection.left.cities = this.get_checked_by_filter("left-cities");
-		new_selection.right.countries = this.get_checked_by_filter("right-countries");
-		new_selection.right.cities = this.get_checked_by_filter("right-cities");
-		new_selection.indicators = this.get_checked_by_filter("indicators");
-		return new_selection;
-	}
-
-	this.get_checked_by_filter = function(filtername){
-		var arr = [];
-		$('#' + filtername + '-filters input:checked').each(function(index, value){
-			arr.push({"id":value.value, "name":value.name});
-		});
-		return arr;
-	};
+	this.perspective = null;
 
 	this.init = function(){
 
 		// check url parameters -> selection
-
+		this.update_selection_object();
 
 		// get url
 		var url = this.get_url();
@@ -422,50 +721,66 @@ function OipaFilters(){
 
 	this.save = function(){
 		
-	
 		// update OipaSelection object
-		if (Oipa.pageType === "compare"){
-			this.update_compare_selection_object();
-		} else if (Oipa.pageType === "indicators"){
-			this.update_selection_object();
-		} else if (Oipa.pageType === "projects") {
-			this.update_selection_object();
-		}		
-
-		console.log(this.selection);
+		this.update_selection_object();
 
 		// reload maps
 		Oipa.refresh_maps();
 
 		// reload visualisations
 		Oipa.refresh_visualisations();
-
 	};
 
-	this.save_compare = function(){
+	this.update_selection_object = function(){
 
-		this.update_compare_selection_object();
+		// set selection as filter and load results
+		this.selection.sectors = this.get_checked_by_filter("sectors");
+		this.selection.countries = this.get_checked_by_filter("countries");
+		this.selection.budgets = this.get_checked_by_filter("budgets");
+		this.selection.regions = this.get_checked_by_filter("regions");
+		this.selection.indicators = this.get_checked_by_filter("indicators");
+		this.selection.cities = this.get_checked_by_filter("cities");
+		this.selection.start_planned_years = this.get_checked_by_filter("start_planned_years");
+		this.selection.donors = this.get_checked_by_filter("donors");
+		
+		if (!Oipa.default_organisation_id){
+			this.selection.reporting_organisations = this.get_checked_by_filter("reporting_organisations");
+		}
+		
+	};
 
+	this.get_selection_object = function(){
+		// set selection as filter and load results
+		var current_selection = new OipaSelection();
+
+		current_selection.sectors = this.get_checked_by_filter("sectors");
+		current_selection.countries = this.get_checked_by_filter("countries");
+		current_selection.budgets = this.get_checked_by_filter("budgets");
+		current_selection.regions = this.get_checked_by_filter("regions");
+		current_selection.indicators = this.get_checked_by_filter("indicators");
+		current_selection.cities = this.get_checked_by_filter("cities");
+		current_selection.start_planned_years = this.get_checked_by_filter("start_planned_years");
+		current_selection.donors = this.get_checked_by_filter("donors");
+		
+		if (!Oipa.default_organisation_id){
+			current_selection.reporting_organisations = this.get_checked_by_filter("reporting_organisations");
+		}
+		return current_selection;
+	};
+
+	this.get_checked_by_filter = function(filtername){
+		var arr = [];
+		$('#' + filtername + '-filters input:checked').each(function(index, value){
+			arr.push({"id":value.value, "name":value.name});
+		});
+		return arr;
 	};
 
 	this.get_url = function(selection, parameters_set){
-		// get url from filter selection object
-		if (Oipa.pageType === "compare"){
-			if (parameters_set){
-				return search_url + "indicator-city-filter-options/?format=json" + parameters_set;
-			}
-			var cururl = search_url + "indicator-city-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
-		}
-
-		if (Oipa.pageType === "indicators"){
-			var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
-		}
-
-		return cururl;
+		// override
 	};
 
 	this.get_data = function(url){
-
 		// filters
 		var filters = this;
 		
@@ -507,54 +822,35 @@ function OipaFilters(){
 		var filter = this;
 
 
-		if (Oipa.pageType === "compare"){
 
-			this.create_filter_attributes(data.countries, columns, 'left-countries');
-			this.create_filter_attributes(data.countries, columns, 'right-countries');
+		// projects page etc.
 
-			this.create_filter_attributes(data.cities, columns, 'left-cities');
-			this.create_filter_attributes(data.cities, columns, 'right-cities');
+		// load filter html and implement it in the page
+		$.each(data, function( key, value ) {
+			if (!$.isEmptyObject(value)){
+				if ($.inArray(key, ["sectors"])){ columns = 2; }
+				filter.create_filter_attributes(value, columns, key);
+			}
+		});
 
-			this.create_filter_attributes(data.indicators, 2, 'indicators');
-
-			if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(); }
-
-		} else if (Oipa.pageType === "indicators") {
-
-			// load filter html and implement it in the page
-			$.each(data, function( key, value ) {
-				
-				if (!$.isEmptyObject(value)){
-					if ($.inArray(key, ["indicators", "regions"]) > -1){ columns = 2; } else { columns = 4; }
-					filter.create_filter_attributes(value, columns, key);
-				}
-			});
-		} else {
-			// projects page etc.
-
-			// load filter html and implement it in the page
-			$.each(data, function( key, value ) {
-				if (!$.isEmptyObject(value)){
-					if ($.inArray(key, ["sectors"])){ columns = 2; }
-					filter.create_filter_attributes(value, columns, key);
-				}
-			});
-		}
-
-		// reload aangevinkte vakjes
+		// reload checked boxes
 		this.initialize_filters();
 	};
 
-	this.initialize_filters = function(){
+	this.initialize_filters = function(selection){
+
+		if (!selection){
+			var selection = this.selection;
+		}
 
 		$('#map-filter-overlay input:checked').prop('checked', false);
-		if (typeof this.selection.sectors !== "undefined") { this.init_filters_loop(this.selection.sectors) };
-		if (typeof this.selection.countries !== "undefined") { this.init_filters_loop(this.selection.countries) };
-		if (typeof this.selection.budgets !== "undefined") { this.init_filters_loop(this.selection.budgets) };
-		if (typeof this.selection.regions !== "undefined") { this.init_filters_loop(this.selection.regions) };
-		if (typeof this.selection.indicators !== "undefined") { this.init_filters_loop(this.selection.indicators) };
-		if (typeof this.selection.cities !== "undefined") { this.init_filters_loop(this.selection.cities) };
-		if (typeof this.selection.reporting_organisations !== "undefined") { this.init_filters_loop(this.selection.reporting_organisations) };
+		if (typeof selection.sectors !== "undefined") { this.init_filters_loop(selection.sectors) };
+		if (typeof selection.countries !== "undefined") { this.init_filters_loop(selection.countries) };
+		if (typeof selection.budgets !== "undefined") { this.init_filters_loop(selection.budgets) };
+		if (typeof selection.regions !== "undefined") { this.init_filters_loop(selection.regions) };
+		if (typeof selection.indicators !== "undefined") { this.init_filters_loop(selection.indicators) };
+		if (typeof selection.cities !== "undefined") { this.init_filters_loop(selection.cities) };
+		if (typeof selection.reporting_organisations !== "undefined") { this.init_filters_loop(selection.reporting_organisations) };
 	
 		//fill_selection_box();
 	};
@@ -710,28 +1006,22 @@ function OipaFilters(){
 		$("#"+attribute_type+"-filters .filter-page-"+page_number).show();
 	};
 
-	this.load_compare_filter_listeners = function(){
-		// on select of regions, reload cities
-
-		// on country select, update cities
-
-		// on indicator select, update countries / cities
-
-	};
-
 	this.reload_specific_filter = function(filter_name, data){
-
+		
 		if (!data){
 
 			filters = this;
 
 			// get selection
-			selection = this.get_compare_selection();
+			selection = this.get_selection_object();
 
 			// get data
 			if (filter_name === "left-cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.left.countries) ); }
 			if (filter_name === "right-cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.right.countries) ); }
-			if (filter_name === "indicators") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) ); }
+			if (filter_name === "indicators") { var url = this.get_url(null, "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) + "&cities__in=" + get_parameters_from_selection(selection.cities) ); }
+			if (filter_name === "regions") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) ); }
+			if (filter_name === "countries") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) ); }
+			if (filter_name === "cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) ); }
 
 			$.support.cors = true;
 
@@ -767,23 +1057,43 @@ function OipaFilters(){
 			columns = 4;
 			if (filter_name === "left-cities") { this.create_filter_attributes(data.cities, columns, 'left-cities'); }
 			if (filter_name === "right-cities") { this.create_filter_attributes(data.cities, columns, 'right-cities'); }
-			if (filter_name === "indicators") { 
+			if (filter_name === "indicators" && Oipa.pageType == "compare") { 
 				this.create_filter_attributes(data.countries, columns, 'left-countries');
 				this.create_filter_attributes(data.countries, columns, 'right-countries');
 				this.create_filter_attributes(data.cities, columns, 'left-cities');
 				this.create_filter_attributes(data.cities, columns, 'left-cities');
 			}
+			if (filter_name === "regions") { this.create_filter_attributes(data.regions, 2, 'regions'); }
+			if (filter_name === "countries") { this.create_filter_attributes(data.countries, columns, 'countries'); }
+			if (filter_name === "cities") { this.create_filter_attributes(data.cities, columns, 'cities'); }
+			if (filter_name === "indicators" && Oipa.pageType == "indicators") { this.create_filter_attributes(data.indicators, 2, 'indicators'); }
+
+			this.initialize_filters(selection);
 		}
 	};
 
-	this.get_specific_filter_data = function(){
 
-	};
+	this.reset_filters = function(){
+		$("#indicator-filter-wrapper input[type=checkbox]").attr('checked', false);
+		filter.save();
+	}
 
 }
 
-function ProjectFilters(){
-	ProjectFilters.prototype = Object.create(OipaFilters.prototype);
+function OipaProjectFilters(){
+
+	this.get_url = function(selection, parameters_set){
+		// get url from filter selection object
+		var parameters = get_activity_based_parameters_from_selection(this.selection);
+		var extra_par = "";
+		if (this.perspective !== null){
+			extra_par = "&perspective=" + this.perspective;
+		}
+		var cururl = search_url + "activity-filter-options/?format=json" + extra_par + parameters;	
+	
+
+		return cururl;
+	};
 
 	// create filter options of one particular filter type, objects = the options, columns = amount of columns per filter page
 	function create_project_filter_attributes(objects, columns){
@@ -853,6 +1163,8 @@ function ProjectFilters(){
 		return html;
 	}
 }
+OipaProjectFilters.prototype = new OipaFilters();
+
 
 function OipaUrl(){
 
@@ -899,7 +1211,7 @@ function OipaUrl(){
 		if (typeof oipaSelection.cities !== "undefined") { url += this.build_current_url_add_par("cities", oipaSelection.cities); }
 		if (typeof oipaSelection.reporting_organisations !== "undefined") { url += this.build_current_url_add_par("reporting_organisations", oipaSelection.reporting_organisations); }
 		if (typeof oipaSelection.offset !== "undefined") { url += this.build_current_url_add_par("offset", oipaSelection.offset); }
-		if (typeof oipaProjectList.per_page !== "undefined") { url += this.build_current_url_add_par("per_page", oipaProjectList.per_page); }
+		if (typeof oipaProjectList.limit !== "undefined") { url += this.build_current_url_add_par("limit", oipaProjectList.limit); }
 		if (typeof oipaProjectList.order_by !== "undefined") { url += this.build_current_url_add_par("order_by", oipaProjectList.order_by); }
 		if (typeof oipaProjectList.query !== "undefined") { url += this.build_current_url_add_par("query", oipaProjectList.query); }
 		if (url === '?p='){return '';}
@@ -926,45 +1238,6 @@ function OipaUrl(){
 }
 
 
-function OipaVis(){
-	this.type = null;
-	this.data_url = null;
-	this.parameters = [];
-
-	this.export = function(filetype){
-		new OipaExport(this, filetype);
-	};
-
-	this.embed = function(){
-		var embed = new OipaEmbed(this);
-	};
-
-	this.get_url = function(){
-
-	};
-
-	this.refresh = function(){
-
-	};
-
-}
-
-
-function OipaTableChart(){
-	OipaTableChart.prototype = Object.create(OipaVis.prototype);
-
-}
-
-function OipaLineChart(){
-	OipaLineChart.prototype = Object.create(OipaVis.prototype);
-
-}
-
-function OipaBubbleChart(){
-	OipaBubbleChart.prototype = Object.create(OipaVis.prototype);
-
-}
-
 function OipaExport(vis, filetype){
 	this.visualisation = vis;
 	this.filetype = filetype;
@@ -978,12 +1251,7 @@ function OipaExport(vis, filetype){
 function OipaEmbed(vis){
 	this.visualisation = vis;
 
-
 }
-
-
-
-
 
 var OipaSelectionBox = {
 	fill_selection_box: function(){
@@ -1059,20 +1327,65 @@ function geo_point_to_latlng(point_string){
 	return latlng;
 }
 
-
 function get_parameters_from_selection(arr){
 	dlmtr = ",";
 	var str = '';
 
 	if(arr.length > 0){
-	  for(var i = 0; i < arr.length; i++){
-	    str += arr[i].id + dlmtr;
-	  }
-	  str = str.substring(0, str.length-1);
+		for(var i = 0; i < arr.length; i++){
+			str += arr[i].id + dlmtr;
+		}
+		str = str.substring(0, str.length-1);
 	}
-  
+
 	return str;
 }
 
+function make_parameter_string_from_selection(arr, parameter_name){ 
 
+	var parameters = get_parameters_from_selection(arr);
+	if (parameters !== ''){
+		return "&" + parameter_name + "=" + parameters;
+	} else {
+		return '';
+	}
+}
+
+function get_activity_based_parameters_from_selection(selection){
+	var str_region = make_parameter_string_from_selection(selection.regions, "regions__in");
+	var str_country = make_parameter_string_from_selection(selection.countries, "countries__in");
+	var str_budget = make_parameter_string_from_selection(selection.budgets, "budgets__in");
+	var str_start_year = make_parameter_string_from_selection(selection.start_planned_years, "start_planned__in");
+	var str_donor = make_parameter_string_from_selection(selection.donors, "donors__in");
+	var str_reporting_organisation = make_parameter_string_from_selection(selection.reporting_organisations, "reporting_organisation__in"); 
+	if (selection.search.count > 0){
+		var str_search = "&search__in=" + selection.search.join();
+	} else {
+		var str_search = "";
+	}
+
+	return str_region + str_country + str_budget + str_start_year + str_donor + str_reporting_organisation + str_search;
+}
+
+
+
+function comma_formatted(amount) {
+	if (amount){
+		return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	} else {
+		return "-";
+	}
+}
+
+function replaceAll(o,t,r,c){
+	var cs = "";
+	if(c===1){
+		cs = "g";
+	} else {
+		cs = "gi";
+	}
+	var mp=new RegExp(t,cs);
+	ns=o.replace(mp,r);
+	return ns;
+}
 
