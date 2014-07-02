@@ -125,27 +125,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<form action="" name="signup_form" id="signup_form" class="standard-form" method="post" enctype="multipart/form-data">
-					
-					<div class="form-group">
-						<label><?php _e( 'Username', 'urbannumbers' ); ?></label>
-						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" /></label>
-					</div>
-
-					<div class="form-group">
-						<label><?php _e( 'Password', 'urbannumbers' ); ?></label>
-						<input type="password" name="pwd" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
-					</div>
-
-					<div class="form-group">
-						<label><?php _e( 'E-mail', 'urbannumbers' ); ?></label>
-						<input type="email" name="email" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
-					</div>
-
-					<input type="submit" name="wp-submit" id="sidebar-wp-submit" class="btn btn-default" value="<?php _e( 'Register', 'urbannumbers' ); ?>" tabindex="100" />
-
-			
-				</form>
+				<?php vb_registration_form(); ?>
 			</div>
 		</div>
 	</div>
