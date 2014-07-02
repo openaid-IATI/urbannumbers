@@ -5,9 +5,9 @@ Template Name: Home
 get_header(); the_post(); ?>
 <?php
 $args = array(
-				'post_type' => 'gallery',
-				'posts_per_page' => 10,
-			);
+			'post_type' => 'gallery',
+			'posts_per_page' => 10,
+		);
 query_posts($args);
 if (have_posts()) : ?>
 	<!-- visual -->

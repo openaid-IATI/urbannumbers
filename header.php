@@ -25,7 +25,7 @@
 			}
 		</script>
 	<script src="<?php echo get_template_directory_uri(); ?>/js/jquery.main.js"></script>
-	<?php if ( is_singular() ) wp_enqueue_script( 'theme-comment-reply', get_template_directory_uri()."/js/comment-reply.js" ); ?>
+	<?php // if ( is_singular() ) wp_enqueue_script( 'theme-comment-reply', get_template_directory_uri()."/js/comment-reply.js" ); ?>
 	<!-- include HTML5 IE enabling script and stylesheet for IE -->
 	<!--[if IE]>
 		<link type="text/css" media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/ie.css">

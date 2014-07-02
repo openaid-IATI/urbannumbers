@@ -769,7 +769,23 @@ function OipaFilters(){
 	};
 
 	this.get_checked_by_filter = function(filtername){
+
 		var arr = [];
+		// on indicators save selection type (city core, sub urban area etc.)
+		if (filtername === "indicators"){
+			$('#' + filtername + '-filters input:checked').each(function(index, value){
+				var selection_type = $(this).attr("selection_type");
+
+				if (selection_type === undefined){
+					selection_type = null;
+				}
+				
+				arr.push({"id":value.value, "name":value.name, 'type':selection_type});
+			});
+			return arr;
+		}
+
+		// else
 		$('#' + filtername + '-filters input:checked').each(function(index, value){
 			arr.push({"id":value.value, "name":value.name});
 		});
@@ -821,8 +837,6 @@ function OipaFilters(){
 		var columns = 4;
 		var filter = this;
 
-
-
 		// projects page etc.
 
 		// load filter html and implement it in the page
@@ -862,6 +876,11 @@ function OipaFilters(){
 	};
 
 	this.create_filter_attributes = function(objects, columns, attribute_type){
+
+		if (attribute_type === "indicators"){
+			this.create_indicator_filter_attributes(objects, columns);
+			return true;
+		}
 
 		var html = '';
 		var per_col = 6;
@@ -1339,6 +1358,24 @@ function get_parameters_from_selection(arr){
 	}
 
 	return str;
+}
+
+function get_indicator_parameters_from_selection(arr){
+	dlmtr = ",";
+	var str = '';
+	var selection_type_str = "&selection_type__in=";
+
+	if(arr.length > 0){
+		for(var i = 0; i < arr.length; i++){
+			str += arr[i].id + dlmtr;
+			if (arr[i].selection_type){
+				selection_type_str += arr[i].selection_type + dlmtr;
+			}
+		}
+		str = str.substring(0, str.length-1);
+	}
+
+	return str + selection_type_str;
 }
 
 function make_parameter_string_from_selection(arr, parameter_name){ 

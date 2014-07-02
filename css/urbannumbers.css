@@ -22,9 +22,6 @@
 	min-width: 47px;
 }
 
-
-
-
 .country-marker-icon{
   background: url("../images/value-marker-icon.png");
   text-align: center;
@@ -33,13 +30,6 @@
   font-weight: bold;
   color: #004B77;
 }
-
-
-
-
-
-
-
 
 #map-wrapper{
   position: relative;
@@ -59,6 +49,7 @@
 .timeline-cpi{
   display: none;
 }
+
 #map-timeline{
   position: absolute;
   width: 1416px;
@@ -196,11 +187,41 @@
 }
 
 
+.urbnnrs-arrow-active{
+  border-bottom: 4px solid;
+}
 
+.urbnnrs-arrow{
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  vertical-align: middle;
+  margin-right:7px;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-width: 6px;
+}
 
+.filter-indicator-type-text, .sort-list .active a.filter-indicator-type-text{
+  font-size: 18px;
+  color: #5f667f;
+  padding-bottom: 5px;
+  line-height: 24px;
+  margin-left: -19px;
+  display: block;
 
+}
 
+.filter-indicator-type-inner{
+  display: none;
+  padding-left:20px;
+  margin: 7px 0;
+}
 
+.container-sort{
+  z-index: 2000;
+}
 
 @media (min-width: 980px) and (max-width: 1439px) {
 

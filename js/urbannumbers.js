@@ -63,9 +63,6 @@ $("#opener-right-cities").click(function(e){
 	filter.reload_specific_filter("right-cities", null);
 });
 
-
-
-
 $("#header-login-register-button").click(function(e){
 	e.preventDefault();
 
@@ -74,14 +71,12 @@ $("#header-login-register-button").click(function(e){
 
 });
 
-
 $("#lost-password-login").click(function(e){
 	e.preventDefault();
 	$("#urbannumbers-login").hide();
 	$("#urbannumbers-lostpassword").show();
 
 });
-
 
 $("#register-button").click(function(e){
 	e.preventDefault();	
@@ -96,3 +91,19 @@ $("#delete-account-button").click(function(e){
 });
 
 
+
+
+function UnescoOipaIndicatorFilters(){
+
+	this.get_url = function(selection, parameters_set){
+		// get url from filter selection object
+		if (parameters_set){
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
+		} else {
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&indicators__in=" + get_indicator_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
+		}
+		
+		return cururl;
+	};
+};
+UnescoOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
