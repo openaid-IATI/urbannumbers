@@ -285,6 +285,8 @@ function vb_register_user_scripts() {
 }
 add_action('wp_enqueue_scripts', 'vb_register_user_scripts', 100);
 
+
+    
 /**
  * New User registration
  *
@@ -294,13 +296,15 @@ function vb_reg_new_user() {
   // Verify nonce
   if( !isset( $_POST['nonce'] ) || !wp_verify_nonce( $_POST['nonce'], 'vb_new_user' ) )
     die( 'Ooops, something went wrong, please try again later.' );
- 
+    
+    
   // Post values
-    $username = $_POST['user'];
-    $password = $_POST['pass'];
-    $email    = $_POST['mail'];
-    $name     = $_POST['name'];
-    $nick     = $_POST['nick'];
+    $username   = $_POST['user'];
+    $password   = $_POST['pass'];
+    $email      = $_POST['mail'];
+    $name       = $_POST['name'];
+    $first_name = $_POST['first_name'];
+    $last_name  = $_POST['last_name'];
      
     /**
      * IMPORTANT: You should make server side validation here!
@@ -311,9 +315,39 @@ function vb_reg_new_user() {
         'user_login' => $username,
         'user_pass'  => $password,
         'user_email' => $email,
-        'first_name' => $name,
-        'nickname'   => $nick,
+        'first_name' => $first_name,
+        'last_name'   => $last_name,
     );
+    
+    $fields = array(
+        'last_name' => $last_name,
+        'first_name' => $first_name,
+        'username' => $username,
+        'password' => $password,
+        'email' => $email,
+    );
+    
+    $fields_string = '';
+    foreach($fields as $key=>$value) { 
+        $fields_string .= $key.'='.$value.'&'; 
+        
+    }
+    rtrim($fields_string, '&');
+    
+    $ch = curl_init();
+    //TODO add url to settings page
+    curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/register/');
+    curl_setopt($ch,CURLOPT_POST, count($fields));
+    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    //execute post
+    $result = curl_exec($ch);
+    
+    
+
+    //close connection
+    curl_close($ch);
  
     $user_id = wp_insert_user( $userdata ) ;
  
@@ -330,7 +364,25 @@ function vb_reg_new_user() {
 add_action('wp_ajax_register_user', 'vb_reg_new_user');
 add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 
+function activate_user($activation_key){
+    $ch = curl_init();
+    //TODO add url to settings page
+    curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/verify-email/'.$activation_key.'/');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+    //execute post
+    $response = json_decode(curl_exec($ch), true);
+    
+    if (isset($response['errors'])){
+        return FALSE;
+    }else{
+        return TRUE;
+    }
+    //close connection
+    curl_close($ch);
+}
 
 function vb_registration_form() { ?>
  
@@ -348,8 +400,13 @@ function vb_registration_form() { ?>
     </div>
  
     <div class="form-group">
-      <label for="vb_nick" class="sr-only">Your Nickname</label>
-      <input type="text" name="vb_nick" id="vb_nick" value="" placeholder="Your Nickname" class="form-control" />
+      <label for="vb_first_name" class="sr-only">Your First name</label>
+      <input type="text" name="vb_first_name" id="vb_first_name" value="" placeholder="First name" class="form-control" />
+    </div>
+      
+    <div class="form-group">
+      <label for="vb_last_name" class="sr-only">Your Last name</label>
+      <input type="text" name="vb_last_name" id="vb_last_name" value="" placeholder="Last name" class="form-control" />
     </div>
  
     <div class="form-group">
@@ -375,3 +432,4 @@ function vb_registration_form() { ?>
  
 <?php
 }
+

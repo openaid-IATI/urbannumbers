@@ -31,7 +31,8 @@ jQuery(document).ready(function($) {
     var reg_pass  = $('#vb_pass').val();
     var reg_mail  = $('#vb_email').val();
     var reg_name  = $('#vb_name').val();
-    var reg_nick  = $('#vb_nick').val();
+    var reg_first_name  = $('#vb_first_name').val();
+    var reg_last_name  = $('#vb_last_name').val();
  
     /**
      * AJAX URL where to send data
@@ -47,7 +48,8 @@ jQuery(document).ready(function($) {
       pass: reg_pass,
       mail: reg_mail,
       name: reg_name,
-      nick: reg_nick,
+      first_name: reg_first_name,
+      last_name: reg_last_name,
     };
  
     // Do AJAX request
