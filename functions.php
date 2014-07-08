@@ -394,7 +394,7 @@ add_action('login_init', function() {
                 //initialize API call to change password
                 $ch = curl_init();
                 //TODO change this URL to a setting
-                curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/password/reset/confirm/' . urlencode($_GET['uid']) . '/' . urlencode($_GET['keys']) . '/');
+                curl_setopt($ch, CURLOPT_URL, 'http://localhost:8000/rest-auth/password/reset/confirm/' . urlencode($_GET['uid']) . '/' . urlencode($_GET['keys']) . '/');
                 curl_setopt($ch, CURLOPT_POST, 2);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, "new_password1=" . $_POST['pass1'] . '&new_password2=' . $_POST['pass2']);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -466,7 +466,7 @@ add_action('lostpassword_post', function( $user ) {
     $email = $_POST['user_login'];
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/password/reset/');
+    curl_setopt($ch, CURLOPT_URL, 'http://localhost:8000/rest-auth/password/reset/');
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "email=" . $email);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -483,6 +483,14 @@ add_action('lostpassword_post', function( $user ) {
     }
     die();
 }, 10, 2);
+
+/*
+ * Making sure that the SSO plugin does not overwrite the password options
+ */
+add_filter('lostpassword_redirect', function(){
+    
+    return 'wp-login.php?checkemail=confirm&use_sso=false';
+});
 
 /**
  * New User registration
@@ -534,7 +542,7 @@ function vb_reg_new_user() {
     //make the API call
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/register/');
+    curl_setopt($ch, CURLOPT_URL, 'http://localhost:8000/rest-auth/register/');
     curl_setopt($ch, CURLOPT_POST, count($fields));
     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -569,7 +577,7 @@ add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 function activate_user($activation_key) {
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://sp.zimmermanzimmerman.com/rest-auth/verify-email/' . $activation_key . '/');
+    curl_setopt($ch, CURLOPT_URL, 'http://localhost:8000/rest-auth/verify-email/' . $activation_key . '/');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
