@@ -385,12 +385,12 @@ add_action('login_init', function() {
         if ($action == 'sso_rp') {
 
             $errors = new WP_Error();
-            
+
             if (isset($_POST['pass1']) && $_POST['pass1'] != $_POST['pass2'])
                 $errors->add('password_reset_mismatch', __('The passwords do not match.'));
 
             if ((!$errors->get_error_code() ) && isset($_POST['pass1']) && !empty($_POST['pass1'])) {
-                
+
                 //initialize API call to change password
                 $ch = curl_init();
                 //TODO change this URL to a setting
@@ -402,7 +402,7 @@ add_action('login_init', function() {
                 $response = json_decode(curl_exec($ch), true);
                 //close connection
                 curl_close($ch);
-                
+
                 //After posting the form, we can check if the user was allowed to change it's password. Maybe change in future API to do this more
                 //pro-actively
                 if (isset($response['error'])) {
@@ -565,6 +565,7 @@ add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 /*
  * Activate user through our SSO API
  */
+
 function activate_user($activation_key) {
     $ch = curl_init();
     //TODO add url to settings page
@@ -583,6 +584,35 @@ function activate_user($activation_key) {
     //close connection
     curl_close($ch);
 }
+
+/*
+ * Adding dasboard_role for SSO users to only view dashboard
+ * 
+ * This function will be executed on theme activation
+ */
+
+function add_roles_on_theme_activation() {
+    $result = add_role('dashboard_role', 'Dashboard User', array('read' => true, 'level_0' => true));
+}
+
+add_action('after_switch_theme', 'add_roles_on_theme_activation');
+
+/*
+ * Redirect users of group dashboard_role to their dashboard
+ */
+function numbers_login_redirect($redirect_to, $request, $user) {
+    if ($user && is_object($user) && is_a($user, 'WP_User')) {
+        if (is_array($user->roles)) {
+
+            if (in_array('dashboard_role', $user->roles)) {
+                return get_option('siteurl') . '/my-dashboard/';
+            }
+        }
+        return admin_url();
+    }
+}
+
+add_filter('login_redirect', 'numbers_login_redirect', 10, 3);
 
 function vb_registration_form() {
     ?>
@@ -622,7 +652,7 @@ function vb_registration_form() {
                 <span class="help-block">Minimum 8 characters</span>
             </div>
 
-    <?php wp_nonce_field('vb_new_user', 'vb_new_user_nonce', true, true); ?>
+            <?php wp_nonce_field('vb_new_user', 'vb_new_user_nonce', true, true); ?>
 
             <input type="submit" class="btn btn-primary" id="btn-new-user" value="Register" />
         </form>
