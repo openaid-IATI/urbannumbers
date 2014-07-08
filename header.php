@@ -144,7 +144,7 @@
 
 		<div class="col-md-12">
 
-			<form name="lostpasswordform" id="lostpasswordform" action="<?php echo wp_lostpassword_url( '/password-retrieval/' ); ?>" method="post">
+			<form name="lostpasswordform" id="lostpasswordform" action="<?php echo wp_lostpassword_url( ); ?>" method="post">
 				<div class="form-group">
 					<label for="user_login">Username or E-mail:</label>
 					<input type="text" name="user_login" id="user_login" class="input form-control" value="" size="20">
