@@ -83,7 +83,7 @@ get_header(); the_post(); ?>
 	map.selection = Oipa.mainSelection;
 	Oipa.maps.push(map);
 	
-	var filter = new OipaIndicatorFilters();
+	var filter = new UnescoOipaIndicatorFilters();
 	filter.selection = Oipa.mainSelection;
 	filter.init();
 

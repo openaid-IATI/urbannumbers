@@ -53,6 +53,8 @@ var OipaCompare = {
 
 function OipaIndicatorMap(){
 
+	this.indicatordata = {};
+
 	this.active_years = {};
 
 	this.init = function(){
@@ -68,6 +70,14 @@ function OipaIndicatorMap(){
 	this.refresh = function(data){
 
 		if(!data){
+			// indicatordata = {};
+			// for (var k in this.selection.indicators) {
+			// 	var curkey = this.selection.indicators[k].id;
+			// 	if(this.selection.indicators[k].selection_type){
+			// 		curkey += this.selection.indicators[k].selection_type;
+			// 	}
+			// 	indicatordata[curkey] = {};
+			// }
 
 			this.clear_circles();
 
@@ -76,6 +86,17 @@ function OipaIndicatorMap(){
 			// get data
 			this.get_data(url);
 		} else {
+
+			// // set the indicator data
+			// indicatordata[k] = data[k];
+			
+			// // if not all keys are set yet, do nothing, else load the data
+			// for (var k in indicatordata) {
+			// 	if (indicatordata[k] == null){
+			// 		return false;
+			// 	} 
+			// }
+
 			// put data on map
 			this.show_data_on_map(data);
 
@@ -98,6 +119,48 @@ function OipaIndicatorMap(){
 
 		return search_url + 'indicator-data/?format=json&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
 	}
+
+	this.get_data = function(url){
+
+		// filters
+		var thismap = this;
+		
+		$.support.cors = true;
+
+		if(window.XDomainRequest){
+		var xdr = new XDomainRequest();
+		xdr.open("get", url);
+		xdr.onprogress = function () { };
+		xdr.ontimeout = function () { };
+		xdr.onerror = function () { };
+		xdr.onload = function() {
+			var jsondata = $.parseJSON(xdr.responseText);
+			if (jsondata === null || typeof (jsondata) === 'undefined')
+			{
+				jsondata = $.parseJSON(jsondata.firstChild.textContent);
+				thismap.refresh(jsondata);
+				
+			}
+		};
+		setTimeout(function () {xdr.send();}, 0);
+		} else {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				contentType: "application/json",
+				dataType: 'json',
+				success: function(data){
+					thismap.refresh(data);
+
+				}
+			});
+		}
+	};
+
+	
+
+	
+
 
 
 	this.show_data_on_map = function(data){
@@ -166,8 +229,6 @@ function OipaIndicatorMap(){
 				                iconAnchor: [18, 34],
 				            })
 				        }).addTo(thismap);
-
-
 
 				    } else {
 				    	var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
@@ -408,14 +469,13 @@ function OipaIndicatorFilters(){
 		} else {
 			var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
 		}
-		
+
 		return cururl;
 	};
 
 	this.process_filter_options = function(data){
 
 		var columns = 4;
-
 
 		// load filter html and implement it in the page
 		$.each(data, function( key, value ) {
@@ -429,6 +489,111 @@ function OipaIndicatorFilters(){
 		// reload aangevinkte vakjes
 		this.initialize_filters();
 	};
+
+
+	this.create_indicator_filter_attributes = function(objects, columns){
+
+		var html = '';
+		var paginatehtml = '';
+		var per_col = 6;
+		var sortable = [];
+		for (var key in objects){
+			sortable.push([key, objects[key]]);
+		}
+		sortable.sort(function(a, b){
+			var nameA=a[1].name.toString().toLowerCase(), nameB=b[1].name.toString().toLowerCase();
+			if (nameA < nameB) { //sort string ascending
+				return -1; 
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			return 0; //default return value (no sorting)
+		});
+
+		var categories = {};
+		var ivaluetranslation = {rural: 'Rural area', city_core: 'City core',urban_area:'Urban area', "City core": "city core", sub_urban_area: 'Sub-urban area', sub_urban:'Sub-urban area', total:'Total'}; 
+
+		for (var i = 0;i < sortable.length;i++){
+
+			var sortablename = sortable[i][1].name;
+			var categoryname = sortable[i][1].category;
+
+			if (columns == 4 && sortablename.length > 32){
+				sortablename = sortablename.substr(0,28) + "...";
+			} else if (columns == 3 && sortablename.length > 40){
+				sortablename = sortablename.substr(0,36) + "...";
+			}
+
+			if (!(categoryname in categories)){
+				categories[categoryname] = [];
+			}
+
+
+			
+			if(sortable[i][1].selection_types.length > 0){
+				var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="urbnnrs-arrow"></span>'+sortablename+'</a><div class="filter-indicator-type-inner">';
+				$.each(sortable[i][1].selection_types, function( ikey, ivalue ) {
+					ivalue = ivaluetranslation[ivalue];
+					indicatoroptionhtml += '<div class="checkbox"><label><input type="checkbox" selection_type="'+ivalue+'" value="'+ sortable[i][0] +'" id="'+sortable[i][1].name.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc')+'" name="'+sortable[i][1].name+'" />'+ivalue+'</label></div>';
+				});
+				indicatoroptionhtml += "</div></div>";
+			} else {
+				var indicatoroptionhtml = '<div class="checkbox"><label><input type="checkbox" value="'+ sortable[i][0] +'" id="'+sortable[i][1].name.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc')+'" name="'+sortable[i][1].name+'" />'+sortablename+' </label></div>';
+			}
+			categories[categoryname].push(indicatoroptionhtml);
+		}
+		
+		paginatehtml += '<ul>';
+		$.each(categories, function( key, value ) {
+
+			var items_per_col = Math.ceil(value.length / 2);
+			var ugly_category_name = key.toString().toLowerCase().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+
+		  	html += '<div class="row filter-page filter-page-'+ugly_category_name+'">';
+		  	html += '<div class="col-md-6 col-sm-6 col-xs-12">';
+		  	$.each(value, function( ikey, ivalue ) {
+		  		if (ikey == items_per_col){
+		  			html += '</div><div class="col-md-6 col-sm-6 col-xs-12">';
+		  		}
+		  		html += ivalue;
+		  		
+		  	});
+
+		  	html += '</div></div>';
+
+		  	paginatehtml += '<li><a href="#" class="indicator-category-button" name="'+ugly_category_name+'">'+key+'</a></li>';
+
+		});
+
+		paginatehtml += '</ul>';
+
+		// get pagination attributes and add both pagination + filter options to div
+		$("#indicators-pagination").html(paginatehtml);
+		$("#indicators-filters").html(html);
+		this.load_indicator_paginate_listeners();
+		this.update_selection_after_filter_load();
+	};
+
+	this.load_indicator_paginate_listeners = function(){
+		$("#indicators-pagination li a").click(function(e){
+			e.preventDefault();
+			$("#indicators-pagination li").removeClass("active");
+			$(this).parent().addClass("active");
+			var name = $(this).attr("name");
+			$("#indicators-filters .filter-page").hide();
+			$(".filter-page-"+name).show();
+		});
+
+		$("#indicators-pagination li a:first").click();
+
+		$(".filter-indicator-type-text").click(function(e){
+			e.preventDefault();
+			// $(this).closest(".urbnnrs-arrow").toggleClass("urbnnrs-arrow-active");
+			$(this).closest(".filter-indicator-type-dropdown").children(".filter-indicator-type-inner").toggle(500);
+		});
+	}
+
 }
 OipaIndicatorFilters.prototype = new OipaFilters();
 
