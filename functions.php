@@ -597,27 +597,33 @@ function activate_user($activation_key) {
  * Adding dasboard_role for SSO users to only view dashboard
  * 
  * This function will be executed on theme activation
+ * 
+ * We will use to subscriber role for the Urban Numbers demo, because
+ * SSO plugin does not know how to handle custom groups.
  */
 
-function add_roles_on_theme_activation() {
-    $result = add_role('dashboard_role', 'Dashboard User', array('read' => true, 'level_0' => true));
+//function add_roles_on_theme_activation() {
+//    $result = add_role('dashboard_role', 'Dashboard User', array('read' => true, 'level_0' => true));
+//}
+//
+//add_action('after_switch_theme', 'add_roles_on_theme_activation');
+add_action( 'admin_init', 'redirect_non_admin_users' );
+/**
+ * Redirect non-admin users to home page
+ *
+ * This function is attached to the 'admin_init' action hook.
+ */
+function redirect_non_admin_users() {
+    if ( ! current_user_can( 'manage_options' ) && '/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF'] ) {
+	wp_redirect( get_option('siteurl') . '/my-dashboard/' );
+	exit;
+    }
 }
-
-add_action('after_switch_theme', 'add_roles_on_theme_activation');
-
 /*
  * Redirect users of group dashboard_role to their dashboard
  */
 function numbers_login_redirect($redirect_to, $request, $user) {
-    if ($user && is_object($user) && is_a($user, 'WP_User')) {
-        if (is_array($user->roles)) {
-
-            if (in_array('subscriber', $user->roles)) {
-                return get_option('siteurl') . '/my-dashboard/';
-            }
-        }
-        return admin_url();
-    }
+    redirect_non_admin_users();
 }
 
 add_filter('login_redirect', 'numbers_login_redirect', 10, 3);
