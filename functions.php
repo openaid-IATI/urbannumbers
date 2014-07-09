@@ -612,7 +612,7 @@ function numbers_login_redirect($redirect_to, $request, $user) {
     if ($user && is_object($user) && is_a($user, 'WP_User')) {
         if (is_array($user->roles)) {
 
-            if (in_array('dashboard_role', $user->roles)) {
+            if (in_array('subscriber', $user->roles)) {
                 return get_option('siteurl') . '/my-dashboard/';
             }
         }
