@@ -554,8 +554,8 @@ function vb_reg_new_user() {
 
     //close connection
     curl_close($ch);
-
-    $user_id = wp_insert_user($userdata);
+    //we should not create a new user. This is the responsibility of the SSO plugin
+    //$user_id = wp_insert_user($userdata);
 
     // Return
     if (!is_wp_error($user_id)) {
