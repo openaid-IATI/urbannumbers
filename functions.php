@@ -614,8 +614,7 @@ add_action( 'admin_init', 'redirect_non_admin_users' );
  * This function is attached to the 'admin_init' action hook.
  */
 function redirect_non_admin_users() {
-   
-    if ( ! current_user_can( 'manage_options' ) && (strpos('wp-admin', $_SERVER['PHP_SELF']) == true) ) {
+    if ( ! current_user_can( 'manage_options' ) && (stristr($_SERVER['PHP_SELF'],'admin' ) == true) ) {
 	wp_redirect( get_option('siteurl') . '/my-dashboard/' );
 	exit;
     }

@@ -150,6 +150,7 @@
 					<input type="text" name="user_login" id="user_login" class="input form-control" value="" size="20">
 				</div>
 				<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large fbkp-default-button" value="Get New Password"></p>
+                                <input type="hidden" name="redirect_to" value="wp-login.php?checkemail=confirm&amp;use_sso=false">
 			</form>
 
 		</div>
