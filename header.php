@@ -9,8 +9,9 @@
 	<!-- include the site stylesheet -->
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/bootstrap.min.css">
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/all.css">
-	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/urbannumbers.css">
+	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/nv.d3.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_template_directory_uri(); ?>/style.css"  />
+	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/urbannumbers.css">
 	<script src="http://fast.fonts.net/jsapi/68a30854-f7c3-46a7-89ca-8e9e74e69a2a.js"></script>
 	<?php wp_head(); ?>
 	<!-- include bootstrap default JavaScript -->
@@ -170,7 +171,7 @@
 	left: 0;
 	right: 0;
 	background-color: white;
-	z-index: 999;
+	z-index: 9999;
 	padding: 4em;
 	margin-left:auto;
     margin-right:auto;
@@ -204,17 +205,21 @@
 				<strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
 				<!-- Split button -->
 				<div class="btn-group add-nav">
-					<button id="header-login-register-button" type="button" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>Sign in or register</button>
+					<a id="header-login-register-button" href="<?php if (is_user_logged_in()) { echo home_url() . "/my-dashboard/"; } else { echo "#"; } ?>" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
+						<?php if (is_user_logged_in()) {
+							echo "My account";
+						} else {
+							echo "Sign in or register";
+						} ?>
+					</a>
 					<button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#"><span class="img-wrap"><i class="icon-star"></i></span>Favorite city data</a></li>
-						<li><a href="#"><span class="img-wrap"><i class="icon-graph"></i></span>My infographics</a></li>
-						<li><a href="#"><span class="img-wrap"><i class="icon-add"></i></span>New infographic</a></li>
-						<li><a href="#"><span class="img-wrap"><i class="icon-cog"></i></span>Account settings</a></li>
-						<li><a href="#"><span class="img-wrap"><i class="icon-sign-out"></i></span>Sign out</a></li>
+						<li><a href="<?php echo home_url() . "/my-dashboard/"; ?>"><span class="img-wrap"><i class="icon-star"></i></span>My dashboard</a></li>
+						<li><a href="<?php echo home_url() . "/account-settings/"; ?>"><span class="img-wrap"><i class="icon-cog"></i></span>Account settings</a></li>
+						<li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="icon-sign-out"></i></span>Sign out</a></li>
 					</ul>
 				</div>
 				<?php if(has_nav_menu('navigation')): ?>

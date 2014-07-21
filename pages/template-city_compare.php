@@ -85,7 +85,7 @@ get_header(); the_post(); ?>
 		Oipa.maps.push(rightmap);
 		
 
-		var filter = new OipaCompareFilters();
+		var filter = new UnhabitatOipaCompareFilters();
 		filter.selection = Oipa.mainSelection;
 		filter.init();
 

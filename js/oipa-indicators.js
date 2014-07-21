@@ -61,9 +61,9 @@ function OipaIndicatorMap(){
 
 		// set current year
 		this.selected_year = 2015;
-	    $( "#map-slider-tooltip div" ).html(this.selected_year);
-	    $( "#map-slider-tooltip" ).val(this.selected_year);
-	    $( "#year-" + this.selected_year).addClass("active");
+		$( "#map-slider-tooltip div" ).html(this.selected_year);
+		$( "#map-slider-tooltip" ).val(this.selected_year);
+		$( "#year-" + this.selected_year).addClass("active");
 
 	}
 
@@ -86,16 +86,6 @@ function OipaIndicatorMap(){
 			// get data
 			this.get_data(url);
 		} else {
-
-			// // set the indicator data
-			// indicatordata[k] = data[k];
-			
-			// // if not all keys are set yet, do nothing, else load the data
-			// for (var k in indicatordata) {
-			// 	if (indicatordata[k] == null){
-			// 		return false;
-			// 	} 
-			// }
 
 			// put data on map
 			this.show_data_on_map(data);
@@ -121,7 +111,6 @@ function OipaIndicatorMap(){
 	}
 
 	this.get_data = function(url){
-
 		// filters
 		var thismap = this;
 		
@@ -157,10 +146,6 @@ function OipaIndicatorMap(){
 		}
 	};
 
-	
-
-	
-
 
 
 	this.show_data_on_map = function(data){
@@ -169,8 +154,8 @@ function OipaIndicatorMap(){
 		var circles = this.circles;
 		var vistype = this.vistype;
 		circles.indicators = {};
-		circles.countries = {};
-		this.active_years = {};		
+		circles.locations = {};
+		this.active_years = {};
 		var active_years = this.active_years;
 
 		var circle_colors = ["#2B5A70", "DarkGreen", "Orange", "Pink", "Purple"];
@@ -180,78 +165,69 @@ function OipaIndicatorMap(){
 		$.each(data, function(mainkey, mainvalue){
 			indicator_counter++;
 
-
-			// key = indicator_id
-			var cities_or_countries = null;
-			if (Object.keys(mainvalue.cities).length > 0){
-				cities_or_countries = mainvalue.cities;
-			} else {
-				cities_or_countries = mainvalue.countries;
-			}
-
 			// city or country
-			$.each(cities_or_countries, function(key, value){
+			$.each(mainvalue.locs, function(key, value){
 
-			    if (value.longitude == null || value.latitude == null){ return true; }
-			    try{
+				if (value.longitude == null || value.latitude == null){ return true; }
+				try{
 
-			        //main indicator info
-			        circles.indicators[mainvalue.indicator] = {};
-			        circles.indicators[mainvalue.indicator].description = mainvalue.indicator_friendly;
-			        circles.indicators[mainvalue.indicator].type_data = mainvalue.type_data;
+					//main indicator info
+					circles.indicators[mainvalue.indicator] = {};
+					circles.indicators[mainvalue.indicator].description = mainvalue.indicator_friendly;
+					circles.indicators[mainvalue.indicator].type_data = mainvalue.type_data;
+					circles.indicators[mainvalue.indicator].max_value = mainvalue.max_value;
+					
+					// circle info
+					if(!circles.locations[key]){circles.locations[key] = {};}
+					if(!circles.locations[key][mainvalue.indicator]){circles.locations[key][mainvalue.indicator] = {};}
 
-			        circles.indicators[mainvalue.indicator].max_value = mainvalue.max_value;
-			        
-			        // circle info
-			        if(!circles.countries[key]){circles.countries[key] = {};}
-			        if(!circles.countries[key][mainvalue.indicator]){circles.countries[key][mainvalue.indicator] = {};}
-
-			        circles.countries[key][mainvalue.indicator].years = value.years;
+					circles.locations[key][mainvalue.indicator].years = value.years;
 
 
-			        $.each(value.years, function(yearkey, yearval){
-			        	active_years[yearkey] = yearkey;
-			        });
+					$.each(value.years, function(yearkey, yearval){
+						active_years[yearkey] = yearkey;
+					});
 
-			        
-			        if (vistype == "markers"){
-				        var circle = L.marker([value.latitude, value.longitude]).addTo(thismap);
+					if (vistype == "markers"){
+						var circle = L.marker([value.latitude, value.longitude]).addTo(thismap);
 
-				    } else if (vistype == "value-markers") {
-				    	var circle = L.marker([value.latitude, value.longitude], {
-				            icon: L.divIcon({
-				                // Specify a class name we can refer to in CSS.
-				                className: 'country-marker-icon',
-				                // Define what HTML goes in each marker.
-				                html: "null",
-				                // Set a markers width and height.
-				                iconSize: [36, 44],
-				                iconAnchor: [18, 34],
-				            })
-				        }).addTo(thismap);
+					} else if (vistype == "value-markers") {
+						var circle = L.marker([value.latitude, value.longitude], {
+							icon: L.divIcon({
+								// Specify a class name we can refer to in CSS.
+								className: 'country-marker-icon',
+								// Define what HTML goes in each marker.
+								html: "null",
+								// Set a markers width and height.
+								iconSize: [36, 44],
+								iconAnchor: [18, 34],
+							})
+						}).addTo(thismap);
 
-				    } else {
-				    	var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
-				            color: circle_colors[indicator_counter],
-				            weight: '5',
-				            fillColor: circle_colors[indicator_counter],
-				            fillOpacity: 0.7
-				        }).setRadius(1).addTo(thismap);
-				    }
-			        
-			        // main country info
-			        circles.countries[key][mainvalue.indicator].circle = circle;
-			        circles.countries[key].countryname = value.name;
-			        //circles.countries[key].countryregion = value.region;
-			        
-			    }catch(err){
+					} else {
+						var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
+							color: circle_colors[indicator_counter],
+							weight: '2',
+							fillColor: circle_colors[indicator_counter],
+							fillOpacity: 0.7
+						}).setRadius(1000).addTo(thismap);
+					}
 
-			        console.log(err);
-			    }
+
+			
+					// main country info
+					circles.locations[key][mainvalue.indicator].circle = circle;
+					circles.locations[key].countryname = value.name;
+					//circles.locations[key].countryregion = value.region;
+					
+				}catch(err){
+
+					console.log(err);
+				}
 			});
 		});
-	};
 
+	};
 
 	this.delete_markers = function(){
 		for (var i = 0; i < this.markers.length; i++) {
@@ -259,98 +235,106 @@ function OipaIndicatorMap(){
 		}
 	};
 
-
 	this.refresh_circles = function(year){
 
 		var circles = this.circles;
-		var maxcirclearea = 500000000000;
-	    var curyear = year;
+		var maxcirclearea = 5000000000000;
+		var curyear = year;
 		var vistype = this.vistype;
 
-	    if(!(circles.countries === undefined)){
-	        $.each(circles.countries, function(ckey, cvalue){
+		if(!(circles.locations === undefined)){
+			$.each(circles.locations, function(ckey, cvalue){
 
-	            var popuptext = '<h4>'+cvalue.countryname+'</h4>';
-	            // create pop-up text
-	            $.each(circles.indicators, function(pkey, pvalue){
-	                if(!(cvalue[pkey] === undefined)){
+				// set value for each indicator in the pop-up
+				var popuptext = '<h4>'+cvalue.countryname+'</h4>';
+				// create pop-up text
+				$.each(circles.indicators, function(pkey, pvalue){
+					if(!(cvalue[pkey] === undefined)){
 
-	                    var score = cvalue[pkey].years[curyear];
-	                    if (score === undefined){
-	                      score = "Not available";
-	                    } else {
+						var score = cvalue[pkey].years[curyear];
+						if (score === undefined){
+						  score = "Not available for " + curyear;
+						} else {
 
-	                      if(pvalue.type_data == "1000"){
-	                        score = comma_formatted((score * 1000) + '.');
-	                      }
+						  if(pvalue.type_data == "1000"){
+							score = comma_formatted((score * 1000) + '.');
+						  }
 
-	                      if(pvalue.type_data == "p"){
-	                        score = score + "%";
-	                      }
-	                    }
-	                    popuptext += '<p>' + pvalue.description + ': ' + score + '</p>';
-	                }
-	            });
+						  if(pvalue.type_data == "p"){
+							score = score + "%";
+						  }
+						}
+						popuptext += '<p>' + pvalue.description + ': ' + score + '</p>';
+					}
+				});
 
-	            if (vistype == "value-markers"){
+				if (vistype == "value-markers"){
 
-	            	// set radius size and pop-up text
-		            $.each(circles.indicators, function(ikey, ivalue){
-		                if(!(cvalue[ikey] === undefined)){
+					// set radius size and pop-up text
+					$.each(circles.indicators, function(ikey, ivalue){
+						if(!(cvalue[ikey] === undefined)){
 
-		                    var circle = cvalue[ikey].circle;
-		                    var score = cvalue[ikey].years[curyear];
-		                    if (!(score === undefined)){
-		                        circle.setIcon(L.divIcon({
-					                // Specify a class name we can refer to in CSS.
-					                className: 'country-marker-icon',
-					                // Define what HTML goes in each marker.
-					                html: score,
-					                // Set a markers width and height.
-					                iconSize: [140, 44],
-					                iconAnchor: [70, 34],
-					            }));
-		                    }
-		                    circle.bindPopup(popuptext);
-		                }
-		            });
-	            } else if (vistype == "markers"){
-	            	$.each(circles.indicators, function(ikey, ivalue){
+							var circle = cvalue[ikey].circle;
+							var score = cvalue[ikey].years[curyear];
+							if (!(score === undefined)){
+								circle.setIcon(L.divIcon({
+									// Specify a class name we can refer to in CSS.
+									className: 'country-marker-icon',
+									// Define what HTML goes in each marker.
+									html: score,
+									// Set a markers width and height.
+									iconSize: [140, 44],
+									iconAnchor: [70, 34],
+								}));
+							}
+							circle.bindPopup(popuptext);
+						}
+					});
+				} else if (vistype == "markers"){
+					$.each(circles.indicators, function(ikey, ivalue){
+						if(!(cvalue[ikey] === undefined)){
 
-		                circle.bindPopup(popuptext);       
-		                
-		            });
-	            } else {
+							var circle = cvalue[ikey].circle;
+							circle.bindPopup(popuptext);
+						}   
+						
+					});
+				} else {
+					try{
+						// set radius size and pop-up text
+						$.each(circles.indicators, function(ikey, ivalue){
+							if(!(cvalue[ikey] === undefined)){
 
-		            // set radius size and pop-up text
-		            $.each(circles.indicators, function(ikey, ivalue){
-		                if(!(cvalue[ikey] === undefined)){
+								var circle = cvalue[ikey].circle;
+								var score = cvalue[ikey].years[curyear];
 
-		                    var circle = cvalue[ikey].circle;
-		                    var score = cvalue[ikey].years[curyear];
-		                    if (!(score === undefined)){
-		                        circle_radius = Math.round(Math.sqrt(((Math.round(maxcirclearea / ivalue.max_value)) * score) / Math.PI));
-		                        circle.setRadius(circle_radius);
-		                    } else {
-		                      //circle.setRadius(1);
-		                    }
-		                    circle.bindPopup(popuptext);       
-		                }
-		            });
-		        }
-	        });
-	    }
+								if (!(score === undefined)){
+									circle_radius = Math.round(Math.sqrt(((Math.round(maxcirclearea / ivalue.max_value)) * score) / Math.PI));
+									circle.setRadius(circle_radius);
+								} else {
+								  //circle.setRadius(1);
+								}
+								circle.bindPopup(popuptext);	   
+							}
+						});
+					}catch(err){
+
+						console.log(err);
+					}
+				}
+			});
+		}
 	};
 	
 
 
 	this.draw_available_data_blocks = function(indicator_data){
 
-	    $('.slider-year').removeClass('slider-active');
+		$('.slider-year').removeClass('slider-active');
 
-	    $.each(this.active_years, function(yearkey, yearval){
-        	$("#year-" + yearkey).addClass("slider-active");
-        });
+		$.each(this.active_years, function(yearkey, yearval){
+			$("#year-" + yearkey).addClass("slider-active");
+		});
 	};
 
 	this.move_slider_to_available_year = function(){
@@ -387,8 +371,8 @@ function OipaIndicatorMap(){
 		var circles = this.circles;
 		var map = this.map;
 
-		if(!(circles.countries === undefined)){
-			$.each(circles.countries, function(ckey, cvalue){
+		if(!(circles.locations === undefined)){
+			$.each(circles.locations, function(ckey, cvalue){
 				$.each(circles.indicators, function(ikey, ivalue){
 					if(!(cvalue[ikey] === undefined)){
 						map.removeLayer(cvalue[ikey].circle);
@@ -403,61 +387,6 @@ function OipaIndicatorMap(){
 OipaIndicatorMap.prototype = new OipaMap();
 
 
-
-function OipaCompareFilters(){
-
-	this.update_selection_object = function(){
-		this.selection.left.countries = this.get_checked_by_filter("left-countries");
-		this.selection.left.cities = this.get_checked_by_filter("left-cities");
-		this.selection.right.countries = this.get_checked_by_filter("right-countries");
-		this.selection.right.cities = this.get_checked_by_filter("right-cities");
-		this.selection.indicators = this.get_checked_by_filter("indicators");
-	};
-
-	this.get_selection_object = function(){
-		var new_selection = new OipaCompareSelection();
-		new_selection.left.countries = this.get_checked_by_filter("left-countries");
-		new_selection.left.cities = this.get_checked_by_filter("left-cities");
-		new_selection.right.countries = this.get_checked_by_filter("right-countries");
-		new_selection.right.cities = this.get_checked_by_filter("right-cities");
-		new_selection.indicators = this.get_checked_by_filter("indicators");
-		return new_selection;
-	};
-
-	this.get_url = function(selection, parameters_set){
-		// get url from filter selection object
-		if (parameters_set){
-			var cururl = search_url + "indicator-city-filter-options/?format=json" + parameters_set;
-		} else {
-			var cururl = search_url + "indicator-city-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
-		}
-		
-		return cururl;
-	};
-
-	this.process_filter_options = function(data){
-
-		var columns = 4;
-		var filter = this;
-
-		// load filter html and implement it in the page
-		this.create_filter_attributes(data.countries, columns, 'left-countries');
-		this.create_filter_attributes(data.countries, columns, 'right-countries');
-
-		this.create_filter_attributes(data.cities, columns, 'left-cities');
-		this.create_filter_attributes(data.cities, columns, 'right-cities');
-
-		this.create_filter_attributes(data.indicators, 2, 'indicators');
-
-		if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(); }
-
-
-		// reload aangevinkte vakjes
-		this.initialize_filters();
-	};
-
-}
-OipaCompareFilters.prototype = new OipaFilters();
 
 
 function OipaIndicatorFilters(){
@@ -528,14 +457,30 @@ function OipaIndicatorFilters(){
 			if (!(categoryname in categories)){
 				categories[categoryname] = [];
 			}
-
-
+			// console.log(sortable[i][1].name);
+			var splitted_name = sortable[i][1].name.split(" – ");
 			
-			if(sortable[i][1].selection_types.length > 0){
-				var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="urbnnrs-arrow"></span>'+sortablename+'</a><div class="filter-indicator-type-inner">';
-				$.each(sortable[i][1].selection_types, function( ikey, ivalue ) {
-					ivalue = ivaluetranslation[ivalue];
-					indicatoroptionhtml += '<div class="checkbox"><label><input type="checkbox" selection_type="'+ivalue+'" value="'+ sortable[i][0] +'" id="'+sortable[i][1].name.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc')+'" name="'+sortable[i][1].name+'" />'+ivalue+'</label></div>';
+			if(splitted_name.length > 1){
+				// indicator with subdivision name example: Urban population - City core
+				// group by indicator name before -
+				var indicator_id = sortable[i][0];
+				var indicator_name = splitted_name[0];
+				var subindicators = new Object();
+				subindicators[indicator_id] = splitted_name[1];
+
+				for (var y = i;y < sortable.length;y++){
+					var next_splitted_name = sortable[y][1].name.split(" – ");
+					if(next_splitted_name.length > 1){
+						if (next_splitted_name[0] == indicator_name){
+							subindicators[sortable[y][0]] = {"filter_name": next_splitted_name[1], "display_name": sortable[y][1].name};
+							i = y;
+						}
+					}
+				}
+				
+				var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="urbnnrs-arrow"></span>'+indicator_name+'</a><div class="filter-indicator-type-inner">';
+				$.each(subindicators, function( ikey, ivalue ) {
+					indicatoroptionhtml += '<div class="checkbox"><label><input type="checkbox" selection_type="'+ivalue.filter_name+'" value="'+ikey+'" id="'+ikey+'" name="'+ivalue.display_name+'" />'+ivalue.filter_name+'</label></div>';
 				});
 				indicatoroptionhtml += "</div></div>";
 			} else {
@@ -599,33 +544,91 @@ OipaIndicatorFilters.prototype = new OipaFilters();
 
 
 
+
+function OipaCompareFilters(){
+
+	this.update_selection_object = function(){
+		this.selection.left.countries = this.get_checked_by_filter("left-countries");
+		this.selection.left.cities = this.get_checked_by_filter("left-cities");
+		this.selection.right.countries = this.get_checked_by_filter("right-countries");
+		this.selection.right.cities = this.get_checked_by_filter("right-cities");
+		this.selection.indicators = this.get_checked_by_filter("indicators");
+	};
+
+	this.get_selection_object = function(){
+		var new_selection = new OipaCompareSelection();
+		new_selection.left.countries = this.get_checked_by_filter("left-countries");
+		new_selection.left.cities = this.get_checked_by_filter("left-cities");
+		new_selection.right.countries = this.get_checked_by_filter("right-countries");
+		new_selection.right.cities = this.get_checked_by_filter("right-cities");
+		new_selection.indicators = this.get_checked_by_filter("indicators");
+		return new_selection;
+	};
+
+	this.get_url = function(selection, parameters_set){
+		// get url from filter selection object
+		if (parameters_set){
+			var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + parameters_set;
+		} else {
+			var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+		}
+		
+		return cururl;
+	};
+
+	this.process_filter_options = function(data){
+
+		var columns = 4;
+		var filter = this;
+
+		// load filter html and implement it in the page
+		this.create_filter_attributes(data.countries, columns, 'left-countries');
+		this.create_filter_attributes(data.countries, columns, 'right-countries');
+
+		this.create_filter_attributes(data.cities, columns, 'left-cities');
+		this.create_filter_attributes(data.cities, columns, 'right-cities');
+
+		this.create_filter_attributes(data.indicators, 2, 'indicators');
+
+		if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(); }
+
+
+		// reload aangevinkte vakjes
+		this.initialize_filters();
+	};
+
+}
+OipaCompareFilters.prototype = new OipaIndicatorFilters();
+
+
+
 // XXXXXXXXXXXXXX INDICATOR SLIDER XXXXXXXXXXXXXXXXX
 
 
 $( "#map-slider-tooltip" ).noUiSlider({
-    range: [1950, 2050],
-    handles: 1,
-    start: 2000,
-    step: 1,
-    slide: slide_tooltip
+	range: [1950, 2050],
+	handles: 1,
+	start: 2000,
+	step: 1,
+	slide: slide_tooltip
 });
 
 function slide_tooltip(){
-    var curval = $("#map-slider-tooltip").val();
-    $( "#map-slider-tooltip div" ).text(curval);
+	var curval = $("#map-slider-tooltip").val();
+	$( "#map-slider-tooltip div" ).text(curval);
 
-    map.refresh_circles(curval);
-    $( ".slider-year").removeClass("active");
-    $( "#year-" + curval).addClass("active");
+	map.refresh_circles(curval);
+	$( ".slider-year").removeClass("active");
+	$( "#year-" + curval).addClass("active");
 }
 
 
 $(".slider-year").click(function() {
-    var curId = $(this).attr('id');
-    var curYear = curId.replace("year-", "");
-    map.refresh_circles(curYear);
-    $( "#map-slider-tooltip" ).val(parseInt(curYear));
-    $( "#map-slider-tooltip div" ).text(curYear);
-    $( ".slider-year").removeClass("active");
-    $(this).addClass("active");
+	var curId = $(this).attr('id');
+	var curYear = curId.replace("year-", "");
+	map.refresh_circles(curYear);
+	$( "#map-slider-tooltip" ).val(parseInt(curYear));
+	$( "#map-slider-tooltip div" ).text(curYear);
+	$( ".slider-year").removeClass("active");
+	$(this).addClass("active");
 }); 
