@@ -11,6 +11,7 @@
                                             //check activation key
                                             if (activate_user($_GET['activation_key'])){
                                                 echo "<p>Your account is activated</p>";
+                                                echo "<a href='/wp-admin'>click to login</a>";
                                             }else{
                                                 echo "<p>Your account is already activated</p>";
                                             }
