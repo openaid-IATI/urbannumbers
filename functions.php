@@ -572,6 +572,9 @@ add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 
 /*
  * Activate user through our SSO API
+ * 
+ * related to the wordpress page-activation.php
+ * 
  */
 
 function activate_user($activation_key) {

@@ -66,6 +66,8 @@
 
 		<div class="row">
 			<div class="col-md-12">
+                            <p>Need to replace with button to our own IdP</p>
+                             
 				<form name="login-form" id="sidebar-login-form" class="standard-form" action="<?php echo $form_action; ?>" method="post">
 					
 					<div class="form-group">
@@ -84,6 +86,7 @@
 
 					<br><a id="lost-password-login" href="#" title="Lost Password">Lost Password</a>
 				</form>
+                            <?php do_action( 'wordpress_social_login' ); ?>
 			</div>
 		</div>
 
