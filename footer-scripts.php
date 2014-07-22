@@ -5,12 +5,15 @@ var home_url = "<?php echo bloginfo("url"); ?>";
 var template_directory = "<?php echo bloginfo("template_url"); ?>";
 var site_title = "<?php echo wp_title(''); ?>";
 var standard_basemap = "zimmerman2014.hmj09g6h";
+var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 </script>
 
 
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/nouislider.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/d3.min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/nv.d3.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>

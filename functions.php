@@ -681,3 +681,168 @@ function vb_registration_form() {
 
     <?php
 }
+
+
+
+
+
+
+
+
+add_action( 'wp_ajax_favorite_visualisation', 'favorite_visualisation' );
+add_action( 'wp_ajax_nopriv_favorite_visualisation', 'favorite_visualisation' );
+
+
+function favorite_visualisation() {
+
+	// global $wpdb; // this is how you get access to the database
+	$visdata = $_POST['visdata'];
+	$visdata = stripslashes($visdata);
+
+	// check if user is logged in, else return status log_in_first
+	if ( !(is_user_logged_in()) ) {
+		wp_send_json(array("status" => "log_in_first"));
+		die();
+	}
+
+	$favorites = get_user_meta(get_current_user_id(),'oipa_visualisation_favorites',true);
+
+	if (empty($favorites)){
+
+		add_user_meta( get_current_user_id(), 'oipa_visualisation_favorites', array($visdata));
+		
+	} else {
+
+		// user already has favorites, so we add this one
+		if (in_array($visdata, $favorites)){
+			wp_send_json(array("status" => "already_in_favorites"));
+			die();
+		} else {
+			array_push($favorites, $visdata);
+			update_user_meta( get_current_user_id(), 'oipa_visualisation_favorites', $favorites);
+		}
+	}
+	// save visdata to usermeta
+	wp_send_json(array("status" => "saved"));
+	die(); 
+}
+
+add_action( 'wp_ajax_unfavorite_visualisation', 'unfavorite_visualisation' );
+add_action( 'wp_ajax_nopriv_unfavorite_visualisation', 'unfavorite_visualisation' );
+
+
+function unfavorite_visualisation() {
+
+	// global $wpdb; // this is how you get access to the database
+	$visdata = $_POST['visdata'];
+	$visdata = stripslashes($visdata);
+	
+	// check if user is logged in, else return status log_in_first
+	if ( !(is_user_logged_in()) ) { 
+		wp_send_json(array("status" => "log_in_first"));
+		die();
+	}
+
+	$favorites = get_user_meta(get_current_user_id(),'oipa_visualisation_favorites',true);
+
+	if (empty($favorites)){
+
+		wp_send_json(array("status" => "not_in_favorites"));
+		die(); 
+	} else {
+		
+		// user already has favorites, so we add this one
+		if (in_array($visdata, $favorites)){
+			$index = array_search($visdata, $favorites);
+			if($index !== FALSE){
+			    unset($favorites[$index]);
+			}
+			update_user_meta( get_current_user_id(), 'oipa_visualisation_favorites', $favorites);
+			wp_send_json(array("status" => "removed_from_favorites"));
+			die();
+			
+		} else {
+			wp_send_json(array("status" => "not_in_favorites"));
+			die();
+		}
+	}
+	die(); 
+}
+
+
+
+add_action( 'wp_ajax_in_favorites', 'in_favorites' );
+add_action( 'wp_ajax_nopriv_in_favorites', 'in_favorites' );
+
+
+function in_favorites() {
+
+	// global $wpdb; // this is how you get access to the database
+	$visdata = $_POST['visdata'];
+	$visdata = stripslashes($visdata);
+	
+	// check if user is logged in, else return status log_in_first
+	if ( !(is_user_logged_in()) ) { 
+		wp_send_json(array("status" => "not_logged_in"));
+		die();
+	}
+
+	$favorites = get_user_meta(get_current_user_id(),'oipa_visualisation_favorites',true);
+
+	// user already has favorites, so we add this one
+	if (in_array($visdata, $favorites)){
+		wp_send_json(array("status" => "in_favorites"));
+	} else {
+		wp_send_json(array("status" => "not_in_favorites"));
+	}
+	
+	die(); 
+}
+
+
+
+
+
+
+// Register Custom Post Type
+function create_post_type_infographics() {
+
+	$labels = array(
+		'name'                => _x( 'infographics', 'Post Type General Name', 'urbannumbers' ),
+		'singular_name'       => _x( 'infographic', 'Post Type Singular Name', 'urbannumbers' ),
+		'menu_name'           => __( 'Infographics', 'urbannumbers' ),
+		'parent_item_colon'   => __( 'Parent infographics:', 'urbannumbers' ),
+		'all_items'           => __( 'All infographics', 'urbannumbers' ),
+		'view_item'           => __( 'View infographics', 'urbannumbers' ),
+		'add_new_item'        => __( 'Add New infographics', 'urbannumbers' ),
+		'add_new'             => __( 'Add New', 'urbannumbers' ),
+		'edit_item'           => __( 'Edit infographics', 'urbannumbers' ),
+		'update_item'         => __( 'Update infographics', 'urbannumbers' ),
+		'search_items'        => __( 'Search infographics', 'urbannumbers' ),
+		'not_found'           => __( 'Not found', 'urbannumbers' ),
+		'not_found_in_trash'  => __( 'Not found in Trash', 'urbannumbers' ),
+	);
+	$args = array(
+		'label'               => __( 'infographics', 'urbannumbers' ),
+		'description'         => __( 'infographics', 'urbannumbers' ),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'author', 'comments', 'custom-fields', ),
+		'hierarchical'        => false,
+		'public'              => true,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => true,
+		'show_in_admin_bar'   => true,
+		'menu_position'       => 5,
+		'can_export'          => true,
+		'has_archive'         => true,
+		'exclude_from_search' => false,
+		'publicly_queryable'  => true,
+		'capability_type'     => 'page',
+	);
+	register_post_type( 'infographic', $args );
+
+}
+
+// Hook into the 'init' action
+add_action( 'init', 'create_post_type_infographics', 0 );

@@ -56,18 +56,22 @@ function get_random_city_within_selection(selection, already_chosen){
 }
 
 $("#opener-left-cities").click(function(e){
+	e.preventDefault();
 	filter.reload_specific_filter("left-cities", null);
 });
 
 $("#opener-right-cities").click(function(e){
+	e.preventDefault();
 	filter.reload_specific_filter("right-cities", null);
 });
 
 $("#header-login-register-button").click(function(e){
-	e.preventDefault();
-
-	$("#hoover-wrapper").show();
-	$("#urbannumbers-login").show();
+	if ($(this).attr("href") == "#"){
+		e.preventDefault();
+		$("#hoover-wrapper").show();
+		$("#urbannumbers-login").show();
+	}
+	
 
 });
 
@@ -91,9 +95,21 @@ $("#delete-account-button").click(function(e){
 });
 
 
+function UnhabitatOipaCompareFilters(){
+	this.get_url = function(selection, parameters_set){
+		// get url from filter selection object
+		if (parameters_set){
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&adm_division__in=city" + parameters_set;
+		} else {
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&adm_division__in=city&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+		}
+		
+		return cururl;
+	};
+}
+UnhabitatOipaCompareFilters.prototype = new OipaCompareFilters();
 
-
-function UnescoOipaIndicatorFilters(){
+function UnhabitatOipaIndicatorFilters(){
 
 	this.get_url = function(selection, parameters_set){
 		// get url from filter selection object
@@ -106,4 +122,4 @@ function UnescoOipaIndicatorFilters(){
 		return cururl;
 	};
 };
-UnescoOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
+UnhabitatOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
