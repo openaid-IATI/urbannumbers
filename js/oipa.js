@@ -170,30 +170,7 @@ function OipaList(){
 
 	this.get_data = function(url){
 
-		// filters
-		var thislist = this;
-		$.support.cors = true;
-
-		if(window.XDomainRequest){
-			var xdr = new XDomainRequest();
-			xdr.open("get", url);
-			xdr.onprogress = function () { };
-			xdr.ontimeout = function () { };
-			xdr.onerror = function () { };
-			xdr.onload = function() {
-				thislist.refresh(xdr.responseText);
-			};
-			setTimeout(function () {xdr.send();}, 0);
-		} else {
-			$.ajax({
-				type: 'GET',
-				url: url,
-				dataType: 'html',
-				success: function(data){
-					thislist.refresh(data);
-				}
-			});
-		}
+		perform_cors_ajax_call_with_refresh_callback(url, this);
 	};
 
 	this.update_list = function(data){
@@ -246,8 +223,8 @@ function OipaMainStats(){
 				if (jsondata === null || typeof (jsondata) === 'undefined')
 				{
 					jsondata = $.parseJSON(jsondata.firstChild.textContent);
-					stats.get_total_projects(reporting_organisation, jsondata); 
 				}
+				stats.get_total_projects(reporting_organisation, jsondata); 
 			};
 			setTimeout(function () {xdr.send();}, 0);
 			} else {
@@ -285,8 +262,8 @@ function OipaMainStats(){
 				if (jsondata === null || typeof (jsondata) === 'undefined')
 				{
 					jsondata = $.parseJSON(jsondata.firstChild.textContent);
-					stats.get_total_budget(reporting_organisation, jsondata); 
 				}
+				stats.get_total_budget(reporting_organisation, jsondata); 
 			};
 			setTimeout(function () {xdr.send();}, 0);
 			} else {
@@ -474,43 +451,11 @@ function OipaMap(){
 
 	this.get_data = function(url){
 
-		// filters
-		var thismap = this;
-
 		if (url === null){
-			thismap.refresh(1);
+			this.refresh(1);
 		}
-		
-		$.support.cors = true;
 
-		if(window.XDomainRequest){
-		var xdr = new XDomainRequest();
-		xdr.open("get", url);
-		xdr.onprogress = function () { };
-		xdr.ontimeout = function () { };
-		xdr.onerror = function () { };
-		xdr.onload = function() {
-			var jsondata = $.parseJSON(xdr.responseText);
-			if (jsondata === null || typeof (jsondata) === 'undefined')
-			{
-				jsondata = $.parseJSON(jsondata.firstChild.textContent);
-				thismap.refresh(jsondata);
-				
-			}
-		};
-		setTimeout(function () {xdr.send();}, 0);
-		} else {
-			$.ajax({
-				type: 'GET',
-				url: url,
-				contentType: "application/json",
-				dataType: 'json',
-				success: function(data){
-					thismap.refresh(data);
-
-				}
-			});
-		}
+		perform_cors_ajax_call_with_refresh_callback(url, this);
 	};
 	
 	
@@ -666,9 +611,8 @@ function OipaMap(){
 			if (jsondata == null || typeof (jsondata) == 'undefined')
 			{
 				jsondata = $.parseJSON(data.firstChild.textContent);
-				city.set_compare_data(jsondata, thismap.compare_left_right);
 			}
-			
+			city.set_compare_data(jsondata, thismap.compare_left_right);
 		}
 		setTimeout(function () {xdr.send();}, 0);
 		} else {
@@ -850,9 +794,9 @@ function OipaFilters(){
 			if (jsondata === null || typeof (jsondata) === 'undefined')
 			{
 				jsondata = $.parseJSON(jsondata.firstChild.textContent);
-				filters.process_filter_options(jsondata);
-				filters.data = jsondata;
 			}
+			filters.process_filter_options(jsondata);
+			filters.data = jsondata;
 		};
 		setTimeout(function () {xdr.send();}, 0);
 		} else {
@@ -1105,8 +1049,8 @@ function OipaFilters(){
 					if (jsondata === null || typeof (jsondata) === 'undefined')
 					{
 						jsondata = $.parseJSON(jsondata.firstChild.textContent);
-						filters.reload_specific_filter(filter_name, jsondata);
 					}
+					filters.reload_specific_filter(filter_name, jsondata);
 				};
 				setTimeout(function () {xdr.send();}, 0);
 			} else {
@@ -1522,3 +1466,33 @@ function replaceAll(o,t,r,c){
 	return ns;
 }
 
+function perform_cors_ajax_call_with_refresh_callback(url, current_object){
+	$.support.cors = true;
+
+	if(window.XDomainRequest){
+		var xdr = new XDomainRequest();
+		xdr.open("get", url);
+		xdr.onprogress = function () { };
+		xdr.ontimeout = function () { };
+		xdr.onerror = function () { };
+		xdr.onload = function() {
+			var data = $.parseJSON(xdr.responseText);
+			if (data === null || typeof (data) === 'undefined')
+			{
+				data = $.parseJSON(data.firstChild.textContent);
+			}
+			current_object.refresh(data);
+		};
+		setTimeout(function () {xdr.send();}, 0);
+	} else {
+		$.ajax({
+			type: 'GET',
+			url: url,
+			contentType: "application/json",
+			dataType: 'json',
+			success: function(data){
+				current_object.refresh(data);
+			}
+		});
+	}
+}
