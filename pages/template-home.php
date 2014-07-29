@@ -111,10 +111,30 @@ if (have_posts()) : ?>
 		</div>
 		<?php endif; ?>
 
-		<?php 
-		$curmapname = "main";
-		include( TEMPLATEPATH .'/map.php' ); 
-		?>
+		
+			<div id="map-wrapper">
+			<?php 
+			$curmapname = "main";
+			include( TEMPLATEPATH .'/map.php' ); 
+			?>
+				<?php if(!is_page("city-prosperity")){ ?>
+			    <div id="map-timeline-wrapper">
+			        <div id="timeline-left"></div>
+			        <div id="map-timeline">
+			            <div id="map-slider-tooltip">
+			            </div>
+
+			            <?php for ($i = 1950; $i < 2051;$i++){   
+			            echo '<div class="slider-year';
+			            echo '" id="year-' . $i . '">';
+			            if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
+			            echo '<div class="slider-year-inner-white"></div></div>'; 
+			            } ?>
+			        </div>
+			        <div id="timeline-right"></div>
+			    </div>
+			    <?php } ?>
+			</div>
 		
 	</section>
 	<!-- area -->
@@ -214,7 +234,7 @@ if (have_posts()) : ?>
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
 	Oipa.mainSelection.url.get_selection_from_url();
 	if (Oipa.mainSelection.indicators.length == 0){
-		Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
+	Oipa.mainSelection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
 	}
 	var map = new OipaIndicatorMap();
 	map.set_map("main-map");

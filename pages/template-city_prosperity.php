@@ -68,36 +68,31 @@ get_header(); the_post(); ?>
 				<div class="info-box"><img alt="" src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder7.png"></div>
 				<div class="info-box"><img alt="" src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder8.png"></div>
 			</div>
+			
+			<div id="map-wrapper">
 			<?php 
 			$curmapname = "main";
 			include( TEMPLATEPATH .'/map.php' ); 
 			?>
-			<!-- visual-row -->
-			<div class="visual-row">
-				<div class="holder">
-					<span class="circle"></span>
-					<span class="circle"></span>
-					<span class="circle"></span>
-					<span class="circle"></span>
-					<span class="circle"></span>
-					<span class="circle style04"></span>
-					<span class="circle style04"></span>
-					<span class="circle style03"></span>
-					<span class="circle style03"></span>
-					<span class="circle style03"></span>
-					<span class="circle style03"></span>
-					<span class="circle style02"></span>
-					<span class="circle style02"></span>
-					<span class="circle style02"></span>
-					<span class="circle style02"></span>
-					<span class="circle style01"></span>
-					<span class="circle style01"></span>
-					<span class="circle style01"></span>
-					<span class="circle style01"></span>
-					<span class="text-begin">1950</span>
-					<span class="text-end">2050</span>
-				</div>
+				<?php if(!is_page("city-prosperity")){ ?>
+			    <div id="map-timeline-wrapper">
+			        <div id="timeline-left"></div>
+			        <div id="map-timeline">
+			            <div id="map-slider-tooltip">
+			            </div>
+
+			            <?php for ($i = 1950; $i < 2051;$i++){   
+			            echo '<div class="slider-year';
+			            echo '" id="year-' . $i . '">';
+			            if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
+			            echo '<div class="slider-year-inner-white"></div></div>'; 
+			            } ?>
+			        </div>
+			        <div id="timeline-right"></div>
+			    </div>
+			    <?php } ?>
 			</div>
+
 			<?php if( have_rows('page_blocks') ): ?>
 				<div class="container-holder">
 					<?php $i=0;
@@ -135,7 +130,7 @@ get_header(); the_post(); ?>
 	
 	Oipa.pageType = "indicators";
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
-	Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
+	Oipa.mainSelection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
 	
 	var map = new OipaIndicatorMap();
 	map.set_map("main-map");
