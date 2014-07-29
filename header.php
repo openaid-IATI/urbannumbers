@@ -175,12 +175,10 @@
 				<strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
 				<!-- Split button -->
 				<div class="btn-group add-nav">
-					<a id="header-login-register-button" href="<?php if (is_user_logged_in()) { echo home_url() . "/my-dashboard/"; } else { echo "#"; } ?>" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
-						<?php if (is_user_logged_in()) {
-							echo "My account";
-						} else {
-							echo "Sign in or register";
-						} ?>
+
+					<?php if (is_user_logged_in()) { ?>
+					<a id="header-login-register-button" href="<?php echo home_url(); ?>/my-dashboard/" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
+						My account
 					</a>
 					<button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
@@ -191,6 +189,13 @@
 						<li><a href="<?php echo home_url() . "/account-settings/"; ?>"><span class="img-wrap"><i class="icon-cog"></i></span>Account settings</a></li>
 						<li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="icon-sign-out"></i></span>Sign out</a></li>
 					</ul>
+					<?php } else { ?>
+						<a id="header-login-register-button" href="#" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
+							Sign in or register
+						</a>
+						<?php
+					} ?>
+
 				</div>
 				<?php if(has_nav_menu('navigation')): ?>
 				<nav id="nav">
