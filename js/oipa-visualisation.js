@@ -38,7 +38,6 @@ function OipaVis(){
 		var curchart = this;
 		
 		$.post(ajaxurl, data, function(response) {
-			console.log(response);
 			if(response.status == "in_favorites"){
 				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
 			}
@@ -83,14 +82,21 @@ function OipaVis(){
 		var savestring = this.get_save_string();
 		var curchart = this;
 
+		
+		var htmlencoded = $('<div/>').text(savestring).html();
+console.log(htmlencoded);
 		var data = {
 			'action': 'favorite_visualisation',
 			'visdata': savestring
 		};
+
 		
 		$.post(ajaxurl, data, function(response) {
 
+			// console.log(response);
+
 			if(response.status == "log_in_first"){
+				console.log("log in first");
 				$("#header-login-register-button").click();
 				$("#urbannumbers-login h1").text("Log in first");
 

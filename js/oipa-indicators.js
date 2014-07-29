@@ -161,6 +161,7 @@ function OipaIndicatorMap(){
 		var circle_colors = ["#2B5A70", "DarkGreen", "Orange", "Pink", "Purple"];
 		var indicator_counter = -1;
 
+
 		// data containing multiple indicators
 		$.each(data, function(mainkey, mainvalue){
 			indicator_counter++;
@@ -391,6 +392,18 @@ OipaIndicatorMap.prototype = new OipaMap();
 
 function OipaIndicatorFilters(){
 
+	this.validate_selection = function (){
+		if (this.selection.indicators.length == 0){
+			// set error message and break
+			$(".filter-error-msg").text("Please select at least one indicator.");
+			return false;
+		} else {
+			// empty the error msg div
+			$(".filter-error-msg").text("");
+			return true;
+		}
+	}
+
 	this.get_url = function(selection, parameters_set){
 		// get url from filter selection object
 		if (parameters_set){
@@ -539,6 +552,8 @@ function OipaIndicatorFilters(){
 		});
 	}
 
+	
+
 }
 OipaIndicatorFilters.prototype = new OipaFilters();
 
@@ -546,6 +561,8 @@ OipaIndicatorFilters.prototype = new OipaFilters();
 
 
 function OipaCompareFilters(){
+
+
 
 	this.update_selection_object = function(){
 		this.selection.left.countries = this.get_checked_by_filter("left-countries");

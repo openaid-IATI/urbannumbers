@@ -617,8 +617,8 @@ add_action( 'admin_init', 'redirect_non_admin_users' );
  * This function is attached to the 'admin_init' action hook.
  */
 function redirect_non_admin_users() {
-    
-    if ( ! current_user_can( 'manage_options' ) && (stristr($_SERVER['PHP_SELF'],'admin' ) == true) && $_SERVER['HTTP_REFERER'] !== "http://urbannumbers.zimmermanzimmerman.com/"  ) {
+    $admin_ajax = "wp-admin/admin-ajax.php";
+    if ( ! current_user_can( 'manage_options' ) && (stristr($_SERVER['PHP_SELF'],'admin' ) == true) && stripos($_SERVER['REQUEST_URI'], $admin_ajax != true)) {
 	wp_redirect( get_option('siteurl') . '/my-dashboard/' );
 	exit;
     }
@@ -636,7 +636,7 @@ function vb_registration_form() {
     ?>
 
     <div class="vb-registration-form">
-        <form class="form-horizontal registraion-form" role="form">
+        <form class="form-horizontal registration-form" role="form">
 
             <div class="form-group">
                 <label for="vb_name" class="sr-only">Your Name</label>
@@ -696,7 +696,7 @@ add_action( 'wp_ajax_nopriv_favorite_visualisation', 'favorite_visualisation' );
 function favorite_visualisation() {
 
 	// global $wpdb; // this is how you get access to the database
-	$visdata = $_POST['visdata'];
+	$visdata = $_REQUEST['visdata'];
 	$visdata = stripslashes($visdata);
 
 	// check if user is logged in, else return status log_in_first

@@ -212,8 +212,10 @@ if (have_posts()) : ?>
 	
 	Oipa.pageType = "indicators";
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
-	Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
-	
+	Oipa.mainSelection.url.get_selection_from_url();
+	if (Oipa.mainSelection.indicators.length == 0){
+		Oipa.mainSelection.indicators.push({"id": "cpi_5_dimensions","name": "5 dimensions of City Prosperity"});
+	}
 	var map = new OipaIndicatorMap();
 	map.set_map("main-map");
 	map.init();

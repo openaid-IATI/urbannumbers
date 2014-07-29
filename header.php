@@ -38,6 +38,7 @@
 <div id="hoover-wrapper"></div>
 <div id="urbannumbers-login">
 	<div class="standard-page-content page-login">
+		<a class="close-login" href="#"><div class="glyphicon glyphicon-remove"></div></a>
 
 		<?php 
 		$form_action = site_url() . "/wp-login.php";
@@ -105,7 +106,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="login-register">
-					> <a id="register-button" href="<?php echo site_url(); ?>/register/"><?php _e( 'Register', 'urbannumbers' ); ?></a>
+					<a id="register-button" href="<?php echo site_url(); ?>/register/"><?php _e( 'Register', 'urbannumbers' ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -119,7 +120,7 @@
 </div>
 
 <div id="urbannumbers-register">
-	
+		<a class="close-login" href="#"><div class="glyphicon glyphicon-remove"></div></a>
 
 		<div class="row">
 			<div class="col-md-12">
@@ -138,6 +139,7 @@
 
 
 <div id="urbannumbers-lostpassword">
+	<a class="close-login" href="#"><div class="glyphicon glyphicon-remove"></div></a>
 	<div class="row lost-password-login-form">
 
 		<div class="row">
@@ -145,58 +147,22 @@
 				<h1>Lost password</h1>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-12">
 
-		<div class="col-md-12">
+				<form name="lostpasswordform" id="lostpasswordform" action="<?php echo wp_lostpassword_url( ); ?>" method="post">
+					<div class="form-group">
+						<label for="user_login">Username or E-mail:</label>
+						<input type="text" name="user_login" id="user_login" class="input form-control" value="" size="20">
+					</div>
+					<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="btn btn-primary button-large" value="Get New Password"></p>
+	                                <input type="hidden" name="redirect_to" value="wp-login.php?checkemail=confirm&amp;use_sso=false">
+				</form>
 
-			<form name="lostpasswordform" id="lostpasswordform" action="<?php echo wp_lostpassword_url( ); ?>" method="post">
-				<div class="form-group">
-					<label for="user_login">Username or E-mail:</label>
-					<input type="text" name="user_login" id="user_login" class="input form-control" value="" size="20">
-				</div>
-				<p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large fbkp-default-button" value="Get New Password"></p>
-                                <input type="hidden" name="redirect_to" value="wp-login.php?checkemail=confirm&amp;use_sso=false">
-			</form>
-
+			</div>
 		</div>
 	</div>
 </div>
-
-
-
-
-
-<style>
-#urbannumbers-login, #urbannumbers-lostpassword, #urbannumbers-register{
-	width:500px;
-	height: 500px;
-	display: none;
-	position: absolute;
-	top: 100px;
-	left: 0;
-	right: 0;
-	background-color: white;
-	z-index: 9999;
-	padding: 4em;
-	margin-left:auto;
-    margin-right:auto;
-}
-
-#sidebar-wp-submit{
-	background-color: #ccc;
-}
-
-#hoover-wrapper{
-	display: none;
-	background-color: #333;
-	opacity: 0.7;
-	width: 100%;
-	height: 9999px;
-	position: absolute;
-	z-index: 998;
-}
-</style>
-
-
 
 
 

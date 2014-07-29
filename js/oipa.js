@@ -1,11 +1,90 @@
 
+function OipaUrl(selection){
+	this.selection = selection;
+
+	this.get_selection_from_url = function(){
+		var query = window.location.search.substring(1);
+			if(query !== ''){
+				var vars = query.split("&");
+				for (var i=0;i<vars.length;i++) {
+					var pair = vars[i].split("=");
+				var vals = pair[1].split(",");
+				this.selection[pair[0]] = [];
+
+				for(var y=0;y<vals.length;y++){
+					this.selection[pair[0]].push({"id":vals[y], "name":vals[y]});
+				}
+			}
+		}
+	};
+
+	this.set_current_url = function(){
+		var link = document.URL.toString().split("?")[0] + this.build_parameters();
+		if (history.pushState) {
+			history.pushState(null, null, link);
+		}
+	};
+
+	this.build_parameters = function (){
+
+
+		this.cities = [];
+		this.countries = [];
+		this.regions = [];
+		this.sectors = [];
+		this.budgets = [];
+		this.indicators = [];
+		this.reporting_organisations = [];
+		this.start_actual_years = [];
+		this.start_planned_years = [];
+		this.donors = [];
+		this.query = "";
+		this.country = ""; // for country search
+		this.region = ""; // for region search
+		this.group_by = "";
+		this.url = null;
+
+		// build current url based on selection made
+		var url = '?p=';
+		if (typeof this.selection.cities !== "undefined") { url += this.build_current_url_add_par("cities", this.selection.cities); }
+		if (typeof this.selection.countries !== "undefined") { url += this.build_current_url_add_par("countries", this.selection.countries); }
+		if (typeof this.selection.regions !== "undefined") { url += this.build_current_url_add_par("regions", this.selection.regions); }
+		if (typeof this.selection.sectors !== "undefined") { url += this.build_current_url_add_par("sectors", this.selection.sectors); }
+		if (typeof this.selection.budgets !== "undefined") { url += this.build_current_url_add_par("budgets", this.selection.budgets); }
+		if (typeof this.selection.indicators !== "undefined") { url += this.build_current_url_add_par("indicators", this.selection.indicators); }
+		if (typeof this.selection.reporting_organisations !== "undefined") { url += this.build_current_url_add_par("reporting_organisations", this.selection.reporting_organisations); }
+		if (typeof this.selection.donors !== "undefined") { url += this.build_current_url_add_par("donors", this.selection.donors); }
+		if (typeof this.selection.query !== "undefined") { url += this.build_current_url_add_par("query", this.selection.query); }
+		if (url === '?p='){return '';}
+		url = url.replace("?p=&", "?");
+
+		return url;
+	};
+
+	this.build_current_url_add_par = function(name, arr, dlmtr){
+
+		if(dlmtr === undefined){
+			dlmtr = ",";
+		}
+
+		if(arr.length === 0){return '';}
+		var par = '&' + name + '=';
+		for(var i = 0; i < arr.length;i++){
+			par += arr[i].id.toString() + dlmtr;
+		}
+		par = par.substr(0, par.length - 1);
+
+		return par;
+	};
+}
+
+
 function OipaSelection(main, has_default_reporter){
 	this.cities = [];
 	this.countries = [];
 	this.regions = [];
 	this.sectors = [];
 	this.budgets = [];
-	this.query = [];
 	this.indicators = [];
 	this.reporting_organisations = [];
 	this.start_actual_years = [];
@@ -15,11 +94,8 @@ function OipaSelection(main, has_default_reporter){
 	this.country = ""; // for country search
 	this.region = ""; // for region search
 	this.group_by = "";
-	this.url = null;
+	this.url = new OipaUrl(this);
 
-	if (main === 1){
-		this.url = new OipaUrl();
-	}
 	if (has_default_reporter === 1){
 		if (Oipa.default_organisation_id){
 			this.reporting_organisations.push({"id": Oipa.default_organisation_id, "name": Oipa.default_organisation_name});
@@ -44,7 +120,7 @@ var Oipa = {
 
 		// remove old visualisation blocks
 		this.visualisations = [];
-		$("#visualisation-block-wrapper").empty();
+		jQuery("#visualisation-block-wrapper").empty();
 
 		// add new visualisation blocks
 		Oipa.create_visualisations();
@@ -54,7 +130,7 @@ var Oipa = {
 		var thisoipa = this;
 		data = this.mainSelection.indicators;
 		// for each indicator
-		$.each(data, function(key, value){
+		jQuery.each(data, function(key, value){
 
 			// create line chart
 			var linechart = new OipaLineChart();
@@ -95,7 +171,7 @@ function OipaIndicatorSelection(main){
 	this.url = null;
 
 	if (main){
-		this.url = new OipaUrl();
+		this.url = new OipaUrl(this);
 	}
 }
 
@@ -118,16 +194,16 @@ function OipaList(){
 
 		var thislist = this;
 		// init pagination
-		$(this.pagination_div).bootpag({
+		jQuery(this.pagination_div).bootpag({
 		   total: 5,
 		   page: 1,
 		   maxVisible: 6
 		}).on('page', function(event, num){
-		    thislist.go_to_page(num);
+			thislist.go_to_page(num);
 		});
+
 		this.update_pagination();
 		this.load_listeners();
-
 		this.extra_init();
 	}
 
@@ -170,12 +246,23 @@ function OipaList(){
 
 	this.get_data = function(url){
 
-		perform_cors_ajax_call_with_refresh_callback(url, this);
+		jQuery.support.cors = true;
+
+		var curlist = this;
+		jQuery.ajax({
+			type: 'GET',
+			url: url,
+			dataType: 'html',
+			success: function(data){
+				curlist.refresh(data);
+			}
+		});
+
 	};
 
 	this.update_list = function(data){
 		// generate list html and add to this.list_div
-		$(this.list_div).html(data);
+		jQuery(this.list_div).html(data);
 	};
 
 	this.load_listeners = function(){
@@ -183,12 +270,13 @@ function OipaList(){
 	}
 
 	this.update_pagination = function(data){
-		var total = $(this.list_div + " .list-amount-input").val();
+		console.log(data);
+		var total = jQuery(this.list_div + " .list-amount-input").val();
 		this.amount = total;
 
 		var total_pages = Math.ceil(this.amount / this.limit);
 		var current_page = Math.ceil(this.offset / this.limit) + 1;
-		$(this.pagination_div).bootpag({total: total_pages});
+		jQuery(this.pagination_div).bootpag({total: total_pages});
 	};
 
 	this.go_to_page = function(page_id){
@@ -205,12 +293,12 @@ function OipaMainStats(){
 		
 
 		if(data){
-			$("#homepage-total-projects").text(data[reporting_organisation]);
+			jQuery("#homepage-total-projects").text(data[reporting_organisation]);
 		} else {
 
 			var url = search_url + 'activity-aggregate-any/?format=json&group_by=reporting-org';
 			var stats = this;
-			$.support.cors = true;
+			jQuery.support.cors = true;
 
 			if(window.XDomainRequest){
 			var xdr = new XDomainRequest();
@@ -219,16 +307,16 @@ function OipaMainStats(){
 			xdr.ontimeout = function () { };
 			xdr.onerror = function () { };
 			xdr.onload = function() {
-				var jsondata = $.parseJSON(xdr.responseText);
+				var jsondata = jQuery.parseJSON(xdr.responseText);
 				if (jsondata === null || typeof (jsondata) === 'undefined')
 				{
-					jsondata = $.parseJSON(jsondata.firstChild.textContent);
+					jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
 				}
 				stats.get_total_projects(reporting_organisation, jsondata); 
 			};
 			setTimeout(function () {xdr.send();}, 0);
 			} else {
-				$.ajax({
+				jQuery.ajax({
 					type: 'GET',
 					url: url,
 					contentType: "application/json",
@@ -244,12 +332,12 @@ function OipaMainStats(){
 	this.get_total_budget = function(reporting_organisation, data){
 
 		if(data){
-			$("#homepage-total-budget").text("US$" + comma_formatted(data[reporting_organisation]));
+			jQuery("#homepage-total-budget").text("US$" + comma_formatted(data[reporting_organisation]));
 		} else {
 
 			var url = search_url + 'activity-aggregate-any/?format=json&group_by=reporting-org&aggregation_key=total-budget';
 			var stats = this;
-			$.support.cors = true;
+			jQuery.support.cors = true;
 
 			if(window.XDomainRequest){
 			var xdr = new XDomainRequest();
@@ -258,16 +346,16 @@ function OipaMainStats(){
 			xdr.ontimeout = function () { };
 			xdr.onerror = function () { };
 			xdr.onload = function() {
-				var jsondata = $.parseJSON(xdr.responseText);
+				var jsondata = jQuery.parseJSON(xdr.responseText);
 				if (jsondata === null || typeof (jsondata) === 'undefined')
 				{
-					jsondata = $.parseJSON(jsondata.firstChild.textContent);
+					jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
 				}
 				stats.get_total_budget(reporting_organisation, jsondata); 
 			};
 			setTimeout(function () {xdr.send();}, 0);
 			} else {
-				$.ajax({
+				jQuery.ajax({
 					type: 'GET',
 					url: url,
 					contentType: "application/json",
@@ -304,6 +392,7 @@ function OipaProjectList(){
 		if(this.order_by){ extra_par += "&order_by=" + desc + this.order_by; }
 		var url = site_url + ajax_path + project_path + "/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
 		url = replaceAll(url, " ", "%20");
+		console.log(url);
 		return url;
 	};
 
@@ -388,7 +477,7 @@ function OipaMap(){
 			mapoptions.zoomControl = false;
 		}
 
-		$("#"+div_id).css("min-height", "200px");
+		jQuery("#"+div_id).css("min-height", "200px");
 		this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
 
 		if (zoomposition){
@@ -474,92 +563,92 @@ function OipaMap(){
 		 } else if(this.selection.group_by == "country"){
 			
 			// For 0 -> 9, create markers in a circle
-		    for (var i = 0; i < data.objects.length; i++) {
-		        if (data.objects[i].id === null){ continue; }
-		        // Use a little math to position markers.
-		        // Replace this with your own code.
-		        if (data.objects[i].latitude !== null || data.objects[i].longitude !== null){
-			        curmarker = L.marker([
-			            data.objects[i].latitude,
-			            data.objects[i].longitude
-			        ], {
-			            icon: L.divIcon({
-			                // Specify a class name we can refer to in CSS.
-			                className: 'country-marker-icon',
-			                // Define what HTML goes in each marker.
-			                html: data.objects[i].total_projects,
-			                // Set a markers width and height.
-			                iconSize: [36, 44],
-			                iconAnchor: [18, 34],
-			            })
-			        }).bindPopup('<div class="country-marker-popup-header"><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">'+data.objects[i].name+'</a></div><table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">' + data.objects[i].total_projects + '</a></td></tr><tr><td>BUDGET:</td><td>US$' + comma_formatted(data.objects[i].total_budget) + '</td></tr></table><a class="country-marker-popup-zoom" name="'+data.objects[i].id+'" country_name="'+data.objects[i].name+'" latitude="' + data.objects[i].latitude + '" longitude="' + data.objects[i].longitude + '" onclick="map.zoom_on_dom(this);">+ ZOOM IN</a>', { minWidth: 300, maxWidth: 300, offset: L.point(173, 69), closeButton: false, className: "country-popup"})
-			        .addTo(this.map);
+			for (var i = 0; i < data.objects.length; i++) {
+				if (data.objects[i].id === null){ continue; }
+				// Use a little math to position markers.
+				// Replace this with your own code.
+				if (data.objects[i].latitude !== null || data.objects[i].longitude !== null){
+					curmarker = L.marker([
+						data.objects[i].latitude,
+						data.objects[i].longitude
+					], {
+						icon: L.divIcon({
+							// Specify a class name we can refer to in CSS.
+							className: 'country-marker-icon',
+							// Define what HTML goes in each marker.
+							html: data.objects[i].total_projects,
+							// Set a markers width and height.
+							iconSize: [36, 44],
+							iconAnchor: [18, 34],
+						})
+					}).bindPopup('<div class="country-marker-popup-header"><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">'+data.objects[i].name+'</a></div><table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">' + data.objects[i].total_projects + '</a></td></tr><tr><td>BUDGET:</td><td>US$' + comma_formatted(data.objects[i].total_budget) + '</td></tr></table><a class="country-marker-popup-zoom" name="'+data.objects[i].id+'" country_name="'+data.objects[i].name+'" latitude="' + data.objects[i].latitude + '" longitude="' + data.objects[i].longitude + '" onclick="map.zoom_on_dom(this);">+ ZOOM IN</a>', { minWidth: 300, maxWidth: 300, offset: L.point(173, 69), closeButton: false, className: "country-popup"})
+					.addTo(this.map);
 
-			        this.markers.push(curmarker);
-		        }
-		    }
+					this.markers.push(curmarker);
+				}
+			}
 
 
 		} else if(this.selection.group_by == "region"){
 
 			this.map.setView([10.505, 25.09], 2);
-		    
-		    for (var i = 0; i < data.objects.length; i++) {
-		      	curmarker = L.marker([
-	                data.objects[i].latitude,
-	                data.objects[i].longitude
-	            ], {
-	                icon: L.divIcon({
-	                  // Specify a class name we can refer to in CSS.
-	                  className: 'global-marker-icon',
-	                  // Define what HTML goes in each marker.
-	                  html: '<div class="region-map-item-wrapper"><div class="region-map-activity-count">'+data.objects[i].total_projects+'</div><div class="region-map-name">'+data.objects[i].name+'</div></div>',
-	                  // Set a markers width and height.
-	                  iconSize: [150, 44],
-	                  iconAnchor: [18, 34],
-	              })
-	            }).bindPopup('<table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/region/?region_id='+data.objects[i].id+'">'+data.objects[i].total_projects+'</a></td></tr><tr><td>BUDGET:</td><td>US$'+comma_formatted(data.objects[i].total_budget)+'</td></tr></table>', { minWidth: 300, maxWidth: 300, offset: L.point(215, 134), closeButton: false, className: "region-popup"})
-	            .addTo(this.map);
+			
+			for (var i = 0; i < data.objects.length; i++) {
+			  	curmarker = L.marker([
+					data.objects[i].latitude,
+					data.objects[i].longitude
+				], {
+					icon: L.divIcon({
+					  // Specify a class name we can refer to in CSS.
+					  className: 'global-marker-icon',
+					  // Define what HTML goes in each marker.
+					  html: '<div class="region-map-item-wrapper"><div class="region-map-activity-count">'+data.objects[i].total_projects+'</div><div class="region-map-name">'+data.objects[i].name+'</div></div>',
+					  // Set a markers width and height.
+					  iconSize: [150, 44],
+					  iconAnchor: [18, 34],
+				  })
+				}).bindPopup('<table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/region/?region_id='+data.objects[i].id+'">'+data.objects[i].total_projects+'</a></td></tr><tr><td>BUDGET:</td><td>US$'+comma_formatted(data.objects[i].total_budget)+'</td></tr></table>', { minWidth: 300, maxWidth: 300, offset: L.point(215, 134), closeButton: false, className: "region-popup"})
+				.addTo(this.map);
 
-		        this.markers.push(curmarker);
-		    }
+				this.markers.push(curmarker);
+			}
 		} else if(this.selection.group_by == "global"){
-		    this.map.setView([10.505, 25.09], 2);
-		    curmarker = L.marker([
-		        25, -90
-		    ], {
-		        icon: L.divIcon({
-		            // Specify a class name we can refer to in CSS.
-		            className: 'region-marker-icon',
-		            // Define what HTML goes in each marker.
-		            html: '<div class="global-map-item-wrapper"><div class="global-map-activity-count">'+data.objects[0].total_projects+'</div><div class="global-map-name">Global projects</div></div>',
-		            // Set a markers width and height.
-		            iconSize: [150, 44],
-		            iconAnchor: [18, 34],
-		        })
-		    })
-		    .addTo(this.map);
+			this.map.setView([10.505, 25.09], 2);
+			curmarker = L.marker([
+				25, -90
+			], {
+				icon: L.divIcon({
+					// Specify a class name we can refer to in CSS.
+					className: 'region-marker-icon',
+					// Define what HTML goes in each marker.
+					html: '<div class="global-map-item-wrapper"><div class="global-map-activity-count">'+data.objects[0].total_projects+'</div><div class="global-map-name">Global projects</div></div>',
+					// Set a markers width and height.
+					iconSize: [150, 44],
+					iconAnchor: [18, 34],
+				})
+			})
+			.addTo(this.map);
 
-		    this.markers.push(curmarker);
+			this.markers.push(curmarker);
 		
 		} else if(this.selection.group_by == "other"){
 			this.map.setView([10.505, 25.09], 2);
-		    curmarker = L.marker([
-		        60, -41.31
-		    ], {
-		        icon: L.divIcon({
-		            // Specify a class name we can refer to in CSS.
-		            className: 'other-projects-marker-icon',
-		            // Define what HTML goes in each marker.
-		            html: '<div class="other-projects-map-inner">OTHER PROJECTS<br>US$ </div>',
-		            // Set a markers width and height.
-		            iconSize: [150, 44],
-		            iconAnchor: [18, 34],
-		        })
-		    })
-		    .addTo(this.map);
+			curmarker = L.marker([
+				60, -41.31
+			], {
+				icon: L.divIcon({
+					// Specify a class name we can refer to in CSS.
+					className: 'other-projects-marker-icon',
+					// Define what HTML goes in each marker.
+					html: '<div class="other-projects-map-inner">OTHER PROJECTS<br>US$ </div>',
+					// Set a markers width and height.
+					iconSize: [150, 44],
+					iconAnchor: [18, 34],
+				})
+			})
+			.addTo(this.map);
 
-		    this.markers.push(curmarker);
+			this.markers.push(curmarker);
 		}
 
 		this.load_map_listeners();
@@ -571,15 +660,15 @@ function OipaMap(){
 
 	this.update_indicator_timeline = function(){
 		
-		$('.slider-year').removeClass('slider-active');
+		jQuery('.slider-year').removeClass('slider-active');
 		
 		for (var i=1950;i<2051;i++){
 			var curyear = "y" + i;
 			// TO DO
-			$.each(indicator_data, function(key, value){
+			jQuery.each(indicator_data, function(key, value){
 				if (value.years){
 					if (curyear in value.years){
-						$("#year-" + i).addClass("slider-active");
+						jQuery("#year-" + i).addClass("slider-active");
 						return false;
 					}
 				}   
@@ -598,7 +687,7 @@ function OipaMap(){
 		var thismap = this;
 		url = search_url + "cities/?format=json&id=" + city_id;
 
-		$.support.cors = true;
+		jQuery.support.cors = true;
 	
 		if(window.XDomainRequest){
 		var xdr = new XDomainRequest();
@@ -607,17 +696,17 @@ function OipaMap(){
 		xdr.ontimeout = function () { };
 		xdr.onerror = function () { };
 		xdr.onload = function() {
-			var jsondata = $.parseJSON(xdr.responseText);
+			var jsondata = jQuery.parseJSON(xdr.responseText);
 			if (jsondata == null || typeof (jsondata) == 'undefined')
 			{
-				jsondata = $.parseJSON(data.firstChild.textContent);
+				jsondata = jQuery.parseJSON(data.firstChild.textContent);
 			}
 			city.set_compare_data(jsondata, thismap.compare_left_right);
 		}
 		setTimeout(function () {xdr.send();}, 0);
 		} else {
 
-			$.ajax({
+			jQuery.ajax({
 				type: 'GET',
 				url: url,
 				contentType: "application/json",
@@ -660,8 +749,10 @@ function OipaCity(){
 
 		if(map_left_right == "left"){
 			OipaCompare.item1 = this;
+			get_wiki_city_data(this.name, "left");
 		} else if (map_left_right == "right"){
 			OipaCompare.item2 = this;
+			get_wiki_city_data(this.name, "right");
 		}
 
 		OipaCompare.refresh_state++;
@@ -701,7 +792,12 @@ function OipaFilters(){
 		if(!dont_update_selection){
 			// update OipaSelection object
 			this.update_selection_object();
+			var validated = this.validate_selection();
+			if (!validated){
+				return false;
+			}
 		}
+
 		// reload maps
 		Oipa.refresh_maps();
 
@@ -710,6 +806,14 @@ function OipaFilters(){
 
 		// reload visualisations
 		Oipa.refresh_visualisations();
+
+		Oipa.mainSelection.url.set_current_url();
+		return true;
+	};
+
+	this.validate_selection = function (){
+		// override
+		return true;
 	};
 
 	this.update_selection_object = function(){
@@ -754,8 +858,8 @@ function OipaFilters(){
 		var arr = [];
 		// on indicators save selection type (city core, sub urban area etc.)
 		if (filtername === "indicators"){
-			$('#' + filtername + '-filters input:checked').each(function(index, value){
-				var selection_type = $(this).attr("selection_type");
+			jQuery('#' + filtername + '-filters input:checked').each(function(index, value){
+				var selection_type = jQuery(this).attr("selection_type");
 
 				if (selection_type === undefined){
 					selection_type = null;
@@ -767,7 +871,7 @@ function OipaFilters(){
 		}
 
 		// else
-		$('#' + filtername + '-filters input:checked').each(function(index, value){
+		jQuery('#' + filtername + '-filters input:checked').each(function(index, value){
 			arr.push({"id":value.value, "name":value.name});
 		});
 		return arr;
@@ -781,7 +885,7 @@ function OipaFilters(){
 		// filters
 		var filters = this;
 		
-		$.support.cors = true;
+		jQuery.support.cors = true;
 
 		if(window.XDomainRequest){
 		var xdr = new XDomainRequest();
@@ -790,17 +894,17 @@ function OipaFilters(){
 		xdr.ontimeout = function () { };
 		xdr.onerror = function () { };
 		xdr.onload = function() {
-			var jsondata = $.parseJSON(xdr.responseText);
+			var jsondata = jQuery.parseJSON(xdr.responseText);
 			if (jsondata === null || typeof (jsondata) === 'undefined')
 			{
-				jsondata = $.parseJSON(jsondata.firstChild.textContent);
+				jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
 			}
 			filters.process_filter_options(jsondata);
 			filters.data = jsondata;
 		};
 		setTimeout(function () {xdr.send();}, 0);
 		} else {
-			$.ajax({
+			jQuery.ajax({
 				type: 'GET',
 				url: url,
 				contentType: "application/json",
@@ -821,9 +925,9 @@ function OipaFilters(){
 		// projects page etc.
 
 		// load filter html and implement it in the page
-		$.each(data, function( key, value ) {
-			if (!$.isEmptyObject(value)){
-				if ($.inArray(key, ["sectors"])){ columns = 2; }
+		jQuery.each(data, function( key, value ) {
+			if (!jQuery.isEmptyObject(value)){
+				if (jQuery.inArray(key, ["sectors"])){ columns = 2; }
 				filter.create_filter_attributes(value, columns, key);
 			}
 		});
@@ -852,7 +956,7 @@ function OipaFilters(){
 			var selection = this.selection;
 		}
 
-		$('#map-filter-overlay input:checked').prop('checked', false);
+		jQuery('#map-filter-overlay input:checked').prop('checked', false);
 		if (typeof selection.sectors !== "undefined") { this.init_filters_loop(selection.sectors) };
 		if (typeof selection.countries !== "undefined") { this.init_filters_loop(selection.countries) };
 		if (typeof selection.budgets !== "undefined") { this.init_filters_loop(selection.budgets) };
@@ -866,7 +970,7 @@ function OipaFilters(){
 
 	this.init_filters_loop = function(arr){
 		for(var i = 0; i < arr.length;i++){
-			$(':checkbox[value=' + arr[i].id + ']').prop('checked', true);
+			jQuery(':checkbox[value=' + arr[i].id + ']').prop('checked', true);
 		}
 	};
 
@@ -934,9 +1038,17 @@ function OipaFilters(){
 			html += '</div>';
 		}
 
+		// if no elements found
+		if(sortable.length == 0){
+			html += '<div class="row filter-page filter-page-1">';
+			html += '<div class="col-md-6 col-sm-6 col-xs-12" style="margin-left: 20px;">';
+			html += 'No ' + attribute_type + ' available in the current selection.';
+			html += '</div></div>';
+		}
+
 		// get pagination attributes and add both pagination + filter options to div
-		$("#"+attribute_type+"-pagination").html(this.paginate(1, page_counter));
-		$("#"+attribute_type+"-filters").html(html);
+		jQuery("#"+attribute_type+"-pagination").html(this.paginate(1, page_counter));
+		jQuery("#"+attribute_type+"-filters").html(html);
 		this.load_paginate_listeners(attribute_type, page_counter);
 		this.update_selection_after_filter_load();
 	};
@@ -966,16 +1078,16 @@ function OipaFilters(){
 		for (var x = (cur_page - range); x < ((cur_page + range) + 1); x++) { 
 		   // if it's a valid page number...
 		   if ((x > 0) && (x <= total_pages)) {
-		      if (x == cur_page) { paging_block += "<li class='active'><a>"+x+"</a></li>"; } 
-		      else { paging_block += "<li><a href='#'>"+x+"</a></li>"; } // end else
+			  if (x == cur_page) { paging_block += "<li class='active'><a>"+x+"</a></li>"; } 
+			  else { paging_block += "<li><a href='#'>"+x+"</a></li>"; } // end else
 		   } // end if 
 		} // end for
 
 		if(cur_page < (total_pages - (1 + range))){ paging_block += "<li>...</li>"; }
-		if(cur_page < (total_pages - range)){ paging_block += "<li><a href='#' class='page'><span>"+total_pages+"</span></a></li>"; }       
+		if(cur_page < (total_pages - range)){ paging_block += "<li><a href='#' class='page'><span>"+total_pages+"</span></a></li>"; }	   
 		paging_block += "</ul>";
 
-		// if not on last page, show forward and last page links        
+		// if not on last page, show forward and last page links		
 		if (cur_page != total_pages) { paging_block += '<a href="#" class="pagination-btn-next btn-next">next &gt;</a>'; } 
 		else { paging_block += '<a href="#" class="pagination-btn-next btn-next"></a>'; } // end if
 		/****** end build pagination links ******/
@@ -986,28 +1098,28 @@ function OipaFilters(){
 	this.load_paginate_listeners = function(attribute_type, total_pages){
 
 		// load pagination filters
-		$("#"+attribute_type+"-pagination ul a").click(function(e){
+		jQuery("#"+attribute_type+"-pagination ul a").click(function(e){
 			e.preventDefault();
-			var page_number = $(this).text();
-			$("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
+			var page_number = jQuery(this).text();
+			jQuery("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
 			filter.load_paginate_page(attribute_type, page_number);
 			filter.load_paginate_listeners(attribute_type, total_pages);
 		});
 
-		$("#"+attribute_type+"-pagination .pagination-btn-next").click(function(e){
+		jQuery("#"+attribute_type+"-pagination .pagination-btn-next").click(function(e){
 			e.preventDefault();
-			var page_number = $("#"+attribute_type+"-pagination .active a").text();
+			var page_number = jQuery("#"+attribute_type+"-pagination .active a").text();
 			page_number = parseInt(page_number) + 1;
-			$("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
+			jQuery("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
 			filter.load_paginate_page(attribute_type, page_number);
 			filter.load_paginate_listeners(attribute_type, total_pages);
 		});
 
-		$("#"+attribute_type+"-pagination .pagination-btn-previous").click(function(e){
+		jQuery("#"+attribute_type+"-pagination .pagination-btn-previous").click(function(e){
 			e.preventDefault();
-			var page_number = $("#"+attribute_type+"-pagination .active a").text();
+			var page_number = jQuery("#"+attribute_type+"-pagination .active a").text();
 			page_number = parseInt(page_number) - 1;
-			$("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
+			jQuery("#"+attribute_type+"-pagination").html(filter.paginate(page_number, total_pages));
 			filter.load_paginate_page(attribute_type, page_number);
 			filter.load_paginate_listeners(attribute_type, total_pages);
 		});
@@ -1016,8 +1128,8 @@ function OipaFilters(){
 
 	this.load_paginate_page = function(attribute_type, page_number){
 		// hide all pages
-		$("#"+attribute_type+"-filters .filter-page").hide();
-		$("#"+attribute_type+"-filters .filter-page-"+page_number).show();
+		jQuery("#"+attribute_type+"-filters .filter-page").hide();
+		jQuery("#"+attribute_type+"-filters .filter-page-"+page_number).show();
 	};
 
 	this.reload_specific_filter = function(filter_name, data){
@@ -1036,7 +1148,7 @@ function OipaFilters(){
 			if (filter_name === "countries") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) ); }
 			if (filter_name === "cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) ); }
 
-			$.support.cors = true;
+			jQuery.support.cors = true;
 
 			if(window.XDomainRequest){
 				var xdr = new XDomainRequest();
@@ -1045,16 +1157,16 @@ function OipaFilters(){
 				xdr.ontimeout = function () { };
 				xdr.onerror = function () { };
 				xdr.onload = function() {
-					var jsondata = $.parseJSON(xdr.responseText);
+					var jsondata = jQuery.parseJSON(xdr.responseText);
 					if (jsondata === null || typeof (jsondata) === 'undefined')
 					{
-						jsondata = $.parseJSON(jsondata.firstChild.textContent);
+						jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
 					}
 					filters.reload_specific_filter(filter_name, jsondata);
 				};
 				setTimeout(function () {xdr.send();}, 0);
 			} else {
-				$.ajax({
+				jQuery.ajax({
 					type: 'GET',
 					url: url,
 					contentType: "application/json",
@@ -1087,8 +1199,9 @@ function OipaFilters(){
 
 
 	this.reset_filters = function(){
-		$("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
+		jQuery("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
 		filter.selection.search = "";
+		filter.selection.query = "";
 		filter.selection.country = "";
 		filter.selection.region = "";
 		filter.save();
@@ -1182,77 +1295,6 @@ function OipaProjectFilters(){
 OipaProjectFilters.prototype = new OipaFilters();
 
 
-function OipaUrl(){
-
-	this.get_selection_from_url = function(){
-		var query = window.location.search.substring(1);
-			if(query !== ''){
-				var vars = query.split("&");
-				for (var i=0;i<vars.length;i++) {
-					var pair = vars[i].split("=");
-				var vals = pair[1].split(",");
-				current_selection[pair[0]] = [];
-
-				for(var y=0;y<vals.length;y++){
-					if (pair[0] !== "query"){
-						this[pair[0]].push({"id":vals[y], "name":"unknown"});
-					} else{
-						this[pair[0]].push({"id":vals[y], "name":vals[y]});
-					}
-				}
-			}
-		}
-	};
-
-	this.set_current_url = function(){
-		var link = document.URL.toString().split("?")[0] + build_parameters();
-		if (history.pushState) {
-			history.pushState(null, null, link);
-		}
-	};
-
-	this.build_parameters = function (api_call){
-
-		// switch
-
-		// build current url based on selection made
-		var url = '?p=';
-		if (typeof oipaSelection.sectors !== "undefined") { url += this.build_current_url_add_par("sectors", oipaSelection.sectors); }
-		if (!exclude_countries){
-			if (typeof oipaSelection.countries !== "undefined") { url += this.build_current_url_add_par("countries", oipaSelection.countries); }
-		}
-		if (typeof oipaSelection.budgets !== "undefined") { url += this.build_current_url_add_par("budgets", oipaSelection.budgets); }
-		if (typeof oipaSelection.regions !== "undefined") { url += this.build_current_url_add_par("regions", oipaSelection.regions); }
-		if (typeof oipaSelection.indicators !== "undefined") { url += this.build_current_url_add_par("indicators", oipaSelection.indicators); }
-		if (typeof oipaSelection.cities !== "undefined") { url += this.build_current_url_add_par("cities", oipaSelection.cities); }
-		if (typeof oipaSelection.reporting_organisations !== "undefined") { url += this.build_current_url_add_par("reporting_organisations", oipaSelection.reporting_organisations); }
-		if (typeof oipaSelection.offset !== "undefined") { url += this.build_current_url_add_par("offset", oipaSelection.offset); }
-		if (typeof oipaProjectList.limit !== "undefined") { url += this.build_current_url_add_par("limit", oipaProjectList.limit); }
-		if (typeof oipaProjectList.order_by !== "undefined") { url += this.build_current_url_add_par("order_by", oipaProjectList.order_by); }
-		if (typeof oipaProjectList.query !== "undefined") { url += this.build_current_url_add_par("query", oipaProjectList.query); }
-		if (url === '?p='){return '';}
-		url = url.replace("?p=&", "?");
-
-		return url;
-	};
-
-	this.build_current_url_add_par = function(name, arr, dlmtr){
-
-		if(dlmtr === undefined){
-			dlmtr = ",";
-		}
-
-		if(arr.length === 0){return '';}
-		var par = '&' + name + '=';
-		for(var i = 0; i < arr.length;i++){
-			par += arr[i].id.toString() + dlmtr;
-		}
-		par = par.substr(0, par.length - 1);
-
-		return par;
-	};
-}
-
 
 function OipaExport(vis, filetype){
 	this.visualisation = vis;
@@ -1282,8 +1324,8 @@ var OipaSelectionBox = {
 		if ((typeof current_selection.indicators !== "undefined") && (current_selection.indicators.length > 0)) { indicatorhtml = fill_selection_box_single_filter("INDICATORS", current_selection.indicators); }
 		if ((typeof current_selection.reporting_organisations !== "undefined") && (current_selection.reporting_organisations.length > 0)) { indicatorhtml = fill_selection_box_single_filter("REPORTING_ORGANISATIONS", current_selection.reporting_organisations); }
 		if ((typeof current_selection.query !== "undefined") && (current_selection.query.length > 0)) { html += fill_selection_box_single_filter("QUERY", current_selection.query); }
-		$("#selection-box").html(html);
-		$("#selection-box-indicators").html(indicatorhtml);
+		jQuery("#selection-box").html(html);
+		jQuery("#selection-box-indicators").html(indicatorhtml);
 		this.init_remove_filters_from_selection_box();
 	},
 	fill_selection_box_single_filter: function(header, arr){
@@ -1301,7 +1343,7 @@ var OipaSelectionBox = {
 			html += '<div id="selected-' + arr[i].id.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc') + '" class="selected-remove-button"></div>';
 
 			if (arr[i].name.toString() == 'unknown'){
-				arr[i].name = $(':checkbox[value=' + arr[i].id + ']').attr("name");
+				arr[i].name = jQuery(':checkbox[value=' + arr[i].id + ']').attr("name");
 			}
 
 			html += '<div>' + arr[i].name + '</div>';
@@ -1316,16 +1358,16 @@ var OipaSelectionBox = {
 	},
 	init_remove_filters_from_selection_box: function (){
 
-		$(".selected-remove-button").click(function(){
-			var id = $(this).attr('id');
+		jQuery(".selected-remove-button").click(function(){
+			var id = jQuery(this).attr('id');
 			id = id.replace("selected-", "");
-			var filtername = $(this).parent().parent().attr('id');
+			var filtername = jQuery(this).parent().parent().attr('id');
 			filtername = filtername.replace("selected-", "");
 			var arr = current_selection[filtername];
 			for (var i = 0; i < arr.length;i++){
 				if(arr[i].id === id){
 					// arr.splice(i, 1);
-					$('input[name="' + arr[i].name + '"]').attr('checked', false);
+					jQuery('input[name="' + arr[i].name + '"]').attr('checked', false);
 					break;
 				}
 			}
@@ -1365,30 +1407,30 @@ function make_parameter_string_from_budget_selection(arr){
 	var lte = '';
 	var str = '';
 
-    if(arr.length > 0){
-      gte = '99999999999';
-      lte = '0';
-      for(var i = 0; i < arr.length; i++){
-        curid = arr[i].id;
-        lower_higher = curid.split('-');
+	if(arr.length > 0){
+	  gte = '99999999999';
+	  lte = '0';
+	  for(var i = 0; i < arr.length; i++){
+		curid = arr[i].id;
+		lower_higher = curid.split('-');
 
-        if(lower_higher[0] < gte){
-          gte = lower_higher[0];
-        }
+		if(lower_higher[0] < gte){
+		  gte = lower_higher[0];
+		}
 
-        if(lower_higher.length > 1){
-          if(lower_higher[1] > lte){
-            lte = lower_higher[1];
-          }
-        }
-      }
-    }
+		if(lower_higher.length > 1){
+		  if(lower_higher[1] > lte){
+			lte = lower_higher[1];
+		  }
+		}
+	  }
+	}
   
 	if (gte != '' && gte != '99999999999'){
-		str += '&total_budget__gte=' + gte;
+		str += '&total_budget__gt=' + gte;
 	}
 	if (lte != '' && lte != '0'){
-		str += '&total_budget__lte=' + lte;
+		str += '&total_budget__lt=' + lte;
 	}
 
 	return str;
@@ -1434,6 +1476,7 @@ function make_parameter_string_from_query_selection(str, parameter_name){
 function get_activity_based_parameters_from_selection(selection){
 	var str_region = make_parameter_string_from_selection(selection.regions, "regions__in");
 	var str_country = make_parameter_string_from_selection(selection.countries, "countries__in");
+	var str_sector = make_parameter_string_from_selection(selection.sectors, "sectors__in");
 	var str_budget = make_parameter_string_from_budget_selection(selection.budgets);
 	var str_start_year = make_parameter_string_from_selection(selection.start_planned_years, "start_planned__in");
 	var str_donor = make_parameter_string_from_selection(selection.donors, "participating_organisations__in");
@@ -1442,7 +1485,7 @@ function get_activity_based_parameters_from_selection(selection){
 	var str_country_search = make_parameter_string_from_query_selection(selection.country, "country");
 	var str_region_search = make_parameter_string_from_query_selection(selection.region, "region");
 
-	return str_region + str_country + str_budget + str_start_year + str_donor + str_reporting_organisation + str_search + str_country_search + str_region_search;
+	return str_region + str_country + str_sector + str_budget + str_start_year + str_donor + str_reporting_organisation + str_search + str_country_search + str_region_search;
 }
 
 
@@ -1467,7 +1510,8 @@ function replaceAll(o,t,r,c){
 }
 
 function perform_cors_ajax_call_with_refresh_callback(url, current_object){
-	$.support.cors = true;
+
+	jQuery.support.cors = true;
 
 	if(window.XDomainRequest){
 		var xdr = new XDomainRequest();
@@ -1476,16 +1520,16 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 		xdr.ontimeout = function () { };
 		xdr.onerror = function () { };
 		xdr.onload = function() {
-			var data = $.parseJSON(xdr.responseText);
+			var data = jQuery.parseJSON(xdr.responseText);
 			if (data === null || typeof (data) === 'undefined')
 			{
-				data = $.parseJSON(data.firstChild.textContent);
+				data = jQuery.parseJSON(data.firstChild.textContent);
 			}
 			current_object.refresh(data);
 		};
 		setTimeout(function () {xdr.send();}, 0);
 	} else {
-		$.ajax({
+		jQuery.ajax({
 			type: 'GET',
 			url: url,
 			contentType: "application/json",

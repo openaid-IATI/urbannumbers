@@ -59,8 +59,9 @@
 						<div class="btns-holder">
 							<div class="holder">
 								<ul class="btns-list">
-									<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
+									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
 									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
+									<li class="filter-error-msg"></li>
 								</ul>
 							</div>
 						</div>
@@ -81,8 +82,9 @@
 						<div class="btns-holder">
 							<div class="holder">
 								<ul class="btns-list">
-									<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
+									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
 									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
+									<li class="filter-error-msg"></li>
 								</ul>
 							</div>
 						</div>
@@ -103,8 +105,9 @@
 						<div class="btns-holder">
 							<div class="holder">
 								<ul class="btns-list">
-									<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
+									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
 									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
+									<li class="filter-error-msg"></li>
 								</ul>
 							</div>
 						</div>
@@ -125,8 +128,9 @@
 						<div class="btns-holder">
 							<div class="holder">
 								<ul class="btns-list">
-									<li><a href="#" class="filters-save-button btn btn-blue btn-close">Save</a></li>
+									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
 									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
+									<li class="filter-error-msg"></li>
 								</ul>
 							</div>
 						</div>

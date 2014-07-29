@@ -17,7 +17,12 @@ $("#right-map .change-basemap-link").click(function(e){
 });
 
 $(".filters-save-button").click(function(e){
-	filter.save();
+	e.preventDefault();
+	var saved = filter.save();
+	if (saved){
+		$(".sort-list .active .opener").click();
+	}
+	console.log(saved);
 });
 
 $("#reset-filters").click(function(e){
@@ -94,6 +99,14 @@ $("#delete-account-button").click(function(e){
 	$("#urbannumbers-remove-account").show();
 });
 
+$(".close-login").click(function(e){
+	e.preventDefault();
+	$("#hoover-wrapper").hide();
+	$("#urbannumbers-login").hide();
+	$("#urbannumbers-register").hide();
+	$("#urbannumbers-lostpassword").hide();
+});
+
 
 function UnhabitatOipaCompareFilters(){
 	this.get_url = function(selection, parameters_set){
@@ -121,5 +134,69 @@ function UnhabitatOipaIndicatorFilters(){
 		
 		return cururl;
 	};
+
+	this.reset_filters = function(){
+		jQuery("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
+		filter.selection.search = "";
+		filter.selection.query = "";
+		filter.selection.country = "";
+		filter.selection.region = "";
+		filter.selection.regions = [];
+		filter.selection.cities = [];
+		filter.selection.countries = [];
+		filter.selection.indicators = [];
+		filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+		// TO DO: set checkboxes
+		filter.save(true);
+	}
 };
 UnhabitatOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
+
+
+function get_wiki_city_data(city_name, left_right_city){
+
+	city_name = city_name.replace(" ", "_");
+
+	//An approch to getting the summary / leading paragraphs / section 0 out of Wikipedia articlies within the browser using JSONP with the Wikipedia API: http://en.wikipedia.org/w/api.php
+
+	// var url = "http://en.wikipedia.org/wiki/";
+	// var title = url.split("/");
+	// title = title[title.length - 1];
+	var text = "";
+	//Get Leading paragraphs (section 0)
+	$.getJSON("http://en.wikipedia.org/w/api.php?action=parse&page=" + city_name + "&prop=text&section=0&format=json&callback=?", function (data) {
+	    
+
+	    for (text in data.parse.text) {
+	        var text = data.parse.text[text].split("<p>");
+	        var pText = "";
+
+	        for (p in text) {
+	            //Remove html comment
+	            text[p] = text[p].split("<!--");
+	            if (text[p].length > 1) {
+	                text[p][0] = text[p][0].split(/\r\n|\r|\n/);
+	                text[p][0] = text[p][0][0];
+	                text[p][0] += "</p> ";
+	            }
+	            text[p] = text[p][0];
+
+	            //Construct a string from paragraphs
+	            if (text[p].indexOf("</p>") == text[p].length - 5) {
+	                var htmlStrip = text[p].replace(/<(?:.|\n)*?>/gm, '') //Remove HTML
+	                var splitNewline = htmlStrip.split(/\r\n|\r|\n/); //Split on newlines
+	                for (newline in splitNewline) {
+	                    if (splitNewline[newline].substring(0, 11) != "Cite error:") {
+	                        pText += splitNewline[newline];
+	                        pText += "\n";
+	                    }
+	                }
+	            }
+	        }
+	        pText = pText.substring(0, pText.length - 2); //Remove extra newline
+	        pText = pText.replace(/\[\d+\]/g, ""); //Remove reference tags (e.x. [1], [4], etc)
+	        text = pText;
+	        jQuery("."+left_right_city+"-city-wikipedia").text(pText);
+	    }
+	});
+}
