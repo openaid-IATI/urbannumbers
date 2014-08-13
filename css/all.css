@@ -1759,12 +1759,7 @@ img.aligncenter{
 .action-list a:focus .icon-share,
 .action-list a:hover .icon-share{background-position:-325px -50px;}
 /* twocolumns */
-#twocolumns{
-	padding:26px 38px 0 57px;
-	-webkit-box-shadow:0 -1px 1px rgba(0, 0, 0, 0.25);
-	box-shadow:			0 -1px 1px rgba(0, 0, 0, 0.25);
-	background:#f1f2f5 url(../images/bg-noise.png);
-}
+
 #twocolumns .twocolumns-holder{
 	position:relative;
 	padding:0 0 40px 0;
@@ -1774,7 +1769,7 @@ img.aligncenter{
 	position:absolute;
 	top:12px;
 	bottom:60px;
-	left:56.2%;
+	left:63.2%;
 	margin:0 0 0 -4px;
 	width:1px;
 	background:url(../images/separator1.png) repeat-y;
@@ -2493,6 +2488,7 @@ img.aligncenter{
 4. Styles for Responsive web design
 ---------------------------------------------------------*/
 @media only screen and (max-width:1499px){
+	#twocolumns .twocolumns-holder:before{left:65.2%;}
 	#nav{
 		overflow:hidden;
 	}
@@ -2554,6 +2550,7 @@ img.aligncenter{
 	#twocolumns .twocolumns-holder{padding:0;}
 }
 @media only screen and (max-width:1140px){
+
 	.description-box .text-holder{
 		overflow:visible;
 		max-width:100%;
@@ -2610,7 +2607,6 @@ img.aligncenter{
 @media only screen and (max-width:992px){
 	.columns-holder .map-holder .dropdown .dropdown-box{min-width: 380px;}
 	.columns-holder .map-holder .dropdown .dropdown-box .visual-list{padding: 0;}
-	#twocolumns .twocolumns-holder:before{left:65.2%;}
 	.description-box .img-holder{
 		float:none;
 		margin:0 0 20px;

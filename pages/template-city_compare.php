@@ -3,7 +3,7 @@
 Template Name: City compare
 */
 get_header(); the_post(); ?>
-	<div id="main">
+	<div id="main" class="city-compare-wrapper">
 		<!-- container-map -->
 		<div class="container-map small">
 			
@@ -42,7 +42,7 @@ get_header(); the_post(); ?>
 						<div class="col-md-6 col-sm-6">
 							<div class="text-box">
 								<div class="text-frame left-city-wikipedia">
-									<p>Barcelona is the capital city of the autonomous community of Catalonia in Spain, and the second largest city in the country, with a population of 1,620,943[1] within its administrative limits. The urban area of Barcelona extends beyond the administrative city limits with a population of around 4.5 million,[citation needed] being the sixth-most populous urban area in the European Union after Paris, London, the Ruhr, Madrid and Milan. </p>
+									
 								</div>
 								
 							</div>
@@ -50,9 +50,8 @@ get_header(); the_post(); ?>
 						<div class="col-md-6 col-sm-6">
 							<div class="text-box">
 								<div class="text-frame right-city-wikipedia">
-									<p>Jakarta, officially known as the Special Capital Region of Jakarta (Indonesian: Daerah Khusus Ibu Kota Jakarta), is the capital and largest city of Indonesia, and one of the most populous Urban agglomerations in the world.</p>
+									
 								</div>
-								
 							</div>
 						</div>
 					</div>

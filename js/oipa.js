@@ -43,18 +43,29 @@ function OipaUrl(selection){
 		this.region = ""; // for region search
 		this.group_by = "";
 		this.url = null;
-
-		// build current url based on selection made
 		var url = '?p=';
-		if (typeof this.selection.cities !== "undefined") { url += this.build_current_url_add_par("cities", this.selection.cities); }
-		if (typeof this.selection.countries !== "undefined") { url += this.build_current_url_add_par("countries", this.selection.countries); }
-		if (typeof this.selection.regions !== "undefined") { url += this.build_current_url_add_par("regions", this.selection.regions); }
-		if (typeof this.selection.sectors !== "undefined") { url += this.build_current_url_add_par("sectors", this.selection.sectors); }
-		if (typeof this.selection.budgets !== "undefined") { url += this.build_current_url_add_par("budgets", this.selection.budgets); }
-		if (typeof this.selection.indicators !== "undefined") { url += this.build_current_url_add_par("indicators", this.selection.indicators); }
-		if (typeof this.selection.reporting_organisations !== "undefined") { url += this.build_current_url_add_par("reporting_organisations", this.selection.reporting_organisations); }
-		if (typeof this.selection.donors !== "undefined") { url += this.build_current_url_add_par("donors", this.selection.donors); }
-		if (typeof this.selection.query !== "undefined") { url += this.build_current_url_add_par("query", this.selection.query); }
+
+		if (Oipa.pageType != "compare"){
+		// build current url based on selection made
+		
+			if (typeof this.selection.cities !== "undefined") { url += this.build_current_url_add_par("cities", this.selection.cities); }
+			if (typeof this.selection.countries !== "undefined") { url += this.build_current_url_add_par("countries", this.selection.countries); }
+			if (typeof this.selection.regions !== "undefined") { url += this.build_current_url_add_par("regions", this.selection.regions); }
+			if (typeof this.selection.sectors !== "undefined") { url += this.build_current_url_add_par("sectors", this.selection.sectors); }
+			if (typeof this.selection.budgets !== "undefined") { url += this.build_current_url_add_par("budgets", this.selection.budgets); }
+			if (typeof this.selection.indicators !== "undefined") { url += this.build_current_url_add_par("indicators", this.selection.indicators); }
+			if (typeof this.selection.reporting_organisations !== "undefined") { url += this.build_current_url_add_par("reporting_organisations", this.selection.reporting_organisations); }
+			if (typeof this.selection.donors !== "undefined") { url += this.build_current_url_add_par("donors", this.selection.donors); }
+			if (typeof this.selection.query !== "undefined") { url += this.build_current_url_add_par("query", this.selection.query); }
+		} else {
+
+			if (typeof this.selection.left.cities !== "undefined") { url += this.build_current_url_add_par("left_cities", this.selection.left.cities); }
+			if (typeof this.selection.left.countries !== "undefined") { url += this.build_current_url_add_par("left_countries", this.selection.left.countries); }
+			if (typeof this.selection.right.cities !== "undefined") { url += this.build_current_url_add_par("right_cities", this.selection.right.cities); }
+			if (typeof this.selection.right.countries !== "undefined") { url += this.build_current_url_add_par("right_countries", this.selection.right.countries); }
+			if (typeof this.selection.indicators !== "undefined") { url += this.build_current_url_add_par("indicators", this.selection.indicators); }
+		}
+
 		if (url === '?p='){return '';}
 		url = url.replace("?p=&", "?");
 
@@ -129,30 +140,36 @@ var Oipa = {
 	create_visualisations : function(){
 		var thisoipa = this;
 		data = this.mainSelection.indicators;
-		// for each indicator
-		jQuery.each(data, function(key, value){
 
-			// create line chart
-			var linechart = new OipaLineChart();
-			linechart.selection = new OipaIndicatorSelection();
-			linechart.selection.cities = thisoipa.mainSelection.cities;
-			linechart.selection.countries = thisoipa.mainSelection.countries;
-			linechart.selection.regions = thisoipa.mainSelection.regions;
-			linechart.selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
+		if (this.pageType == "indicators"){
+			// for each indicator
+			jQuery.each(data, function(key, value){
 
-			linechart.indicator = value.id;
-		 	linechart.name = value.name;
-			linechart.y_name = value.name;
-			linechart.y_format = d3.format(',r');
-			linechart.x_name = 'Time (Years)';
-			linechart.x_format = d3.format('r');
+				// create line chart
+				var linechart = new OipaLineChart();
+				linechart.selection = new OipaIndicatorSelection();
+				linechart.selection.cities = thisoipa.mainSelection.cities;
+				linechart.selection.countries = thisoipa.mainSelection.countries;
+				linechart.selection.regions = thisoipa.mainSelection.regions;
+				linechart.selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
 
-			linechart.init();
+				linechart.indicator = value.id;
+			 	linechart.name = value.name;
+				linechart.y_name = value.name;
+				linechart.y_format = d3.format(',r');
+				linechart.x_name = 'Time (Years)';
+				linechart.x_format = d3.format('r');
 
-			thisoipa.visualisations.push(linechart);
-			
-		});
+				linechart.init();
 
+				thisoipa.visualisations.push(linechart);
+				
+			});
+		}
+
+		if (this.pageType == "compare"){
+			OipaCompare.create_visualisations();
+		}
 
 	},
 	lists: [],
@@ -270,7 +287,6 @@ function OipaList(){
 	}
 
 	this.update_pagination = function(data){
-		console.log(data);
 		var total = jQuery(this.list_div + " .list-amount-input").val();
 		this.amount = total;
 
@@ -392,7 +408,6 @@ function OipaProjectList(){
 		if(this.order_by){ extra_par += "&order_by=" + desc + this.order_by; }
 		var url = site_url + ajax_path + project_path + "/?format=json&limit=" + this.limit + "&offset=" + this.offset + parameters + extra_par;
 		url = replaceAll(url, " ", "%20");
-		console.log(url);
 		return url;
 	};
 
@@ -490,7 +505,6 @@ function OipaMap(){
 	};
 
 	this.refresh = function(data){
-
 
 		if (!data){
 			if (this.compare_left_right == "left"){
@@ -689,34 +703,16 @@ function OipaMap(){
 
 		jQuery.support.cors = true;
 	
-		if(window.XDomainRequest){
-		var xdr = new XDomainRequest();
-		xdr.open("get", url);
-		xdr.onprogress = function () { };
-		xdr.ontimeout = function () { };
-		xdr.onerror = function () { };
-		xdr.onload = function() {
-			var jsondata = jQuery.parseJSON(xdr.responseText);
-			if (jsondata == null || typeof (jsondata) == 'undefined')
-			{
-				jsondata = jQuery.parseJSON(data.firstChild.textContent);
+		jQuery.ajax({
+			type: 'GET',
+			url: url,
+			contentType: "application/json",
+			dataType: 'json',
+			success: function(data){
+				city.set_compare_data(data, thismap.compare_left_right);
 			}
-			city.set_compare_data(jsondata, thismap.compare_left_right);
-		}
-		setTimeout(function () {xdr.send();}, 0);
-		} else {
-
-			jQuery.ajax({
-				type: 'GET',
-				url: url,
-				contentType: "application/json",
-				dataType: 'json',
-				success: function(data){
-					city.set_compare_data(data, thismap.compare_left_right);
-				}
-			});
-		}
-
+		});
+		
 		return city;
 	};
 
@@ -756,6 +752,7 @@ function OipaCity(){
 		}
 
 		OipaCompare.refresh_state++;
+		
 		if (OipaCompare.refresh_state > 1){
 			
 			OipaCompare.refresh_state = 0;
@@ -797,7 +794,7 @@ function OipaFilters(){
 				return false;
 			}
 		}
-
+		
 		// reload maps
 		Oipa.refresh_maps();
 
@@ -1052,6 +1049,8 @@ function OipaFilters(){
 		this.load_paginate_listeners(attribute_type, page_counter);
 		this.update_selection_after_filter_load();
 	};
+
+
 
 	this.update_selection_after_filter_load = function(){
 		// TO DO

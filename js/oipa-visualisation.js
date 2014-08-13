@@ -1,27 +1,22 @@
 
 function OipaVis(){
-	this.type = null;
+	this.type = null; // override
 	this.data = null;
 	this.selection = null;
 	this.name = null;
 	this.indicator = null;
-	this.y_name = null;
-	this.y_format = null;
-	this.x_name = null;
-	this.x_format = null;
-	this.limit = 5;
+	this.chartwrapper = "#visualisation-block-wrapper";
 
-	this.init = function(in_favorites){
+	this.init = function(){
 		// create html
-		var html = '<li><section class="container-box" data-indicator="'+this.indicator+'"><header class="heading-holder"><h3>'+this.name+'</h3></header>';
-		html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><svg id="line-chart" style="height:350px; width: 350px;"></svg></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
+		var html = '<li><section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><header class="heading-holder"><h3>'+this.name+'</h3></header>';
+		html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><svg id="line-chart" style="height:350px; width: 350px;"></svg></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
 		if (this.limit){
 			html += '<div class="vis-box-note">Showing top '+this.limit+', use filters to show a different selection, <a class="vis-box-show-all" href="#">click here to show all</a></div>';
 		}
 		html += '</div></section></li>';
 		$("#visualisation-block-wrapper").append(html);
 		this.load_listeners();
-
 		this.refresh();
 		this.check_if_in_favorites();
 	};
@@ -39,7 +34,7 @@ function OipaVis(){
 		
 		$.post(ajaxurl, data, function(response) {
 			if(response.status == "in_favorites"){
-				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+				$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
 			}
 		});
 	};
@@ -84,7 +79,6 @@ function OipaVis(){
 
 		
 		var htmlencoded = $('<div/>').text(savestring).html();
-console.log(htmlencoded);
 		var data = {
 			'action': 'favorite_visualisation',
 			'visdata': savestring
@@ -102,10 +96,10 @@ console.log(htmlencoded);
 
 			} else if (response.status == "already_in_favorites"){
 				console.log("Already in favorites");
-				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+				$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
 			
 			} else if (response.status == "saved"){
-				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+				$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
 				console.log("Saved");
 			}
 		});
@@ -128,10 +122,10 @@ console.log(htmlencoded);
 
 			} else if (response.status == "not_in_favorites"){
 				console.log("Not found in favorites");
-				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+				$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
 				
 			} else if (response.status == "removed_from_favorites"){
-				$("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
+				$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
 				console.log("Removed");
 			}
 		});
@@ -148,6 +142,7 @@ console.log(htmlencoded);
 			this.get_data(url);
 			
 		} else {
+
 			this.visualize(data);
 		}
 	};
@@ -229,14 +224,14 @@ console.log(htmlencoded);
 	};
 
 	this.zoom_in = function(){
-		$("section[data-indicator='"+this.indicator+"'] .glyphicon-zoom-in").removeClass("glyphicon-zoom-in").addClass("glyphicon-zoom-out");
-		$("section[data-indicator='"+this.indicator+"']").css('position', 'fixed').css('width', '90%').css('height', '90%').css('margin', '3% 5%').css('z-index', '9999999').css('top', '0').css('left', '0').css('background-color', 'white');
-		$("section[data-indicator='"+this.indicator+"'] svg").css("height", "90%").css("width", "90%"); $(window).resize();
+		$("section[data-indicator='"+this.indicator+"'][data-vis-type='"+this.type+"'] .glyphicon-zoom-in").removeClass("glyphicon-zoom-in").addClass("glyphicon-zoom-out");
+		$("section[data-indicator='"+this.indicator+"'][data-vis-type='"+this.type+"']").css('position', 'fixed').css('width', '90%').css('height', '90%').css('margin', '3% 5%').css('z-index', '9999999').css('top', '0').css('left', '0').css('background-color', 'white');
+		$("section[data-indicator='"+this.indicator+"'][data-vis-type='"+this.type+"'] svg").css("height", "90%").css("width", "90%"); $(window).resize();
 	};
 
 	this.zoom_out = function(){
-		$("section[data-indicator='"+this.indicator+"'] .glyphicon-zoom-out").removeClass("glyphicon-zoom-out").addClass("glyphicon-zoom-in");
-		$("section[data-indicator='"+this.indicator+"']").css('position', 'relative').css('width', 'auto').css('height', 'auto').css('margin', 'auto').css('z-index', '1').css('top', 'auto').css('left', 'auto').css('background-color', 'transparent');
+		$("section[data-indicator='"+this.indicator+"'][data-vis-type='"+this.type+"'] .glyphicon-zoom-out").removeClass("glyphicon-zoom-out").addClass("glyphicon-zoom-in");
+		$("section[data-indicator='"+this.indicator+"'][data-vis-type='"+this.type+"']").css('position', 'relative').css('width', 'auto').css('height', 'auto').css('margin', 'auto').css('z-index', '1').css('top', 'auto').css('left', 'auto').css('background-color', 'transparent');
 		$(window).resize();
 	};
 
@@ -245,7 +240,7 @@ console.log(htmlencoded);
 		var curchart = this;
 
 		
-		$("section[data-indicator='"+curchart.indicator+"'] .btn-vis-close").click(function(e){
+		$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-close").click(function(e){
 			e.preventDefault();
 			
 			// TO DO: on deletion of vis, remove vis from Oipa.visualisations
@@ -256,31 +251,36 @@ console.log(htmlencoded);
 			
 		});
 
-		$("section[data-indicator='"+curchart.indicator+"'] .btn-vis-zoom").click(function(e){
+		$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-zoom").click(function(e){
 			e.preventDefault();
 
-			if ($("section[data-indicator='"+curchart.indicator+"'] .glyphicon-zoom-in").length){ // if unzoomed
+			if ($("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-zoom-in").length){ // if unzoomed
 				curchart.zoom_in();
 			} else { // zoomed, so zoom out
 				curchart.zoom_out();
 			}
 		});
 
-		$("section[data-indicator='"+curchart.indicator+"'] .vis-box-show-all").click(function(e){
+		$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .vis-box-show-all").click(function(e){
 			e.preventDefault();
 			curchart.limit = null;
 			curchart.refresh();
 		});
 
-		$("section[data-indicator='"+curchart.indicator+"'] .btn-vis-save").click(function(e){
+		$("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-save").click(function(e){
 			e.preventDefault();
-			if($("section[data-indicator='"+curchart.indicator+"'] .glyphicon-star-empty").length > 0){
+			if($("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").length > 0){
 				curchart.favorite();
 			} else {
 				curchart.unfavorite();
 			}
 		});
 	};
+
+	this.remove = function(){
+		$("section[data-indicator='"+this.indicator+"']").parent("li").remove();
+		// TO DO: remove from Oipa.visualisations list
+	}
 
 }
 
@@ -292,12 +292,124 @@ OipaTableChart.prototype = new OipaVis();
 
 
 
+function OipaColumnChart(){
+	this.type = "OipaColumnChart";
+
+	this.format_data = function(data){
+
+		var d = [];		
+		var locs = [];
+		var indicators = [];
+		
+		// get geolocs
+		$.each(data, function(key, value){
+
+		 	if ($.inArray(value.indicator_friendly, indicators) < 0){
+				indicators[key] = value.indicator_friendly;
+			}
+
+			$.each(value.locs, function(ikey, ivalue){
+				if ($.inArray(ivalue.id, locs) < 0){
+					locs[ikey] = ivalue.name;
+				}
+			});
+		});
+
+		// bv. Helsinki
+		for(var lockey in locs) {
+
+			locval = locs[lockey];
+
+			var curcity = {
+				key: locval,
+				values: []
+			};
+			
+			for(var indkey in indicators) {
+
+				indval = indicators[indkey];
+
+				if(jQuery.inArray(lockey, data[indkey].locs)){
+					for (var firstyear in data[indkey].locs[lockey].years){
+
+						var modindval = indval;
+						if(modindval.indexOf('–') !== -1){
+
+							modindval = indval.split('–')[1];
+						}
+
+
+						var curindicator = { 
+							"label" : modindval,
+							"value" : data[indkey].locs[lockey].years[firstyear]
+						}
+						curcity.values.push(curindicator);
+						break;
+					}
+				}
+			}
+			d.push(curcity);
+		}
+
+		if (d.length < 1){
+			return null;
+		}
+		//console.log(d);
+		return d;
+	};
+
+	this.visualize = function(data){
+
+		var current_vis = this;
+
+		var data = current_vis.format_data(data);
+
+		if (!data){
+			// empty data, remove vis
+			this.remove();
+			return false;
+		}
+
+		nv.addGraph(function() {
+			var chart = nv.models.discreteBarChart()
+			.x(function(d) { return d.label })    //Specify the data accessors.
+			.y(function(d) { return d.value })
+			.staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+			.tooltips(true)        //Don't show tooltips
+			.showValues(true)       //...instead, show the bar value right on top of each bar.
+			.transitionDuration(350)
+			.color(['#aec7e8', '#7b94b5', '#486192'])
+			;
+
+			
+
+			d3.select('section[data-indicator="'+current_vis.indicator+'"][data-vis-type="'+current_vis.type+'"] svg')
+			    .datum(data)
+			    .call(chart);
+
+			nv.utils.windowResize(chart.update);
+
+			return chart;
+		});
+	};
+
+}
+OipaColumnChart.prototype = new OipaVis();
+
+
+
+
+
+
+
+
 function OipaLineChart(){
 	this.type = "OipaLineChart";
-
-
-
-	
+	this.y_name = null;
+	this.y_format = null;
+	this.x_name = null;
+	this.x_format = null;
+	this.limit = 5;
 
 	this.format_data = function(data){
 
@@ -322,7 +434,16 @@ function OipaLineChart(){
 
 	this.visualize = function(data){
 
+		
+
 		var current_vis = this;
+		data = current_vis.format_data(data);   //You need data...
+
+		if (!data){
+			// empty data, remove vis
+			this.remove();
+			return false;
+		}
 
 		nv.addGraph(function() {
 		  var chart = nv.models.lineChart()
@@ -343,9 +464,10 @@ function OipaLineChart(){
 		      .tickFormat(current_vis.y_format);
 
 		  /* Done setting the chart up? Time to render it!*/
-		  var myData = current_vis.format_data(data);   //You need data...
-		  d3.select('section[data-indicator="'+current_vis.indicator+'"] svg')    //Select the <svg> element you want to render the chart in.   
-		      .datum(myData)         //Populate the <svg> element with chart data...
+		  
+
+		  d3.select('section[data-indicator="'+current_vis.indicator+'"][data-vis-type="'+current_vis.type+'"] svg')    //Select the <svg> element you want to render the chart in.   
+		      .datum(data)         //Populate the <svg> element with chart data...
 		      .call(chart);          //Finally, render the chart!
 
 		  //Update the chart when window resizes.
@@ -366,6 +488,7 @@ OipaLineChart.prototype = new OipaVis();
 
 
 
+
 function OipaBubbleChart(){
 	this.type = "OipaBubbleChart";
 }
@@ -374,12 +497,285 @@ OipaBubbleChart.prototype = new OipaVis();
 
 function OipaRadarChart(){
 	this.type = "OipaRadarChart";
+	this.data = null;
+	this.name = null;
+	this.indicator = null;
+	this.limit = null;
+
+	this.init = function(){
+		// create html
+		var html = '<li><section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><header class="heading-holder"><h3>'+this.name+'</h3></header>';
+		html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><div class="radar-chart" style="height:350px; width: 350px;"></div></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
+		html += '</div></section></li>';
+		$(this.chartwrapper).append(html);
+		this.load_listeners();
+		this.refresh();
+		this.check_if_in_favorites();
+	};
+
+	this.format_data = function(data){
+		var d = [];		
+		var locs = [];
+		var indicators = [];
+		
+		// get geolocs
+		$.each(data, function(key, value){
+
+		 	if ($.inArray(value.indicator_friendly, indicators) < 0){
+				indicators[key] = value.indicator_friendly;
+			}
+
+			$.each(value.locs, function(ikey, ivalue){
+				if ($.inArray(ivalue.id, locs) < 0){
+					locs[ikey] = ivalue.name;
+				}
+			});
+		});
+
+		for(var lockey in locs) {
+
+			locval = locs[lockey];
+			
+			var curlocarray = [];
+
+			// bv. Helsinki
+			for(var indkey in indicators) {
+
+				indval = indicators[indkey];
+				var curvalue = null;
+
+				for (var firstyear in data[indkey].locs[lockey].years){
+					curvalue = data[indkey].locs[lockey].years[firstyear];
+					break;
+				}
+				
+				curlocarray.push({axis: indval, value: curvalue});
+			}
+			d.push(curlocarray);
+		}
+
+		if (d.length < 1){
+			return null;
+		}
+
+		return d;
+	}
+
+	this.visualize = function(data){
+
+		var w = 200,
+			h = 200;
+
+		var colorscale = d3.scale.category10();
+
+		//Legend titles
+		// var LegendOptions = ['Smartphone','Tablet'];
+
+		//Options for the Radar chart, other than default
+		var mycfg = {
+		  w: w,
+		  h: h,
+		  maxValue: 1.0,
+		  levels: 10,
+		  ExtraWidthX: 300
+		}
+
+		// get data in right format (differs per vis)
+		data = this.format_data(data);
+
+		if (!data){
+			// empty data, remove vis
+			this.remove();
+			return false;
+		}
+
+		//Call function to draw the Radar chart
+		//Will expect that data is in %'s
+		RadarChart.draw('section[data-indicator="'+this.indicator+'"][data-vis-type="'+this.type+'"] .radar-chart', data, mycfg);
+
+		////////////////////////////////////////////
+		/////////// Initiate legend ////////////////
+		////////////////////////////////////////////
+
+		// var svg = d3.select('section[data-indicator="'+this.indicator+'"][data-vis-type="'+this.type+'"] svg');
+
+		// //Create the title for the legend
+		// var text = svg.append("text")
+		// 	.attr("class", "title")
+		// 	.attr('transform', 'translate(90,0)') 
+		// 	.attr("x", w - 70)
+		// 	.attr("y", 10)
+		// 	.attr("font-size", "12px")
+		// 	.attr("fill", "#404040")
+		// 	.text("What % of owners use a specific service in a week");
+				
+		// //Initiate Legend	
+		// var legend = svg.append("g")
+		// 	.attr("class", "legend")
+		// 	.attr("height", 100)
+		// 	.attr("width", 200)
+		// 	.attr('transform', 'translate(90,20)') 
+		// 	;
+		// 	//Create colour squares
+		// 	legend.selectAll('rect')
+		// 	  .data(LegendOptions)
+		// 	  .enter()
+		// 	  .append("rect")
+		// 	  .attr("x", w - 65)
+		// 	  .attr("y", function(d, i){ return i * 20;})
+		// 	  .attr("width", 10)
+		// 	  .attr("height", 10)
+		// 	  .style("fill", function(d, i){ return colorscale(i);})
+		// 	  ;
+		// 	//Create text next to squares
+		// 	legend.selectAll('text')
+		// 	  .data(LegendOptions)
+		// 	  .enter()
+		// 	  .append("text")
+		// 	  .attr("x", w - 52)
+		// 	  .attr("y", function(d, i){ return i * 20 + 9;})
+		// 	  .attr("font-size", "11px")
+		// 	  .attr("fill", "#737373")
+		// 	  .text(function(d) { return d; })
+		// 	  ;
+	}
+
+	
+
 }
 OipaRadarChart.prototype = new OipaVis();
 
 
 
 
+
+
+
+function OipaSimpleMapVis(){
+	this.type = "OipaSimpleMapVis";
+	this.name = null;
+	this.geotype = null; // point / polygon / line
+	this.geo_location = null; // exact location / city / country / region
+	this.indicator = null;
+	this.basemap = "zimmerman2014.hmpkg505";
+	this.id = null;
+	this.map = null;
+	this.map_div = null;
+	this.chartwrapper = "#visualisation-maps-block-wrapper";
+
+	this.init = function(){
+		// create html
+
+		this.map_div = 'simple-map-chart-'+this.indicator;
+		var html = '<li><section class="container-box grayed-and-inactive" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'" data-geo-location="'+this.geo_location+'"><header class="heading-holder"><h3>'+this.name+'</h3></header>';
+		html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><div id="'+this.map_div+'" class="simple-map-chart" style="height:350px; width: 350px;"></div></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
+		html += '</div></section></li>';
+
+		var div_id = this.map_div;
+
+		$(this.chartwrapper).append(html);
+
+		var mapoptions = {
+			attributionControl: false,
+			scrollWheelZoom: false,
+			zoom: 3,
+			minZoom: 2,
+			maxZoom:12,
+			continuousWorld: 'false'
+		}
+
+		mapoptions.zoomControl = false;
+
+		// if(zoomposition){
+		// 	mapoptions.zoomControl = false;
+		// }
+
+		jQuery("#"+div_id).css("min-height", "200px");
+		this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
+
+		// if (zoomposition){
+		// 	new L.Control.Zoom({ position: zoomposition }).addTo(this.map);
+		// }
+
+		this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
+			maxZoom: 12
+		}).addTo(this.map);
+
+
+
+		this.load_listeners();
+		this.refresh();
+		this.check_if_in_favorites();
+	};
+
+	this.get_url = function(){
+
+		var api_call = "";
+
+		if(this.geo_location == "exact_loc"){
+
+		} else if(this.geo_location == "city"){
+			api_call = "cities";
+		} else if(this.geo_location == "country"){
+			api_call = "countries";
+		} else if(this.geo_location == "region"){
+			api_call = "regions";
+		}
+
+		return search_url + api_call + '/' + this.id + '/?format=json';
+	};
+
+	this.format_data = function(data){
+		
+	};
+
+	this.visualize = function(data){
+
+		if (this.geotype == "point"){
+
+			var latitude = null;
+			var longitude = null;
+
+			if(this.geo_location == "exact_loc"){
+
+
+			} else if(this.geo_location == "city"){
+				
+				var longlat = geo_point_to_latlng(data.location);
+				latitude = longlat[0];
+				longitude = longlat[1];
+				this.map.setView(longlat, 6);
+
+
+			} else if(this.geo_location == "country"){
+				var longlat = geo_point_to_latlng(data.center_longlat);
+				latitude = longlat[0];
+				longitude = longlat[1];
+				this.map.setView(longlat, 4);
+
+			} else if(this.geo_location == "region"){
+				// var longlat = geo_point_to_latlng(data.center_longlat);
+				// latitude = longlat[0];
+				// longitude = longlat[1];
+				// this.map.setView(longlat, 6);
+			}
+
+			
+			curmarker = L.marker([
+					latitude,
+					longitude
+			])
+			.addTo(this.map);
+			
+			this.marker = curmarker;
+		}
+
+	};
+}
+
+OipaSimpleMapVis.prototype = new OipaVis();
+
+	
 
 // function resize() {
 //     /* Find the new window dimensions */

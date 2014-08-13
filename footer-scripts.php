@@ -14,6 +14,7 @@ var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 <script src="<?php echo get_template_directory_uri(); ?>/js/nouislider.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/d3.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/nv.d3.min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/RadarChart.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>

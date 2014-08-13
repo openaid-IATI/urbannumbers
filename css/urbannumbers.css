@@ -424,3 +424,43 @@
   display: block;
   margin: 24px 0;
 }
+
+.city-compare-wrapper .main{
+  border-bottom: 0;
+}
+
+
+#visualisation-block-wrapper .heading-holder h3, #visualisation-maps-block-wrapper .heading-holder h3{
+  margin-top: 10px;
+}
+
+.wiki-read-more-hidden{
+  display: none;
+}
+
+.city-wikipedia-disclaimer{
+  margin-top: 20px;
+}
+
+
+.grayed-and-inactive {
+  -webkit-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'><filter%20id='grayscale'><feColorMatrix%20type='matrix'%20values='0.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200%200%200%201%200'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#01FFFFFF,endColorstr=#01FFFFFF) gray;
+  zoom: 1;
+  pointer-events: none;
+}
+/*
+.grayed-and-inactive:hover {
+-webkit-filter: grayscale(0);
+-moz-filter: grayscale(0);
+-ms-filter: grayscale(0);
+-o-filter: grayscale(0);
+filter: grayscale(0);
+filter: none;
+cursor: pointer;
+}*/
