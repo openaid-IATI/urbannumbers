@@ -846,3 +846,10 @@ function create_post_type_infographics() {
 
 // Hook into the 'init' action
 add_action( 'init', 'create_post_type_infographics', 0 );
+
+
+// Only show admin bar to super admins, admins and editors
+function un_admin_bar($content) {
+    return ( current_user_can( 'moderate_comments' ) ) ? $content : false;
+}
+add_filter( 'show_admin_bar' , 'un_admin_bar');

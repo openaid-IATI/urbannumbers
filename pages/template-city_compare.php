@@ -22,13 +22,13 @@ get_header(); the_post(); ?>
 			</div>
 			<div class="columns-holder">
 				<div class="holder">
-					<div class="column">
+					<div id="compare-left-map-border" class="column">
 						<?php 
 						$curmapname = "left";
 						include( TEMPLATEPATH .'/map.php' ); 
 						?>
 					</div>
-					<div class="column">
+					<div id="compare-right-map-border" class="column">
 						<?php 
 						$curmapname = "right";
 						include( TEMPLATEPATH .'/map.php' ); 

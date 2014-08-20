@@ -48,6 +48,7 @@ get_header(); the_post(); ?>
 	var map = new OipaIndicatorMap();
 	map.set_map("main-map");
 	map.init();
+	map.map.setZoom(3);
 	
 	map.selection = Oipa.mainSelection;
 	Oipa.maps.push(map);

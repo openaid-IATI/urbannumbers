@@ -67,7 +67,7 @@ if (!empty($_POST)){
 						</div>
 						<div class="col-md-4 col-sm-4">
 							<ul class="action-list">
-								<li><button type="submit" class="btn btn-blue">Send</button></li>
+								<li><button type="submit" class="btn btn-blue">Save</button></li>
 								<li><button type="submit" class="btn btn-gray">Cancel</button></li>
 							</ul>
 						</div>
@@ -82,6 +82,7 @@ if (!empty($_POST)){
 					</div>
 				</div>
 			</div>
+			<?php /*
 			<div class="container-content">
 				<div class="container-custom">
 					<div class="row">
@@ -120,6 +121,7 @@ if (!empty($_POST)){
 					</div>
 				</div>
 			</div>
+			*/ ?>
 			<!-- container-sort -->
 			<?php get_template_part("indicator", "filters"); ?>
 			<?php /* <div class="heading-row"><span class="heading">SELECTION: <a href="#">XXXXXXXX</a></span></div> */ ?>
@@ -141,7 +143,7 @@ if (!empty($_POST)){
 			<div class="container-btns">
 				<div class="container-custom">
 					<ul class="action-list">
-						<li><button type="submit" class="btn btn-blue">Send</button></li>
+						<li><button type="submit" class="btn btn-blue">Save</button></li>
 						<li><button type="submit" class="btn btn-gray">Cancel</button></li>
 					</ul>
 				</div>

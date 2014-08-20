@@ -2,6 +2,8 @@
 			<div id="indicator-filter-wrapper" class="container-sort">
 				<!-- action-list -->
 				<ul class="action-list">
+
+					<?php /*
 					<li>
 						<a class="opener" href="#"><i class="icon-export"></i>EXPORT</a>
 						<div class="dropdown-box">
@@ -17,6 +19,7 @@
 							</div>
 						</div>
 					</li>
+					*/ ?>
 					<li>
 						<a class="opener" href="#"><i class="icon-share"></i>SHARE</a>
 						<div class="dropdown-box">
