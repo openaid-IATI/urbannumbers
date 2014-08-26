@@ -229,7 +229,6 @@ function OipaList(){
 	}
 
 	this.refresh = function(data){
-		
 		if (!data){
 			// get URL
 			var url = this.get_url();
@@ -307,7 +306,6 @@ function OipaMainStats(){
 	this.get_total_projects = function(reporting_organisation, data){
 
 		
-
 		if(data){
 			jQuery("#homepage-total-projects").text(data[reporting_organisation]);
 		} else {

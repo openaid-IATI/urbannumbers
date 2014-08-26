@@ -133,7 +133,6 @@ function OipaVis(){
 	};
 
 	this.refresh = function(data){
-
 		if (!data){
 			// get url
 			var url = this.get_url();
@@ -171,7 +170,6 @@ function OipaVis(){
 	};
 
 	this.get_data = function(url){
-		
 		// filters
 		var thisvis = this;
 

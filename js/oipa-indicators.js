@@ -217,7 +217,6 @@ function OipaIndicatorMap(){
 	}
 
 	this.refresh = function(data){
-
 		if(!data){
 			// indicatordata = {};
 			// for (var k in this.selection.indicators) {
@@ -235,7 +234,6 @@ function OipaIndicatorMap(){
 			// get data
 			this.get_data(url);
 		} else {
-
 			// put data on map
 			this.show_data_on_map(data);
 
@@ -296,7 +294,6 @@ function OipaIndicatorMap(){
 	};
 
 
-
 	this.show_data_on_map = function(data){
 
 		var thismap = this.map;
@@ -330,6 +327,28 @@ function OipaIndicatorMap(){
 					// circle info
 					if(!circles.locations[key]){circles.locations[key] = {};}
 					if(!circles.locations[key][mainvalue.indicator]){circles.locations[key][mainvalue.indicator] = {};}
+
+					// Mutate years data
+					// Prefill missing years with trend data
+					var _mutate_years = function(years) {
+					    var _year_keys = Object.keys(years);
+					    if (_year_keys.length > 1) {
+						for (var i = 0; i < _year_keys.length - 1; i++) {
+						    var _first_year = parseInt(_year_keys[i]);
+						    var _last_year = parseInt(_year_keys[i + 1]);
+
+						    if ((_last_year - _first_year) > 1) {
+							var _yearly_trend = (years[_last_year] - years[_first_year]) / (_last_year - _first_year);
+							var _year_value = years[_first_year];
+							for (var _year = _first_year + 1; _year < _last_year; _year++) {
+							    _year_value = _year_value + _yearly_trend;
+							    years[_year] = _year_value;
+							}
+						    }
+						}
+					    }
+					}
+					_mutate_years(value.years);
 
 					circles.locations[key][mainvalue.indicator].years = value.years;
 

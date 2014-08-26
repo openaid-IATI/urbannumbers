@@ -558,7 +558,7 @@ function vb_reg_new_user() {
     //$user_id = wp_insert_user($userdata);
 
     // Return
-    if (!is_wp_error($user_id)) {
+    if (!isset($user_id)) {
         echo '1';
     } else {
         echo $user_id->get_error_message();
