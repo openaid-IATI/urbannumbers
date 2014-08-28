@@ -19,10 +19,10 @@ get_header(); the_post(); ?>
 						<li><i class="icon-arrow-right"></i> Malawi</li>
 					</ul>
 				</div>
-				<div class="column style00">
+				<div class="column style00" id="year_widget">
 					<span class="heading">YEAR</span>
 					<ul class="sort-info">
-						<li><i class="icon-arrow-right"></i> 2000</li>
+						<li class="value"><i class="icon-arrow-right"></i> 2000</li>
 					</ul>
 				</div>
 				<div class="column style01">
@@ -66,6 +66,28 @@ get_header(); the_post(); ?>
 			</div>
 
 		</div>
+        
+
+		<div class="main">
+			<div class="container-custom">
+				<ul class="box-list large">
+					<li>
+						<!-- container-box -->
+						<section class="container-box" id="widget_avg_annual_rate_change_percentage_urban">
+							<header class="heading-holder">
+								<h3>Title</h3>
+							</header>
+							<div class="box-content">
+                                <canvas id="widget_avg_annual_rate_change_percentage_urban_chart" width="360" height="400"></canvas>
+								<div class="widget">
+								</div>
+							</div>
+						</section>
+					</li>
+				</ul>
+			</div>
+		</div>
+
 		<?php if( have_rows('blocks') ): ?>
 		<div class="main">
 			<div class="container-custom">
@@ -111,6 +133,32 @@ get_header(); the_post(); ?>
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
 	
 	var map = new OipaIndicatorMap();
+
+    var Bus = new WidgetsBus(map);
+
+    <?php
+    $indicators = array();
+    if (isset($_GET['indicators'])) {
+        $indicators = explode(',', $_GET['indicators']);
+    }
+    ?>
+
+    // Register widgets
+    Bus.add_listener(new function (){
+        this.year_changed = function(year) {
+            $('#year_widget > ul > li.value').html('<i class="icon-arrow-right"></i> ' + year);
+        }
+    });
+
+    <?php
+    if (in_array('avg_annual_rate_change_percentage_urban', $indicators)) { ?>
+    Bus.add_listener(
+        new OipaTopIndicatorWidget(
+            '#widget_avg_annual_rate_change_percentage_urban',
+            'avg_annual_rate_change_percentage_urban',
+            10));
+    <?php } ?>
+
 	map.set_map("main-map");
 	map.init();
 	
@@ -121,12 +169,18 @@ get_header(); the_post(); ?>
 	filter.filter_wrapper_div = "indicator-filter-wrapper";
 	filter.selection = Oipa.mainSelection;
 	filter.init();
-
-	filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+    <?php
+    if (count($indicators)) {
+        foreach ($indicators as $indicator) { ?>
+            filter.selection.indicators.push({"id": "<?=$indicator?>", "name": "Urban population – Countries", "type": "Slum dwellers"});
+        <?php
+        }
+    } else { ?>
+        filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+    <?php } ?>
 	filter.save(true);
 
 
 </script>
-
 
 <?php get_footer(); ?>

@@ -60,7 +60,7 @@ function OipaTopIndicatorWidget(selector, indicator, limit) {
             } else {
                 // Update chart
                 $.each(self.chart.datasets[0].bars, function(id, v) {
-                    self.chart.datasets[0].bars[id].label = data[id].id;
+                    self.chart.scale.xLabels[id] = data[id].id;
                     self.chart.datasets[0].bars[id].value = data[id].value;
                 });
                 self.chart.update()
