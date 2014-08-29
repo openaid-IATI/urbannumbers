@@ -2,6 +2,12 @@
 /*
 Template Name: Country pages
 */
+
+$indicators = array();
+if (isset($_GET['indicators'])) {
+    $indicators = explode(',', $_GET['indicators']);
+}
+
 get_header(); the_post(); ?>
 	<div id="main">
 		<!-- container-map -->
@@ -71,19 +77,26 @@ get_header(); the_post(); ?>
 		<div class="main">
 			<div class="container-custom">
 				<ul class="box-list large">
-					<li>
-						<!-- container-box -->
-						<section class="container-box" id="widget_avg_annual_rate_change_percentage_urban">
-							<header class="heading-holder">
-								<h3>Title</h3>
-							</header>
-							<div class="box-content">
-                                <canvas id="widget_avg_annual_rate_change_percentage_urban_chart" width="360" height="400"></canvas>
-								<div class="widget">
-								</div>
-							</div>
-						</section>
-					</li>
+                    <?php
+                    if (count($indicators)) {
+                        foreach ($indicators as $indicator) { ?>
+                    <!-- container-box -->
+                    <li>
+                        <section class="container-box" id="widget_<?= $indicator ?>">
+                            <header class="heading-holder">
+                                <h3>Title</h3>
+                            </header>
+                            <div class="box-content">
+                                <canvas id="widget_<?= $indicator ?>_chart" width="360" height="400"></canvas>
+                                <div class="widget">
+                                </div>
+                            </div>
+                        </section>
+                    </li>
+                    <?php
+                        }
+                    }
+                    ?>
 				</ul>
 			</div>
 		</div>
@@ -136,28 +149,12 @@ get_header(); the_post(); ?>
 
     var Bus = new WidgetsBus(map);
 
-    <?php
-    $indicators = array();
-    if (isset($_GET['indicators'])) {
-        $indicators = explode(',', $_GET['indicators']);
-    }
-    ?>
-
     // Register widgets
     Bus.add_listener(new function (){
         this.year_changed = function(year) {
             $('#year_widget > ul > li.value').html('<i class="icon-arrow-right"></i> ' + year);
         }
     });
-
-    <?php
-    if (in_array('avg_annual_rate_change_percentage_urban', $indicators)) { ?>
-    Bus.add_listener(
-        new OipaTopIndicatorWidget(
-            '#widget_avg_annual_rate_change_percentage_urban',
-            'avg_annual_rate_change_percentage_urban',
-            10));
-    <?php } ?>
 
 	map.set_map("main-map");
 	map.init();
@@ -172,6 +169,11 @@ get_header(); the_post(); ?>
     <?php
     if (count($indicators)) {
         foreach ($indicators as $indicator) { ?>
+            Bus.add_listener(
+                new OipaTopIndicatorWidget(
+                    '#widget_<?= $indicator; ?>',
+                    '<?= $indicator; ?>',
+                    10));
             filter.selection.indicators.push({"id": "<?=$indicator?>", "name": "Urban population – Countries", "type": "Slum dwellers"});
         <?php
         }

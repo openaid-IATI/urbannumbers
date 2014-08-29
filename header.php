@@ -18,6 +18,7 @@
 	<script src="<?php echo get_template_directory_uri(); ?>/js/bootstrap.min.js"></script>
 	<!-- include custom JavaScript -->
 		<script type="text/javascript">
+        var LOGIN_URL = '<?php echo wp_login_url( site_url() . "/my-dashboard/" ); ?>';
 			var pathInfo = {
 				base: '<?php echo get_template_directory_uri(); ?>/',
 				css: 'css/',
@@ -42,23 +43,22 @@
 
 		<?php 
 		$form_action = site_url() . "/wp-login.php";
+        $login_error = false;
 
 		if (isset($_GET["login"])){
 			if($_GET["login"] == "failed"){
-				?>
-
-				<div class="row">
-					<div class="col-md-12">
-						<div class="login-error">
-							The entered username or password incorrect.
-						</div>
-					</div>
-				</div>
-
-				<?php
+                $login_error = true;
 			} 
 		}
 		?>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="sidebar-login-form-login-error alert alert-danger" <?php echo ($login_error ? "" : "style='display:none;'"); ?>>
+					The entered username or password incorrect.
+				</div>
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="col-md-12">
@@ -69,12 +69,15 @@
 		<div class="row">
 			<div class="col-md-12">
                             <p>Need to replace with button to our own IdP</p>
-                             
+                             <div id="sidebar-login-form-placeholder"></div>
+                             <?php
+                             /*
+                             ?>
 				<form name="login-form" id="sidebar-login-form" class="standard-form" action="<?php echo $form_action; ?>" method="post">
 					
 					<div class="form-group">
 						<label><?php _e( 'Username', 'urbannumbers' ); ?></label>
-						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" /></label>
+						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" />
 					</div>
 
 					<div class="form-group">
@@ -88,6 +91,9 @@
 
 					<br><a id="lost-password-login" href="#" title="Lost Password">Lost Password</a>
 				</form>
+                <?php
+                */
+                ?>
                             <?php do_action( 'wordpress_social_login' ); ?>
 			</div>
 		</div>

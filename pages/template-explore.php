@@ -58,7 +58,19 @@ get_header(); the_post(); ?>
 	filter.selection = Oipa.mainSelection;
 	filter.init();
 
-	filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+    <?php
+    $indicators = array();
+    if (isset($_GET['indicators']) && !empty($_GET['indicators'])) {
+        $indicators = explode(',', $_GET['indicators']);
+    }
+    if (count($indicators)) {
+        foreach ($indicators as $indicator) { ?>
+            filter.selection.indicators.push({"id": "<?=$indicator?>", "name": "Urban population – Countries", "type": "Slum dwellers"});
+        <?php
+        }
+    } else { ?>
+        filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+    <?php } ?>
 	filter.save(true);
 
 
