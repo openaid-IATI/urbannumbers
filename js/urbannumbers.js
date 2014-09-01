@@ -75,52 +75,10 @@ $("#opener-right-cities").click(function(e){
 });
 
 $("#header-login-register-button").click(function(e){
-	if ($(this).attr("href") == "#"){
-		e.preventDefault();
-        if ($('#sidebar-login-form-placeholder').html().length == 0) {
-            $.get( LOGIN_URL, function( data ) {
-                $('#sidebar-login-form-placeholder').html(data);
-                $('#sidebar-login-form').submit(function(e) {
-                    e.preventDefault();
-
-                    // Hide errors
-                    $('.sidebar-login-form-login-error').hide();
-
-                    // Check for non-empty fields
-                    var _form_is_valid = true;
-                    $.each($(this).serializeArray(), function(_, field) {
-                        if ((field.name == 'username' || field.name == 'password') && field.value.trim() == "") {
-                            _form_is_valid = false;
-                        }
-                    });
-                    if (_form_is_valid) {
-                        $.post( this.action, $(this).serialize(),
-                            function(data) {
-                                if (data.indexOf('sidebar-login-form') == -1) {
-                                    window.location.href = LOGIN_URL;
-                                } else {
-                                    var _error = data.split('---')[0];
-                                    $('.sidebar-login-form-login-error').html(_error).fadeIn();
-                                }
-                            }
-                        ).fail(
-                            function(data) {
-                                $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
-                            }
-                        );
-                    } else {
-                        $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
-                    }
-                    return;
-                });
-            });
-        }
-        
-		$("#hoover-wrapper").show();
-		$("#urbannumbers-login").show();
-	}
-	
-
+    if ($(this).attr("href") == "#"){
+        e.preventDefault();
+        display_login_form();
+    }
 });
 
 $("#lost-password-login").click(function(e){
@@ -268,4 +226,43 @@ function get_wiki_city_data(city_name, left_right_city){
 	        });
 	    }
 	});
+}
+
+function display_login_form() {
+    if ($('#sidebar-login-form-placeholder').html().length == 0) {
+        $.get( LOGIN_URL, function( data ) {
+            $('#sidebar-login-form-placeholder').html(data);
+            $('#sidebar-login-form').submit(function(e) {
+                e.preventDefault();
+
+                // Hide errors
+                $('.sidebar-login-form-login-error').hide();
+
+                // Check for non-empty fields
+                var _form_is_valid = true;
+                $.each($(this).serializeArray(), function(_, field) {
+                    if ((field.name == 'username' || field.name == 'password') && field.value.trim() == "") {
+                        _form_is_valid = false;
+                    }
+                });
+                if (_form_is_valid) {
+                    $.post( this.action, $(this).serialize(), function(data) {
+                        if (data.indexOf('simple-iframe-login-form') == -1) {
+                            window.location.href = LOGIN_URL;
+                        } else {
+                            var _error = data.split('---')[0];
+                            $('.sidebar-login-form-login-error').html(_error).fadeIn();
+                        }
+                    }).fail(function(data) {
+                        $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
+                    });
+                } else {
+                    $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
+                }
+                return;
+            });
+        });
+    }
+    $("#hoover-wrapper").show();
+    $("#urbannumbers-login").show();
 }

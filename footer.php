@@ -21,8 +21,5 @@
 	<?php global $lightbox; echo $lightbox ?>
 	<?php wp_footer(); ?>
 
-
-	
-
 </body>
 </html>

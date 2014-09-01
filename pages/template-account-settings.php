@@ -2,6 +2,12 @@
 /*
 Template Name: User account settings
 */
+
+if ( !is_user_logged_in() ) {
+  wp_redirect(site_url() . "?action=login&redirect=/account-settings/");
+  exit;
+}
+
 get_header(); the_post(); ?>
 
 
@@ -102,7 +108,7 @@ get_header(); the_post(); ?>
 							
 								</form>
 
-								<a href="#" id="delete-account-button"> Remove your account? </a>
+								<a href="<?php echo site_url() . "/delete-account/"; ?>"> Remove your account? </a>
 					
 							</div>
 						</div>

@@ -1,3 +1,9 @@
+<?php
+$login_redirect = site_url() . "/my-dashboard/";
+if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
+    $login_redirect = site_url() . $_GET['redirect'];
+}
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -18,7 +24,7 @@
 	<script src="<?php echo get_template_directory_uri(); ?>/js/bootstrap.min.js"></script>
 	<!-- include custom JavaScript -->
 		<script type="text/javascript">
-        var LOGIN_URL = '<?php echo wp_login_url( site_url() . "/my-dashboard/" ); ?>';
+        var LOGIN_URL = '<?php echo wp_login_url( $login_redirect ); ?>';
 			var pathInfo = {
 				base: '<?php echo get_template_directory_uri(); ?>/',
 				css: 'css/',

@@ -2,6 +2,11 @@
 /*
 Template Name: User dashboard
 */
+
+if ( !is_user_logged_in() ) {
+  wp_redirect(site_url() . "?action=login&redirect=/my-dashboard/");
+  exit;
+}
 get_header(); the_post(); ?>
 
 

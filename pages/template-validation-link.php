@@ -1,6 +1,7 @@
 <?php
 /*
-Template Name: User account settings
+
+.Template Name: User validation link
 */
 get_header(); the_post(); ?>
 

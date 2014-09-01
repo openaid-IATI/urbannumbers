@@ -23,3 +23,15 @@ var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers.js"></script>
+
+<?php
+if (!empty($_GET['action']) && $_GET['action'] == 'login') {
+?>
+<script type="text/javascript">
+$(function() {
+    display_login_form();
+});
+</script>
+<?php
+}
+?>
