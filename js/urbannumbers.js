@@ -236,7 +236,7 @@ function display_login_form() {
             xhrFields: {
                withCredentials: true
             },
-            success: function( data ) {
+            success: function(data) {
                 $('#sidebar-login-form-placeholder').html(data);
                 $('#simple-iframe-login-form').submit(function(e) {
                     e.preventDefault();
@@ -256,9 +256,12 @@ function display_login_form() {
                             url   : this.action,
                             method: 'POST',
                             data  : $(this).serialize(),
+                            xhrFields: {
+                               withCredentials: true
+                            },
                             success: function(data) {
                                 if (data.indexOf('simple-iframe-login-form') == -1) {
-                                    //window.location.href = LOGIN_URL;
+                                    window.location.href = LOGIN_URL;
                                 } else {
                                     var _error = data.split('---')[0];
                                     $('.sidebar-login-form-login-error').html(_error).fadeIn();
@@ -266,8 +269,7 @@ function display_login_form() {
                             },
                             error: function(data) {
                                 $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
-                            },
-                            dataType: 'jsonp'
+                            }
                         });
                     } else {
                         $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
