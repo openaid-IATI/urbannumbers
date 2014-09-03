@@ -230,45 +230,52 @@ function get_wiki_city_data(city_name, left_right_city){
 
 function display_login_form() {
     if ($('#sidebar-login-form-placeholder').html().length == 0) {
-        $.get( LOGIN_URL, function( data ) {
-            $('#sidebar-login-form-placeholder').html(data);
-            $('#sidebar-login-form').submit(function(e) {
-                e.preventDefault();
+        $.ajax({
+            url   : LOGIN_URL,
+            method: 'GET',
+            xhrFields: {
+               withCredentials: true
+            },
+            success: function( data ) {
+                $('#sidebar-login-form-placeholder').html(data);
+                $('#sidebar-login-form').submit(function(e) {
+                    e.preventDefault();
 
-                // Hide errors
-                $('.sidebar-login-form-login-error').hide();
+                    // Hide errors
+                    $('.sidebar-login-form-login-error').hide();
 
-                // Check for non-empty fields
-                var _form_is_valid = true;
-                $.each($(this).serializeArray(), function(_, field) {
-                    if ((field.name == 'username' || field.name == 'password') && field.value.trim() == "") {
-                        _form_is_valid = false;
-                    }
-                });
-                if (_form_is_valid) {
-                    $.ajax({
-                        url   : this.action,
-                        method: 'POST',
-                        data  : $(this).serialize(),
-                        success: function(data) {
-                            console.log(data);
-                            if (data.indexOf('simple-iframe-login-form') == -1) {
-                                window.location.href = LOGIN_URL;
-                            } else {
-                                var _error = data.split('---')[0];
-                                $('.sidebar-login-form-login-error').html(_error).fadeIn();
-                            }
-                        },
-                        error: function(data) {
-                            $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
-                        },
-                        dataType: 'jsonp'
+                    // Check for non-empty fields
+                    var _form_is_valid = true;
+                    $.each($(this).serializeArray(), function(_, field) {
+                        if ((field.name == 'username' || field.name == 'password') && field.value.trim() == "") {
+                            _form_is_valid = false;
+                        }
                     });
-                } else {
-                    $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
-                }
-                return;
-            });
+                    if (_form_is_valid) {
+                        $.ajax({
+                            url   : this.action,
+                            method: 'POST',
+                            data  : $(this).serialize(),
+                            success: function(data) {
+                                console.log(data);
+                                if (data.indexOf('simple-iframe-login-form') == -1) {
+                                    window.location.href = LOGIN_URL;
+                                } else {
+                                    var _error = data.split('---')[0];
+                                    $('.sidebar-login-form-login-error').html(_error).fadeIn();
+                                }
+                            },
+                            error: function(data) {
+                                $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
+                            },
+                            dataType: 'jsonp'
+                        });
+                    } else {
+                        $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
+                    }
+                    return;
+                });
+            }
         });
     }
     $("#hoover-wrapper").show();
