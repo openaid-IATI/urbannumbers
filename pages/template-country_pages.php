@@ -71,68 +71,9 @@ get_header(); the_post(); ?>
 			    <?php } ?>
 			</div>
 
-		</div>
-        
-
-		<div class="main">
-			<div class="container-custom">
-				<ul class="box-list large">
-                    <?php
-                    if (count($indicators)) {
-                        foreach ($indicators as $indicator) { ?>
-                    <!-- container-box -->
-                    <li>
-                        <section class="container-box" id="widget_<?= $indicator ?>">
-                            <header class="heading-holder">
-                                <h3>Title</h3>
-                            </header>
-                            <div class="box-content">
-                                <canvas id="widget_<?= $indicator ?>_chart" width="360" height="400"></canvas>
-                                <div class="widget">
-                                </div>
-                            </div>
-                        </section>
-                    </li>
-                    <?php
-                        }
-                    }
-                    ?>
-				</ul>
-			</div>
+		<?php include( TEMPLATEPATH .'/indicator-visualisations.php' ); ?>
 		</div>
 
-		<?php if( have_rows('blocks') ): ?>
-		<div class="main">
-			<div class="container-custom">
-				<ul class="box-list large">
-				<?php while ( have_rows('blocks') ) : the_row();
-				$title = get_sub_field('title');
-				$graphic = get_sub_field('graphic');
-				if($title || $graphic):
-				?>
-					<li>
-						<!-- container-box -->
-						<section class="container-box">
-							<?php if($title): ?>
-							<header class="heading-holder">
-								<h3><?php echo $title; ?></h3>
-							</header>
-							<?php endif; ?>
-							<?php if($graphic): ?>
-							<div class="box-content">
-								<div class="widget">
-									<?php echo apply_filters('widget_text', $graphic); ?>
-								</div>
-								<a href="#" class="btn-close"><i class="glyphicon glyphicon-remove"></i></a>
-							</div>
-							<?php endif; ?>
-						</section>
-					</li>
-				<?php endif; endwhile; ?>
-				</ul>
-			</div>
-		</div>
-		<?php endif; ?>
 	</div>
 
 
@@ -147,15 +88,6 @@ get_header(); the_post(); ?>
 	
 	var map = new OipaIndicatorMap();
 
-    var Bus = new WidgetsBus(map);
-
-    // Register widgets
-    Bus.add_listener(new function (){
-        this.year_changed = function(year) {
-            $('#year_widget > ul > li.value').html('<i class="icon-arrow-right"></i> ' + year);
-        }
-    });
-
 	map.set_map("main-map");
 	map.init();
 	
@@ -169,11 +101,6 @@ get_header(); the_post(); ?>
     <?php
     if (count($indicators)) {
         foreach ($indicators as $indicator) { ?>
-            Bus.add_listener(
-                new OipaTopIndicatorWidget(
-                    '#widget_<?= $indicator; ?>',
-                    '<?= $indicator; ?>',
-                    10));
             filter.selection.indicators.push({"id": "<?=$indicator?>", "name": "Urban population – Countries", "type": "Slum dwellers"});
         <?php
         }

@@ -202,6 +202,9 @@ var OipaCompare = {
 
 function OipaIndicatorMap(){
 
+    this._url_data_cache = {};
+    this._refresh_callbacks = {};
+
         this.indicatordata = {};
 
         this.active_years = {};
@@ -216,35 +219,54 @@ function OipaIndicatorMap(){
 
         }
 
-        this.refresh = function(data){
-                if(!data){
-                        // indicatordata = {};
-                        // for (var k in this.selection.indicators) {
-                        //      var curkey = this.selection.indicators[k].id;
-                        //      if(this.selection.indicators[k].selection_type){
-                        //              curkey += this.selection.indicators[k].selection_type;
-                        //      }
-                        //      indicatordata[curkey] = {};
-                        // }
-
-                        this.clear_circles();
-
-                        // get url
-                        var url = this.get_url();
-                        // get data
-                        this.get_data(url);
-                } else {
-                        // put data on map
-                        this.show_data_on_map(data);
-
-                        // load timeline
-                        this.draw_available_data_blocks();
-                        this.selected_year = this.get_first_available_year();
-                        this.move_slider_to_available_year();
-
-                        // refresh circles on right year
-                        this.refresh_circles(this.selected_year);
+        this.add_refresh_callback = function(name, callback) {
+            if (this._refresh_callbacks[name] == undefined) { // Avoid duplicate callbacks
+                this._refresh_callbacks[name] = callback;
+                if (this._url_data_cache[this.get_url()] !== undefined) {
+                    // Data is already loaded for this callback, happens when indicator is disabled and reenabled
+                    callback(this._url_data_cache[this.get_url()]);
                 }
+            }
+        }
+        this.remove_refresh_callback = function(name) {
+            if (this._refresh_callbacks[name] !== undefined) {
+                delete this._refresh_callbacks[name];
+            }
+        }
+
+        this.refresh = function(data){
+            if(!data){
+                // indicatordata = {};
+                // for (var k in this.selection.indicators) {
+                //      var curkey = this.selection.indicators[k].id;
+                //      if(this.selection.indicators[k].selection_type){
+                //              curkey += this.selection.indicators[k].selection_type;
+                //      }
+                //      indicatordata[curkey] = {};
+                // }
+
+                this.clear_circles();
+
+                // get url
+                var url = this.get_url();
+                // get data
+                this.get_data(url);
+            } else {
+                // put data on map
+                this.show_data_on_map(data);
+
+                // load timeline
+                this.draw_available_data_blocks();
+                this.selected_year = this.get_first_available_year();
+                this.move_slider_to_available_year();
+
+                // refresh circles on right year
+                this.refresh_circles(this.selected_year);
+
+                $.each(this._refresh_callbacks, function(_, func) {
+                    func(data);
+                });
+            }
         };
 
         this.get_url = function(){
@@ -258,58 +280,80 @@ function OipaIndicatorMap(){
         }
 
         this.get_data = function(url){
+            var self = this;
+            var _action = function(data) {
+                self.refresh(data);
+            }
+
+            if (this._url_data_cache[url] == undefined) { // Get data and cache it
                 // filters
-                var thismap = this;
-                
                 $.support.cors = true;
 
                 if(window.XDomainRequest){
-                var xdr = new XDomainRequest();
-                xdr.open("get", url);
-                xdr.onprogress = function () { };
-                xdr.ontimeout = function () { };
-                xdr.onerror = function () { };
-                xdr.onload = function() {
+                    var xdr = new XDomainRequest();
+                    xdr.open("get", url);
+                    xdr.onprogress = function () { };
+                    xdr.ontimeout = function () { };
+                    xdr.onerror = function () { };
+                    xdr.onload = function() {
                         var jsondata = $.parseJSON(xdr.responseText);
                         if (jsondata === null || typeof (jsondata) === 'undefined')
                         {
-                                jsondata = $.parseJSON(jsondata.firstChild.textContent);
-                                thismap.refresh(jsondata);
-                                
+                            self._url_data_cache[url] = jsondata;
+                            jsondata = $.parseJSON(jsondata.firstChild.textContent);
+                            _action(jsondata);
                         }
-                };
-                setTimeout(function () {xdr.send();}, 0);
+                    };
+                    setTimeout(function () {xdr.send();}, 0);
                 } else {
-                        $.ajax({
-                                type: 'GET',
-                                url: url,
-                                contentType: "application/json",
-                                dataType: 'json',
-                                success: function(data){
-                                        thismap.refresh(data);
-
-                                }
-                        });
+                    $.ajax({
+                            type: 'GET',
+                            url: url,
+                            contentType: "application/json",
+                            dataType: 'json',
+                            success: function(data){
+                                self._url_data_cache[url] = data;
+                                _action(data);
+                            }
+                    });
                 }
+            } else {
+                _action(self._url_data_cache[url]);
+            }
         };
 
 
         this.show_data_on_map = function(data){
-
+            var self = this;
                 var thismap = this.map;
                 var circles = this.circles;
                 var vistype = this.vistype;
                 circles.indicators = {};
                 circles.locations = {};
-                this.active_years = {};
-                var active_years = this.active_years;
 
                 var circle_colors = ["#2B5A70", "DarkGreen", "Orange", "Pink", "Purple"];
                 var indicator_counter = -1;
 
+                this.active_years = function() {
+                    var years = {min: null, max: null};
+                    $.each(data, function(_, indicator) {
+                        var _years = Object.keys(indicator.locs[Object.keys(indicator.locs)[0]].years);
+                        years.max = Math.max(years.max, Math.max.apply(null, _years));
+                        if (years.min == null) {
+                            years.min = _years[0];
+                        }
+                        years.min = Math.min(years.min, Math.min.apply(null, _years));
+                    });
+                    var result = {};
+                    for (var i = years.min; i<=years.max; i++) {
+                        result[i] = i;
+                    }
+                    return result;
+                }();
 
                 // data containing multiple indicators
                 $.each(data, function(mainkey, mainvalue){
+
                         indicator_counter++;
 
                         // city or country
@@ -332,6 +376,7 @@ function OipaIndicatorMap(){
                                         // Prefill missing years with trend data
                                         var _mutate_years = function(years) {
                                             var _year_keys = Object.keys(years);
+                                            // Fill gaps in between years
                                             if (_year_keys.length > 1) {
                                                 for (var i = 0; i < _year_keys.length - 1; i++) {
                                                     var _first_year = parseInt(_year_keys[i]);
@@ -347,15 +392,34 @@ function OipaIndicatorMap(){
                                                     }
                                                 }
                                             }
+
+                                            // Prefill missing years from other indicators
+                                            var _ = {
+                                                min_years:  Math.min.apply(null, Object.keys(years)),
+                                                max_years:  Math.max.apply(null, Object.keys(years)),
+                                                min_active: Math.min.apply(null, Object.keys(self.active_years)),
+                                                max_active: Math.max.apply(null, Object.keys(self.active_years)),
+                                            };
+                                            if (_.min_years > _.min_active) {
+                                                for (i = _.min_active; i < _.min_years; i++) {
+                                                    years[i] = years[_.min_years];
+                                                }
+                                            }
+                                            if (_.max_years < _.max_active) {
+                                                for (i = _.max_years + 1; i <= _.max_active; i++) {
+                                                    years[i] = years[_.max_years];
+                                                }
+                                            }
+                                            return years;
                                         }
-                                        _mutate_years(value.years);
+                                        value.years = _mutate_years(value.years);
 
                                         circles.locations[key][mainvalue.indicator].years = value.years;
 
 
-                                        $.each(value.years, function(yearkey, yearval){
+                                        /*$.each(value.years, function(yearkey, yearval){
                                                 active_years[yearkey] = yearkey;
-                                        });
+                                        });*/
 
                                         if (vistype == "markers"){
                                                 var circle = L.marker([value.latitude, value.longitude]).addTo(thismap);
@@ -488,7 +552,7 @@ function OipaIndicatorMap(){
                                                 });
                                         }catch(err){
 
-                                                console.log(err);
+                                                //console.log(err);
                                         }
                                 }
                         });
@@ -606,7 +670,6 @@ function OipaIndicatorFilters(){
 
 
         this.create_indicator_filter_attributes = function(objects, columns){
-
                 var html = '';
                 var paginatehtml = '';
                 var per_col = 6;

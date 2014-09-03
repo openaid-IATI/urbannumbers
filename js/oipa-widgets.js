@@ -55,6 +55,7 @@ function OipaTopIndicatorWidget(selector, indicator, limit) {
                     ]
                 };
 
+                // init chart
                 var ctx = $(selector + "_chart").get(0).getContext("2d");
                 self.chart = new Chart(ctx).Bar(cdata);
             } else {

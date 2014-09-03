@@ -126,12 +126,11 @@ var Oipa = {
 			this.maps[i].refresh();
 		}
 	},
-	visualisations : [],
+	visualisations : {},
 	refresh_visualisations : function(){
-
 		// remove old visualisation blocks
-		this.visualisations = [];
-		jQuery("#visualisation-block-wrapper").empty();
+		//this.visualisations = [];
+		//jQuery("#visualisation-block-wrapper").empty();
 
 		// add new visualisation blocks
 		Oipa.create_visualisations();
@@ -142,30 +141,57 @@ var Oipa = {
 		data = this.mainSelection.indicators;
 
 		if (this.pageType == "indicators"){
-			// for each indicator
-			jQuery.each(data, function(key, value){
+            // cleanup unused charts
+            var _new_visualizations = $.map(data, function(val, _) {
+                return val.id;
+            });
+            $.each(thisoipa.visualisations, function(id, vis) {
+                if (_new_visualizations.indexOf(id) == -1) {
+                    // Remove unused visualisation
+                    vis.destroy();
+                    delete thisoipa.visualisations[id];
+                }
+            });
 
-				// create line chart
-				var linechart = new OipaLineChart();
-				linechart.selection = new OipaIndicatorSelection();
-				linechart.selection.cities = thisoipa.mainSelection.cities;
-				linechart.selection.countries = thisoipa.mainSelection.countries;
-				linechart.selection.regions = thisoipa.mainSelection.regions;
-				linechart.selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
-
-				linechart.indicator = value.id;
-			 	linechart.name = value.name;
-				linechart.y_name = value.name;
-				linechart.y_format = d3.format(',r');
-				linechart.x_name = 'Time (Years)';
-				linechart.x_format = d3.format('r');
-
-				linechart.init();
-
-				thisoipa.visualisations.push(linechart);
-				
-			});
-		}
+            var _old_visualizations = $.map(thisoipa.visualisations, function(vis, _) {
+                return vis.id;
+            });
+            // for each indicator
+            jQuery.each(data, function(key, value) {
+                if (thisoipa.visualisations[value.id] == undefined) {
+                    // create line chart
+                    var _chart_class = OipaLineChart;
+                    if (value.id == 'urban_population_countries') {
+                        _chart_class = OipaBarChart;
+                    }
+                    if (value.id == 'base_year_population_estimate') {
+                        _chart_class = OipaRadarChart;
+                    }
+                    if (value.id == 'urban_population_share_national') {
+                        _chart_class = OipaPolarChart;
+                    }
+                    if (value.id == 'slum_proportion_living_urban') {
+                        _chart_class = OipaPieChart;
+                    }
+                    if (value.id == 'avg_annual_rate_change_percentage_urban') {
+                        _chart_class = OipaDoughnutChart;
+                    }
+                    thisoipa.visualisations[value.id] = new _chart_class(value.id);
+                    thisoipa.visualisations[value.id].selection = new OipaIndicatorSelection();
+                    thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
+                    thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
+                    thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
+                    thisoipa.visualisations[value.id].selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
+                    thisoipa.visualisations[value.id].indicator = value.id;
+                    thisoipa.visualisations[value.id].name = value.name;
+                    thisoipa.visualisations[value.id].y_name = value.name;
+                    thisoipa.visualisations[value.id].y_format = d3.format(',r');
+                    thisoipa.visualisations[value.id].x_name = 'Time (Years)';
+                    thisoipa.visualisations[value.id].x_format = d3.format('r');
+                    thisoipa.visualisations[value.id].init();
+                }
+            });
+        }
 
 		if (this.pageType == "compare"){
 			OipaCompare.create_visualisations();

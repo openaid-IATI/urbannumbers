@@ -17,12 +17,12 @@ var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 <script src="<?php echo get_template_directory_uri(); ?>/js/RadarChart.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/Chart.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets-bus.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/oipa-event.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers.js"></script>
+<!-- make sure oipa-widgets-bus loaded last -->
+<script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets-bus.js"></script>
 
 <?php
 if (!empty($_GET['action']) && $_GET['action'] == 'login') {
