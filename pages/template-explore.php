@@ -69,6 +69,8 @@ get_header(); the_post(); ?>
         <?php
         }
     } else { ?>
+        filter.selection.indicators.push({"id": "slum_proportion_living_urban", "name": "Urban population – Countries", "type": "Slum dwellers"});
+        filter.selection.indicators.push({"id": "urban_population_cities", "name": "Urban population – Countries", "type": "Slum dwellers"});
         filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
     <?php } ?>
 	filter.save(true);

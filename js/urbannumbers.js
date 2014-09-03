@@ -200,7 +200,6 @@ function get_wiki_city_data(city_name, left_right_city){
 
 	        var begin_text = text.substring(0, 500);
 	        var end_text = text.substring(500);
-	        console.log(end_text);
 
 	        var end_text_untill_first_space = end_text.substr(0,end_text.indexOf(' '));
 	        var end_text = end_text.substr(end_text.indexOf(' ')+1);

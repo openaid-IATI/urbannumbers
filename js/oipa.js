@@ -591,6 +591,10 @@ function OipaMap(){
 			this.map.removeLayer(this.markers[i]);
 		}
 	};
+    
+    this.add_marker = function(marker) {
+        this.markers.push(marker);
+    }
 
 	this.show_data_on_map = function(data){
 
@@ -622,7 +626,7 @@ function OipaMap(){
 					}).bindPopup('<div class="country-marker-popup-header"><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">'+data.objects[i].name+'</a></div><table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/country/?country_id='+data.objects[i].id+'">' + data.objects[i].total_projects + '</a></td></tr><tr><td>BUDGET:</td><td>US$' + comma_formatted(data.objects[i].total_budget) + '</td></tr></table><a class="country-marker-popup-zoom" name="'+data.objects[i].id+'" country_name="'+data.objects[i].name+'" latitude="' + data.objects[i].latitude + '" longitude="' + data.objects[i].longitude + '" onclick="map.zoom_on_dom(this);">+ ZOOM IN</a>', { minWidth: 300, maxWidth: 300, offset: L.point(173, 69), closeButton: false, className: "country-popup"})
 					.addTo(this.map);
 
-					this.markers.push(curmarker);
+					this.add_marker(curmarker);
 				}
 			}
 
@@ -648,7 +652,7 @@ function OipaMap(){
 				}).bindPopup('<table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/region/?region_id='+data.objects[i].id+'">'+data.objects[i].total_projects+'</a></td></tr><tr><td>BUDGET:</td><td>US$'+comma_formatted(data.objects[i].total_budget)+'</td></tr></table>', { minWidth: 300, maxWidth: 300, offset: L.point(215, 134), closeButton: false, className: "region-popup"})
 				.addTo(this.map);
 
-				this.markers.push(curmarker);
+				this.add_marker(curmarker);
 			}
 		} else if(this.selection.group_by == "global"){
 			this.map.setView([10.505, 25.09], 2);
@@ -667,7 +671,7 @@ function OipaMap(){
 			})
 			.addTo(this.map);
 
-			this.markers.push(curmarker);
+			this.add_marker(curmarker);
 		
 		} else if(this.selection.group_by == "other"){
 			this.map.setView([10.505, 25.09], 2);
@@ -686,7 +690,7 @@ function OipaMap(){
 			})
 			.addTo(this.map);
 
-			this.markers.push(curmarker);
+			this.add_marker(curmarker);
 		}
 
 		this.load_map_listeners();

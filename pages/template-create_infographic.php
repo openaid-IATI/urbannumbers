@@ -68,7 +68,6 @@ if (!empty($_POST)){
 						<div class="col-md-4 col-sm-4">
 							<ul class="action-list">
 								<li><button type="submit" class="btn btn-blue">Save</button></li>
-								<li><button type="submit" class="btn btn-gray">Cancel</button></li>
 							</ul>
 						</div>
 					</div>
@@ -139,15 +138,6 @@ if (!empty($_POST)){
 			</div>
 			<?php include( TEMPLATEPATH .'/infographic-visualisations.php' ); ?>
 
-			
-			<div class="container-btns">
-				<div class="container-custom">
-					<ul class="action-list">
-						<li><button type="submit" class="btn btn-blue">Save</button></li>
-						<li><button type="submit" class="btn btn-gray">Cancel</button></li>
-					</ul>
-				</div>
-			</div>
 		</div>
 	</div>
 

@@ -47,6 +47,29 @@
 			<!-- sort-list -->
 			<ul class="sort-list">
 				<li>
+					<a name="indicators" class="opener filter-open" href="#">ADD INDICATORS <span class="caret"></span></a>
+					<div class="slide">
+						<div class="heading-holder"><span class="heading">Add indicators</span></div>
+						<nav id="indicators-pagination" class="pagination">
+							
+						</nav>
+						<div class="slide-content">
+							<div id="indicators-filters" class="holder">
+
+							</div>
+						</div>
+						<div class="btns-holder">
+							<div class="holder">
+								<ul class="btns-list">
+									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
+									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
+									<li class="filter-error-msg"></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
 					<a name="regions" class="opener filter-open" href="#">REGION <span class="caret"></span></a>
 					<div class="slide slide-region">
 						<div class="heading-holder"><span class="heading">Choose region</span></div>
@@ -102,29 +125,6 @@
 						<div class="slide-content">
 							<div id="cities-filters" class="holder">
 								
-							</div>
-						</div>
-						<div class="btns-holder">
-							<div class="holder">
-								<ul class="btns-list">
-									<li><a href="#" class="filters-save-button btn btn-blue">Save</a></li>
-									<li><a href="#" class="filters-cancel-button btn btn-gray btn-close">Cancel</a></li>
-									<li class="filter-error-msg"></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li>
-					<a name="indicators" class="opener filter-open" href="#">ADD INDICATORS <span class="caret"></span></a>
-					<div class="slide">
-						<div class="heading-holder"><span class="heading">Add indicators</span></div>
-						<nav id="indicators-pagination" class="pagination">
-							
-						</nav>
-						<div class="slide-content">
-							<div id="indicators-filters" class="holder">
-
 							</div>
 						</div>
 						<div class="btns-holder">

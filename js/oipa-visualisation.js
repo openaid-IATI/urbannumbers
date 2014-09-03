@@ -200,10 +200,12 @@ function OipaVis(){
     this.get_data = function(url){
         // filters
         var self = this;
-        map.add_refresh_callback('OipaVis' + url, function(data) {
-            self.data = data;
-            self.refresh(data);
-        });
+        if (typeof(map) != "undefined") {
+            map.add_refresh_callback('OipaVis' + url, function(data) {
+                self.data = data;
+                self.refresh(data);
+            });
+        }
         return;
     }
 
