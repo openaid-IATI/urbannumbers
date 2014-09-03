@@ -238,7 +238,7 @@ function display_login_form() {
             },
             success: function( data ) {
                 $('#sidebar-login-form-placeholder').html(data);
-                $('#sidebar-login-form').submit(function(e) {
+                $('#simple-iframe-login-form').submit(function(e) {
                     e.preventDefault();
 
                     // Hide errors
@@ -257,9 +257,8 @@ function display_login_form() {
                             method: 'POST',
                             data  : $(this).serialize(),
                             success: function(data) {
-                                console.log(data);
                                 if (data.indexOf('simple-iframe-login-form') == -1) {
-                                    window.location.href = LOGIN_URL;
+                                    //window.location.href = LOGIN_URL;
                                 } else {
                                     var _error = data.split('---')[0];
                                     $('.sidebar-login-form-login-error').html(_error).fadeIn();
