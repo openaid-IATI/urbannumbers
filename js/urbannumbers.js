@@ -246,15 +246,23 @@ function display_login_form() {
                     }
                 });
                 if (_form_is_valid) {
-                    $.post( this.action, $(this).serialize(), function(data) {
-                        if (data.indexOf('simple-iframe-login-form') == -1) {
-                            window.location.href = LOGIN_URL;
-                        } else {
-                            var _error = data.split('---')[0];
-                            $('.sidebar-login-form-login-error').html(_error).fadeIn();
-                        }
-                    }).fail(function(data) {
-                        $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
+                    $.ajax({
+                        url   : this.action,
+                        method: 'POST',
+                        data  : $(this).serialize(),
+                        success: function(data) {
+                            console.log(data);
+                            if (data.indexOf('simple-iframe-login-form') == -1) {
+                                window.location.href = LOGIN_URL;
+                            } else {
+                                var _error = data.split('---')[0];
+                                $('.sidebar-login-form-login-error').html(_error).fadeIn();
+                            }
+                        },
+                        error: function(data) {
+                            $('.sidebar-login-form-login-error').html('Error logging in. Please try later.').fadeIn();
+                        },
+                        dataType: 'jsonp'
                     });
                 } else {
                     $('.sidebar-login-form-login-error').html('Please enter username and password.').fadeIn();
