@@ -33,5 +33,7 @@ var OipaWidgetsBus = {
 
 $(function() {
     // Apply patches
-    OipaWidgetsBus.patch_map(map);
+    if (typeof(map) !== "undefined") {
+        OipaWidgetsBus.patch_map(map);
+    }
 });

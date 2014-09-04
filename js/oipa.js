@@ -121,6 +121,7 @@ var Oipa = {
 	pageType: null,
 	mainSelection: new OipaSelection(1),
 	maps : [],
+    _blank_visualization_key: 'blank_visualization_',
 	refresh_maps : function(){
 		for (var i = 0; i < this.maps.length; i++){
 			this.maps[i].refresh();
@@ -136,9 +137,43 @@ var Oipa = {
 		Oipa.create_visualisations();
 
 	},
+
+    is_blank_visualization: function(visualization) {
+        var self = this;
+        keys = $.map([0, 1, 2], function(i) {
+            return self._blank_visualization_key + i;
+        });
+        return (keys.indexOf(visualization.id) !== -1);
+    },
+    clean_blank_visualisations: function(data) {
+        var self = this;
+        // Cleanup old ones
+        return $.map(data, function(vis, _) {
+            if (self.is_blank_visualization(vis)) {
+                        return;
+            }
+            return vis;
+        });
+    },
+
+    prefill_blank_visualisations: function(data) {
+        var new_data = data;
+        // Add new blanks
+        if (data.length < 3) {
+            for (var i = data.length; i < 3; i++) {
+                new_data.push({
+                    id: this._blank_visualization_key + i,
+                    name: "REPLACEME",
+                    type: "Slum dwellers"
+                });
+            }
+        }
+        return new_data;
+    },
 	create_visualisations : function(){
 		var thisoipa = this;
 		data = this.mainSelection.indicators;
+        data = this.clean_blank_visualisations(data);
 
 		if (this.pageType == "indicators"){
             // cleanup unused charts
@@ -156,8 +191,11 @@ var Oipa = {
             var _old_visualizations = $.map(thisoipa.visualisations, function(vis, _) {
                 return vis.id;
             });
+
+            data = this.prefill_blank_visualisations(data);
             // for each indicator
             jQuery.each(data, function(key, value) {
+
                 if (thisoipa.visualisations[value.id] == undefined) {
                     // create line chart
                     var _chart_class = OipaLineChart;
@@ -175,6 +213,9 @@ var Oipa = {
                     }
                     if (value.id == 'avg_annual_rate_change_percentage_urban') {
                         _chart_class = OipaDoughnutChart;
+                    }
+                    if (thisoipa.is_blank_visualization(value)) {
+                        _chart_class = OipaBlankChart;
                     }
                     thisoipa.visualisations[value.id] = new _chart_class(value.id);
                     thisoipa.visualisations[value.id].selection = new OipaIndicatorSelection();

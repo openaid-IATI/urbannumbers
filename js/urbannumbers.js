@@ -146,7 +146,7 @@ function UnhabitatOipaIndicatorFilters(){
 		filter.selection.cities = [];
 		filter.selection.countries = [];
 		filter.selection.indicators = [];
-		filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+		//filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
 		// TO DO: set checkboxes
 		filter.save(true);
 	}

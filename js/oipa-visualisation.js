@@ -111,9 +111,6 @@ function OipaVis(){
 
         
         $.post(ajaxurl, data, function(response) {
-
-            // console.log(response);
-
             if(response.status == "log_in_first"){
                 console.log("log in first");
                 $("#header-login-register-button").click();
@@ -413,9 +410,15 @@ function OipaActiveChart(id) {
     this.year_data = {};
 
     this.get_year_slice = function(locations, year, limit) {
+        var self = this;
+        // Get last year slice if year is null
+
+        year = (year==null?2014:year);
         var _mapped = $.map(locations, function(i, _) {
             return [{
                 value: i.years[year],
+                color: i.color,
+                stroke_color: i.stroke_color,
                 name: i.name
             }];
         });
@@ -436,9 +439,9 @@ function OipaActiveChart(id) {
             labels: [],
             datasets: [{
                 label: data.indicator_friendly,
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
+                fillColor: (data_slice[0].color == undefined) ? "rgba(151,187,205,1)" : data_slice[0].color,
+                strokeColor: (data_slice[0].stroke_color == undefined) ? "rgba(151,187,205,2)" : data_slice[0].stroke_color,
+                pointColor: (data_slice[0].color == undefined) ? "rgba(151,187,205,1)" : data_slice[0].color,
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
@@ -488,8 +491,9 @@ function OipaActiveChart(id) {
         return chart.scale.xLabels;
     }
 
-    this.visualize = function(data){
+    this.visualize = function(data) {
         var self = this;
+
         if (!data) {
             data = this.data;
         }
@@ -523,6 +527,7 @@ function OipaActiveChart(id) {
                 $.each(chart_data.labels, function(_id, label) {
                     self.get_chart_labels(self.chart)[_id] = label;
                     self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
+                    self.get_chart_points(self.chart)[_id].label = label;
                 });
             } else {
                 // pie, radar etc
@@ -537,12 +542,37 @@ function OipaActiveChart(id) {
             self.chart.update();
         }
     }
+    return this;
 }
 OipaActiveChart.prototype = new OipaVis();
+
+function OipaActiveRoundChart(id) {
+    this.format_year_data = function(data, year, limit){
+        var self = this;
+        
+        var data_slice = self.get_year_slice(data.locs, year, limit);
+        return $.map(data_slice, function(i, _) {
+            var _color = (i.color==undefined ? self.getRandomColor() : i.color);
+            var _stroke_color = (i.stroke_color==undefined?_color:i.stroke_color);
+            return {
+                value: i.value,
+                label: i.name,
+                color: _color,
+                stroke_color: _stroke_color,
+                highlight: _stroke_color
+            };
+        });
+    }
+    
+}
+OipaActiveRoundChart.prototype = new OipaActiveChart();
+
 
 function OipaLineChart(id) {
     this.id = id;
     this.type = "OipaLineChart";
+
+    return this;
 }
 OipaLineChart.prototype = new OipaActiveChart();
 
@@ -556,6 +586,7 @@ function OipaBarChart(id) {
     this.get_chart_points = function(chart) {
         return chart.datasets[0].bars;
     }
+    return this;
 }
 OipaBarChart.prototype = new OipaActiveChart();
 
@@ -569,88 +600,141 @@ function OipaRadarChart(id) {
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
     }
+    return this;
 }
 OipaRadarChart.prototype = new OipaActiveChart();
+
 
 function OipaPolarChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
-    this.format_year_data = function(data, year, limit){
-        var self = this;
-        
-        var data_slice = self.get_year_slice(data.locs, year, limit);
-        return $.map(data_slice, function(i, _) {
-            var _color = self.getRandomColor();
-            return {
-                value: i.value,
-                label: i.name,
-                color: _color,
-                highlight: _color
-            };
-        });
-    }
     this.init_chart = function(ctx, chart_data) {
         return new Chart(ctx.getContext("2d")).PolarArea(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
     }
+    return this;
 }
-OipaPolarChart.prototype = new OipaActiveChart();
+OipaPolarChart.prototype = new OipaActiveRoundChart();
 
 
 function OipaPieChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
-    this.format_year_data = function(data, year, limit){
-        var self = this;
-        
-        var data_slice = self.get_year_slice(data.locs, year, limit);
-        return $.map(data_slice, function(i, _) {
-            var _color = self.getRandomColor();
-            return {
-                value: i.value,
-                label: i.name,
-                color: _color,
-                highlight: _color
-            };
-        });
-    }
+
     this.init_chart = function(ctx, chart_data) {
         return new Chart(ctx.getContext("2d")).Pie(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
     }
+    return this;
 }
-OipaPieChart.prototype = new OipaActiveChart();
+OipaPieChart.prototype = new OipaActiveRoundChart();
 
 
 function OipaDoughnutChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
-    this.format_year_data = function(data, year, limit){
-        var self = this;
-        
-        var data_slice = self.get_year_slice(data.locs, year, limit);
-        return $.map(data_slice, function(i, _) {
-            var _color = self.getRandomColor();
-            return {
-                value: i.value,
-                label: i.name,
-                color: _color,
-                highlight: _color
-            };
-        });
-    }
+
     this.init_chart = function(ctx, chart_data) {
         return new Chart(ctx.getContext("2d")).Doughnut(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
     }
+    return this;
 }
-OipaDoughnutChart.prototype = new OipaActiveChart();
+OipaDoughnutChart.prototype = new OipaActiveRoundChart();
+
+
+function OipaBlankChart(object_id) {
+    function OipaBlankChartFactory(subobject_id) {
+        this.id = subobject_id;
+        this.type = "OipaBlankChart";
+
+        var _old_visualize = this.visualize;
+        this.visualize = function(data) {
+            var self = this;
+            if (typeof(data) == 'string') {
+                // data becomes string when no real indicators selected
+                data = {};
+            }
+            if (data[self.indicator] == undefined) {
+                data[self.indicator] = {
+                    indicator: this.indicator,
+                    indicator_friendly: "Random chart",
+                    selection_type: null,
+                    max_value:19900000,
+                    locs: {
+                        5208: {
+                            latitude: "-1.95359",
+                            longitude: "30.060532",
+                            color: "rgba(192,192,192,2)",
+                            stroke_color: "rgba(192,192,192,1)",
+                            years: {},
+                            name: "Kigali",
+                            id: 5208
+                        },
+                        5702: {
+                            latitude: "6.801974",
+                            longitude: "-58.167029",
+                            color: "rgba(192,192,192,2)",
+                            stroke_color: "rgba(192,192,192,1)",
+                            years: {},
+                            name: "Georgetown",
+                            id:5702
+                        },
+                        5796: {
+                            latitude: "9.083333",
+                            longitude: "7.533328",
+                            color: "rgba(192,192,192,2)",
+                            stroke_color: "rgba(192,192,192,1)",
+                            years: {},
+                            name: "Abuja",
+                            id:5796
+                        },
+                        5929: {
+                            latitude: "40.181151",
+                            longitude: "44.513551",
+                            color: "rgba(192,192,192,2)",
+                            stroke_color: "rgba(192,192,192,1)",
+                            years: {},
+                            name: "Yerevan",
+                            id: 5929
+                        },
+                    },
+                    type_data: "1000"
+                };
+
+                var _active_years = $.map(Object.keys(map.active_years), function(i) {
+                    return parseInt(i);
+                });
+                $.each(data[self.indicator].locs, function(id) {
+                    for (var _year = (Math.min.apply(null, _active_years) | 1990); _year < (Math.max.apply(null, _active_years) | 2015); _year++) {
+                        data[self.indicator].locs[id].years[_year] = Math.floor((Math.random() * 100) + 1);
+                    }
+                });
+                self.data = data;
+            }
+            return _old_visualize.apply(self, data);
+        
+        }
+        return this;
+    }
+
+    var _chart_type = [
+        "OipaLineChart",
+        "OipaBarChart",
+        "OipaPieChart",
+        "OipaPolarChart",
+        "OipaDoughnutChart"
+    ][Math.floor((Math.random() * 5))];
+
+    OipaBlankChartFactory.prototype = new window[_chart_type]();
+    return new OipaBlankChartFactory(object_id);
+}
 
 
 function OipaBubbleChart(){

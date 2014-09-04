@@ -337,6 +337,11 @@ function OipaIndicatorMap(){
                 this.active_years = function() {
                     var years = {min: null, max: null};
                     $.each(data, function(_, indicator) {
+                        if (typeof(indicator) == "string") {
+                            // do not continue if indicator is undefined
+                            return;
+                        }
+
                         var _years = Object.keys(indicator.locs[Object.keys(indicator.locs)[0]].years);
                         years.max = Math.max(years.max, Math.max.apply(null, _years));
                         if (years.min == null) {
@@ -353,9 +358,10 @@ function OipaIndicatorMap(){
 
                 // data containing multiple indicators
                 $.each(data, function(mainkey, mainvalue){
-
+                    if (typeof(mainvalue) == "string") {
+                        return;
+                    }
                         indicator_counter++;
-
                         // city or country
                         $.each(mainvalue.locs, function(key, value){
 
@@ -572,6 +578,9 @@ function OipaIndicatorMap(){
 
         this.move_slider_to_available_year = function(){
                 var year = this.selected_year;
+                if (year == null) {
+                    return;
+                }
                 $( "#map-slider-tooltip" ).val(year);
                 $( "#map-slider-tooltip div" ).text(year.toString());
                 $( ".slider-year").removeClass("active");
