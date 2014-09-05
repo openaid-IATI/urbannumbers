@@ -41,7 +41,6 @@ get_header(); the_post(); ?>
 <?php get_template_part("footer", "scripts"); ?>
 
 <script>
-	
 	Oipa.pageType = "indicators";
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
 	
@@ -75,7 +74,10 @@ get_header(); the_post(); ?>
     <?php } ?>
 	filter.save(true);
 
+    OipaWidgetsBus.patch_map(map);
 
 </script>
+
+<?php get_template_part("footer", "bus_scripts"); ?>
 
 <?php get_footer(); ?>

@@ -195,7 +195,6 @@ var Oipa = {
             data = this.prefill_blank_visualisations(data);
             // for each indicator
             jQuery.each(data, function(key, value) {
-
                 if (thisoipa.visualisations[value.id] == undefined) {
                     // create line chart
                     var _chart_class = OipaLineChart;
@@ -230,6 +229,11 @@ var Oipa = {
                     thisoipa.visualisations[value.id].x_name = 'Time (Years)';
                     thisoipa.visualisations[value.id].x_format = d3.format('r');
                     thisoipa.visualisations[value.id].init();
+                } else {
+                    thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
+                    thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
+                    thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
+                    thisoipa.visualisations[value.id].refresh();
                 }
             });
         }

@@ -14,6 +14,7 @@ function OipaCompareSelection(main){
         this.url = new OipaUrl(this);
         
 }
+OipaCompareSelection.prototype = new OipaIndicatorSelection();
 
 var OipaCompare = {
         item1 : null,
@@ -55,147 +56,150 @@ var OipaCompare = {
 
 
                 // create radar chart from cpi data
-                var cursel = new OipaIndicatorSelection();
-                cursel.indicators.push({"id": "cpi_environment_index", "name": "Environment Sustainability Index", "type": "City prosperity"});
-                cursel.indicators.push({"id": "cpi_infrastructure_index", "name": "Infrastructure Development Index", "type": "City prosperity"});
-                cursel.indicators.push({"id": "cpi_productivity_index", "name": "Productivity Index", "type": "City prosperity"});
-                cursel.indicators.push({"id": "cpi_quality_of_live_index", "name": "Quality of Life Index", "type": "City prosperity"});
-                cursel.indicators.push({"id": "cpi_equity_index", "name": "Equity/Social Inclusion Index", "type": "City prosperity"});
-                cursel.indicators.push({"id": "cpi_composite_street_connectivity_index", "name": "Composite Street Connectivity Index"});
-                // create left radarchart
-                // console.log(OipaCompare.item1);
-                cursel.cities.push({"id": filter.selection.left.cities[0].id, "name": filter.selection.left.cities[0].name});
-                cursel.cities.push({"id": filter.selection.right.cities[0].id, "name": filter.selection.right.cities[0].name});
-                // console.log(cursel.cities);
-                // console.log(OipaCompare);
-                var radarchart = new OipaRadarChart();
-                radarchart.indicator = "cpi_combined_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                radarchart.chartwrapper = "#visualisation-block-wrapper";
-                radarchart.name = "City prosperity";
-                radarchart.selection = cursel;
-                radarchart.init();
-                Oipa.visualisations.push(radarchart);
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "urban_population_cities", "name": "Urban population"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "urban_population_cities_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Urban population";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "urban_population_share_national", "name": "Share in national urban population"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "urban_population_share_national_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Share in national urban population";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "avg_annual_rate_change_percentage_urban", "name": "Annual urban population change %"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "avg_annual_rate_change_percentage_urban_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Annual urban population change %";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
+                //var cursel = new OipaIndicatorSelection();
+                var cursel = Oipa.mainSelection;
                 
+                filter.selection.indicators.push({"id": "cpi_environment_index", "name": "Environment Sustainability Index", "type": "City prosperity"});
+                // cursel.indicators.push({"id": "cpi_infrastructure_index", "name": "Infrastructure Development Index", "type": "City prosperity"});
+//                 cursel.indicators.push({"id": "cpi_productivity_index", "name": "Productivity Index", "type": "City prosperity"});
+//                 cursel.indicators.push({"id": "cpi_quality_of_live_index", "name": "Quality of Life Index", "type": "City prosperity"});
+//                 cursel.indicators.push({"id": "cpi_equity_index", "name": "Equity/Social Inclusion Index", "type": "City prosperity"});
+//                 cursel.indicators.push({"id": "cpi_composite_street_connectivity_index", "name": "Composite Street Connectivity Index"});
+//                 // create left radarchart
+//                 // console.log(OipaCompare.item1);
+//                 cursel.cities.push({"id": filter.selection.left.cities[0].id, "name": filter.selection.left.cities[0].name});
+//                 cursel.cities.push({"id": filter.selection.right.cities[0].id, "name": filter.selection.right.cities[0].name});
+//                 // console.log(cursel.cities);
+//                 // console.log(OipaCompare);
+//                 var radarchart = new OipaRadarChart();
+//                 radarchart.indicator = "cpi_combined_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 radarchart.chartwrapper = "#visualisation-block-wrapper";
+//                 radarchart.name = "City prosperity";
+//                 radarchart.selection = cursel;
+//                 radarchart.init();
+//
+//                 //Oipa.visualisations.push(radarchart);
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "urban_population_cities", "name": "Urban population"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "urban_population_cities_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Urban population";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "urban_population_share_national", "name": "Share in national urban population"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "urban_population_share_national_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Share in national urban population";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "avg_annual_rate_change_percentage_urban", "name": "Annual urban population change %"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "avg_annual_rate_change_percentage_urban_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Annual urban population change %";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "land_area", "name": "Land area"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "land_area_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Land area";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "population_estimate", "name": "Population estimate"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "population_estimate_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Population estimate";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "urban_agglomeration_density", "name": "Urban agglomeration_density"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "urban_agglomeration_density_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Urban agglomeration density";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "intersection_density_city_core", "name": "Intersection density - City core"});
+//                 cursel.indicators.push({"id": "intersection_density_sub_urban_area", "name": "Intersection density - Sub urban area"});
+//                 cursel.indicators.push({"id": "intersection_density_total", "name": "Intersection density - Total"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "intersection_density_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Intersection density";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "proportion_land_allocated_to_street_sub_urban_area", "name": "Proportion of land allocated to street - City core"});
+//                 cursel.indicators.push({"id": "proportion_land_allocated_to_street_city_core", "name": "Proportion of land allocated to street - Sub urban area"});
+//                 cursel.indicators.push({"id": "proportion_land_allocated_to_street_total", "name": "Proportion of land allocated to street - Total"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "proportion_land_allocated_to_street_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Proportion of land allocated to street";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
+//
+//
+//                 cursel.indicators = [];
+//                 cursel.indicators.push({"id": "street_density_city_core", "name": "Street density - City core"});
+//                 cursel.indicators.push({"id": "street_density_sub_urban_area", "name": "Street density - Sub urban area"});
+//                 cursel.indicators.push({"id": "street_density_total", "name": "Street density - Total"});
+//
+//                 var columnchart = new OipaColumnChart();
+//                 columnchart.indicator = "street_density" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
+//                 columnchart.chartwrapper = "#visualisation-block-wrapper";
+//                 columnchart.name = "Street density";
+//                 columnchart.selection = cursel;
+//                 columnchart.init();
+//                 //Oipa.visualisations.push(columnchart);
 
 
 
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "land_area", "name": "Land area"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "land_area_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Land area";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "population_estimate", "name": "Population estimate"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "population_estimate_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Population estimate";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "urban_agglomeration_density", "name": "Urban agglomeration_density"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "urban_agglomeration_density_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Urban agglomeration density";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "intersection_density_city_core", "name": "Intersection density - City core"});
-                cursel.indicators.push({"id": "intersection_density_sub_urban_area", "name": "Intersection density - Sub urban area"});
-                cursel.indicators.push({"id": "intersection_density_total", "name": "Intersection density - Total"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "intersection_density_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Intersection density";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "proportion_land_allocated_to_street_sub_urban_area", "name": "Proportion of land allocated to street - City core"});
-                cursel.indicators.push({"id": "proportion_land_allocated_to_street_city_core", "name": "Proportion of land allocated to street - Sub urban area"});
-                cursel.indicators.push({"id": "proportion_land_allocated_to_street_total", "name": "Proportion of land allocated to street - Total"});
-
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "proportion_land_allocated_to_street_" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Proportion of land allocated to street";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-                cursel.indicators = [];
-                cursel.indicators.push({"id": "street_density_city_core", "name": "Street density - City core"});
-                cursel.indicators.push({"id": "street_density_sub_urban_area", "name": "Street density - Sub urban area"});
-                cursel.indicators.push({"id": "street_density_total", "name": "Street density - Total"});
-                
-                var columnchart = new OipaColumnChart();
-                columnchart.indicator = "street_density" + OipaCompare.item1.id + "_" + OipaCompare.item2.id;
-                columnchart.chartwrapper = "#visualisation-block-wrapper";
-                columnchart.name = "Street density";
-                columnchart.selection = cursel;
-                columnchart.init();
-                Oipa.visualisations.push(columnchart);
-
-
-
-                
+                filter.save(true);
 
         }
 }
@@ -203,7 +207,6 @@ var OipaCompare = {
 function OipaIndicatorMap(){
 
     this._url_data_cache = {};
-    this._refresh_callbacks = {};
 
         this.indicatordata = {};
 
@@ -217,21 +220,6 @@ function OipaIndicatorMap(){
                 $( "#map-slider-tooltip" ).val(this.selected_year);
                 $( "#year-" + this.selected_year).addClass("active");
 
-        }
-
-        this.add_refresh_callback = function(name, callback) {
-            if (this._refresh_callbacks[name] == undefined) { // Avoid duplicate callbacks
-                this._refresh_callbacks[name] = callback;
-                if (this._url_data_cache[this.get_url()] !== undefined) {
-                    // Data is already loaded for this callback, happens when indicator is disabled and reenabled
-                    callback(this._url_data_cache[this.get_url()]);
-                }
-            }
-        }
-        this.remove_refresh_callback = function(name) {
-            if (this._refresh_callbacks[name] !== undefined) {
-                delete this._refresh_callbacks[name];
-            }
         }
 
         this.refresh = function(data){
@@ -262,10 +250,6 @@ function OipaIndicatorMap(){
 
                 // refresh circles on right year
                 this.refresh_circles(this.selected_year);
-
-                $.each(this._refresh_callbacks, function(_, func) {
-                    func(data);
-                });
             }
         };
 
@@ -364,7 +348,6 @@ function OipaIndicatorMap(){
                         indicator_counter++;
                         // city or country
                         $.each(mainvalue.locs, function(key, value){
-
                                 if (value.longitude == null || value.latitude == null){ return true; }
                                 try{
 

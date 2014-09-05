@@ -1,5 +1,5 @@
 
-function OipaVis(){
+function OipaVis (){
     this.type = null; // override
     this.data = null;
     this.selection = null;
@@ -35,7 +35,7 @@ function OipaVis(){
 
     this.destroy = function() {
         OipaWidgetsBus.remove_listener(this);
-        map.remove_refresh_callback('OipaVis' + this.get_url());
+        //map.remove_refresh_callback('OipaVis' + this.get_url());
         var node = document.getElementById('visualization_' + this.indicator);
         var holder = document.getElementById('visualisation-block-wrapper');
         holder.removeChild(node);
@@ -68,7 +68,7 @@ function OipaVis(){
         // create the string this vis will be saved as.
         var vis_parameters = new Object();
         vis_parameters.type = this.type;
-        vis_parameters.selection = this.selection;
+        //vis_parameters.selection = this.selection;
         vis_parameters.name = this.name;
         vis_parameters.indicator = this.indicator;
         vis_parameters.y_name = this.y_name;
@@ -154,13 +154,18 @@ function OipaVis(){
 
     };
 
-    this.refresh = function(data){
-        if (!data && !this.data){
+    this.refresh_data = function(data, force) {
+        this.data = data;
+        this.refresh(data, force);
+    }
+
+    this.refresh = function(data, force) {
+        if (force || (!data && !this.data)){
             // get url
             var url = this.get_url();
 
             // get data
-            this.get_data(url);
+            this.get_data(url, force);
             
         } else {
             if (data) {
@@ -180,7 +185,6 @@ function OipaVis(){
     };
 
     this.get_url = function(){
-
         var str_region = get_parameters_from_selection(this.selection.regions);
         var str_country = get_parameters_from_selection(this.selection.countries);
         var str_city = get_parameters_from_selection(this.selection.cities);
@@ -194,15 +198,45 @@ function OipaVis(){
         return search_url + 'indicator-data/?format=json'+str_limit+'&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
     };
 
-    this.get_data = function(url){
-        // filters
+    this.forced_get_data = function(url) {
         var self = this;
-        if (typeof(map) != "undefined") {
-            map.add_refresh_callback('OipaVis' + url, function(data) {
-                self.data = data;
-                self.refresh(data);
+
+        $.support.cors = true;
+
+        if (window.XDomainRequest) {
+            var xdr = new XDomainRequest();
+            xdr.open("get", url);
+            xdr.onprogress = function () { };
+            xdr.ontimeout = function () { };
+            xdr.onerror = function () { };
+            xdr.onload = function() {
+                var jsondata = $.parseJSON(xdr.responseText);
+                if (jsondata === null || typeof (jsondata) === 'undefined') {
+                    jsondata = $.parseJSON(jsondata.firstChild.textContent);
+                    self.refresh_data(jsondata);
+                }
+            };
+            setTimeout(function () {xdr.send();}, 0);
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(data) {
+                    self.refresh_data(data);
+                }
             });
         }
+    }
+
+    this.get_data = function(url, force){
+        // filters
+        var self = this;
+        if (force) {
+            this.forced_get_data(url);
+        }
+        // Data for this graphs comes from widgetbus
         return;
     }
 
@@ -353,7 +387,6 @@ function OipaColumnChart(){
         if (d.length < 1){
             return null;
         }
-        //console.log(d);
         return d;
     };
 
@@ -429,10 +462,17 @@ function OipaActiveChart(id) {
         return _mapped.slice(0, limit);
     }
 
+    this.get_last_data_year = function(data) {
+        return Math.max.apply(null, $.map(Object.keys(data.locs[Object.keys(data.locs)[0]].years), function(i) {return parseInt(i);}));
+    }
+
     // TODO: optimize this crap, it gets slow even with 3 indicators
     this.format_year_data = function(data, year, limit){
         var self = this;
-        
+        if (year == null) {
+            year = self.get_last_data_year(data);
+        }
+
         var data_slice = self.get_year_slice(data.locs, year, limit);
 
         var base_data = {
@@ -478,9 +518,9 @@ function OipaActiveChart(id) {
         return returned_data;
     }
 
-    this.init_chart = function(ctx, chart_data) {
+    this.init_chart = function(chart_data) {
         // Defaults to Line
-        return new Chart(ctx.getContext("2d")).Line(chart_data);
+        return this.chart_obj.Line(chart_data);
     }
 
     this.get_chart_points = function(chart) {
@@ -505,8 +545,8 @@ function OipaActiveChart(id) {
         }
 
         data = data[self.indicator];
-        var _year = map.selected_year;
         chart_data = self.format_year_data(data, self.selected_year, 10);
+
 
         if (!self.chart) {
             var ctx = document.createElement('canvas');
@@ -519,10 +559,10 @@ function OipaActiveChart(id) {
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
                 node.appendChild(ctx);
             });
-            self.chart = self.init_chart(ctx, chart_data);
+            self.chart_obj = new Chart(ctx.getContext("2d"));
+            self.chart = self.init_chart(chart_data);
         } else {
             // Refresh
-            //self.chart.Line(chart_data);
             if (chart_data.labels) {
                 $.each(chart_data.labels, function(_id, label) {
                     self.get_chart_labels(self.chart)[_id] = label;
@@ -533,13 +573,14 @@ function OipaActiveChart(id) {
                 // pie, radar etc
                 // Redraw chart only if data isset
                 if (chart_data[0].value !== undefined) {
-                    $.each(chart_data, function(i, v) {
-                        self.chart.segments[i].label = v.label;
-                        self.chart.segments[i].value = v.value;
-                    });
+                 $.each(chart_data, function(i, v) {
+                     self.chart.segments[i].label = v.label;
+                     self.chart.segments[i].value = v.value;
+                 });
                 }
             }
             self.chart.update();
+
         }
     }
     return this;
@@ -549,6 +590,9 @@ OipaActiveChart.prototype = new OipaVis();
 function OipaActiveRoundChart(id) {
     this.format_year_data = function(data, year, limit){
         var self = this;
+        if (year == null) {
+            year = self.get_last_data_year(data);
+        }
         
         var data_slice = self.get_year_slice(data.locs, year, limit);
         return $.map(data_slice, function(i, _) {
@@ -580,8 +624,8 @@ OipaLineChart.prototype = new OipaActiveChart();
 function OipaBarChart(id) {
     this.id = id;
     this.type = "OipaBarChart";
-    this.init_chart = function(ctx, chart_data) {
-        return new Chart(ctx.getContext("2d")).Bar(chart_data);
+    this.init_chart = function(chart_data) {
+        return this.chart_obj.Bar(chart_data);
     }
     this.get_chart_points = function(chart) {
         return chart.datasets[0].bars;
@@ -594,8 +638,8 @@ OipaBarChart.prototype = new OipaActiveChart();
 function OipaRadarChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
-    this.init_chart = function(ctx, chart_data) {
-        return new Chart(ctx.getContext("2d")).Radar(chart_data);
+    this.init_chart = function(chart_data) {
+        return this.chart_obj.Radar(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -608,8 +652,8 @@ OipaRadarChart.prototype = new OipaActiveChart();
 function OipaPolarChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
-    this.init_chart = function(ctx, chart_data) {
-        return new Chart(ctx.getContext("2d")).PolarArea(chart_data);
+    this.init_chart = function(chart_data) {
+        return this.chart_obj.PolarArea(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -623,8 +667,8 @@ function OipaPieChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
 
-    this.init_chart = function(ctx, chart_data) {
-        return new Chart(ctx.getContext("2d")).Pie(chart_data);
+    this.init_chart = function(chart_data) {
+        return this.chart_obj.Pie(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -638,8 +682,8 @@ function OipaDoughnutChart(id) {
     this.id = id;
     this.type = "OipaRadarChart";
 
-    this.init_chart = function(ctx, chart_data) {
-        return new Chart(ctx.getContext("2d")).Doughnut(chart_data);
+    this.init_chart = function(chart_data) {
+        return this.chart_obj.Doughnut(chart_data);
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -708,9 +752,12 @@ function OipaBlankChart(object_id) {
                     type_data: "1000"
                 };
 
-                var _active_years = $.map(Object.keys(map.active_years), function(i) {
-                    return parseInt(i);
-                });
+                var _active_years = {};
+                if (typeof(map) !== "undefined") {
+                    $.map(Object.keys(map.active_years), function(i) {
+                        return parseInt(i);
+                    });
+                }
                 $.each(data[self.indicator].locs, function(id) {
                     for (var _year = (Math.min.apply(null, _active_years) | 1990); _year < (Math.max.apply(null, _active_years) | 2015); _year++) {
                         data[self.indicator].locs[id].years[_year] = Math.floor((Math.random() * 100) + 1);
@@ -742,157 +789,6 @@ function OipaBubbleChart(){
 }
 OipaBubbleChart.prototype = new OipaVis();
 
-//
-//
-// function OipaRadarChart(){
-//     this.type = "OipaRadarChart";
-//     this.data = null;
-//     this.name = null;
-//     this.indicator = null;
-//     this.limit = null;
-//
-//     this.init = function(){
-//         // create html
-//         var html = '<li><section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><header class="heading-holder"><h3>'+this.name+'</h3></header>';
-//         html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><div class="radar-chart" style="height:350px; width: 350px;"></div></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
-//         html += '</div></section></li>';
-//         $(this.chartwrapper).append(html);
-//         this.load_listeners();
-//         this.refresh();
-//         this.check_if_in_favorites();
-//     };
-//
-//     this.format_data = function(data){
-//         var d = [];
-//         var locs = [];
-//         var indicators = [];
-//
-//         // get geolocs
-//         $.each(data, function(key, value){
-//
-//             if ($.inArray(value.indicator_friendly, indicators) < 0){
-//                 indicators[key] = value.indicator_friendly;
-//             }
-//
-//             $.each(value.locs, function(ikey, ivalue){
-//                 if ($.inArray(ivalue.id, locs) < 0){
-//                     locs[ikey] = ivalue.name;
-//                 }
-//             });
-//         });
-//
-//         for(var lockey in locs) {
-//
-//             locval = locs[lockey];
-//
-//             var curlocarray = [];
-//
-//             // bv. Helsinki
-//             for(var indkey in indicators) {
-//
-//                 indval = indicators[indkey];
-//                 var curvalue = null;
-//
-//                 for (var firstyear in data[indkey].locs[lockey].years){
-//                     curvalue = data[indkey].locs[lockey].years[firstyear];
-//                     break;
-//                 }
-//
-//                 curlocarray.push({axis: indval, value: curvalue});
-//             }
-//             d.push(curlocarray);
-//         }
-//
-//         if (d.length < 1){
-//             return null;
-//         }
-//
-//         return d;
-//     }
-//
-//     this.visualize = function(data){
-//
-//         var w = 200,
-//             h = 200;
-//
-//         var colorscale = d3.scale.category10();
-//
-//         //Legend titles
-//         // var LegendOptions = ['Smartphone','Tablet'];
-//
-//         //Options for the Radar chart, other than default
-//         var mycfg = {
-//           w: w,
-//           h: h,
-//           maxValue: 1.0,
-//           levels: 10,
-//           ExtraWidthX: 300
-//         }
-//
-//         // get data in right format (differs per vis)
-//         data = this.format_data(data);
-//
-//         if (!data){
-//             // empty data, remove vis
-//             this.remove();
-//             return false;
-//         }
-//
-//         //Call function to draw the Radar chart
-//         //Will expect that data is in %'s
-//         RadarChart.draw('section[data-indicator="'+this.indicator+'"][data-vis-type="'+this.type+'"] .radar-chart', data, mycfg);
-//
-//         ////////////////////////////////////////////
-//         /////////// Initiate legend ////////////////
-//         ////////////////////////////////////////////
-//
-//         // var svg = d3.select('section[data-indicator="'+this.indicator+'"][data-vis-type="'+this.type+'"] svg');
-//
-//         // //Create the title for the legend
-//         // var text = svg.append("text")
-//         //  .attr("class", "title")
-//         //  .attr('transform', 'translate(90,0)')
-//         //  .attr("x", w - 70)
-//         //  .attr("y", 10)
-//         //  .attr("font-size", "12px")
-//         //  .attr("fill", "#404040")
-//         //  .text("What % of owners use a specific service in a week");
-//
-//         // //Initiate Legend
-//         // var legend = svg.append("g")
-//         //  .attr("class", "legend")
-//         //  .attr("height", 100)
-//         //  .attr("width", 200)
-//         //  .attr('transform', 'translate(90,20)')
-//         //  ;
-//         //  //Create colour squares
-//         //  legend.selectAll('rect')
-//         //    .data(LegendOptions)
-//         //    .enter()
-//         //    .append("rect")
-//         //    .attr("x", w - 65)
-//         //    .attr("y", function(d, i){ return i * 20;})
-//         //    .attr("width", 10)
-//         //    .attr("height", 10)
-//         //    .style("fill", function(d, i){ return colorscale(i);})
-//         //    ;
-//         //  //Create text next to squares
-//         //  legend.selectAll('text')
-//         //    .data(LegendOptions)
-//         //    .enter()
-//         //    .append("text")
-//         //    .attr("x", w - 52)
-//         //    .attr("y", function(d, i){ return i * 20 + 9;})
-//         //    .attr("font-size", "11px")
-//         //    .attr("fill", "#737373")
-//         //    .text(function(d) { return d; })
-//         //    ;
-//     }
-//
-//
-//
-// }
-// OipaRadarChart.prototype = new OipaVis();
 
 
 
@@ -911,6 +807,7 @@ function OipaSimpleMapVis(){
     this.map = null;
     this.map_div = null;
     this.chartwrapper = "#visualisation-maps-block-wrapper";
+    this._url_cache = {};
 
     this.init = function(){
         // create html
@@ -974,12 +871,16 @@ function OipaSimpleMapVis(){
         return search_url + api_call + '/' + this.id + '/?format=json';
     };
 
+    this.get_data = function(url) {
+        this.forced_get_data(url);
+    }
+
     this.format_data = function(data){
         
     };
+  
 
     this.visualize = function(data){
-
         if (this.geotype == "point"){
 
             var latitude = null;
@@ -1009,43 +910,17 @@ function OipaSimpleMapVis(){
                 // this.map.setView(longlat, 6);
             }
 
-            
+            if (latitude){
             curmarker = L.marker([
                     latitude,
                     longitude
             ])
             .addTo(this.map);
             
-            this.marker = curmarker;
+            this.marker = curmarker;}
         }
 
     };
 }
 
 OipaSimpleMapVis.prototype = new OipaVis();
-
-    
-
-// function resize() {
-//     /* Find the new window dimensions */
-//  var width = parseInt(d3.select("#line-chart").style("width")) - margin*2,
-//  height = parseInt(d3.select("#line-chart").style("height")) - margin*2;
-    
-//  /* Update the range of the scale with new width/height */
-//  xScale.range([0, width]).nice(d3.time.year);
-//  yScale.range([height, 0]).nice();
-     
-//  /* Update the axis with the new scale */
-//  graph.select('.x.axis')
-//    .attr("transform", "translate(0," + height + ")")
-//    .call(xAxis);
-     
-//  graph.select('.y.axis')
-//    .call(yAxis);
-     
-//  /* Force D3 to recalculate and update the line */
-//  graph.selectAll('.line')
-//    .attr("d", line);
-// }
- 
-// d3.select(window).on('resize', resize); 

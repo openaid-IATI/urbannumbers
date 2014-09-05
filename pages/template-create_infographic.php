@@ -155,7 +155,8 @@ if (!empty($_POST)){
 function UnhabitatOipaInfographicFilters(){
 
 	this.save = function(dont_update_selection){
-		
+
+		Oipa.mainSelection.url.set_current_url();
 		if(!dont_update_selection){
 			// update OipaSelection object
 			this.update_selection_object();
@@ -172,7 +173,7 @@ function UnhabitatOipaInfographicFilters(){
 			regionmap.indicator = Oipa.mainSelection.regions[0].id;
 			regionmap.id = Oipa.mainSelection.regions[0].id;
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='region'] .heading-holder h3").html(regionmap.name);
-			regionmap.refresh();
+			regionmap.refresh(undefined, true);
 		} else {
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='region']").addClass("grayed-and-inactive");
 		}
@@ -184,7 +185,7 @@ function UnhabitatOipaInfographicFilters(){
 			countrymap.indicator = Oipa.mainSelection.countries[0].id;
 			countrymap.id = Oipa.mainSelection.countries[0].id;
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='country'] .heading-holder h3").html(countrymap.name);
-			countrymap.refresh();
+			countrymap.refresh(undefined, true);
 		} else {
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='country']").addClass("grayed-and-inactive");
 		}
@@ -195,15 +196,12 @@ function UnhabitatOipaInfographicFilters(){
 			citymap.indicator = Oipa.mainSelection.cities[0].id;
 			citymap.id = Oipa.mainSelection.cities[0].id;
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='city'] .heading-holder h3").html(citymap.name);
-			citymap.refresh();
+			citymap.refresh(undefined, true);
 		} else {
 			jQuery("section[data-vis-type='OipaSimpleMapVis'][data-geo-location='city']").addClass("grayed-and-inactive");
 		}
-
 		// reload visualisations
 		Oipa.refresh_visualisations();
-
-		Oipa.mainSelection.url.set_current_url();
 		return true;
 	};
 
@@ -292,7 +290,27 @@ var citymap = new OipaSimpleMapVis();
 	citymap.map_div = null;
 	citymap.init();
 
+    // Force refresh
+    OipaWidgetsBus.use_force_refresh = true;
 
+</script>
+
+<?php get_template_part("footer", "bus_scripts"); ?>
+
+<script type="text/javascript">
+    <?php
+    $indicators = array();
+    if (isset($_GET['indicators']) && !empty($_GET['indicators'])) {
+        $indicators = explode(',', $_GET['indicators']);
+    }
+    if (count($indicators)) {
+        foreach ($indicators as $indicator) { ?>
+            filter.selection.indicators.push({"id": "<?=$indicator?>", "name": "Urban population – Countries", "type": "Slum dwellers"});
+        <?php } ?>
+        filter.save(true);
+    <?php } ?>
+    
+    //OipaWidgetsBus.patch_refresh(regionmap);
 </script>
 
 <?php get_footer(); ?>

@@ -71,6 +71,8 @@ get_header(); the_post(); ?>
 		Oipa.pageType = "compare";
 		Oipa.mainSelection = new OipaCompareSelection(1);
 
+        // Force refresh
+        OipaWidgetsBus.use_force_refresh = true;
 		var filter_div = "";
 
 		var leftmap = new OipaMap();
@@ -88,5 +90,12 @@ get_header(); the_post(); ?>
 		filter.selection = Oipa.mainSelection;
 		filter.init();
 
+
 	</script>
+
+    <?php get_template_part("footer", "bus_scripts"); ?>
+
+	<script type="text/javascript">
+    //filter.save();
+    </script>
 <?php get_footer(); ?>
