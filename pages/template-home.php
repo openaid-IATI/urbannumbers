@@ -235,26 +235,6 @@ if (have_posts()) : ?>
         slum: 'slum_proportion_living_urban',
         pub: 'land_allocated_to_street_index_city_core'
     };
-    Oipa.pageType = "indicators";
-    Oipa.mainSelection = new OipaIndicatorSelection(1);
-    Oipa.mainSelection.url.get_selection_from_url();
-
-    if (Oipa.mainSelection.indicators.length == 0) {
-        Oipa.mainSelection.indicators.push({
-            id: _filters[Object.keys(_filters)[Math.floor((Math.random() * 3))]],
-            name: "Urban population – Countries",
-            type: "Slum dwellers"
-        });
-    }
-    var map = new OipaIndicatorMap();
-    map.set_map("main-map");
-    map.map.setZoom(3);
-    map.init();
-    
-    map.selection = Oipa.mainSelection;
-    Oipa.maps.push(map);
-    OipaWidgetsBus.patch_map(map);
-    map.refresh();
     
     var _selected_filter = null;
     $.each(_filters, function(id, filter_id) {
@@ -279,6 +259,24 @@ if (have_posts()) : ?>
             }
         });
     });
+
+    Oipa.pageType = "indicators";
+    Oipa.mainSelection = new OipaIndicatorSelection(1);
+    Oipa.mainSelection.url.get_selection_from_url();
+
+    var map = new OipaIndicatorMap();
+    map.set_map("main-map");
+    map.map.setZoom(3);
+    map.init();
+    
+    map.selection = Oipa.mainSelection;
+    Oipa.maps.push(map);
+    OipaWidgetsBus.patch_map(map);
+    if (Oipa.mainSelection.indicators.length == 0) {
+        $('#filter_' + Object.keys(_filters)[Math.floor((Math.random() * 3))]).click();
+    } else {
+        map.refresh();
+    }
 </script>
 
 <?php get_footer(); ?>

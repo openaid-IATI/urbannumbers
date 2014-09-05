@@ -235,6 +235,9 @@ function display_login_form() {
             xhrFields: {
                withCredentials: true
             },
+            error: function() {
+                window.location.href = LOGIN_URL;
+            },
             success: function(data) {
                 $('#sidebar-login-form-placeholder').html(data);
                 $('#simple-iframe-login-form').submit(function(e) {
