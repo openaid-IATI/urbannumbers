@@ -229,24 +229,56 @@ if (have_posts()) : ?>
 	<?php get_template_part("footer", "scripts"); ?>
 
 <script>
-	
-	Oipa.pageType = "indicators";
-	Oipa.mainSelection = new OipaIndicatorSelection(1);
-	Oipa.mainSelection.url.get_selection_from_url();
-	if (Oipa.mainSelection.indicators.length == 0){
-	Oipa.mainSelection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
-	}
-	var map = new OipaIndicatorMap();
-	map.set_map("main-map");
-	map.init();
-	
-	map.selection = Oipa.mainSelection;
-	Oipa.maps.push(map);
-	
-	map.refresh();
 
+    var _filters = {
+        cpi: 'cpi_6_dimensions',
+        slum: 'slum_proportion_living_urban',
+        pub: 'land_allocated_to_street_index_city_core'
+    };
+    Oipa.pageType = "indicators";
+    Oipa.mainSelection = new OipaIndicatorSelection(1);
+    Oipa.mainSelection.url.get_selection_from_url();
+
+    if (Oipa.mainSelection.indicators.length == 0) {
+        Oipa.mainSelection.indicators.push({
+            id: _filters[Object.keys(_filters)[Math.floor((Math.random() * 3))]],
+            name: "Urban population – Countries",
+            type: "Slum dwellers"
+        });
+    }
+    var map = new OipaIndicatorMap();
+    map.set_map("main-map");
+    map.map.setZoom(3);
+    map.init();
+    
+    map.selection = Oipa.mainSelection;
+    Oipa.maps.push(map);
+    OipaWidgetsBus.patch_map(map);
+    map.refresh();
+    
+    var _selected_filter = null;
+    $.each(_filters, function(id, filter_id) {
+        $('#filter_' + id).change(function(e) {
+            if ($(this).prop('checked')) {
+                
+                // Deselect others
+                $.each(_filters, function(_id, _) {
+                    if (_id !== id && $('#filter_' + _id).prop('checked')) {
+                        $('#filter_' + _id).click();
+                    }
+                });
+
+                // Select new
+                Oipa.mainSelection.indicators = [];
+                Oipa.mainSelection.indicators.push({
+                    id: filter_id,
+                    name: "Urban population – Countries",
+                    type: "Slum dwellers"
+                });
+                map.refresh();
+            }
+        });
+    });
 </script>
-
-
 
 <?php get_footer(); ?>
