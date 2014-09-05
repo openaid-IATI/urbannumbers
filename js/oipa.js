@@ -175,73 +175,66 @@ var Oipa = {
 		data = this.mainSelection.indicators;
         data = this.clean_blank_visualisations(data);
 
-		if (this.pageType == "indicators"){
-            // cleanup unused charts
-            var _new_visualizations = $.map(data, function(val, _) {
-                return val.id;
-            });
-            $.each(thisoipa.visualisations, function(id, vis) {
-                if (_new_visualizations.indexOf(id) == -1) {
-                    // Remove unused visualisation
-                    vis.destroy();
-                    delete thisoipa.visualisations[id];
+        // cleanup unused charts
+        var _new_visualizations = $.map(data, function(val, _) {
+            return val.id;
+        });
+        $.each(thisoipa.visualisations, function(id, vis) {
+             if (_new_visualizations.indexOf(id) == -1) {
+                 // Remove unused visualisation
+                 vis.destroy();
+                 delete thisoipa.visualisations[id];
+             }
+         });
+
+        var _old_visualizations = $.map(thisoipa.visualisations, function(vis, _) {
+            return vis.id;
+        });
+
+        data = this.prefill_blank_visualisations(data);
+        // for each indicator
+        jQuery.each(data, function(key, value) {
+            if (thisoipa.visualisations[value.id] == undefined) {
+                // create line chart
+                var _chart_class = OipaLineChart;
+                if (value.id == 'urban_population_countries') {
+                    _chart_class = OipaBarChart;
                 }
-            });
-
-            var _old_visualizations = $.map(thisoipa.visualisations, function(vis, _) {
-                return vis.id;
-            });
-
-            data = this.prefill_blank_visualisations(data);
-            // for each indicator
-            jQuery.each(data, function(key, value) {
-                if (thisoipa.visualisations[value.id] == undefined) {
-                    // create line chart
-                    var _chart_class = OipaLineChart;
-                    if (value.id == 'urban_population_countries') {
-                        _chart_class = OipaBarChart;
-                    }
-                    if (value.id == 'base_year_population_estimate') {
-                        _chart_class = OipaRadarChart;
-                    }
-                    if (value.id == 'urban_population_share_national') {
-                        _chart_class = OipaPolarChart;
-                    }
-                    if (value.id == 'slum_proportion_living_urban') {
-                        _chart_class = OipaPieChart;
-                    }
-                    if (value.id == 'avg_annual_rate_change_percentage_urban') {
-                        _chart_class = OipaDoughnutChart;
-                    }
-                    if (thisoipa.is_blank_visualization(value)) {
-                        _chart_class = OipaBlankChart;
-                    }
-                    thisoipa.visualisations[value.id] = new _chart_class(value.id);
-                    thisoipa.visualisations[value.id].selection = new OipaIndicatorSelection();
-                    thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
-                    thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
-                    thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
-                    thisoipa.visualisations[value.id].selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
-                    thisoipa.visualisations[value.id].indicator = value.id;
-                    thisoipa.visualisations[value.id].name = value.name;
-                    thisoipa.visualisations[value.id].y_name = value.name;
-                    thisoipa.visualisations[value.id].y_format = d3.format(',r');
-                    thisoipa.visualisations[value.id].x_name = 'Time (Years)';
-                    thisoipa.visualisations[value.id].x_format = d3.format('r');
-                    thisoipa.visualisations[value.id].init();
-                } else {
-                    thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
-                    thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
-                    thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
-                    thisoipa.visualisations[value.id].refresh();
+                if (value.id == 'base_year_population_estimate') {
+                    _chart_class = OipaRadarChart;
                 }
-            });
-        }
-
-		if (this.pageType == "compare"){
-			OipaCompare.create_visualisations();
-		}
-
+                if (value.id == 'urban_population_share_national') {
+                    _chart_class = OipaPolarChart;
+                }
+                if (value.id == 'slum_proportion_living_urban') {
+                    _chart_class = OipaPieChart;
+                }
+                if (value.id == 'avg_annual_rate_change_percentage_urban') {
+                    _chart_class = OipaDoughnutChart;
+                }
+                if (thisoipa.is_blank_visualization(value)) {
+                    _chart_class = OipaBlankChart;
+                }
+                thisoipa.visualisations[value.id] = new _chart_class(value.id);
+                thisoipa.visualisations[value.id].selection = new OipaIndicatorSelection();
+                thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
+                thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
+                thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
+                thisoipa.visualisations[value.id].selection.indicators.push({"id": value.id, "name": value.name, "type": value.type});
+                thisoipa.visualisations[value.id].indicator = value.id;
+                thisoipa.visualisations[value.id].name = value.name;
+                thisoipa.visualisations[value.id].y_name = value.name;
+                thisoipa.visualisations[value.id].y_format = d3.format(',r');
+                thisoipa.visualisations[value.id].x_name = 'Time (Years)';
+                thisoipa.visualisations[value.id].x_format = d3.format('r');
+                thisoipa.visualisations[value.id].init();
+            } else {
+                thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
+                thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
+                thisoipa.visualisations[value.id].selection.regions = thisoipa.mainSelection.regions;
+                thisoipa.visualisations[value.id].refresh();
+            }
+        });
 	},
 	lists: [],
 	refresh_lists : function(){

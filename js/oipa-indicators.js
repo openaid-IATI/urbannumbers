@@ -50,21 +50,21 @@ var OipaCompare = {
                 this.item2 = city_2;
                 Oipa.mainSelection.right.cities = [{"id": city_2.id, "name": city_2.name}];
 
-                filter.save(true);
+                this.create_visualisations();
+                //filter.save(true);
         },
-        create_visualisations: function(){
+        create_visualisations: function() {
 
 
                 // create radar chart from cpi data
                 //var cursel = new OipaIndicatorSelection();
                 var cursel = Oipa.mainSelection;
-                
                 filter.selection.indicators.push({"id": "cpi_environment_index", "name": "Environment Sustainability Index", "type": "City prosperity"});
-                // cursel.indicators.push({"id": "cpi_infrastructure_index", "name": "Infrastructure Development Index", "type": "City prosperity"});
-//                 cursel.indicators.push({"id": "cpi_productivity_index", "name": "Productivity Index", "type": "City prosperity"});
-//                 cursel.indicators.push({"id": "cpi_quality_of_live_index", "name": "Quality of Life Index", "type": "City prosperity"});
-//                 cursel.indicators.push({"id": "cpi_equity_index", "name": "Equity/Social Inclusion Index", "type": "City prosperity"});
-//                 cursel.indicators.push({"id": "cpi_composite_street_connectivity_index", "name": "Composite Street Connectivity Index"});
+                filter.selection.indicators.push({"id": "cpi_infrastructure_index", "name": "Infrastructure Development Index", "type": "City prosperity"});
+                filter.selection.indicators.push({"id": "cpi_productivity_index", "name": "Productivity Index", "type": "City prosperity"});
+                filter.selection.indicators.push({"id": "cpi_quality_of_live_index", "name": "Quality of Life Index", "type": "City prosperity"});
+                filter.selection.indicators.push({"id": "cpi_equity_index", "name": "Equity/Social Inclusion Index", "type": "City prosperity"});
+                filter.selection.indicators.push({"id": "cpi_composite_street_connectivity_index", "name": "Composite Street Connectivity Index"});
 //                 // create left radarchart
 //                 // console.log(OipaCompare.item1);
 //                 cursel.cities.push({"id": filter.selection.left.cities[0].id, "name": filter.selection.left.cities[0].name});
@@ -822,7 +822,6 @@ function OipaCompareFilters(){
         };
 
         this.process_filter_options = function(data){
-
                 var columns = 4;
                 var filter = this;
 
@@ -839,7 +838,7 @@ function OipaCompareFilters(){
 
 
                 // reload aangevinkte vakjes
-                this.initialize_filters();
+                //this.initialize_filters();
         };
 
 }
