@@ -460,7 +460,8 @@ function OipaIndicatorMap(){
         this.refresh_circles = function(year){
 
                 var circles = this.circles;
-                var maxcirclearea = 5000000000000;
+                //var maxcirclearea = 5000000000000;
+                  var maxcirclearea = 700000000000;
                 var curyear = year;
                 var vistype = this.vistype;
 

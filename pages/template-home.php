@@ -104,10 +104,10 @@ if (have_posts()) : ?>
 		</div>
 		<?php endif; ?>
 		<?php if( have_rows('map_images') ): ?>
-		<div class="info-row">
-			<?php $i=0; while ( have_rows('map_images') ) : the_row(); ?>
-			<div class="info-box<?php if($i++==1) echo ' center'; ?>"><img src="<?php the_sub_field('image'); ?>" alt=""></div>
-			<?php endwhile; ?>
+		<div style="width: 600px; margin-left: -300px; position: relative; left:50%">
+            <div class="widget row" id="chart_cpi" data-indicator="cpi_6_dimensions"></div>
+            <div class="widget row" id="chart_slum" data-indicator="slum_proportion_living_urban"></div>
+            <div class="widget row" id="chart_pub" data-indicator="land_allocated_to_street_index_city_core"></div>
 		</div>
 		<?php endif; ?>
 
@@ -241,10 +241,13 @@ if (have_posts()) : ?>
         $('#filter_' + id).change(function(e) {
             if ($(this).prop('checked')) {
                 
-                // Deselect others
+                // Deselect others and hide charts
                 $.each(_filters, function(_id, _) {
-                    if (_id !== id && $('#filter_' + _id).prop('checked')) {
-                        $('#filter_' + _id).click();
+                    if (_id !== id) {
+                        $('#chart_' + _id).hide();
+                        if ($('#filter_' + _id).prop('checked')) {
+                            $('#filter_' + _id).click();
+                        }
                     }
                 });
 
@@ -255,6 +258,7 @@ if (have_posts()) : ?>
                     name: "Urban population – Countries",
                     type: "Slum dwellers"
                 });
+                $('#chart_' + id).show();
                 map.refresh();
             }
         });
@@ -270,10 +274,30 @@ if (have_posts()) : ?>
     map.init();
     
     map.selection = Oipa.mainSelection;
+
+    // Create inforaphics
+    var first = new OipaPieInfographicsVis('cpi_6_dimensions', 5, {});
+    var second = new OipaPieInfographicsVis('slum_proportion_living_urban', 5, {
+        divide_by: 100,
+        color: "#DC5100"
+    });
+    var third = new OipaPieInfographicsVis('land_allocated_to_street_index_city_core', 5, {
+        divide_by: 1000,
+        color: "#50A431"
+    });
+    first.selection = Oipa.mainSelection;
+    second.selection = Oipa.mainSelection;
+    third.selection = Oipa.mainSelection;
+    first.init();
+    second.init();
+    third.init();
+
     Oipa.maps.push(map);
     OipaWidgetsBus.patch_map(map);
     if (Oipa.mainSelection.indicators.length == 0) {
-        $('#filter_' + Object.keys(_filters)[Math.floor((Math.random() * 3))]).click();
+        var _id = Object.keys(_filters)[Math.floor((Math.random() * 3))];
+        $('#filter_' + _id).click();
+        $('#chart_' + _id).show();
     } else {
         map.refresh();
     }

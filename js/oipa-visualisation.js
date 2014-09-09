@@ -112,17 +112,14 @@ function OipaVis (){
         
         $.post(ajaxurl, data, function(response) {
             if(response.status == "log_in_first"){
-                console.log("log in first");
                 $("#header-login-register-button").click();
                 $("#urbannumbers-login h1").text("Log in first");
 
             } else if (response.status == "already_in_favorites"){
-                console.log("Already in favorites");
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
             
             } else if (response.status == "saved"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-                console.log("Saved");
             }
         });
     };
@@ -143,12 +140,10 @@ function OipaVis (){
                 $("#header-login-register-button").click();
 
             } else if (response.status == "not_in_favorites"){
-                console.log("Not found in favorites");
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
                 
             } else if (response.status == "removed_from_favorites"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
-                console.log("Removed");
             }
         });
 
@@ -607,7 +602,6 @@ function OipaActiveRoundChart(id) {
             };
         });
     }
-    
 }
 OipaActiveRoundChart.prototype = new OipaActiveChart();
 
@@ -924,3 +918,155 @@ function OipaSimpleMapVis(){
 }
 
 OipaSimpleMapVis.prototype = new OipaVis();
+
+
+OipaInfographicVis = function(indicator, charts_count, options) {
+    var self = this;
+    self.id = indicator;
+    self.indicator = indicator;
+    self.charts_count = charts_count;
+
+    // parse options
+    self.options = (options !== undefined ? options : {});
+
+    self.opt = function(name, default_value) {
+        return (self.options[name] !== undefined ? self.options[name] : default_value);
+    }
+
+    self.visualize = function(data) {
+        if (!data) {
+            data = self.data;
+        }
+        
+
+        if (!data || data[self.indicator] == undefined){
+            // empty data, remove vis
+            return false;
+        }
+
+        data = data[self.indicator];
+        chart_data = self.format_year_data(data, self.selected_year, self.charts_count);
+
+        $.each(Array(self.charts_count), function (chart_id, _) {
+            self.visualize_chart(chart_data, chart_id);
+        });
+    }
+
+    self.visualize_chart = function(chart_data, chart_id) {
+        //console.log(chart_data, chart_id)
+    }
+}
+OipaInfographicVis.prototype = new OipaActiveChart();
+
+OipaPieInfographicsVis = function(indicator, charts_count, options) {
+    var self = this;
+    OipaInfographicVis.call(self, indicator,  charts_count, options);
+    self.charts = [];
+
+    self.normalize_data_for_pie = function(chart_data, chart_id) {
+        var _data = [jQuery.extend({}, chart_data[chart_id])];
+        _data[0].value = parseFloat(chart_data[chart_id].value) / self.opt('divide_by', 1);
+        _data.push({
+            value: 1 - _data[0].value,
+            label: "empty",
+            color: "#767D91",
+            stroke_color: "#767D91",
+            highlight: "#767D91"
+        });
+
+        return _data;
+    }
+
+    self.init_chart = function(chart_data, chart_id) {
+        var _data = self.normalize_data_for_pie(chart_data, chart_id);
+        return self.charts[chart_id].obj.Doughnut(_data, {showScale: false, showTooltips: false});
+    }
+
+    self.format_year_data = function(data, year, limit){
+        if (year == null) {
+            year = self.get_last_data_year(data);
+        }
+        
+        var data_slice = self.get_year_slice(data.locs, year, limit);
+        return $.map(data_slice, function(i, _) {
+            var _color = (i.color==undefined ? self.opt('color', '#00AAB0') : i.color);
+            var _stroke_color = (i.stroke_color==undefined?_color:i.stroke_color);
+            return {
+                value: i.value,
+                label: i.name,
+                color: _color,
+                stroke_color: _stroke_color,
+                segmentStrokeColor: _stroke_color,
+                highlight: _stroke_color
+            };
+        });
+    }
+
+    self.visualize_chart = function(chart_data, chart_id) {
+        if (self.charts[chart_id] == undefined) {
+            var holder = document.createElement("div");
+            holder.className = "col-md-1";
+            holder.style.width = '120px';
+            holder.ctx = document.createElement('canvas');
+            holder.appendChild(holder.ctx);
+            holder.ctx.height = 100;
+            holder.ctx.width = 100;
+            
+            holder.label = document.createElement('div');
+            holder.label.innerHTML = chart_data[chart_id].label;
+            holder.appendChild(holder.label);
+
+            $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
+                node.appendChild(holder);
+            });
+
+            self.charts[chart_id] = {
+                obj: new Chart(holder.ctx.getContext("2d")),
+                chart: null
+            }
+            self.charts[chart_id].chart = self.init_chart(chart_data, chart_id);
+        } else {
+            // Refresh
+            if (chart_data.labels) {
+                $.each(chart_data.labels, function(_id, label) {
+                    self.get_chart_labels(self.charts[chart_id].chart)[_id] = label;
+                    self.get_chart_points(self.charts[chart_id].chart)[_id].value = chart_data.datasets[0].data[_id];
+                    self.get_chart_points(self.charts[chart_id].chart)[_id].label = label;
+                });
+            } else {
+                // pie, radar etc
+                // Redraw chart only if data isset
+                if (chart_data[0].value !== undefined) {
+                     $.each(chart_data, function(i, v) {
+                         var _data = self.normalize_data_for_pie(chart_data, chart_id);
+                         self.charts[chart_id].chart.segments[0].label = _data[0].label;
+                         self.charts[chart_id].chart.segments[0].value = _data[0].value;
+                         self.charts[chart_id].chart.segments[1].label = _data[1].label;
+                         self.charts[chart_id].chart.segments[1].value = _data[1].value;
+                     });
+                }
+                self.charts[chart_id].chart.update();
+            }
+        }
+    }
+    return this;
+}
+OipaPieInfographicsVis.prototype = Object.create(OipaInfographicVis.prototype);
+
+function toFixed(x) {
+  if (Math.abs(x) < 1.0) {
+    var e = parseInt(x.toString().split('e-')[1]);
+    if (e) {
+        x *= Math.pow(10,e-1);
+        x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+    }
+  } else {
+    var e = parseInt(x.toString().split('+')[1]);
+    if (e > 20) {
+        e -= 20;
+        x /= Math.pow(10,e);
+        x += (new Array(e+1)).join('0');
+    }
+  }
+  return x;
+}
