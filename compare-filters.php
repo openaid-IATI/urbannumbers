@@ -3,6 +3,7 @@
 				<!-- action-list -->
 				<ul class="action-list">
 
+				<li><a id="reset-filters" href="#"><i class="icon-reset"></i>RESET FILTERS</a></li>
 					<?php /*
 					<li>
 						<a class="opener" href="#"><i class="icon-export"></i>EXPORT</a>
