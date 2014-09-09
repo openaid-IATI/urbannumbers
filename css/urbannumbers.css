@@ -375,7 +375,7 @@
 
 #urbannumbers-login, #urbannumbers-lostpassword, #urbannumbers-register{
   width:500px;
-  height: 500px;
+  /*height: 500px;*/
   display: none;
   position: absolute;
   top: 100px;
@@ -491,3 +491,28 @@ filter: grayscale(0);
 filter: none;
 cursor: pointer;
 }*/
+
+form.registration-form span.input-placeholder-text {
+    margin-top: 7px;
+    margin-left: 15px;
+}
+
+#header.nav_my_account .btn .caret {
+    color: #FFF;
+}
+#header.nav_my_account .btn-group .btn-blue {
+    background: #56C6C8;
+    text-shadow: none;
+}
+
+#header.nav_my_account .add-nav .dropdown-menu a {
+    background: #56C6C8;
+}
+
+#header.nav_my_account  .add-nav .img-wrap i {
+    color: #FFF;
+}
+
+#header..nav_my_account .add-nav .btn {
+    text-shadow: none;
+}

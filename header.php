@@ -74,32 +74,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 
 		<div class="row">
 			<div class="col-md-12">
-                            <p>Need to replace with button to our own IdP</p>
                              <div id="sidebar-login-form-placeholder"></div>
-                             <?php
-                             /*
-                             ?>
-				<form name="login-form" id="sidebar-login-form" class="standard-form" action="<?php echo $form_action; ?>" method="post">
-					
-					<div class="form-group">
-						<label><?php _e( 'Username', 'urbannumbers' ); ?></label>
-						<input type="text" name="log" id="sidebar-user-login" class="form-control input" value="<?php if ( isset( $user_login) ) echo esc_attr(stripslashes($user_login)); ?>" tabindex="97" />
-					</div>
-
-					<div class="form-group">
-						<label><?php _e( 'Password', 'urbannumbers' ); ?></label>
-						<input type="password" name="pwd" id="sidebar-user-pass" class="form-control input" value="" tabindex="98" />
-					</div>
-
-					<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="sidebar-rememberme" value="forever" tabindex="99" /> <?php _e( 'Remember me', 'buddypress' ); ?></label></p>
-
-					<input type="submit" name="wp-submit" id="sidebar-wp-submit" class="btn btn-default" value="<?php _e( 'Sign in', 'urbannumbers' ); ?>" tabindex="100" />
-
-					<br><a id="lost-password-login" href="#" title="Lost Password">Lost Password</a>
-				</form>
-                <?php
-                */
-                ?>
                             <?php do_action( 'wordpress_social_login' ); ?>
 			</div>
 		</div>
@@ -182,7 +157,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 	<div id="wrapper">
 		<div class="w1">
 			<!-- header of the page -->
-			<header id="header">
+			<header id="header" class="nav_my_account">
 				<?php $logo = get_field('logo', 'option'); ?>
 				<strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
 				<!-- Split button -->

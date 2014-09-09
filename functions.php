@@ -675,7 +675,6 @@ function vb_registration_form() {
             <input type="submit" class="btn btn-primary" id="btn-new-user" value="Register" />
         </form>
 
-        <div class="indicator">Please wait...</div>
         <div class="alert result-message"></div>
     </div>
 
