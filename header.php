@@ -18,7 +18,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/nv.d3.css">
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_template_directory_uri(); ?>/style.css"  />
 	<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/urbannumbers.css">
-	<script src="http://fast.fonts.net/jsapi/68a30854-f7c3-46a7-89ca-8e9e74e69a2a.js"></script>
+	<script type="text/javascript" src="http://fast.fonts.net/jsapi/68a30854-f7c3-46a7-89ca-8e9e74e69a2a.js"></script>
 	<?php wp_head(); ?>
 	<!-- include bootstrap default JavaScript -->
 	<script src="<?php echo get_template_directory_uri(); ?>/js/bootstrap.min.js"></script>
