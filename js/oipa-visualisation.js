@@ -19,7 +19,10 @@ function OipaVis (){
         html += '<div class="box-content">';
         html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
         html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
-        html +=  '<div class="widget" data-indicator="'+this.indicator+'"></div>';
+        html +=  '<div class="widget" data-indicator="'+this.indicator+'">';
+        html +=    '<div class="no_data">No data for this chart</div>';
+        html +=    '<canvas height="340" width="340"></canvas>';
+        html +=  '</div>';
         html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
         if (this.limit){
             html += '<div class="vis-box-note">Showing top '+this.limit+', use filters to show a different selection, <a class="vis-box-show-all" href="#">click here to show all</a></div>';
@@ -463,15 +466,21 @@ function OipaActiveChart(id, options) {
     this.get_locations_slice = function(locations, limit) {
         var self = this;
         var _years = [];
+        var _counter = 0;
         return [_years, $.map(locations, function(i) {
+            var _default_color = "151,187,205";
+            if (_counter == 1) {
+                _default_color = "220,220,220";
+            }
+            _counter += 1;
             return [{
                 label: i.name,
-                fillColor: (i.color == undefined) ? "rgba(151,187,205,1)" : i.color,
-                strokeColor: (i.stroke_color == undefined) ? "rgba(151,187,205,2)" : i.stroke_color,
-                pointColor: (i.color == undefined) ? "rgba(151,187,205,1)" : i.color,
+                fillColor: (i.color == undefined) ? "rgba(" + _default_color + ",1)" : i.color,
+                strokeColor: (i.stroke_color == undefined) ? "rgba(" + _default_color + ",2)" : i.stroke_color,
+                pointColor: (i.color == undefined) ? "rgba(" + _default_color + ",1)" : i.color,
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                pointHighlightStroke: "rgba(" + _default_color + ",1)",
                 data: $.map(i.years, function(v, y) {
                     if (_years.indexOf(y) == -1) {
                         _years.push(y);
@@ -589,49 +598,50 @@ function OipaActiveChart(id, options) {
 
         if (!data || data[self.indicator] == undefined){
             // empty data, remove vis
-            $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
-                //node.appendChild(ctx);
-                node.innerHTML = 'No data for this chart';
-            });
+            $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").show();
+            $("div.widget[data-indicator='" + self.indicator + "'] canvas").hide();
             return false;
         }
+        $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").hide();
+        $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
 
         data = data[self.indicator];
         chart_data = self.format_year_data(data, self.selected_year, 10);
 
         if (!self.chart) {
-            var ctx = document.createElement('canvas');
-            ctx.height = 300;
-            ctx.width = 340;
+            var ctx = $("div.widget[data-indicator='" + self.indicator + "'] canvas").get(0);
 
             $(".heading-holder[data-indicator='" + self.indicator + "']").find('h3').each(function(_, node) {
                 node.innerHTML = data.indicator_friendly;
             });
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
-                node.innerHTML = '';
                 node.appendChild(ctx);
             });
             self.chart_obj = new Chart(ctx.getContext("2d"));
             self.chart = self.init_chart(chart_data);
         } else {
             // Refresh
-            if (chart_data.labels) {
-                $.each(chart_data.labels, function(_id, label) {
-                    self.get_chart_labels(self.chart)[_id] = label;
-                    self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
-                    self.get_chart_points(self.chart)[_id].label = label;
-                });
-            } else {
-                // pie, radar etc
-                // Redraw chart only if data isset
-                if (chart_data[0].value !== undefined) {
-                 $.each(chart_data, function(i, v) {
-                     self.chart.segments[i].label = v.label;
-                     self.chart.segments[i].value = v.value;
-                 });
+            try {
+                if (chart_data.labels) {
+                    $.each(chart_data.labels, function(_id, label) {
+                        self.get_chart_labels(self.chart)[_id] = label;
+                        self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
+                        self.get_chart_points(self.chart)[_id].label = label;
+                    });
+                } else {
+                    // pie, radar etc
+                    // Redraw chart only if data isset
+                    if (chart_data[0].value !== undefined) {
+                     $.each(chart_data, function(i, v) {
+                         self.chart.segments[i].label = v.label;
+                         self.chart.segments[i].value = v.value;
+                     });
+                    }
                 }
+                self.chart.update();
+            } catch (err) {
+                self.chart = self.init_chart(chart_data);
             }
-            self.chart.update();
 
         }
     }
