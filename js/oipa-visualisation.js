@@ -200,9 +200,11 @@ function OipaVis (){
             }
             return str;
         }
-        
-        str_city = _update_str(str_city, this._initial_selection.right);
-        str_city = _update_str(str_city, this._initial_selection.left);
+
+        if (this._initial_selection) {
+            str_city = _update_str(str_city, this._initial_selection.right);
+            str_city = _update_str(str_city, this._initial_selection.left);
+        }
         var str_limit = "";
 
         if(this.limit) {
