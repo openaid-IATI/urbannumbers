@@ -8,7 +8,7 @@ function OipaVis (){
     this.chartwrapper = "#visualisation-block-wrapper";
     this.selected_year = null;
 
-    this.init = function(){
+    this.init = function() {
         // Register event in event bus
         OipaWidgetsBus.add_listener(this);
 
@@ -201,7 +201,7 @@ function OipaVis (){
             return str;
         }
 
-        if (this._initial_selection) {
+        if (this._initial_selection && this._initial_selection.right) {
             str_city = _update_str(str_city, this._initial_selection.right);
             str_city = _update_str(str_city, this._initial_selection.left);
         }
@@ -450,6 +450,7 @@ OipaColumnChart.prototype = new OipaVis();
 
 function OipaActiveChart(id, options) {
     this.id = id;
+    this.indicator = id;
     this.y_name = null;
     this.y_format = null;
     this.x_name = null;
@@ -1021,8 +1022,7 @@ OipaSimpleMapVis.prototype = new OipaVis();
 
 OipaInfographicVis = function(indicator, charts_count, options) {
     var self = this;
-    self.id = indicator;
-    self.indicator = indicator;
+    OipaActiveRoundChart.call(self, indicator, options);
     self.charts_count = charts_count;
 
     self.visualize = function(data) {
@@ -1048,7 +1048,7 @@ OipaInfographicVis = function(indicator, charts_count, options) {
         //console.log(chart_data, chart_id)
     }
 }
-OipaInfographicVis.prototype = new OipaActiveChart();
+OipaInfographicVis.prototype = Object.create(OipaActiveRoundChart.prototype);
 
 OipaPieInfographicsVis = function(indicator, charts_count, options) {
     var self = this;
