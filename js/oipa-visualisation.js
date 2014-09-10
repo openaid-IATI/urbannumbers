@@ -745,7 +745,6 @@ function OipaPolarChart(id, options) {
     OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
     this.init_chart = function(chart_data) {
-        console.log(chart_data);
         return this.chart_obj.PolarArea(chart_data);
     }
     this.get_chart_labels = function(chart) {
@@ -1059,7 +1058,7 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
     self.normalize_data_for_pie = function(chart_data, chart_id) {
         var _data = [jQuery.extend({}, chart_data[chart_id])];
         _data[0].value = parseFloat(chart_data[chart_id].value) / self.opt('divide_by', 1);
-        console.log(_data);
+
         _data.push({
             value: 1 - _data[0].value,
             label: "empty",
