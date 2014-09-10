@@ -184,9 +184,25 @@ function OipaVis (){
         var str_country = get_parameters_from_selection(this.selection.countries);
         var str_city = get_parameters_from_selection(this.selection.cities);
         var str_indicators = get_parameters_from_selection(this.selection.indicators);
+
+        var _update_str = function(str, from) {
+            // Get city data from initial_selection
+            if (from !== undefined) {
+                if (str !== "") {
+                    str += ',';
+                }
+                str = str + $.map(from.cities, function(_city) {
+                    return _city.id
+                }).join();
+            }
+            return str;
+        }
+        
+        str_city = _update_str(str_city, this._initial_selection.right);
+        str_city = _update_str(str_city, this._initial_selection.left);
         var str_limit = "";
 
-        if(this.limit){
+        if(this.limit) {
             str_limit = "&limit=" + this.limit;
         }
 
@@ -427,7 +443,7 @@ OipaColumnChart.prototype = new OipaVis();
 
 
 
-function OipaActiveChart(id) {
+function OipaActiveChart(id, options) {
     this.id = id;
     this.y_name = null;
     this.y_format = null;
@@ -437,12 +453,41 @@ function OipaActiveChart(id) {
     this.chart = null;
     this.year_data = {};
 
+    // parse options
+    this.options = (options !== undefined ? options : {});
+
+    this.opt = function(opt_name, default_value) {
+        return (this.options[opt_name] !== undefined ? this.options[opt_name] : default_value);
+    }
+
+    this.get_locations_slice = function(locations, limit) {
+        var self = this;
+        var _years = [];
+        return [_years, $.map(locations, function(i) {
+            return [{
+                label: i.name,
+                fillColor: (i.color == undefined) ? "rgba(151,187,205,1)" : i.color,
+                strokeColor: (i.stroke_color == undefined) ? "rgba(151,187,205,2)" : i.stroke_color,
+                pointColor: (i.color == undefined) ? "rgba(151,187,205,1)" : i.color,
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: $.map(i.years, function(v, y) {
+                    if (_years.indexOf(y) == -1) {
+                        _years.push(y);
+                    }
+                    return [v];
+                })
+            }];
+        }).slice(0, limit)];
+    }
+
     this.get_year_slice = function(locations, year, limit) {
         var self = this;
         // Get last year slice if year is null
 
         year = (year==null?2014:year);
-        var _mapped = $.map(locations, function(i, _) {
+        var _mapped = $.map(locations, function(i) {
             return [{
                 value: i.years[year],
                 color: i.color,
@@ -468,11 +513,20 @@ function OipaActiveChart(id) {
             year = self.get_last_data_year(data);
         }
 
-        var data_slice = self.get_year_slice(data.locs, year, limit);
-
+        var data_slice;
         var base_data = {
             labels: [],
-            datasets: [{
+            datasets: []
+        };
+
+        if (self.opt('all_years')) {
+            var _ = self.get_locations_slice(data.locs, limit);
+            data_slice = _[1];
+            base_data.datasets = data_slice;
+            base_data.labels = _[0];
+        } else {
+            data_slice = self.get_year_slice(data.locs, year, limit);
+            base_data.datasets = [{
                 label: data.indicator_friendly,
                 fillColor: (data_slice[0].color == undefined) ? "rgba(151,187,205,1)" : data_slice[0].color,
                 strokeColor: (data_slice[0].stroke_color == undefined) ? "rgba(151,187,205,2)" : data_slice[0].stroke_color,
@@ -481,13 +535,12 @@ function OipaActiveChart(id) {
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
                 data: $.map(data_slice, function(loc, _) { return loc.value;})
-            }]
-        }
-
-        if (data_slice[0].value !== undefined) {
-            // Update dataset only if data available for this year
-            base_data.labels = $.map(data_slice, function(loc, _) { return loc.name;});
-            base_data.datasets[0].data = $.map(data_slice, function(loc, _) { return loc.value;});
+            }];
+            if (data_slice[0].value !== undefined) {
+                // Update dataset only if data available for this year
+                base_data.labels = $.map(data_slice, function(loc, _) { return loc.name;});
+                base_data.datasets[0].data = $.map(data_slice, function(loc, _) { return loc.value;});
+            }
         }
 
         return base_data;
@@ -536,12 +589,15 @@ function OipaActiveChart(id) {
 
         if (!data || data[self.indicator] == undefined){
             // empty data, remove vis
+            $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
+                //node.appendChild(ctx);
+                node.innerHTML = 'No data for this chart';
+            });
             return false;
         }
 
         data = data[self.indicator];
         chart_data = self.format_year_data(data, self.selected_year, 10);
-
 
         if (!self.chart) {
             var ctx = document.createElement('canvas');
@@ -552,6 +608,7 @@ function OipaActiveChart(id) {
                 node.innerHTML = data.indicator_friendly;
             });
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
+                node.innerHTML = '';
                 node.appendChild(ctx);
             });
             self.chart_obj = new Chart(ctx.getContext("2d"));
@@ -582,55 +639,84 @@ function OipaActiveChart(id) {
 }
 OipaActiveChart.prototype = new OipaVis();
 
-function OipaActiveRoundChart(id) {
+function OipaActiveRoundChart(id, options) {
+    OipaActiveChart.call(this, id, options);
+
+    this.get_locations_slice = function(locations, limit) {
+        var self = this;
+        var _years = [];
+        return $.map(locations, function(loc) {
+            var _color = (loc.color==undefined ? self.getRandomColor() : loc.color);
+            var _stroke_color = (loc.stroke_color==undefined ? _color: loc.stroke_color);
+            return [{
+                value: loc.years[year],
+                label: loc.name,
+                color: _color,
+                stroke_color: _stroke_color,
+                highlight: _stroke_color
+            }];
+        }).slice(0, limit);
+    }
+
     this.format_year_data = function(data, year, limit){
         var self = this;
         if (year == null) {
             year = self.get_last_data_year(data);
         }
-        
-        var data_slice = self.get_year_slice(data.locs, year, limit);
-        return $.map(data_slice, function(i, _) {
-            var _color = (i.color==undefined ? self.getRandomColor() : i.color);
-            var _stroke_color = (i.stroke_color==undefined?_color:i.stroke_color);
-            return {
-                value: i.value,
-                label: i.name,
-                color: _color,
-                stroke_color: _stroke_color,
-                highlight: _stroke_color
-            };
-        });
+
+        if (self.opt('all_years')) {
+            return self.get_locations_slice(data.locs, year, limit);
+        } else {
+            var data_slice = self.get_year_slice(data.locs, year, limit);
+            return $.map(data_slice, function(i, _) {
+                var _color = (i.color==undefined ? self.getRandomColor() : i.color);
+                var _stroke_color = (i.stroke_color==undefined?_color:i.stroke_color);
+                return {
+                    value: i.value,
+                    label: i.name,
+                    color: _color,
+                    stroke_color: _stroke_color,
+                    highlight: _stroke_color
+                };
+            });
+        }
     }
 }
-OipaActiveRoundChart.prototype = new OipaActiveChart();
+OipaActiveRoundChart.prototype = Object.create(OipaActiveChart.prototype);
 
 
-function OipaLineChart(id) {
-    this.id = id;
+function OipaLineChart(id, options) {
+    OipaActiveChart.call(this, id, options);
     this.type = "OipaLineChart";
 
     return this;
 }
-OipaLineChart.prototype = new OipaActiveChart();
+OipaLineChart.prototype = Object.create(OipaActiveChart.prototype);
 
 
-function OipaBarChart(id) {
-    this.id = id;
+function OipaBarChart(id, options) {
+    OipaActiveChart.call(this, id, options);
     this.type = "OipaBarChart";
     this.init_chart = function(chart_data) {
-        return this.chart_obj.Bar(chart_data);
+        var _opts = {};
+        if (this.opt('all_years')) {
+            _opts = {
+                tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>"
+            };
+        }
+        return this.chart_obj.Bar(chart_data, _opts);
     }
     this.get_chart_points = function(chart) {
         return chart.datasets[0].bars;
     }
     return this;
 }
-OipaBarChart.prototype = new OipaActiveChart();
+OipaBarChart.prototype = Object.create(OipaActiveChart.prototype);
 
 
-function OipaRadarChart(id) {
-    this.id = id;
+function OipaRadarChart(id, options) {
+    OipaActiveChart.call(this, id, options);
     this.type = "OipaRadarChart";
     this.init_chart = function(chart_data) {
         return this.chart_obj.Radar(chart_data);
@@ -640,13 +726,14 @@ function OipaRadarChart(id) {
     }
     return this;
 }
-OipaRadarChart.prototype = new OipaActiveChart();
+OipaRadarChart.prototype = Object.create(OipaActiveChart.prototype);
 
 
-function OipaPolarChart(id) {
-    this.id = id;
+function OipaPolarChart(id, options) {
+    OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
     this.init_chart = function(chart_data) {
+        console.log(chart_data);
         return this.chart_obj.PolarArea(chart_data);
     }
     this.get_chart_labels = function(chart) {
@@ -654,11 +741,11 @@ function OipaPolarChart(id) {
     }
     return this;
 }
-OipaPolarChart.prototype = new OipaActiveRoundChart();
+OipaPolarChart.prototype = Object.create(OipaActiveRoundChart.prototype);
 
 
-function OipaPieChart(id) {
-    this.id = id;
+function OipaPieChart(id, options) {
+    OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
 
     this.init_chart = function(chart_data) {
@@ -669,11 +756,11 @@ function OipaPieChart(id) {
     }
     return this;
 }
-OipaPieChart.prototype = new OipaActiveRoundChart();
+OipaPieChart.prototype = Object.create(OipaActiveRoundChart.prototype);
 
 
-function OipaDoughnutChart(id) {
-    this.id = id;
+function OipaDoughnutChart(id, options) {
+    OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
 
     this.init_chart = function(chart_data) {
@@ -684,12 +771,13 @@ function OipaDoughnutChart(id) {
     }
     return this;
 }
-OipaDoughnutChart.prototype = new OipaActiveRoundChart();
+OipaDoughnutChart.prototype = Object.create(OipaActiveRoundChart.prototype);
 
 
-function OipaBlankChart(object_id) {
-    function OipaBlankChartFactory(subobject_id) {
-        this.id = subobject_id;
+function OipaBlankChart(object_id, options) {
+    function OipaBlankChartFactory(subobject_id, suboptions, base_type) {
+        window[base_type].call(this, subobject_id, suboptions);
+        
         this.type = "OipaBlankChart";
 
         var _old_visualize = this.visualize;
@@ -773,8 +861,8 @@ function OipaBlankChart(object_id) {
         "OipaDoughnutChart"
     ][Math.floor((Math.random() * 5))];
 
-    OipaBlankChartFactory.prototype = new window[_chart_type]();
-    return new OipaBlankChartFactory(object_id);
+    OipaBlankChartFactory.prototype = Object.create(window[_chart_type].prototype);
+    return new OipaBlankChartFactory(object_id, options, _chart_type);
 }
 
 
@@ -926,13 +1014,6 @@ OipaInfographicVis = function(indicator, charts_count, options) {
     self.indicator = indicator;
     self.charts_count = charts_count;
 
-    // parse options
-    self.options = (options !== undefined ? options : {});
-
-    self.opt = function(name, default_value) {
-        return (self.options[name] !== undefined ? self.options[name] : default_value);
-    }
-
     self.visualize = function(data) {
         if (!data) {
             data = self.data;
@@ -966,6 +1047,7 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
     self.normalize_data_for_pie = function(chart_data, chart_id) {
         var _data = [jQuery.extend({}, chart_data[chart_id])];
         _data[0].value = parseFloat(chart_data[chart_id].value) / self.opt('divide_by', 1);
+        console.log(_data);
         _data.push({
             value: 1 - _data[0].value,
             label: "empty",

@@ -217,20 +217,24 @@
   color: #00b2b3;
 }
 
-.urbnnrs-arrow-active{
-  border-bottom: 4px solid;
-}
-
-.urbnnrs-arrow{
-  border-top: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
+.urbnnrs-arrow {
+  border-left: 4px solid;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
   vertical-align: middle;
-  margin-right:7px;
+  margin-right: 13px;
   display: inline-block;
   width: 0;
   height: 0;
   border-width: 6px;
+}
+
+.urbnnrs-arrow-active{
+  border-bottom: 0px solid;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  border-top: 6px solid;
+  margin-right: 7px;
 }
 
 .filter-indicator-type-text, .sort-list .active a.filter-indicator-type-text{

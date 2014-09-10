@@ -215,7 +215,13 @@ var Oipa = {
                 if (thisoipa.is_blank_visualization(value)) {
                     _chart_class = OipaBlankChart;
                 }
-                thisoipa.visualisations[value.id] = new _chart_class(value.id);
+
+                if (value.options !== undefined && value.options.chart_class !== undefined) {
+                    _chart_class = value.options.chart_class;
+                }
+
+                thisoipa.visualisations[value.id] = new _chart_class(value.id, value.options);
+                thisoipa.visualisations[value.id]._initial_selection = thisoipa.mainSelection;
                 thisoipa.visualisations[value.id].selection = new OipaIndicatorSelection();
                 thisoipa.visualisations[value.id].selection.cities = thisoipa.mainSelection.cities;
                 thisoipa.visualisations[value.id].selection.countries = thisoipa.mainSelection.countries;
@@ -1451,7 +1457,6 @@ function geo_point_to_latlng(point_string){
 }
 
 function get_parameters_from_selection(arr){
-
 	dlmtr = ",";
 	var str = '';
 
