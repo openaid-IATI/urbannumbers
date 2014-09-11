@@ -165,7 +165,9 @@ function get_wiki_city_data(city_name, left_right_city){
 	var text = "";
 	//Get Leading paragraphs (section 0)
 	$.getJSON("http://en.wikipedia.org/w/api.php?action=parse&page=" + city_name + "&prop=text&section=0&format=json&callback=?", function (data) {
-	   
+	   	
+		var complete_text = "";
+
         if (data.parse) {
     	    for (text in data.parse.text) {
     	        var text = data.parse.text[text].split("<p>");
@@ -205,7 +207,7 @@ function get_wiki_city_data(city_name, left_right_city){
 
     	        begin_text = begin_text + end_text_untill_first_space;
 
-    	        var complete_text = begin_text + '... <a target="_blank" href="http://en.wikipedia.org/wiki/'+city_name+'" class="wiki-read-more"> Read more at Wikipedia </a>';
+    	        complete_text = begin_text + '... <a target="_blank" href="http://en.wikipedia.org/wiki/'+city_name+'" class="wiki-read-more"> Read more at Wikipedia </a>';
 
     	        if (end_text == ""){
     	        	complete_text = begin_text;
@@ -216,10 +218,12 @@ function get_wiki_city_data(city_name, left_right_city){
     	        }
         
 
-    	        jQuery("."+left_right_city+"-city-wikipedia").html(complete_text);
+    	        
 
     	    }
-        }
+        } 
+
+        jQuery("."+left_right_city+"-city-wikipedia").html(complete_text);
 	});
 }
 
