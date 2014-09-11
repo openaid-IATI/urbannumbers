@@ -197,31 +197,27 @@ function get_wiki_city_data(city_name, left_right_city){
     	        pText = pText.replace(/\[\d+\]/g, ""); //Remove reference tags (e.x. [1], [4], etc)
     	        text = unescape(pText);
 
-    	        var begin_text = text.substring(0, 500);
-    	        var end_text = text.substring(500);
+    	        var begin_text = text.substring(0, 280);
+    	        var end_text = text.substring(280);
 
     	        var end_text_untill_first_space = end_text.substr(0,end_text.indexOf(' '));
     	        var end_text = end_text.substr(end_text.indexOf(' ')+1);
 
     	        begin_text = begin_text + end_text_untill_first_space;
 
-    	        var complete_text = begin_text + ' <a href="#" class="wiki-read-more">Read more.. </a><div class="wiki-read-more-hidden">' + end_text + '</div>';
+    	        var complete_text = begin_text + ' <a target="_blank" href="http://en.wikipedia.org/wiki/'+city_name+'" class="wiki-read-more"> Read more at Wikipedia </a>';
 
     	        if (end_text == ""){
     	        	complete_text = begin_text;
     	        }
 
     	        if (begin_text != ""){
-    	        	complete_text += '<div class="city-wikipedia-disclaimer">Source: wikipedia. </div>';
+    	        	complete_text += '<div class="city-wikipedia-disclaimer">Source: Wikipedia - Disclaimer: excerpt not endorsed by UN-Habitat. </div>';
     	        }
         
 
     	        jQuery("."+left_right_city+"-city-wikipedia").html(complete_text);
-    	        jQuery(".wiki-read-more").click(function(){
-        	
-    	        	jQuery(this).next(".wiki-read-more-hidden").show(500);
-    	        	jQuery(this).remove();
-    	        });
+
     	    }
         }
 	});
