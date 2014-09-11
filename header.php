@@ -74,8 +74,9 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 
 		<div class="row">
 			<div class="col-md-12">
-                             <div id="sidebar-login-form-placeholder"></div>
-                            <?php do_action( 'wordpress_social_login' ); ?>
+                <div id="sidebar-login-form-placeholder">
+                </div>
+                <?php do_action( 'wordpress_social_login' ); ?>
 			</div>
 		</div>
 
