@@ -105,7 +105,7 @@ if (have_posts()) : ?>
 		<?php endif; ?>
 		<?php if( have_rows('map_images') ): ?>
 		<div class="box-container infobox-container">
-            <div class="widget row columns-holder" id="chart_cpi" style="display: none;" data-indicator="cpi_cpi_6_dimensions"></div>
+            <div class="widget row columns-holder" id="chart_cpi" style="display: none;" data-indicator="cpi_6_dimensions"></div>
             <div class="widget row columns-holder" id="chart_slum" style="display: none;" data-indicator="slum_proportion_living_urban"></div>
             <div class="widget row columns-holder" id="chart_pub" style="display: none;" data-indicator="land_allocated_to_street_index_city_core"></div>
 		</div>
