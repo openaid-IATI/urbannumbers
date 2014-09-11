@@ -205,7 +205,7 @@ function get_wiki_city_data(city_name, left_right_city){
 
     	        begin_text = begin_text + end_text_untill_first_space;
 
-    	        var complete_text = begin_text + ' <a target="_blank" href="http://en.wikipedia.org/wiki/'+city_name+'" class="wiki-read-more"> Read more at Wikipedia </a>';
+    	        var complete_text = begin_text + '... <a target="_blank" href="http://en.wikipedia.org/wiki/'+city_name+'" class="wiki-read-more"> Read more at Wikipedia </a>';
 
     	        if (end_text == ""){
     	        	complete_text = begin_text;
