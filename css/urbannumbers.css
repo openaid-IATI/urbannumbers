@@ -543,3 +543,20 @@ form.registration-form span.input-placeholder-text {
     position: relative;
     top: -75px;
 }
+.container-map .check-row.home-info-controls label i.icon-pin {
+    width:20px;
+    line-height: 25px;
+    margin-top: 0px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+.container-map .check-row.home-info-controls label i.icon-pin.cpi {
+    background: #FFBF00;
+}
+.container-map .check-row.home-info-controls label i.icon-pin.slum {
+    background: #A3D900;
+}
+.container-map .check-row.home-info-controls label i.icon-pin.pub {
+    background: #0074EC;
+}

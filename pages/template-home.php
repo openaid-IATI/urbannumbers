@@ -99,7 +99,7 @@ if (have_posts()) : ?>
 		</header>
 		<?php endif; ?>
 		<?php if($map_control): ?>
-		<div class="check-row">
+		<div class="check-row home-info-controls">
 			<?php echo $map_control; ?>
 		</div>
 		<?php endif; ?>
