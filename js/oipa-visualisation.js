@@ -624,7 +624,8 @@ function OipaActiveChart(id, options) {
             self.chart = self.init_chart(chart_data);
         } else {
             // Refresh
-            if (chart_data.datasets !== undefined && chart_data.datasets.length > 1) {
+            if (self.opt('all_years')) {
+                self.chart.destroy();
                 self.chart = self.init_chart(chart_data);
             } else {
                 if (chart_data.labels) {
@@ -1031,7 +1032,6 @@ OipaInfographicVis = function(indicator, charts_count, options) {
         if (!data) {
             data = self.data;
         }
-        
 
         if (!data || data[self.indicator] == undefined){
             // empty data, remove vis
@@ -1064,7 +1064,7 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
         _data.push({
             value: 1 - _data[0].value,
             label: "empty",
-            color: "#767D91",
+            color: self.opt('color', '#00AAB0'),
             stroke_color: "#767D91",
             highlight: "#767D91"
         });
@@ -1074,7 +1074,11 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
 
     self.init_chart = function(chart_data, chart_id) {
         var _data = self.normalize_data_for_pie(chart_data, chart_id);
-        return self.charts[chart_id].obj.Doughnut(_data, {showScale: false, showTooltips: false});
+        return self.charts[chart_id].obj.Doughnut(_data, {
+            showScale: false,
+            showTooltips: false,
+            segmentStrokeWidth: 1,
+        });
     }
 
     self.format_year_data = function(data, year, limit){
@@ -1089,10 +1093,9 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
             return {
                 value: i.value,
                 label: i.name,
-                color: _color,
-                stroke_color: _stroke_color,
-                segmentStrokeColor: _stroke_color,
-                highlight: _stroke_color
+                color: "#767D91",
+                stroke_color: "#767D91",
+                highlight: "#767D91"
             };
         });
     }
@@ -1100,16 +1103,16 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
     self.visualize_chart = function(chart_data, chart_id) {
         if (self.charts[chart_id] == undefined) {
             var holder = document.createElement("div");
-            holder.className = "col-md-1";
-            holder.style.width = '120px';
-            holder.ctx = document.createElement('canvas');
-            holder.appendChild(holder.ctx);
-            holder.ctx.height = 100;
-            holder.ctx.width = 100;
-            
-            holder.label = document.createElement('div');
+            holder.className = "column";
+
+            holder.label = document.createElement('label');
             holder.label.innerHTML = chart_data[chart_id].label;
             holder.appendChild(holder.label);
+
+            holder.ctx = document.createElement('canvas');
+            holder.appendChild(holder.ctx);
+            holder.ctx.height = 80;
+            holder.ctx.width = 80;
 
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
                 node.appendChild(holder);

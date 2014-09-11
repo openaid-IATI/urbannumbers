@@ -104,10 +104,10 @@ if (have_posts()) : ?>
 		</div>
 		<?php endif; ?>
 		<?php if( have_rows('map_images') ): ?>
-		<div style="width: 600px; margin-left: -300px; position: relative; left:50%">
-            <div class="widget row" id="chart_cpi" style="display: none;" data-indicator="cpi_6_dimensions"></div>
-            <div class="widget row" id="chart_slum" style="display: none;" data-indicator="slum_proportion_living_urban"></div>
-            <div class="widget row" id="chart_pub" style="display: none;" data-indicator="land_allocated_to_street_index_city_core"></div>
+		<div class="box-container infobox-container">
+            <div class="widget row columns-holder" id="chart_cpi" style="display: none;" data-indicator="cpi_6_dimensions"></div>
+            <div class="widget row columns-holder" id="chart_slum" style="display: none;" data-indicator="slum_proportion_living_urban"></div>
+            <div class="widget row columns-holder" id="chart_pub" style="display: none;" data-indicator="land_allocated_to_street_index_city_core"></div>
 		</div>
 		<?php endif; ?>
 
@@ -276,12 +276,12 @@ if (have_posts()) : ?>
     map.selection = Oipa.mainSelection;
 
     // Create inforaphics
-    var first = new OipaPieInfographicsVis('cpi_6_dimensions', 5, {});
-    var second = new OipaPieInfographicsVis('slum_proportion_living_urban', 5, {
+    var first = new OipaPieInfographicsVis('cpi_6_dimensions', 8, {});
+    var second = new OipaPieInfographicsVis('slum_proportion_living_urban', 8, {
         divide_by: 100,
         color: "#DC5100"
     });
-    var third = new OipaPieInfographicsVis('land_allocated_to_street_index_city_core', 5, {
+    var third = new OipaPieInfographicsVis('land_allocated_to_street_index_city_core', 8, {
         divide_by: 1000,
         color: "#50A431"
     });

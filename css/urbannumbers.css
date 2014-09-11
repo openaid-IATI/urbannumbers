@@ -520,3 +520,20 @@ form.registration-form span.input-placeholder-text {
 #header..nav_my_account .add-nav .btn {
     text-shadow: none;
 }
+
+.infobox-container {
+    background: none;
+    padding: 0px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+} 
+.infobox-container.box-container .columns-holder .column {
+    width: 12.5%;
+    min-width: 100px;
+}
+.infobox-container.box-container .columns-holder .column label {
+    margin: 10px 0px;
+    min-width: 100px;
+}
+.infobox-container.box-container .columns-holder .column canvas {
+    margin-bottom: 20px;
+}
