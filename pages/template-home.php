@@ -105,7 +105,7 @@ if (have_posts()) : ?>
 		<?php endif; ?>
 		<?php if( have_rows('map_images') ): ?>
 		<div class="box-container infobox-container">
-            <div class="widget row columns-holder" id="chart_cpi" style="display: none;" data-indicator="cpi_6_dimensions"></div>
+            <div class="widget row columns-holder" id="chart_cpi" style="display: none;" data-indicator="cpi_cpi_6_dimensions"></div>
             <div class="widget row columns-holder" id="chart_slum" style="display: none;" data-indicator="slum_proportion_living_urban"></div>
             <div class="widget row columns-holder" id="chart_pub" style="display: none;" data-indicator="land_allocated_to_street_index_city_core"></div>
 		</div>
@@ -235,12 +235,10 @@ if (have_posts()) : ?>
         slum: 'slum_proportion_living_urban',
         pub: 'land_allocated_to_street_index_city_core'
     };
-    
     var _selected_filter = null;
     $.each(_filters, function(id, filter_id) {
         $('#filter_' + id).change(function(e) {
             if ($(this).prop('checked')) {
-                
                 // Deselect others and hide charts
                 $.each(_filters, function(_id, _) {
                     if (_id !== id) {
@@ -276,15 +274,31 @@ if (have_posts()) : ?>
     map.selection = Oipa.mainSelection;
 
     // Create inforaphics
-    var first = new OipaPieInfographicsVis('cpi_6_dimensions', 8, {});
-    var second = new OipaPieInfographicsVis('slum_proportion_living_urban', 8, {
-        divide_by: 100,
-        color: "#DC5100"
-    });
-    var third = new OipaPieInfographicsVis('land_allocated_to_street_index_city_core', 8, {
-        divide_by: 1000,
-        color: "#50A431"
-    });
+    var _regions = [89, 789, 589, 389, 189, 889, 489, 689, 289];
+    var first = new OipaRegionPieInfographicsVis('cpi_6_dimensions',
+        _regions,
+        {
+            color: "#FFBF00",
+        });
+    var second = new OipaRegionPieInfographicsVis('slum_proportion_living_urban',
+        _regions,
+        {
+            divide_by: 100,
+            color: "#A3D900",
+            overlay_transform: function(chart_id_data) {
+                return chart_id_data.value.toFixed(1) + "%";
+            }
+        }
+    );
+    var third = new OipaRegionPieInfographicsVis('land_allocated_to_street_index_city_core',
+        _regions,
+        {
+            color: "#0074EC",
+            overlay_transform: function(chart_id_data) {
+                return parseFloat(chart_id_data.value) * 1000;
+            }
+        }
+    );
     first.selection = Oipa.mainSelection;
     second.selection = Oipa.mainSelection;
     third.selection = Oipa.mainSelection;
@@ -295,24 +309,6 @@ if (have_posts()) : ?>
     Oipa.maps.push(map);
     OipaWidgetsBus.patch_map(map);
     if (Oipa.mainSelection.indicators.length == 0) {
-
-        Oipa.mainSelection.indicators = [];
-        Oipa.mainSelection.indicators.push({
-            id: 'cpi_6_dimensions',
-            name: "Urban population – Countries",
-            type: "Slum dwellers"
-        });
-        Oipa.mainSelection.indicators.push({
-            id: 'slum_proportion_living_urban',
-            name: "Urban population – Countries",
-            type: "Slum dwellers"
-        });
-        Oipa.mainSelection.indicators.push({
-            id: 'land_allocated_to_street_index_city_core',
-            name: "Urban population – Countries",
-            type: "Slum dwellers"
-        });
-        map.refresh();
         var _id = Object.keys(_filters)[Math.floor((Math.random() * 3))];
         $('#filter_' + _id).click();
         $('#chart_' + _id).show();

@@ -524,11 +524,13 @@ form.registration-form span.input-placeholder-text {
 .infobox-container {
     background: none;
     padding: 0px;
+    min-height: 166px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 } 
 .infobox-container.box-container .columns-holder .column {
     width: 12.5%;
     min-width: 100px;
+    max-width: 100px;
 }
 .infobox-container.box-container .columns-holder .column label {
     margin: 10px 0px;
@@ -536,4 +538,8 @@ form.registration-form span.input-placeholder-text {
 }
 .infobox-container.box-container .columns-holder .column canvas {
     margin-bottom: 20px;
+}
+.infobox-container.box-container .columns-holder .column div.info-overlay {
+    position: relative;
+    top: -75px;
 }

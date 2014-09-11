@@ -1078,10 +1078,12 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
             showScale: false,
             showTooltips: false,
             segmentStrokeWidth: 1,
+            animation: false,
+            percentageInnerCutout: 67
         });
     }
 
-    self.format_year_data = function(data, year, limit){
+    self.format_year_data = function(data, year, limit) {
         if (year == null) {
             year = self.get_last_data_year(data);
         }
@@ -1101,6 +1103,10 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
     }
 
     self.visualize_chart = function(chart_data, chart_id) {
+        var _transform_func = self.opt("overlay_transform", function(chart_id_data) {
+            return chart_id_data.value;
+        });
+
         if (self.charts[chart_id] == undefined) {
             var holder = document.createElement("div");
             holder.className = "column";
@@ -1114,42 +1120,96 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
             holder.ctx.height = 80;
             holder.ctx.width = 80;
 
+            holder.overlay = document.createElement('div');
+            holder.overlay.className = 'info-overlay';
+            holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
+            holder.appendChild(holder.overlay);
+
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
                 node.appendChild(holder);
             });
 
             self.charts[chart_id] = {
                 obj: new Chart(holder.ctx.getContext("2d")),
+                holder: holder,
                 chart: null
             }
             self.charts[chart_id].chart = self.init_chart(chart_data, chart_id);
         } else {
-            // Refresh
-            if (chart_data.labels) {
-                $.each(chart_data.labels, function(_id, label) {
-                    self.get_chart_labels(self.charts[chart_id].chart)[_id] = label;
-                    self.get_chart_points(self.charts[chart_id].chart)[_id].value = chart_data.datasets[0].data[_id];
-                    self.get_chart_points(self.charts[chart_id].chart)[_id].label = label;
-                });
-            } else {
-                // pie, radar etc
-                // Redraw chart only if data isset
-                if (chart_data[0].value !== undefined) {
-                     $.each(chart_data, function(i, v) {
-                         var _data = self.normalize_data_for_pie(chart_data, chart_id);
-                         self.charts[chart_id].chart.segments[0].label = _data[0].label;
-                         self.charts[chart_id].chart.segments[0].value = _data[0].value;
-                         self.charts[chart_id].chart.segments[1].label = _data[1].label;
-                         self.charts[chart_id].chart.segments[1].value = _data[1].value;
-                     });
-                }
-                self.charts[chart_id].chart.update();
+            if (chart_data.labels == undefined && chart_data[0].value !== undefined) {
+                self.charts[chart_id].chart.destroy();
+                self.charts[chart_id].chart = self.init_chart(chart_data, chart_id);
+
+                self.charts[chart_id].holder.label.innerHTML = chart_data[chart_id].label;
+                self.charts[chart_id].holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
             }
+            // Refresh
+ //            if (chart_data.labels) {
+ //                $.each(chart_data.labels, function(_id, label) {
+ //                    self.get_chart_labels(self.charts[chart_id].chart)[_id] = label;
+ //                    self.get_chart_points(self.charts[chart_id].chart)[_id].value = chart_data.datasets[0].data[_id];
+ //                    self.get_chart_points(self.charts[chart_id].chart)[_id].label = label;
+ //                });
+ //            } else {
+ //
+ //                // pie, radar etc
+ //                // Redraw chart only if data isset
+ //                if (chart_data[0].value !== undefined) {
+ //                     $.each(chart_data, function(i, v) {
+ //                         var _data = self.normalize_data_for_pie(chart_data, chart_id);
+ //                         console.log(_data[0].value);
+ //                         self.charts[chart_id].chart.segments[0].label = _data[0].label;
+ //                         self.charts[chart_id].chart.segments[0].value = _data[0].value;
+ //                         self.charts[chart_id].chart.segments[1].label = _data[1].label;
+ //                         self.charts[chart_id].chart.segments[1].value = _data[1].value;
+ //                     });
+ //                }
+ //                self.charts[chart_id].chart.update();
+ //            }
         }
+        
     }
-    return this;
+    return self;
 }
 OipaPieInfographicsVis.prototype = Object.create(OipaInfographicVis.prototype);
+
+
+OipaRegionPieInfographicsVis = function(indicator, regions, options) {
+    var self = this;
+    self.regions = regions;
+    OipaPieInfographicsVis.call(self, indicator, regions.length - 1, options);
+
+    self.get_year_slice = function(locations, year, limit) {
+        // Get last year slice if year is null
+        year = (year==null?2014:year);
+
+        var _regio_tops = {};
+        $.each(locations, function(key, val) {
+            if (self.regions.indexOf(val.region_id) == -1) {
+                return;
+            }
+
+            if (_regio_tops[val.region_id] == undefined) {
+                _regio_tops[val.region_id] = val;
+            }
+            if (val.years[year] > _regio_tops[val.region_id].years[year]) {
+                _regio_tops[val.region_id] = val;
+            }
+        });
+
+        return $.map(_regio_tops, function(i) {
+            return [{
+                value: i.years[year],
+                color: i.color,
+                stroke_color: i.stroke_color,
+                name: i.name
+            }];
+        });
+    }
+
+    return self;
+}
+OipaRegionPieInfographicsVis.prototype = Object.create(OipaPieInfographicsVis.prototype);
 
 function toFixed(x) {
   if (Math.abs(x) < 1.0) {
