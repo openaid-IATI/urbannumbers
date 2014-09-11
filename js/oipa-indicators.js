@@ -409,8 +409,15 @@ function OipaIndicatorMap(){
                 if(!(circles.locations === undefined)){
                         $.each(circles.locations, function(ckey, cvalue){
 
-                                // set value for each indicator in the pop-up
-                                var popuptext = '<h4>'+cvalue.countryname+'</h4>';
+                                // create popup header
+
+                                // all countries are iso2 letter codes, all cities are numbers
+                                if (isNaN(ckey)){
+                                    var popuptext = '<a href="/compare-cities/city-pages/countries='+ckey+'"><h4>'+cvalue.countryname+'</h4></a>';
+                                } else {
+                                    var popuptext = '<a href="/compare-cities/country-pages/cities='+ckey+'"><h4>'+cvalue.countryname+'</h4></a>';
+                                }
+                                
                                 // create pop-up text
                                 $.each(circles.indicators, function(pkey, pvalue){
                                         if(!(cvalue[pkey] === undefined)){
