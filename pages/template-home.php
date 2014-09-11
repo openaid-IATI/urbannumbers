@@ -105,9 +105,9 @@ if (have_posts()) : ?>
 		<?php endif; ?>
 		<?php if( have_rows('map_images') ): ?>
 		<div style="width: 600px; margin-left: -300px; position: relative; left:50%">
-            <div class="widget row" id="chart_cpi" data-indicator="cpi_6_dimensions"></div>
-            <div class="widget row" id="chart_slum" data-indicator="slum_proportion_living_urban"></div>
-            <div class="widget row" id="chart_pub" data-indicator="land_allocated_to_street_index_city_core"></div>
+            <div class="widget row" id="chart_cpi" style="display: none;" data-indicator="cpi_6_dimensions"></div>
+            <div class="widget row" id="chart_slum" style="display: none;" data-indicator="slum_proportion_living_urban"></div>
+            <div class="widget row" id="chart_pub" style="display: none;" data-indicator="land_allocated_to_street_index_city_core"></div>
 		</div>
 		<?php endif; ?>
 
@@ -295,6 +295,24 @@ if (have_posts()) : ?>
     Oipa.maps.push(map);
     OipaWidgetsBus.patch_map(map);
     if (Oipa.mainSelection.indicators.length == 0) {
+
+        Oipa.mainSelection.indicators = [];
+        Oipa.mainSelection.indicators.push({
+            id: 'cpi_6_dimensions',
+            name: "Urban population – Countries",
+            type: "Slum dwellers"
+        });
+        Oipa.mainSelection.indicators.push({
+            id: 'slum_proportion_living_urban',
+            name: "Urban population – Countries",
+            type: "Slum dwellers"
+        });
+        Oipa.mainSelection.indicators.push({
+            id: 'land_allocated_to_street_index_city_core',
+            name: "Urban population – Countries",
+            type: "Slum dwellers"
+        });
+        map.refresh();
         var _id = Object.keys(_filters)[Math.floor((Math.random() * 3))];
         $('#filter_' + _id).click();
         $('#chart_' + _id).show();
