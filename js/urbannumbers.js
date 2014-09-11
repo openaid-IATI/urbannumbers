@@ -52,7 +52,6 @@ $("#indicator-filter-wrapper .filter-open").click(function(e){
 });
 
 function get_random_city_within_selection(selection, already_chosen){
-	
 	var rand = selection[Math.floor(Math.random() * selection.length)];
 
 	if(already_chosen){
@@ -229,6 +228,7 @@ function get_wiki_city_data(city_name, left_right_city){
 }
 
 function display_login_form() {
+
 
     $("#hoover-wrapper").show();
     $("#urbannumbers-login").show();

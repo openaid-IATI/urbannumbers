@@ -17,16 +17,16 @@ function OipaVis (){
         html += '<section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'">';
         html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '<div class="box-content">';
-        html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
+        //html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
         html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
         html +=  '<div class="widget" data-indicator="'+this.indicator+'">';
         html +=    '<div class="no_data">No data for this chart</div>';
         html +=    '<canvas height="340" width="340"></canvas>';
         html +=  '</div>';
         html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
-        if (this.limit){
+        /*if (this.limit){
             html += '<div class="vis-box-note">Showing top '+this.limit+', use filters to show a different selection, <a class="vis-box-show-all" href="#">click here to show all</a></div>';
-        }
+        }*/
         html += '</div></section></li>';
 
         $("#visualisation-block-wrapper").append(html);
@@ -624,26 +624,28 @@ function OipaActiveChart(id, options) {
             self.chart = self.init_chart(chart_data);
         } else {
             // Refresh
-            try {
+            if (chart_data.datasets !== undefined && chart_data.datasets.length > 1) {
+                self.chart = self.init_chart(chart_data);
+            } else {
                 if (chart_data.labels) {
-                    $.each(chart_data.labels, function(_id, label) {
-                        self.get_chart_labels(self.chart)[_id] = label;
-                        self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
-                        self.get_chart_points(self.chart)[_id].label = label;
+                    $.each(chart_data.datasets, function(_id, cd) {
+                        $.each(chart_data.labels, function(_id, label) {
+                            self.get_chart_labels(self.chart)[_id] = label;
+                            self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
+                            self.get_chart_points(self.chart)[_id].label = label;
+                        });
                     });
                 } else {
                     // pie, radar etc
                     // Redraw chart only if data isset
                     if (chart_data[0].value !== undefined) {
-                     $.each(chart_data, function(i, v) {
-                         self.chart.segments[i].label = v.label;
-                         self.chart.segments[i].value = v.value;
-                     });
+                        $.each(chart_data, function(i, v) {
+                            self.chart.segments[i].label = v.label;
+                            self.chart.segments[i].value = v.value;
+                        });
                     }
                 }
                 self.chart.update();
-            } catch (err) {
-                self.chart = self.init_chart(chart_data);
             }
 
         }

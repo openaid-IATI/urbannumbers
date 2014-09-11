@@ -54,12 +54,12 @@ var OipaCompare = {
                     city_id_2 = this.get_from_href('right_cities');
                 }
                 $("#left-cities-filters input").each(function(){
-                        left_cities.push($(this).val());
+                    left_cities.push($(this).val());
                 });
 
                 var right_cities = [];
                 $("#right-cities-filters input").each(function(){
-                        right_cities.push($(this).val());
+                    right_cities.push($(this).val());
                 });
 
                 if (city_id_1 == undefined) {
@@ -87,8 +87,8 @@ var OipaCompare = {
         create_visualisations: function() {
             var cursel = Oipa.mainSelection;
             filter.selection.indicators.push({
-                id: "cpi_environment_index",
-                name: "Environment Sustainability Index",
+                id: "urban_population_cities",
+                name: "Urban Population Cities",
                 type: "City prosperity",
                 options: {
                     chart_class: OipaBarChart,
@@ -96,7 +96,7 @@ var OipaCompare = {
                 }
             });
             filter.selection.indicators.push({
-                id: "cpi_infrastructure_index",
+                id: "avg_annual_rate_change_percentage_urban",
                 name: "Infrastructure Development Index",
                 type: "City prosperity",
                 options: {
@@ -105,7 +105,7 @@ var OipaCompare = {
                 }
             });
             filter.selection.indicators.push({
-                id: "cpi_productivity_index",
+                id: "urban_population_share_national",
                 name: "Productivity Index",
                 type: "City prosperity",
                 options: {
@@ -113,32 +113,32 @@ var OipaCompare = {
                     all_years: true
                 }
             });
-            filter.selection.indicators.push({
-                id: "cpi_quality_of_live_index",
-                name: "Quality of Life Index",
-                type: "City prosperity",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
-            filter.selection.indicators.push({
-                id: "cpi_equity_index",
-                name: "Equity/Social Inclusion Index",
-                type: "City prosperity",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
-            filter.selection.indicators.push({
-                id: "cpi_composite_street_connectivity_index",
-                name: "Composite Street Connectivity Index",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
+            // filter.selection.indicators.push({
+//                 id: "cpi_quality_of_live_index",
+//                 name: "Quality of Life Index",
+//                 type: "City prosperity",
+//                 options: {
+//                     chart_class: OipaBarChart,
+//                     all_years: true
+//                 }
+//             });
+//             filter.selection.indicators.push({
+//                 id: "cpi_equity_index",
+//                 name: "Equity/Social Inclusion Index",
+//                 type: "City prosperity",
+//                 options: {
+//                     chart_class: OipaBarChart,
+//                     all_years: true
+//                 }
+//             });
+//             filter.selection.indicators.push({
+//                 id: "cpi_composite_street_connectivity_index",
+//                 name: "Composite Street Connectivity Index",
+//                 options: {
+//                     chart_class: OipaBarChart,
+//                     all_years: true
+//                 }
+//             });
 
             filter.save(true);
 

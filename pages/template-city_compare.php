@@ -88,6 +88,7 @@ get_header(); the_post(); ?>
 
         var filter = new UnhabitatOipaCompareFilters();
         filter.selection = Oipa.mainSelection;
+        //OipaCompare.randomize(1);
         filter.init();
 
     </script>
