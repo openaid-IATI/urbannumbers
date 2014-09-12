@@ -85,7 +85,7 @@ get_header(); the_post(); ?>
         rightmap.compare_left_right = "right";
         Oipa.maps.push(rightmap);
         
-
+        
         var filter = new UnhabitatOipaCompareFilters();
         filter.selection = Oipa.mainSelection;
         //OipaCompare.randomize(1);
