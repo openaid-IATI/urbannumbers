@@ -116,6 +116,7 @@ function OipaCountry(){
 	this.region_id = null;
 	this.polygon = null;
 	this.center_longlat = null;
+	var thiscountry = this;
 
 	this.get_data = function(data, map_left_right){
 
@@ -137,17 +138,14 @@ function OipaCountry(){
 			OipaCompare.refresh_state = 0;
 			// refresh map
 			OipaCompare.refresh_comparison();
-		}
-		
+		}	
 	}
-	
+
 	this.set_data = function() {
 
 		url = search_url + "countries/"+this.id+"/?format=json";
 
 		jQuery.support.cors = true;
-
-		var thiscountry = this;
 	
 		jQuery.ajax({
 			type: 'GET',
@@ -166,9 +164,64 @@ function OipaCountry(){
 				thiscountry.init_country_page();
 			}
 		});
-		
 	};
 
+
+	this.get_cities_within_country = function(){
+
+		// This might get really slow when we add more data (it loads all indicator data from the country)
+		// TO DO: add functionality to only get Urbnrs data from the indicator-data call -> &categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity
+		// this func is in indicator-filter-options already.
+		url = search_url + "indicator-data/?format=json&countries__in=" + thiscountry.id;
+
+		jQuery.support.cors = true;
+	
+		jQuery.ajax({
+			type: 'GET',
+			url: url,
+			contentType: "application/json",
+			dataType: 'json',
+			success: function(data){
+
+				thiscountry.cities = new Object();
+
+				// loop through indicators and get city id, name, latitude, longitude
+				var years = {min: null, max: null};
+                $.each(data, function(_, indicator) {
+                    if (typeof(indicator) == "string") {
+                        // do not continue if indicator is undefined
+                        return;
+                    }
+
+                    $.each(indicator.locs, function(_, loc) {
+
+                    	if (!(loc.id in thiscountry.cities) && !(isNaN(loc.id))){
+                    		thiscountry.cities[loc.id] = {"id": loc.id, "name": loc.name, "latitude": loc.latitude, "longitude": loc.longitude};
+
+                    		// show cities in country as circle with orange color, capital city as green color
+							color = "#008b85";
+							radius = 30000;
+							opacity = 0.7;
+							if (loc.name == thiscountry.capital_city.name){
+								color = "#f06002";
+								radius = 50000;
+								opacity = 0.9;
+							}
+
+							var circle = L.circle([loc.latitude, loc.longitude], radius, {
+					                color: "#666",
+					                weight: '0.5',
+					                fillColor: color,
+					                fillOpacity: opacity
+					        }).bindPopup('<a href="/compare-cities/city-pages/?cities='+loc.id+'"><h4>'+loc.name+'</h4></a>').addTo(map.map);
+
+                    	}
+
+                	});
+				});
+			}
+		});
+	}
 
 	this.get_markers_bounds = function(){
 
@@ -196,7 +249,6 @@ function OipaCountry(){
 				if (curlat > maxlat){ maxlat = curlat; }
 				if (curlng < minlng){ minlng = curlng; }
 				if (curlng > maxlng){ maxlng = curlng; }
-
 			}
 		}
 
@@ -211,31 +263,13 @@ function OipaCountry(){
 		var bounds = this.get_markers_bounds();
 	    map.map.fitBounds(bounds);
 		
-
-		// set country name	
+		// set country name
 		jQuery("#horizontal_vis_block_name").text(this.name);
 
-		// show cities in country as circle with orange color, capital city as green color
-		for (var i = 0;i < this.cities.length;i++){
-			
-			latlng = geo_point_to_latlng(this.cities[i].location);
-			color = "#008b85";
-			radius = 30000;
-			opacity = 0.7;
-			if (this.cities[i].name == this.capital_city.name){
-				color = "#f06002";
-				radius = 50000;
-				opacity = 0.9;
-			}
 
-			var circle = L.circle(latlng, radius, {
-	                color: "#666",
-	                weight: '0.5',
-	                fillColor: color,
-	                fillOpacity: opacity
-	        }).bindPopup('<a href="/compare-cities/city-pages/?cities='+this.cities[i].id+'"><h4>'+this.cities[i].name+'</h4></a>').addTo(map.map);
-
-	    }
+		// cities
+		this.get_cities_within_country();
+		
 
 		// show indicators for the country
 		// country_indicator_1_namecountry_indicator_2_namecountry_indicator_3_name
@@ -253,6 +287,8 @@ function OipaCountry(){
 	    // show indicators for the cities in the country
 
 	}
+
+
 }
 
 	
