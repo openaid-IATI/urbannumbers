@@ -847,7 +847,7 @@ function OipaFilters(){
 	this.init = function(){
 
 		// check url parameters -> selection
-		this.update_selection_object();
+		this.get_selection_from_url();
 
 		// get url
 		var url = this.get_url();
@@ -878,6 +878,26 @@ function OipaFilters(){
 
 		Oipa.mainSelection.url.set_current_url();
 		return true;
+	};
+
+	this.get_selection_from_url = function(){
+		var url_pars = window.location.search.substring(1);
+		var selection = [];
+
+		if(url_pars !== ''){
+
+			var vars = url_pars.split("&");
+
+			for (var i=0;i<vars.length;i++) {
+				var pair = vars[i].split("=");
+				var vals = pair[1].split(",");
+				for(var y=0;y<vals.length;y++){
+
+					// To do when selection box is in place -> update name / type when filters are loaded
+					this.selection[pair[0]].push({"id": vals[y], "name": "Loading...", "type": "Slum dwellers"});
+				}
+			}
+		}
 	};
 
 	this.validate_selection = function (){
@@ -981,10 +1001,15 @@ function OipaFilters(){
 				success: function(data){
 					filters.process_filter_options(data);
 					filters.data = data;
+					filters.after_filter_load();
 				}
 			});
 		}
 	};
+
+	this.after_filter_load = function(){
+		// overload
+	}
 
 	this.process_filter_options = function(data){
 
@@ -1035,7 +1060,12 @@ function OipaFilters(){
 		if (typeof selection.reporting_organisations !== "undefined") { this.init_filters_loop(selection.reporting_organisations) };
 	
 		//fill_selection_box();
+		this.after_initialize_filters();
 	};
+
+	this.after_initialize_filters = function(){
+		// override
+	}
 
 	this.init_filters_loop = function(arr){
 		for(var i = 0; i < arr.length;i++){
@@ -1279,6 +1309,8 @@ function OipaFilters(){
 	}
 
 }
+
+
 
 function OipaProjectFilters(){
 

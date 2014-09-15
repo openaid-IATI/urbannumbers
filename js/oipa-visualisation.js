@@ -905,6 +905,7 @@ function OipaSimpleMapVis(){
     this.map_div = null;
     this.chartwrapper = "#visualisation-maps-block-wrapper";
     this._url_cache = {};
+    this.marker = null;
 
     this.init = function(){
         // create html
@@ -1001,20 +1002,20 @@ function OipaSimpleMapVis(){
                 this.map.setView(longlat, 4);
 
             } else if(this.geo_location == "region"){
-                // var longlat = geo_point_to_latlng(data.center_longlat);
-                // latitude = longlat[0];
-                // longitude = longlat[1];
-                // this.map.setView(longlat, 6);
+                var longlat = geo_point_to_latlng(data.center_longlat);
+                latitude = longlat[0];
+                longitude = longlat[1];
+                this.map.setView(longlat, 1);
             }
 
             if (latitude){
-            curmarker = L.marker([
-                    latitude,
-                    longitude
-            ])
-            .addTo(this.map);
-            
-            this.marker = curmarker;}
+                if (this.marker){
+                    this.marker.setLatLng([latitude, longitude]).update(); 
+                } else {
+                    curmarker = L.marker([latitude, longitude]).addTo(this.map);
+                    this.marker = curmarker;
+                }
+            }
         }
 
     };

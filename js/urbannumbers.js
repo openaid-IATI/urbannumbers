@@ -149,6 +149,7 @@ function UnhabitatOipaIndicatorFilters(){
 		// TO DO: set checkboxes
 		filter.save(true);
 	}
+
 };
 UnhabitatOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
 

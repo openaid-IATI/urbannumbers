@@ -555,6 +555,10 @@ function OipaIndicatorMap(){
                         });
                 }
         }
+
+        this.zoom_on_country = function(){
+
+        }
         
 
 }
@@ -822,6 +826,7 @@ $(".slider-year").click(function() {
         map.refresh_circles(curYear);
         $( "#map-slider-tooltip" ).val(parseInt(curYear));
         $( "#map-slider-tooltip div" ).text(curYear);
+
         $( ".slider-year").removeClass("active");
         $(this).addClass("active");
 }); 
