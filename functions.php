@@ -394,7 +394,7 @@ add_action('login_init', function() {
                 //initialize API call to change password
                 $ch = curl_init();
                 //TODO change this URL to a setting
-                curl_setopt($ch, CURLOPT_URL, 'http://www.zz-login.net/rest-auth/password/reset/confirm/' . urlencode($_GET['uid']) . '/' . urlencode($_GET['keys']) . '/');
+                curl_setopt($ch, CURLOPT_URL, ZZ_LOGIN . '/rest-auth/password/reset/confirm/' . urlencode($_GET['uid']) . '/' . urlencode($_GET['keys']) . '/');
                 curl_setopt($ch, CURLOPT_POST, 2);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, "new_password1=" . $_POST['pass1'] . '&new_password2=' . $_POST['pass2']);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -466,7 +466,7 @@ add_action('lostpassword_post', function( $user ) {
     $email = $_POST['user_login'];
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://www.zz-login.net/rest-auth/password/reset/');
+    curl_setopt($ch, CURLOPT_URL, ZZ_LOGIN . '/rest-auth/password/reset/');
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "email=" . $email);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -506,7 +506,7 @@ function vb_reg_new_user() {
 
 
     // Post values
-    $username = $_POST['user'];
+    $username = $_POST['username'];
     $password = $_POST['pass'];
     $email = $_POST['mail'];
     $name = $_POST['name'];
@@ -542,7 +542,7 @@ function vb_reg_new_user() {
     //make the API call
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://www.zz-login.net/rest-auth/register/');
+    curl_setopt($ch, CURLOPT_URL, ZZ_LOGIN . '/rest-auth/register/');
     curl_setopt($ch, CURLOPT_POST, count($fields));
     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -580,7 +580,7 @@ add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 function activate_user($activation_key) {
     $ch = curl_init();
     //TODO add url to settings page
-    curl_setopt($ch, CURLOPT_URL, 'http://www.zz-login.net/rest-auth/verify-email/' . $activation_key . '/');
+    curl_setopt($ch, CURLOPT_URL, ZZ_LOGIN . '/rest-auth/verify-email/' . $activation_key . '/');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -636,16 +636,25 @@ function vb_registration_form() {
     ?>
 
     <div class="vb-registration-form">
-        <form class="form-horizontal registration-form" role="form">
 
-            <div class="form-group">
-                <label for="vb_name" class="sr-only">Your Name</label>
-                <input type="text" name="vb_name" id="vb_name" value="" placeholder="Your Name" class="form-control" />
-            </div>
+        <div class="alert result-message"></div>
+        <form class="form-horizontal registration-form" id="ur-registration" role="form">
 
             <div class="form-group">
                 <label for="vb_email" class="sr-only">Your Email</label>
                 <input type="email" name="vb_email" id="vb_email" value="" placeholder="Your Email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="vb_pass" class="sr-only">Choose Password</label>
+                <input type="password" name="vb_pass" id="vb_pass" value="" placeholder="Choose Password" class="form-control" />
+                <span class="help-block">Minimum 8 characters</span>
+            </div>
+
+            <div class="form-group">
+                <label for="vb_pass2" class="sr-only">Confirm Password</label>
+                <input type="password" name="vb_pass2" id="vb_pass2" value="" placeholder="Confirm Password" class="form-control" />
+                <span class="help-block">Minimum 8 characters</span>
             </div>
 
             <div class="form-group">
@@ -658,24 +667,11 @@ function vb_registration_form() {
                 <input type="text" name="vb_last_name" id="vb_last_name" value="" placeholder="Last name" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <label for="vb_username" class="sr-only">Choose Username</label>
-                <input type="text" name="vb_username" id="vb_username" value="" placeholder="Choose Username" class="form-control" />
-                <span class="help-block">Please use only a-z,A-Z,0-9,dash and underscores, minimum 5 characters</span>
-            </div>
-
-            <div class="form-group">
-                <label for="vb_pass" class="sr-only">Choose Password</label>
-                <input type="password" name="vb_pass" id="vb_pass" value="" placeholder="Choose Password" class="form-control" />
-                <span class="help-block">Minimum 8 characters</span>
-            </div>
-
             <?php wp_nonce_field('vb_new_user', 'vb_new_user_nonce', true, true); ?>
 
-            <input type="submit" class="btn btn-primary" id="btn-new-user" value="Register" />
+            <input type="submit" class="btn btn-primary" id="btn-new-user-save" value="Register" />
         </form>
 
-        <div class="alert result-message"></div>
     </div>
 
     <?php

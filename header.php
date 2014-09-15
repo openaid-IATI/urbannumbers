@@ -75,6 +75,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 		<div class="row">
 			<div class="col-md-12">
                 <div id="sidebar-login-form-placeholder">
+		  <a href="<?php echo wp_login_url( $login_redirect ); ?>">Sign in</a>
                 </div>
                 <?php do_action( 'wordpress_social_login' ); ?>
 			</div>
@@ -84,7 +85,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 		<div class="row">
 			<div class="col-md-12">
 				<div class="dotted-wrapper">
-				  <span style="background-color: white; position: relative; top: -0.8em;">
+				  <span style="background-color: white; position: relative;">
 				    <?php _e( 'Or', 'urbannumbers' ); ?>
 				  </span>
 				</div>

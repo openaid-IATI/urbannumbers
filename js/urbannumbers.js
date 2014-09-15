@@ -233,3 +233,60 @@ function display_login_form() {
     $("#hoover-wrapper").show();
     $("#urbannumbers-login").show();
 }
+
+
+$('#ur-registration').submit(function(e) {
+    e.preventDefault();
+    var reg_nonce = $('#vb_new_user_nonce').val();
+    var reg_pass  = $('#vb_pass').val();
+    var reg_pass2  = $('#vb_pass2').val();
+    var reg_mail  = $('#vb_email').val();
+    var reg_first_name  = $('#vb_first_name').val();
+    var reg_last_name  = $('#vb_last_name').val();
+
+    var display_error = function(message) {
+	$('.vb-registration-form .result-message').html(message).removeClass('alert-success').addClass('alert-danger');
+    }
+    var display_success = function(message) {
+	$('.vb-registration-form .result-message').html(message).removeClass('alert-danger').addClass('alert-success');
+    }
+
+    // Do basic data sanitation
+    if (reg_mail.trim() == "" || reg_pass.trim() == "" || reg_pass2.trim() == "") {
+	display_error("Please fill in email and password fields.");
+    }
+
+    if (reg_pass.trim() !== reg_pass2.trim()) {
+	display_error("Passwords did not match.");
+    }
+
+    var data = {
+	"action": 'register_user',
+        "username": reg_mail,
+	"nonce": reg_nonce,
+        "pass": reg_pass,
+        "mail": reg_mail,
+	"name": reg_first_name + ' ' + reg_last_name,
+        "first_name": reg_first_name,
+        "last_name": reg_last_name
+    };
+
+    var ajax_url = vb_reg_vars.vb_ajax_url;
+    $.post(ajax_url, data, function(response) {
+	console.log(response);
+	display_success("Successfully registered. Now you can <a href='" + LOGIN_URL + "'>log in</a>.");
+    }).fail(function(e) {
+	//try {
+	    var response = JSON.parse(e.responseText);
+		var _msg = [];
+		$.each(response.profile, function(field, error) {
+		    _msg.push(error.join());
+		});
+		display_error(_msg.join("<br />"));
+	    //}
+	//} catch(e2) {
+        //    display_error("Unable to reach registration database. Please try later.");
+	//}
+        
+    });
+});
