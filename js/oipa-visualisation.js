@@ -1001,13 +1001,14 @@ function OipaSimpleMapVis(){
                 this.map.setView(longlat, 4);
 
             } else if(this.geo_location == "region"){
-                // var longlat = geo_point_to_latlng(data.center_longlat);
-                // latitude = longlat[0];
-                // longitude = longlat[1];
-                // this.map.setView(longlat, 6);
+                var longlat = geo_point_to_latlng(data.center_longlat);
+                latitude = longlat[0];
+                longitude = longlat[1];
+                this.map.setView(longlat, 1);
             }
 
             if (latitude){
+            
             curmarker = L.marker([
                     latitude,
                     longitude

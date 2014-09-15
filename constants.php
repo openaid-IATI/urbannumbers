@@ -10,5 +10,3 @@ if (function_exists("site_url")){
 	define( 'SITE_URL', site_url());
 }
 define( 'EMPTY_LABEL', 'No information available');
-
-?>
