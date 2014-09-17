@@ -6,7 +6,6 @@ get_header(); the_post(); ?>
     <div id="main" class="city-compare-wrapper">
         <!-- container-map -->
         <div class="container-map small">
-            
             <?php get_template_part("compare", "filters"); ?>
 
             <div class="container-heading">

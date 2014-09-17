@@ -145,8 +145,8 @@ var OipaCompare = {
         }
 }
 
-function OipaIndicatorMap(){
-
+function OipaIndicatorMap(use_legend) {
+    OipaMap.call(this, use_legend);
     this._url_data_cache = {};
 
         this.indicatordata = {};
@@ -562,7 +562,7 @@ function OipaIndicatorMap(){
         
 
 }
-OipaIndicatorMap.prototype = new OipaMap();
+OipaIndicatorMap.prototype = Object.create(OipaMap.prototype);
 
 
 
@@ -597,20 +597,22 @@ function OipaIndicatorFilters(){
         };
 
         this.process_filter_options = function(data){
+            var columns = 4;
 
-                var columns = 4;
+            // load filter html and implement it in the page
+            $.each(data, function(key, value) {
+                if (!$.isEmptyObject(value)) {
+                    if ($.inArray(key, ["indicators", "regions"]) > -1) {
+                        columns = 2;
+                    } else {
+                        columns = 4;
+                    }
+                    filter.create_filter_attributes(value, columns, key);
+                }
+            });
 
-                // load filter html and implement it in the page
-                $.each(data, function( key, value ) {
-                        
-                        if (!$.isEmptyObject(value)){
-                                if ($.inArray(key, ["indicators", "regions"]) > -1){ columns = 2; } else { columns = 4; }
-                                filter.create_filter_attributes(value, columns, key);
-                        }
-                });
-
-                // reload aangevinkte vakjes
-                this.initialize_filters();
+            // reload aangevinkte vakjes
+            this.initialize_filters();
         };
 
 
@@ -618,11 +620,10 @@ function OipaIndicatorFilters(){
                 var html = '';
                 var paginatehtml = '';
                 var per_col = 6;
-                var sortable = [];
-                for (var key in objects){
-                        sortable.push([key, objects[key]]);
-                }
-                sortable.sort(function(a, b){
+
+                var sortable = $.map(objects, function(val, key) {
+                    return [[key, val]];
+                }).sort(function(a, b){
                         var nameA=a[1].name.toString().toLowerCase(), nameB=b[1].name.toString().toLowerCase();
                         if (nameA < nameB) { //sort string ascending
                                 return -1; 
@@ -634,10 +635,17 @@ function OipaIndicatorFilters(){
                 });
 
                 var categories = {};
-                var ivaluetranslation = {rural: 'Rural area', city_core: 'City core',urban_area:'Urban area', "City core": "city core", sub_urban_area: 'Sub-urban area', sub_urban:'Sub-urban area', total:'Total'}; 
+                var ivaluetranslation = {
+                    rural: 'Rural area',
+                    city_core: 'City core',
+                    urban_area:'Urban area',
+                    "City core": "city core",
+                    sub_urban_area: 'Sub-urban area',
+                    sub_urban:'Sub-urban area',
+                    total:'Total'
+                }; 
 
                 for (var i = 0;i < sortable.length;i++){
-
                         var sortablename = sortable[i][1].name;
                         var categoryname = sortable[i][1].category;
 
@@ -735,8 +743,6 @@ function OipaIndicatorFilters(){
 
 }
 OipaIndicatorFilters.prototype = new OipaFilters();
-
-
 
 
 function OipaCompareFilters(){

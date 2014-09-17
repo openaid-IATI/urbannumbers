@@ -251,15 +251,34 @@ var Oipa = {
 };
 
 function OipaIndicatorSelection(main){
-	this.cities = [];
-	this.countries = [];
-	this.regions = [];
-	this.indicators = [];
-	this.url = null;
+    var self = this;
+    self.cities = [];
+    self.countries = [];
+    self.regions = [];
+    self.indicators = [];
+    self.url = null;
 
-	if (main){
-		this.url = new OipaUrl(this);
-	}
+    if (main){
+        self.url = new OipaUrl(self);
+    }
+
+    self.update_selection = function(type, id, i_name, i_type) {
+        var _found = false;
+        $.each(self[type], function(i, indicator) {
+            if (indicator.id == id) {
+                _found = true;
+            }
+        });
+
+        if (!_found) {
+            self[type].push({"id": id, "name": i_name, "type": i_type});
+        }
+        
+    }
+
+    self.add_indicator = function(id, i_name, i_type) {
+        self.update_selection('indicators', id, i_name, i_type);
+    }
 }
 
 
@@ -529,7 +548,7 @@ function OipaDonorList(){
 OipaDonorList.prototype = new OipaList();
 
 
-function OipaMap(){
+function OipaMap(use_legend){
 	this.map = null;
 	this.selection = null;
 	this.slider = null;
@@ -540,6 +559,7 @@ function OipaMap(){
 	this.markers = [];
 	this.vistype = "circles";
 	this.selected_year = null;
+    this.use_legend = (use_legend == undefined) ? false : use_legend;
 
 	if (typeof standard_basemap !== 'undefined') {
 		this.basemap = standard_basemap;
@@ -894,7 +914,7 @@ function OipaFilters(){
 				for(var y=0;y<vals.length;y++){
 
 					// To do when selection box is in place -> update name / type when filters are loaded
-					this.selection[pair[0]].push({"id": vals[y], "name": "Loading...", "type": "Slum dwellers"});
+					this.selection.update_selection(pair[0], vals[y], "Loading...", "Slum dwellers");
 				}
 			}
 		}
@@ -1012,7 +1032,7 @@ function OipaFilters(){
 	}
 
 	this.process_filter_options = function(data){
-
+        console.log(data);
 		var columns = 4;
 		var filter = this;
 
@@ -1020,6 +1040,7 @@ function OipaFilters(){
 
 		// load filter html and implement it in the page
 		jQuery.each(data, function( key, value ) {
+            console.log(key, value);
 			if (!jQuery.isEmptyObject(value)){
 				if (jQuery.inArray(key, ["sectors"])){ columns = 2; }
 				filter.create_filter_attributes(value, columns, key);

@@ -108,6 +108,34 @@ $(".close-login").click(function(e){
 });
 
 
+
+
+$("#map-indicator-filter-wrapper .map-indicator-header").click(function(e) {
+    e.preventDefault();
+    $("#map-indicator-filter-wrapper .sort-list").toggle();
+});
+
+$("#map-indicator-filter-wrapper .filter-open").click(function(e){
+    e.preventDefault();
+    var filtername = $(this).attr("name");
+    this.has_listener=true;
+    $("#map-indicator-filter-wrapper .sort-list ul").each(function(_, v) {
+        var _skip = false;
+        $(v.className.split(' ')).each(function(_, a) {
+            if (a.split('-')[0] == filtername) {
+                _skip = true;
+            }
+        });
+
+        if (!_skip) {
+            $(v).css("display", "none");
+        }
+    });
+    $("#map-indicator-filter-wrapper ." + filtername + "-list").toggle();
+    filter.reload_specific_filter(filtername);
+});
+
+
 function UnhabitatOipaCompareFilters(){
 	this.get_url = function(selection, parameters_set){
 		// get url from filter selection object
@@ -122,37 +150,228 @@ function UnhabitatOipaCompareFilters(){
 }
 UnhabitatOipaCompareFilters.prototype = new OipaCompareFilters();
 
-function UnhabitatOipaIndicatorFilters(){
+function UnhabitatOipaIndicatorFilters() {
+    OipaIndicatorFilters.call(this);
+    this.get_url = function(selection, parameters_set){
+        // get url from filter selection object
+        if (parameters_set){
+            var cururl = search_url + "indicator-filter-options/?format=json";//"&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
+        } else {
+            var cururl = search_url + "indicator-filter-options/?format=json";//"&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&indicators__in=" + get_indicator_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
+        }
+        
+        return cururl;
+    };
 
-	this.get_url = function(selection, parameters_set){
-		// get url from filter selection object
-		if (parameters_set){
-			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
-		} else {
-			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&indicators__in=" + get_indicator_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
-		}
-		
-		return cururl;
-	};
-
-	this.reset_filters = function(){
-		jQuery("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
-		filter.selection.search = "";
-		filter.selection.query = "";
-		filter.selection.country = "";
-		filter.selection.region = "";
-		filter.selection.regions = [];
-		filter.selection.cities = [];
-		filter.selection.countries = [];
-		filter.selection.indicators = [];
-		//filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
-		// TO DO: set checkboxes
-		filter.save(true);
-	}
+    this.reset_filters = function(){
+        jQuery("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
+        filter.selection.search = "";
+        filter.selection.query = "";
+        filter.selection.country = "";
+        filter.selection.region = "";
+        filter.selection.regions = [];
+        filter.selection.cities = [];
+        filter.selection.countries = [];
+        filter.selection.indicators = [];
+        //filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population – Countries", "type": "Slum dwellers"});
+        // TO DO: set checkboxes
+        filter.save(true);
+    }
 
 };
-UnhabitatOipaIndicatorFilters.prototype = new OipaIndicatorFilters();
+UnhabitatOipaIndicatorFilters.prototype = Object.create(OipaIndicatorFilters.prototype);
 
+function UnhabitatInMapOipaIndicatorFilters() {
+    var self = this;
+    UnhabitatOipaIndicatorFilters.call(self);
+
+    self.make_option_element = function(id, value, sortablename, type) {
+        return [
+            "<li>",
+                "<div>",
+                    "<label>",
+                        '<input type="checkbox" class="map-filter-checkbox ' + type + '" value="'+ value + '" id="' + id.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc') + '" name="' + id+'" />',
+                        sortablename,
+                    "</label>",
+                "</div>",
+            "</li>"
+        ].join("");
+    }
+
+    self.make_option_with_subs_element = function(id, value, sortablename, subs) {
+        id = id.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+        var _html = [
+            '<li class="' + id + '-li">',
+                '<div>',
+                    '<a name="' + id + '" class="opener filter-open" href="#">' + sortablename + ' <span class="caret"></span></a>',
+                '</div>',
+                '<ul class="' + id + '-list subul">',
+        ];
+
+        $.each(subs, function(e, v) {
+            _html.push(self.make_option_element(id, v.id, v.name, 'indicators'));
+        });
+
+        _html.push("</ul>", "</li>");
+        return _html.join('');
+    }
+
+    self.create_filter_attributes = function(objects, columns, attribute_type) {
+        if (attribute_type === "indicators"){
+            self.create_indicator_filter_attributes(objects, columns);
+            return true;
+        }
+
+        var html = '';
+        var per_col = 6;
+
+        var sortable = $.map(objects, function(val, key) {
+            return [[key, val]];
+        }).sort(function(a, b) {
+            var nameA=a[1].toString().toLowerCase(), nameB=b[1].toString().toLowerCase();
+            if (nameA < nameB) { //sort string ascending
+                    return -1; 
+            }
+            if (nameA > nameB) {
+                    return 1;
+            }
+            return 0; //default return value (no sorting)
+        });
+
+        var html = '';
+        
+        $.each(sortable, function(_, v) {
+            var sortablename = v[1];
+            if (columns == 4 && sortablename.length > 32){
+                sortablename = sortablename.substr(0,28) + "...";
+            } else if (columns == 3 && sortablename.length > 40){
+                sortablename = sortablename.substr(0,36) + "...";
+            }
+            html += self.make_option_element(v[1], v[0], sortablename, attribute_type);
+        });
+
+        $("#map-indicator-filter-wrapper ." + attribute_type + "-list").html(html);
+
+        $(".map-filter-checkbox").change(function(e) {
+            if (this.has_listener == undefined) {
+                this.has_listener = true;
+                filter.selection.update_selection(attribute_type, this.value, this.name, "Slum dwellers")
+                filter.save(true);
+            }
+        });
+        self.update_selection_after_filter_load();
+    }
+
+    self.create_indicator_filter_attributes = function(objects, columns) {
+        var html = '';
+        var paginatehtml = '';
+        var per_col = 6;
+
+        var with_subs = {};
+        var categories = {};
+
+        var without_subs = $.map(objects, function(val, l) {
+            var splitted_name = val.name.split(" – ");
+            var key = splitted_name[0].trim();
+            val.id = l;
+            if (splitted_name.length > 1) {
+                if (with_subs[key] == undefined ) {
+                    with_subs[key] = {
+                        id: l,
+                        name: key,
+                        category: val.category,
+                        subs: []
+                    };
+                };
+
+                val.name = splitted_name[1];
+                with_subs[key].subs.push(val);
+            } else {
+                return [[l, val]];
+            }
+        });
+        $.each(with_subs, function(_, v) {
+            without_subs.push([v.id, v]);
+        });
+
+        //var sortable = $.map($(without_subs).extend(with_subs), function(val, key) {
+        var sortable = without_subs.sort(function(a, b) {
+            var nameA=a[1].name.toString().toLowerCase(), nameB=b[1].name.toString().toLowerCase();
+            if (nameA < nameB) { //sort string ascending
+                return -1; 
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0; //default return value (no sorting)
+        });
+
+        var ivaluetranslation = {
+            rural: 'Rural area',
+            city_core: 'City core',
+            urban_area:'Urban area',
+            "City core": "city core",
+            sub_urban_area: 'Sub-urban area',
+            sub_urban:'Sub-urban area',
+            total:'Total'
+        }; 
+
+        $.each(sortable, function(_id, v) {
+            var sortablename = v[1].name;
+            var categoryname = v[1].category;
+            var indicatoroptionhtml = '';
+
+            if (categories[categoryname] == undefined) {//!(categoryname in categories)){
+                categories[categoryname] = [];
+            }
+
+            var splitted_name = v[1].name.split(" – ");
+
+            if (v[1].subs !== undefined && v[1].subs.length) {
+                indicatoroptionhtml = self.make_option_with_subs_element(v[0], v[0], sortablename, v[1].subs);
+            } else {
+                indicatoroptionhtml = self.make_option_element(v[0], v[0], sortablename, 'indicators');
+            }
+            categories[categoryname].push(indicatoroptionhtml);
+        });
+    
+        $.each(categories, function(category_name, value) {
+            if (category_name == "") {
+                return;
+            }
+
+            var category_id = category_name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+            $("#map-indicator-filter-wrapper ." + category_id + "-list").html(value.join(''));
+        });
+        
+        $("#map-indicator-filter-wrapper .filter-open").click(function(e) {
+
+            e.preventDefault();
+            if (this.has_listener) {
+                return;
+            }
+            $(this.parentNode.parentNode).find('ul').each(function(i,v) {
+                $(v).toggle();
+            });
+
+                        //
+            var filtername = $(this).attr("name");
+            filter.reload_specific_filter(filtername);
+        });
+
+        $(".map-filter-checkbox").change(function(e) {
+            if (this.has_listener == undefined) {
+                this.has_listener = true;
+
+                filter.selection.update_selection('indicators', this.value, this.name, "Slum dwellers");
+                filter.save(true);
+            }
+        });
+        self.update_selection_after_filter_load();
+    }
+
+};
+UnhabitatInMapOipaIndicatorFilters.prototype = Object.create(UnhabitatOipaIndicatorFilters.prototype);
 
 function get_wiki_city_data(city_name, left_right_city){
 
@@ -274,7 +493,6 @@ $('#ur-registration').submit(function(e) {
 
     var ajax_url = vb_reg_vars.vb_ajax_url;
     $.post(ajax_url, data, function(response) {
-	console.log(response);
 	display_success("Successfully registered. Now you can <a href='" + LOGIN_URL + "'>log in</a>.");
     }).fail(function(e) {
 	//try {

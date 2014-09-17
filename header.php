@@ -174,9 +174,9 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="<?php echo home_url() . "/my-dashboard/"; ?>"><span class="img-wrap"><i class="icon-star"></i></span>My dashboard</a></li>
-						<li><a href="<?php echo home_url() . "/account-settings/"; ?>"><span class="img-wrap"><i class="icon-cog"></i></span>Account settings</a></li>
-						<li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="icon-sign-out"></i></span>Sign out</a></li>
+						<li><a href="<?php echo home_url() . "/my-dashboard/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-star"></i></span>My dashboard</a></li>
+						<li><a href="<?php echo home_url() . "/account-settings/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-cog"></i></span>Account settings</a></li>
+						<li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="glyphicon glyphicon-arrow-left"></i></span>Sign out</a></li>
 					</ul>
 					<?php } else { ?>
 						<a id="header-login-register-button" href="#" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>

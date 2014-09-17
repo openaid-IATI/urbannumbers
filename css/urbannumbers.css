@@ -560,3 +560,110 @@ form.registration-form span.input-placeholder-text {
 .container-map .check-row.home-info-controls label i.icon-pin.pub {
     background: #0074EC;
 }
+
+.icon-cog {
+    background: url('../images/sprite.fw.png') no-repeat;
+    background-position: 745px 170px;
+}
+
+
+.dashboard h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #434659;
+    line-height: 30px;
+    border-bottom: 1px solid #00b2b3;
+}
+
+.my-infographics li {
+    text-align: left;
+    list-style: none;
+}
+
+.my-infographics th, .my-infographics td {
+    border: 0px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.my-infographics th a {
+    font-size: 12px;
+    color: grey
+}
+
+#map-indicator-filter-wrapper {
+    position: absolute;
+    z-index: 9999;
+    top: 10px;
+    left: 10px;
+    min-width: 310px;
+    line-height: 25px;
+}
+
+#map-indicator-filter-wrapper .map-indicator-header {
+    background: #00b1b5;
+    padding: 5px 10px;
+    width: 300px;
+    cursor: pointer;
+}
+
+#map-indicator-filter-wrapper .map-indicator-header a {
+    color: #FFF;
+}
+
+#map-indicator-filter-wrapper .map-indicator-header a.reset-button.btn {
+    padding: 2px 5px;
+    float: right;
+    background: grey;
+}
+
+#map-indicator-filter-wrapper .sort-list {
+    /*display: none;*/
+    padding: 0px;
+}
+
+#map-indicator-filter-wrapper .sort-list li {
+    display: block;
+    min-width: 310px;
+    width: 310px;
+    line-height: 25px;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    margin-top: 2px;
+}
+#map-indicator-filter-wrapper .sort-list li div {
+    min-width: 300px;
+    width: 300px;
+    background: #FFF;
+    padding: 5px 10px;
+}
+#map-indicator-filter-wrapper .slide, #map-indicator-filter-wrapper .subul {
+    margin-left: 0px;
+    display: none;
+    max-height: 200px;
+    overflow: auto;
+    border-right: 8px solid #FFF;
+}
+
+
+#map-indicator-filter-wrapper .subul li {
+    display: block;
+    min-width: 298px;
+    line-height: 25px;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    margin-top: 2px;
+}
+#map-indicator-filter-wrapper .subul li div {
+    border-left: 1px solid #FFF;
+    background: grey;
+}
+#map-indicator-filter-wrapper .subul li div input {
+    margin-right: 15px;
+}
+
+#map-indicator-filter-wrapper .slide .col-md-6 {
+    float: none;
+}
