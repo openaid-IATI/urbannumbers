@@ -17,7 +17,7 @@ get_header(); the_post(); ?>
                             <li class="Cityprosperity-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-yellow "></i>
-                                    <a name="Cityprosperity" class="opener filter-open" href="#"><label>City prosperity</label><span class="caret"></span></a>
+                                    <a name="Cityprosperity" class="opener filter-open" href="#"><label class="top">City prosperity</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="Cityprosperity-list subul">
                                 </ul>
@@ -25,7 +25,7 @@ get_header(); the_post(); ?>
                             <li class="Slumdwellers-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-green"></i>
-                                    <a name="Slumdwellers" class="opener filter-open" href="#"><label>Slum dwellers</label><span class="caret"></span></a>
+                                    <a name="Slumdwellers" class="opener filter-open" href="#"><label class="top">Slum dwellers</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="Slumdwellers-list subul">
                                 </ul>
@@ -33,7 +33,7 @@ get_header(); the_post(); ?>
                             <li class="Publicspaces-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-blue"></i>
-                                    <a name="Publicspaces" class="opener filter-open" href="#"><label>Public spaces</label><span class="caret"></span></a>
+                                    <a name="Publicspaces" class="opener filter-open" href="#"><label class="top">Public spaces</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="Publicspaces-list subul">
                                 </ul>
@@ -41,7 +41,7 @@ get_header(); the_post(); ?>
                             <li class="regions-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-white"></i>
-                                    <a name="regions" class="opener filter-open" href="#"><label>REGION</label><span class="caret"></span></a>
+                                    <a name="regions" class="opener filter-open" href="#"><label class="top">REGION</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="regions-list subul">
                                 </ul>
@@ -49,7 +49,7 @@ get_header(); the_post(); ?>
                             <li class="countries-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-white"></i>
-                                    <a name="countries" class="opener filter-open" href="#"><label>COUNTRY</label><span class="caret"></span></a>
+                                    <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="countries-list subul">
                                 </ul>
@@ -57,7 +57,7 @@ get_header(); the_post(); ?>
                             <li class="cities-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-white"></i>
-                                    <a name="cities" class="opener filter-open" href="#"><label>CITY</label><span class="caret"></span></a>
+                                    <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label><span class="caret"></span><span class="counts"></span></a>
                                 </div>
                                 <ul class="cities-list subul">
                                 </ul>
@@ -99,7 +99,7 @@ get_header(); the_post(); ?>
 	Oipa.mainSelection = new OipaIndicatorSelection(1);
 	
 	var map = new OipaIndicatorMap(true);
-	map.set_map("main-map");
+	map.set_map("main-map", "topright");
 	map.init();
 	map.map.setZoom(3);
 	
@@ -119,15 +119,17 @@ get_header(); the_post(); ?>
     
     if (count($indicators)) {
         foreach ($indicators as $indicator) { ?>
-            filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", "Slum dwellers");
+            filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", 'indicators');
         <?php
         }
     } else { ?>
-        filter.selection.add_indicator("slum_proportion_living_urban", "Urban population – Countries", "Slum dwellers");
-        filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", "Slum dwellers");
-        filter.selection.add_indicator("urban_population_countries", "Urban population – Countries", "Slum dwellers");
+        filter.selection.add_indicator("slum_proportion_living_urban", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("urban_population_countries", "Urban population – Countries", 'indicators');
     <?php } ?>
-	filter.save(true);
+
+	//filter.save(true);
+    filter.update_selection_after_filter_load(filter.selection);
 
     OipaWidgetsBus.patch_map(map);
 

@@ -273,7 +273,22 @@ function OipaIndicatorSelection(main){
         if (!_found) {
             self[type].push({"id": id, "name": i_name, "type": i_type});
         }
-        
+    }
+
+    self.remove_from_selection = function(type, id) {
+        var _tmp = self[type].slice(0);
+
+        var _found = -1;
+        $.each(self[type], function(i, indicator) {
+            if (indicator.id == id) {
+                _found = i;
+            }
+        });
+
+        if (_found !== -1) {
+            _tmp.splice(_found, 1);
+        }
+        return _tmp;
     }
 
     self.add_indicator = function(id, i_name, i_type) {
@@ -576,7 +591,7 @@ function OipaMap(use_legend){
 			continuousWorld: 'false'
 		}
 
-		if(zoomposition){
+		if (zoomposition){
 			mapoptions.zoomControl = false;
 		}
 
@@ -875,6 +890,10 @@ function OipaFilters(){
 		// get data, this will trigger process filters etc.
 		this.get_data(url);
 	};
+    
+    this.get_raw_data = function() {
+        return this.data;
+    }
 
 	this.save = function(dont_update_selection){
 		
@@ -1008,8 +1027,8 @@ function OipaFilters(){
 			{
 				jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
 			}
-			filters.process_filter_options(jsondata);
 			filters.data = jsondata;
+			filters.process_filter_options(jsondata);
 		};
 		setTimeout(function () {xdr.send();}, 0);
 		} else {
@@ -1019,8 +1038,8 @@ function OipaFilters(){
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(data){
-					filters.process_filter_options(data);
 					filters.data = data;
+					filters.process_filter_options(data);
 					filters.after_filter_load();
 				}
 			});
@@ -1032,7 +1051,6 @@ function OipaFilters(){
 	}
 
 	this.process_filter_options = function(data){
-        console.log(data);
 		var columns = 4;
 		var filter = this;
 
@@ -1040,7 +1058,6 @@ function OipaFilters(){
 
 		// load filter html and implement it in the page
 		jQuery.each(data, function( key, value ) {
-            console.log(key, value);
 			if (!jQuery.isEmptyObject(value)){
 				if (jQuery.inArray(key, ["sectors"])){ columns = 2; }
 				filter.create_filter_attributes(value, columns, key);
@@ -1066,9 +1083,8 @@ function OipaFilters(){
 	}
 
 	this.initialize_filters = function(selection){
-
 		if (!selection){
-			var selection = this.selection;
+			selection = this.selection;
 		}
 
 		jQuery('#map-filter-overlay input:checked').prop('checked', false);

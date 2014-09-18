@@ -190,7 +190,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             "<li>",
                 "<div>",
                     "<label>",
-                        '<input type="checkbox" class="map-filter-checkbox ' + type + '" value="'+ value + '" id="' + id.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc') + '" name="' + id+'" />',
+                        '<input type="checkbox" class="map-filter-checkbox ' + type + '" value="'+ value + '" id="' + self.string_to_id(id.toString()) + '" name="' + id+'" />',
                         sortablename,
                     "</label>",
                 "</div>",
@@ -199,7 +199,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
     }
 
     self.make_option_with_subs_element = function(id, value, sortablename, subs) {
-        id = id.toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+        id = self.string_to_id(id.toString());
         var _html = [
             '<li class="' + id + '-li">',
                 '<div>',
@@ -214,6 +214,59 @@ function UnhabitatInMapOipaIndicatorFilters() {
 
         _html.push("</ul>", "</li>");
         return _html.join('');
+    }
+    
+    self.string_to_id = function(name) {
+        return name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+    }
+
+    self.update_selection_after_filter_load = function(selection, nosave) {
+        filter.initialize_filters(selection);
+        $.each(selection, function(key, value) {
+            if (Array.isArray(value)) {
+                if (key == 'indicators') {
+                    var _data = filter.get_raw_data();
+                    if (_data !== null) {
+                        var _category_counts = {
+                            'Publicspaces': 0,
+                            'Cityprosperity': 0,
+                            'Slumdwellers': 0
+                        };
+                        $.each(value, function(_k, _v) {
+                            if (_data['indicators'][_v.id] !== undefined) {
+                                var _cat_id = self.string_to_id(_data['indicators'][_v.id].category);
+                                if (_category_counts[_cat_id] == undefined) {
+                                    _category_counts[_cat_id] = 0;
+                                }
+                                _category_counts[_cat_id] += 1;
+                            }
+                        });
+                        $.each(_category_counts, function(_k, _v) {
+                            if (_v > 0) {
+                                $("#map-indicator-filter-wrapper ." + _k + "-li").find('span.counts').html(_v);
+                            } else {
+                                $("#map-indicator-filter-wrapper ." + _k + "-li").find('span.counts').html('');
+                            }
+                        });
+                    }
+                } else {
+                    if (value.length > 0) {
+                        $("#map-indicator-filter-wrapper ." + key + "-li").find('span.counts').html(value.length);
+                    } else {
+                        $("#map-indicator-filter-wrapper ." + key + "-li").find('span.counts').html('');
+                    }
+                }
+            }
+        });
+
+        //$("#map-indicator-filter-wrapper ." + attribute_type + "-li").find('span.counts').html(sortable.length);
+        //$("#map-indicator-filter-wrapper ." + category_id + "-li").find('span.counts').html(value.counts);
+        if (nosave == undefined) {
+            filter.save(true);
+        }
+    }
+    self.after_filter_load = function() {
+        self.update_selection_after_filter_load(filter.selection, 1);
     }
 
     self.create_filter_attributes = function(objects, columns, attribute_type) {
@@ -239,7 +292,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         });
 
         var html = '';
-        
+
         $.each(sortable, function(_, v) {
             var sortablename = v[1];
             if (columns == 4 && sortablename.length > 32){
@@ -251,15 +304,17 @@ function UnhabitatInMapOipaIndicatorFilters() {
         });
 
         $("#map-indicator-filter-wrapper ." + attribute_type + "-list").html(html);
+        
 
-        $(".map-filter-checkbox").change(function(e) {
-            if (this.has_listener == undefined) {
-                this.has_listener = true;
-                filter.selection.update_selection(attribute_type, this.value, this.name, "Slum dwellers")
-                filter.save(true);
+        $("#map-indicator-filter-wrapper ." + attribute_type + "-list .map-filter-checkbox").change(function(e) {
+            this.has_listener = true;
+            if (this.checked) {
+                filter.selection.update_selection(attribute_type, this.value, this.name, attribute_type);
+            } else {
+                filter.selection[attribute_type] = filter.selection.remove_from_selection(attribute_type, this.value);
             }
+            self.update_selection_after_filter_load(filter.selection);
         });
-        self.update_selection_after_filter_load();
     }
 
     self.create_indicator_filter_attributes = function(objects, columns) {
@@ -322,17 +377,19 @@ function UnhabitatInMapOipaIndicatorFilters() {
             var indicatoroptionhtml = '';
 
             if (categories[categoryname] == undefined) {//!(categoryname in categories)){
-                categories[categoryname] = [];
+                categories[categoryname] = {items: [], counts: 0};
             }
 
             var splitted_name = v[1].name.split(" – ");
 
             if (v[1].subs !== undefined && v[1].subs.length) {
+                categories[categoryname].counts += v[1].subs.length;
                 indicatoroptionhtml = self.make_option_with_subs_element(v[0], v[0], sortablename, v[1].subs);
             } else {
+                categories[categoryname].counts += 1;
                 indicatoroptionhtml = self.make_option_element(v[0], v[0], sortablename, 'indicators');
             }
-            categories[categoryname].push(indicatoroptionhtml);
+            categories[categoryname].items.push(indicatoroptionhtml);
         });
     
         $.each(categories, function(category_name, value) {
@@ -340,8 +397,8 @@ function UnhabitatInMapOipaIndicatorFilters() {
                 return;
             }
 
-            var category_id = category_name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
-            $("#map-indicator-filter-wrapper ." + category_id + "-list").html(value.join(''));
+            var category_id = self.string_to_id(category_name);
+            $("#map-indicator-filter-wrapper ." + category_id + "-list").html(value.items.join(''));
         });
         
         $("#map-indicator-filter-wrapper .filter-open").click(function(e) {
@@ -360,14 +417,13 @@ function UnhabitatInMapOipaIndicatorFilters() {
         });
 
         $(".map-filter-checkbox").change(function(e) {
-            if (this.has_listener == undefined) {
-                this.has_listener = true;
-
-                filter.selection.update_selection('indicators', this.value, this.name, "Slum dwellers");
-                filter.save(true);
+            if (this.checked) {
+                filter.selection.update_selection('indicators', this.value, this.name, 1);
+            } else {
+                filter.selection['indicators'] = filter.selection.remove_from_selection('indicators', this.value);
             }
+            self.update_selection_after_filter_load(filter.selection);
         });
-        self.update_selection_after_filter_load();
     }
 
 };
