@@ -650,7 +650,8 @@ form.registration-form span.input-placeholder-text {
     min-width: 110px;
     vertical-align: -webkit-baseline-middle;
 }
-#map-indicator-filter-wrapper .sort-list li div .caret {
+#map-indicator-filter-wrapper .sort-list li div .glyphicon {
+    font-size: 8px;
     color: #A7AFBA;
 }
 
