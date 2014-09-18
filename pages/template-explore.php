@@ -15,32 +15,50 @@ get_header(); the_post(); ?>
                         <div class="map-indicator-header"><a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i> MAP FILTERS</a><a href="#" id="reset-filters" class="btn btn-default reset-button">Reset</a></div>
                         <ul class="sort-list">
                             <li class="Cityprosperity-li">
-                                <div><a name="Cityprosperity" class="opener filter-open" href="#">City prosperity <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-yellow "></i>
+                                    <a name="Cityprosperity" class="opener filter-open" href="#"><label>City prosperity</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="Cityprosperity-list subul">
                                 </ul>
                             </li>
                             <li class="Slumdwellers-li">
-                                <div><a name="Slumdwellers" class="opener filter-open" href="#">Slum dwellers <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-green"></i>
+                                    <a name="Slumdwellers" class="opener filter-open" href="#"><label>Slum dwellers</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="Slumdwellers-list subul">
                                 </ul>
                             </li>
                             <li class="Publicspaces-li">
-                                <div><a name="Publicspaces" class="opener filter-open" href="#">Public spaces <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Publicspaces" class="opener filter-open" href="#"><label>Public spaces</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="Publicspaces-list subul">
                                 </ul>
                             </li>
                             <li class="regions-li">
-                                <div><a name="regions" class="opener filter-open" href="#">REGION <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-white"></i>
+                                    <a name="regions" class="opener filter-open" href="#"><label>REGION</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="regions-list subul">
                                 </ul>
                             </li>
                             <li class="countries-li">
-                                <div><a name="countries" class="opener filter-open" href="#">COUNTRY <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-white"></i>
+                                    <a name="countries" class="opener filter-open" href="#"><label>COUNTRY</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="countries-list subul">
                                 </ul>
                             </li>
                             <li class="cities-li">
-                                <div><a name="cities" class="opener filter-open" href="#">CITY <span class="caret"></span></a></div>
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-white"></i>
+                                    <a name="cities" class="opener filter-open" href="#"><label>CITY</label><span class="caret"></span></a>
+                                </div>
                                 <ul class="cities-list subul">
                                 </ul>
                             </li>

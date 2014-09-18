@@ -203,7 +203,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         var _html = [
             '<li class="' + id + '-li">',
                 '<div>',
-                    '<a name="' + id + '" class="opener filter-open" href="#">' + sortablename + ' <span class="caret"></span></a>',
+                    '<a name="' + id + '" class="opener filter-open" href="#"><label>' + sortablename + '</label><span class="caret"></span></a>',
                 '</div>',
                 '<ul class="' + id + '-list subul">',
         ];
