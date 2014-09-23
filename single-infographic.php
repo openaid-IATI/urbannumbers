@@ -5,6 +5,13 @@ $subtitle = get_field('subtitle');
 $user_name = get_field('user-name');
 $visualisations = get_field('visualisations');
 
+if (array_key_exists('user-name', $visualisations)) {
+    unset($visualisations['user-name']);
+}
+
+ob_start();
+the_content();
+$the_content = ob_get_clean();
 ?>
     <div id="main">
         <ul class="social-networks">
@@ -17,38 +24,37 @@ $visualisations = get_field('visualisations');
                     <div class="container-custom">
                         <h1><?php the_title(); ?></h1>
                         <p><?php the_date(); ?></p>
+                        <p>Created by: <?php echo $user_name; ?></p>
+                        <?php if (!empty($the_content)):
+                            var_dump(trim($the_content)); ?>
+                        <p class="description"><?php echo $the_content; ?></p>
+                        <?php endif; ?>
                     </div>
                 </header>
-                <div class="container-row">
-                    <div class="holder">
-                        <div class="container-custom">
-                            <span class="name">By: <?php echo $user_name; ?></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-content">
-                    <div class="container-custom">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <?php the_content(); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="container-custom">
                     <div class="row">
-                        <div class="col-md-8">
-                            <ul id="visualisation-block-wrapper" class="box-list large">
+                        <div class="col-md-8 data-col">
+                            <h2 class="Cityprosperity-head">City prosperity</h2>
+                            <ul class="box-list large Cityprosperity-list">
+                            </ul>
+
+                            <h2 class="bordered Slumdwellers-head">Slum dwellers</h2>
+                            <ul class="box-list large Slumdwellers-list">
+                            </ul>
+
+                            <h2 class="bordered Publicspaces-head">Public spaces</h2>
+                            <ul class="box-list large Publicspaces-list">
                             </ul>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 maps-col">
                             <ul id="visualisation-maps-block-wrapper" class="box-list large">
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
+            <br />
         </div>
     </div>
 
@@ -79,6 +85,10 @@ $(function() {
 
     var filter = new OipaFilters();
     filter.selection = Oipa.mainSelection;
+    filter.selection.indicator_options = {
+        all_years: true,
+        chart_class: InfographicsChart
+    }
     filter.init(1);
 
     <?php if ($region !== null): ?>
@@ -131,12 +141,11 @@ $(function() {
     }
     ?>
     filter.update_selection_after_filter_load(filter.selection);
-    filter.save(true);
-    Oipa.create_visualisations(InfographicsChart);
+    Oipa.create_visualisations();
 
     $.each(Oipa.visualisations, function(key, vis) {
-        // Force refresh of every visualisation
         vis.filter = filter;
+        // Force refresh of every visualisation
         vis.refresh(undefined, true);
     })
 });

@@ -1,3 +1,92 @@
-.container-custom .container-box .box-content:before {
+#main .main-container {
+    text-align: middle;
+}
+#main .main-container .main-block {
+    max-width: 1202px;
+    margin: 20px auto;
+    display: block-inline;
+    background: #f5f5e6;
+    -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.heading-container .container-custom h1 {
+    color: #00b1b4;
+    font: 80px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    text-transform: uppercase;
+    border-bottom: 1px #00b1b4 dotted;
+}
+.heading-container .container-custom p {
+    color: #c7c7be;
+    font: 25px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    text-transform: uppercase;
+    border-bottom: 1px #00b1b4 dotted;
+    padding-bottom: 10px;
+}
+
+.box-list li {
+    width: 264px;
+}
+.box-list .container-box .box-content:before {
+    display: none; 
+}
+
+.box-list  .container-box {
+    margin: 0px;
+}
+
+.box-list  .container-box .heading-holder {
+    color: #00b1b4;
+    border: 0px;
+    background: none;
+}
+
+.box-list .heading-holder h3 {
+    font: 20px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    text-transform: uppercase;
+}
+.box-list .container-box .heading-holder {
+    min-height: 30px;
+}
+
+.box-list .container-box .box-content a {
+    display: none;
+}
+
+#visualisation-block-wrapper .widget {
+    margin-top: 10px;
+}
+
+#visualisation-maps-block-wrapper.box-list .container-box .box-content {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 0px;
+    background: none;
+}
+
+
+.data-col {
+    border-right:  1px #00b1b4 dotted;
+}
+
+.data-col h2.bordered {
+    margin-top: 20px;
+    border-top: 1px #00b1b4 ditted;
+}
+
+.data-col h2 {
+    color: #00b1b4;
+    font: 40px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    text-transform: uppercase;
+}
+.data-col .box-list {
+    text-align: left;
+}
+.data-col .box-list.large .container-box .heading-holder {
+    min-height: 30px;
+}
+
+.data-col h2, .data-col ul {
     display: none;
 }

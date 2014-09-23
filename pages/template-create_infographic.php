@@ -41,8 +41,8 @@ if (!empty($_POST)){
     if (array_key_exists("title", $visualisations)) {
         unset($visualisations["title"]);
     }
-    if (array_key_exists("name", $visualisations)) {
-        unset($visualisations["name"]);
+    if (array_key_exists("user-name", $visualisations)) {
+        unset($visualisations["user-name"]);
     }
     if (array_key_exists("description", $visualisations)) {
         unset($visualisations["description"]);
@@ -96,7 +96,7 @@ get_header(); the_post(); ?>
         <!-- main-container -->
         <div class="main-container body">
             <div class="container ci-main">
-                        <br />
+                <br />
                 <div id="ci-pages">
                     <div id="page_0" class="page">
                         <div class="form-group">

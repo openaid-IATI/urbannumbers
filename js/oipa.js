@@ -260,13 +260,14 @@ function OipaIndicatorSelection(main){
     self.countries = [];
     self.regions = [];
     self.indicators = [];
+    self.indicator_options = {};
     self.url = null;
 
     if (main){
         self.url = new OipaUrl(self);
     }
 
-    self.update_selection = function(type, id, i_name, i_type) {
+    self.update_selection = function(type, id, i_name, i_type, options) {
         var _found = false;
         $.each(self[type], function(i, indicator) {
             if (indicator.id == id) {
@@ -274,9 +275,20 @@ function OipaIndicatorSelection(main){
             }
         });
 
+        options = options !== undefined ? options : self.indicator_options;
+
         if (!_found) {
-            self[type].push({"id": id, "name": i_name, "type": i_type});
+            self[type].push({
+                id: id,
+                name: i_name,
+                type: i_type,
+                options: options
+            });
         }
+    }
+
+    self.clean = function(type) {
+        self[type] = [];
     }
 
     self.remove_from_selection = function(type, id) {
@@ -289,6 +301,7 @@ function OipaIndicatorSelection(main){
             }
         });
 
+        console.log(_found, type, id);
         if (_found !== -1) {
             _tmp.splice(_found, 1);
         }
@@ -875,7 +888,7 @@ function OipaCity(){
 }
 
 
-function OipaFilters(){
+function OipaFilters() {
 
 	this.data = null;
 	this.selection = null;
@@ -894,7 +907,11 @@ function OipaFilters(){
 		// get data, this will trigger process filters etc.
 		this.get_data(url);
 	};
-    
+
+    this.string_to_id = function(name) {
+        return name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+    }
+
     this.get_raw_data = function() {
         return this.data;
     }
