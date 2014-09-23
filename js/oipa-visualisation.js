@@ -9,6 +9,13 @@ function OipaVis (){
     this.selected_year = null;
 
     this.init = function() {
+        this.create_html_skeleton();
+        this.load_listeners();
+        this.refresh();
+        this.check_if_in_favorites();
+    };
+    
+    this.create_html_skeleton = function() {
         // Register event in event bus
         OipaWidgetsBus.add_listener(this);
 
@@ -30,18 +37,17 @@ function OipaVis (){
         html += '</div></section></li>';
 
         $("#visualisation-block-wrapper").append(html);
-        this.load_listeners();
-        this.refresh();
-        this.check_if_in_favorites();
 
-    };
+    }
 
     this.destroy = function() {
         OipaWidgetsBus.remove_listener(this);
         //map.remove_refresh_callback('OipaVis' + this.get_url());
         var node = document.getElementById('visualization_' + this.indicator);
         var holder = document.getElementById('visualisation-block-wrapper');
-        holder.removeChild(node);
+        if (holder) {
+            holder.removeChild(node);
+        }
     }
 
     this.year_changed = function(year) {
@@ -164,7 +170,6 @@ function OipaVis (){
 
             // get data
             this.get_data(url, force);
-            
         } else {
             if (data) {
                 this.visualize(data);
@@ -183,6 +188,9 @@ function OipaVis (){
     };
 
     this.get_url = function(){
+        if (this.selection == undefined) {
+            return;
+        }
         var str_region = get_parameters_from_selection(this.selection.regions);
         var str_country = get_parameters_from_selection(this.selection.countries);
         var str_city = get_parameters_from_selection(this.selection.cities);
@@ -850,7 +858,7 @@ function OipaBlankChart(object_id, options) {
                 };
 
                 var _active_years = {};
-                if (typeof(map) !== "undefined") {
+                if (typeof(map) !== "undefined" && map !== null) {
                     $.map(Object.keys(map.active_years), function(i) {
                         return parseInt(i);
                     });
@@ -881,7 +889,7 @@ function OipaBlankChart(object_id, options) {
 }
 
 
-function OipaBubbleChart(){
+function OipaBubbleChart() {
     this.type = "OipaBubbleChart";
 }
 OipaBubbleChart.prototype = new OipaVis();
@@ -907,7 +915,7 @@ function OipaSimpleMapVis(){
     this._url_cache = {};
     this.marker = null;
 
-    this.init = function(){
+    this.init_wrapper = function() {
         // create html
 
         this.map_div = 'simple-map-chart-'+this.indicator;
@@ -915,9 +923,11 @@ function OipaSimpleMapVis(){
         html += '<div class="box-content"><a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a><a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a><div class="widget"><div id="'+this.map_div+'" class="simple-map-chart" style="height:350px; width: 350px;"></div></div><a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
         html += '</div></section></li>';
 
-        var div_id = this.map_div;
-
         $(this.chartwrapper).append(html);
+    }
+
+    this.init = function(){
+        this.init_wrapper();
 
         var mapoptions = {
             attributionControl: false,
@@ -934,14 +944,14 @@ function OipaSimpleMapVis(){
         //  mapoptions.zoomControl = false;
         // }
 
-        jQuery("#"+div_id).css("min-height", "200px");
-        this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
+        jQuery("#" + this.map_div).css("min-height", "200px");
+        this.map = L.map(this.map_div, mapoptions).setView([10.505, 25.09], 2);
 
         // if (zoomposition){
         //  new L.Control.Zoom({ position: zoomposition }).addTo(this.map);
         // }
 
-        this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
+        this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/' + this.basemap + '/{z}/{x}/{y}.png', {
             maxZoom: 12
         }).addTo(this.map);
 
@@ -978,7 +988,7 @@ function OipaSimpleMapVis(){
     };
   
 
-    this.visualize = function(data){
+    this.visualize = function(data) {
         if (this.geotype == "point"){
 
             var latitude = null;

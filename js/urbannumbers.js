@@ -154,8 +154,9 @@ function UnhabitatOipaIndicatorFilters() {
     OipaIndicatorFilters.call(this);
     this.get_url = function(selection, parameters_set){
         // get url from filter selection object
+        console.log(1, selection, parameters_set);
         if (parameters_set){
-            var cururl = search_url + "indicator-filter-options/?format=json";//"&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
+            var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
         } else {
             var cururl = search_url + "indicator-filter-options/?format=json";//"&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&indicators__in=" + get_indicator_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
         }
@@ -185,7 +186,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
     var self = this;
     UnhabitatOipaIndicatorFilters.call(self);
 
-    self.make_option_element = function(id, value, sortablename, type) {
+    self.make_option_element = function(id, value, sortablename, type, category) {
         return [
             "<li>",
                 "<div>",
@@ -198,7 +199,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         ].join("");
     }
 
-    self.make_option_with_subs_element = function(id, value, sortablename, subs) {
+    self.make_option_with_subs_element = function(id, value, sortablename, subs, category) {
         id = self.string_to_id(id.toString());
         var _html = [
             '<li class="' + id + '-li">',
@@ -209,7 +210,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         ];
 
         $.each(subs, function(e, v) {
-            _html.push(self.make_option_element(id, v.id, v.name, 'indicators'));
+            _html.push(self.make_option_element(id, v.id, v.name, 'indicators', category));
         });
 
         _html.push("</ul>", "</li>");
@@ -243,24 +244,22 @@ function UnhabitatInMapOipaIndicatorFilters() {
                         });
                         $.each(_category_counts, function(_k, _v) {
                             if (_v > 0) {
-                                $("#map-indicator-filter-wrapper ." + _k + "-li").find('span.counts').html(_v);
+                                $("#" + self.filter_wrapper_div + " ." + _k + "-li").find('span.counts').html(_v);
                             } else {
-                                $("#map-indicator-filter-wrapper ." + _k + "-li").find('span.counts').html('');
+                                $("#" + self.filter_wrapper_div + " ." + _k + "-li").find('span.counts').html('');
                             }
                         });
                     }
                 } else {
                     if (value.length > 0) {
-                        $("#map-indicator-filter-wrapper ." + key + "-li").find('span.counts').html(value.length);
+                        $("#" + self.filter_wrapper_div + " ." + key + "-li").find('span.counts').html(value.length);
                     } else {
-                        $("#map-indicator-filter-wrapper ." + key + "-li").find('span.counts').html('');
+                        $("#" + self.filter_wrapper_div + " ." + key + "-li").find('span.counts').html('');
                     }
                 }
             }
         });
 
-        //$("#map-indicator-filter-wrapper ." + attribute_type + "-li").find('span.counts').html(sortable.length);
-        //$("#map-indicator-filter-wrapper ." + category_id + "-li").find('span.counts').html(value.counts);
         if (nosave == undefined) {
             filter.save(true);
         }
@@ -291,7 +290,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             return 0; //default return value (no sorting)
         });
 
-        var html = '';
+        var html = {items: []};
 
         $.each(sortable, function(_, v) {
             var sortablename = v[1];
@@ -300,21 +299,40 @@ function UnhabitatInMapOipaIndicatorFilters() {
             } else if (columns == 3 && sortablename.length > 40){
                 sortablename = sortablename.substr(0,36) + "...";
             }
-            html += self.make_option_element(v[1], v[0], sortablename, attribute_type);
+            html.items.push(self.make_option_element(v[1], v[0], sortablename, attribute_type, attribute_type, attribute_type + '[]'));
         });
 
-        $("#map-indicator-filter-wrapper ." + attribute_type + "-list").html(html);
+        var _res = {};
+        _res[attribute_type] = html;
+        self.create_categories(_res);
+        //$("#" + self.filter_wrapper_div + " ." + attribute_type + "-list").html(html);
+        
+        var _changes_map = {
+            regions: ['countries', 'cities'],
+            countries: ['cities']
+        };
         
 
-        $("#map-indicator-filter-wrapper ." + attribute_type + "-list .map-filter-checkbox").change(function(e) {
-            this.has_listener = true;
-            if (this.checked) {
-                filter.selection.update_selection(attribute_type, this.value, this.name, attribute_type);
-            } else {
-                filter.selection[attribute_type] = filter.selection.remove_from_selection(attribute_type, this.value);
+        $("#" + self.filter_wrapper_div + " ." + attribute_type + "-list .map-filter-checkbox").each(function(_, item) {
+            if (item.has_change_listener == undefined) {
+                $(item).change(function(e) {
+                    if (this.checked) {
+                        filter.selection.update_selection(attribute_type, this.value, this.name, attribute_type);
+                    } else {
+                        filter.selection[attribute_type] = filter.selection.remove_from_selection(attribute_type, this.value);
+                    }
+
+                    self.update_selection_after_filter_load(filter.selection);
+
+                    if (_changes_map[attribute_type] !== undefined) {
+                        $.each(_changes_map[attribute_type], function(_, atype) {
+                            self.reload_specific_filter(atype);
+                        });
+                    }
+                });
+                item.has_change_listener = true;
             }
-            self.update_selection_after_filter_load(filter.selection);
-        });
+        })
     }
 
     self.create_indicator_filter_attributes = function(objects, columns) {
@@ -384,24 +402,17 @@ function UnhabitatInMapOipaIndicatorFilters() {
 
             if (v[1].subs !== undefined && v[1].subs.length) {
                 categories[categoryname].counts += v[1].subs.length;
-                indicatoroptionhtml = self.make_option_with_subs_element(v[0], v[0], sortablename, v[1].subs);
+                indicatoroptionhtml = self.make_option_with_subs_element(v[0], v[0], sortablename, v[1].subs, categoryname);
             } else {
                 categories[categoryname].counts += 1;
-                indicatoroptionhtml = self.make_option_element(v[0], v[0], sortablename, 'indicators');
+                indicatoroptionhtml = self.make_option_element(v[0], v[0], sortablename, 'indicators', categoryname);
             }
             categories[categoryname].items.push(indicatoroptionhtml);
         });
-    
-        $.each(categories, function(category_name, value) {
-            if (category_name == "") {
-                return;
-            }
-
-            var category_id = self.string_to_id(category_name);
-            $("#map-indicator-filter-wrapper ." + category_id + "-list").html(value.items.join(''));
-        });
         
-        $("#map-indicator-filter-wrapper .filter-open").click(function(e) {
+        self.create_categories(categories);
+        
+        $("#" + self.filter_wrapper_div + " .filter-open").click(function(e) {
 
             e.preventDefault();
             if (this.has_listener) {
@@ -411,18 +422,35 @@ function UnhabitatInMapOipaIndicatorFilters() {
                 $(v).toggle();
             });
 
-                        //
             var filtername = $(this).attr("name");
             filter.reload_specific_filter(filtername);
         });
 
-        $(".map-filter-checkbox").change(function(e) {
-            if (this.checked) {
-                filter.selection.update_selection('indicators', this.value, this.name, 1);
-            } else {
-                filter.selection['indicators'] = filter.selection.remove_from_selection('indicators', this.value);
+        $(".map-filter-checkbox").each(function(_, item) {
+            if (item.has_change_listener == undefined) {
+                $(item).change(function(e) {
+                    console.log('click');
+                    if (this.checked) {
+                        filter.selection.update_selection('indicators', this.value, this.name, 1);
+                    } else {
+                        filter.selection['indicators'] = filter.selection.remove_from_selection('indicators', this.value);
+                    }
+                    self.update_selection_after_filter_load(filter.selection);
+                    filter.save();
+                });
+                item.has_change_listener = true;
             }
-            self.update_selection_after_filter_load(filter.selection);
+        });
+    }
+    
+    self.create_categories = function(categories) {
+        $.each(categories, function(category_name, value) {
+            if (category_name == "") {
+                return;
+            }
+
+            var category_id = self.string_to_id(category_name);
+            $("#" + self.filter_wrapper_div + " ." + category_id + "-list").html(value.items.join(''));
         });
     }
 

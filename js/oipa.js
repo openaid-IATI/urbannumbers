@@ -170,7 +170,7 @@ var Oipa = {
         }
         return new_data;
     },
-	create_visualisations : function(){
+	create_visualisations : function(forced_chart_class) {
 		var thisoipa = this;
 		data = this.mainSelection.indicators;
         data = this.clean_blank_visualisations(data);
@@ -197,27 +197,31 @@ var Oipa = {
             if (thisoipa.visualisations[value.id] == undefined) {
                 // create line chart
                 var _chart_class = OipaLineChart;
-                if (value.id == 'urban_population_countries') {
-                    _chart_class = OipaBarChart;
-                }
-                if (value.id == 'base_year_population_estimate') {
-                    _chart_class = OipaRadarChart;
-                }
-                if (value.id == 'urban_population_share_national') {
-                    _chart_class = OipaPolarChart;
-                }
-                if (value.id == 'slum_proportion_living_urban') {
-                    _chart_class = OipaPieChart;
-                }
-                if (value.id == 'avg_annual_rate_change_percentage_urban') {
-                    _chart_class = OipaDoughnutChart;
-                }
-                if (thisoipa.is_blank_visualization(value)) {
-                    _chart_class = OipaBlankChart;
-                }
+                if (forced_chart_class == undefined) {
+                    if (value.id == 'urban_population_countries') {
+                        _chart_class = OipaBarChart;
+                    }
+                    if (value.id == 'base_year_population_estimate') {
+                        _chart_class = OipaRadarChart;
+                    }
+                    if (value.id == 'urban_population_share_national') {
+                        _chart_class = OipaPolarChart;
+                    }
+                    if (value.id == 'slum_proportion_living_urban') {
+                        _chart_class = OipaPieChart;
+                    }
+                    if (value.id == 'avg_annual_rate_change_percentage_urban') {
+                        _chart_class = OipaDoughnutChart;
+                    }
+                    if (thisoipa.is_blank_visualization(value)) {
+                        _chart_class = OipaBlankChart;
+                    }
 
-                if (value.options !== undefined && value.options.chart_class !== undefined) {
-                    _chart_class = value.options.chart_class;
+                    if (value.options !== undefined && value.options.chart_class !== undefined) {
+                        _chart_class = value.options.chart_class;
+                    }
+                } else {
+                    _chart_class = forced_chart_class;
                 }
 
                 thisoipa.visualisations[value.id] = new _chart_class(value.id, value.options);
@@ -1276,7 +1280,7 @@ function OipaFilters(){
 			filters = this;
 
 			// get selection
-			selection = this.get_selection_object();
+			selection = this.selection;//this.get_selection_object();
 
 			// get data
 			if (filter_name === "left-cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.left.countries) ); }
