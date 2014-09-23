@@ -14,9 +14,19 @@ the_content();
 $the_content = ob_get_clean();
 ?>
     <div id="main">
-        <ul class="social-networks">
-            <li><a href="#"><i class="icon-share"></i> SHARE</a></li>
-        </ul>
+
+        <div class="container ci-main">
+            <div class="ci-controls row">
+                <div class="steps-nav col-md-8">
+                    <a href="#save" class="btn btn-info">Save to dashboard</a>
+                    <a href="#export" class="btn btn-info">Export</a>
+                    <a href="#share" class="btn btn-info">Share</a>
+                </div>
+                <div class="col-md-4">
+                    <a href="/create-infographic/" class="save_btn btn btn-success">Create new</a>
+                </div>
+            </div>
+        </div>
         <!-- main-container -->
         <div class="main-container">
             <section class="main-block">
@@ -25,9 +35,8 @@ $the_content = ob_get_clean();
                         <h1><?php the_title(); ?></h1>
                         <p><?php the_date(); ?></p>
                         <p>Created by: <?php echo $user_name; ?></p>
-                        <?php if (!empty($the_content)):
-                            var_dump(trim($the_content)); ?>
-                        <p class="description"><?php echo $the_content; ?></p>
+                        <?php if (!empty($the_content)): ?>
+                        <p class="description"><?php echo trim(trim($the_content), "</p>"); ?></p>
                         <?php endif; ?>
                     </div>
                 </header>

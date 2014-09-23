@@ -1,3 +1,6 @@
+#main {
+    padding: 0px;
+}
 #main .main-container {
     text-align: middle;
 }
@@ -24,6 +27,11 @@
     border-bottom: 1px #00b1b4 dotted;
     padding-bottom: 10px;
 }
+.heading-container .container-custom p.description {
+    color: #8a8b85;
+    font-size: 18px;
+    text-transform: none;
+}
 
 .box-list li {
     width: 264px;
@@ -43,7 +51,7 @@
 }
 
 .box-list .heading-holder h3 {
-    font: 20px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font: 10px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
     text-transform: uppercase;
 }
 .box-list .container-box .heading-holder {
@@ -71,8 +79,9 @@
 }
 
 .data-col h2.bordered {
-    margin-top: 20px;
-    border-top: 1px #00b1b4 ditted;
+    margin-top: 30px;
+    border-top: 1px #00b1b4 dotted;
+    padding-top: 20px;
 }
 
 .data-col h2 {
@@ -89,4 +98,35 @@
 
 .data-col h2, .data-col ul {
     display: none;
+}
+.box-list.large .container-box .heading-holder h3 {
+    font-size: 15px;
+    min-height: 20px;
+}
+
+.container-box .heading-holder h3, #twocolumns .container-box .heading-holder h3 {
+    margin: 0px;
+}
+.box-list.large .container-box .heading-holder {
+    min-height: 20px;
+    margin-top: 15px;
+}
+
+.btn-primary, .btn-primary:hover {
+    background: #008ccb;
+}
+
+.btn-default, .btn-default:hover {
+    background: #ebebeb;
+}
+
+.btn-success, .btn-success:hover {
+    background: #85b200
+}
+
+.ci-controls {
+    padding: 10px;
+}
+.ci-controls .col-md-4 {
+    text-align: right;
 }
