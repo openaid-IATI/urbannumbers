@@ -7,8 +7,6 @@ ob_start(); // ensures anything dumped out will be caught
 
 $current_user = wp_get_current_user();
 
-get_header(); the_post(); ?>
-<?php 
 
 if (!empty($_POST)){
 
@@ -62,11 +60,10 @@ if (!empty($_POST)){
     header( "Location: $url" );
 }
 
-?>
 
+get_header(); the_post(); ?>
 
-
-<form id="infographic-form" role="form" action="" method="post" enctype="multipart/form-data">
+<form id="infographic-form" role="form" action="/create-infographic/" method="post" enctype="multipart/form-data">
 
     <div id="main">
         <!-- main-container -->

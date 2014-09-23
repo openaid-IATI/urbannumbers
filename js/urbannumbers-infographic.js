@@ -49,7 +49,7 @@ function InfographicsChart(object_id, options) {
 
         var _old_visualize = this.visualize;
         this.visualize = function(data) {
-            console.log(data);
+            console.log(this.filter);
             if (!this.has_skeleton) {
                 this.create_html_skeleton();
                 this.has_skeleton = true;

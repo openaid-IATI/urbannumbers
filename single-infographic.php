@@ -131,11 +131,12 @@ $(function() {
     }
     ?>
     filter.update_selection_after_filter_load(filter.selection);
-
+    filter.save(true);
     Oipa.create_visualisations(InfographicsChart);
 
     $.each(Oipa.visualisations, function(key, vis) {
         // Force refresh of every visualisation
+        vis.filter = filter;
         vis.refresh(undefined, true);
     })
 });
