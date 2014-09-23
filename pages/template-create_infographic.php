@@ -20,8 +20,8 @@ if (!empty($_POST)){
     if (isset($_POST["title"])) {
         $title = $_POST["title"];
     }
-    if (isset($_POST["name"])) {
-        $name = $_POST["name"];
+    if (isset($_POST["user-name"])) {
+        $name = $_POST["user-name"];
     }
     if (isset($_POST["description"])) {
         $description = $_POST["description"];
@@ -105,11 +105,11 @@ get_header(); the_post(); ?>
                         </div>
 
                         <div class="form-group">
-                          <label for="name" class="label">Name</label>
+                          <label for="user-name" class="label">Name</label>
                           <input value="<?php
                               if(is_user_logged_in()) {
                                   $current_user->display_name;
-                              }?>" name="name" type="text" class="form-control">
+                              }?>" name="user-name" type="text" class="form-control">
                         </div>
 
                         <div class="form-group">
