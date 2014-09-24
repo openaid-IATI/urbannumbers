@@ -1698,3 +1698,19 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 		});
 	}
 }
+
+
+function humanReadableSize(number) {
+    var thresh = 1000;
+    if (number < thresh) {
+        return number;
+    }
+
+    var units = ['K','M','B'];
+    var u = -1;
+    do {
+        number /= thresh;
+        ++u;
+    } while(number >= thresh);
+    return number.toFixed(1) + ' ' + units[u];
+}

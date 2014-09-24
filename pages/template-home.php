@@ -299,6 +299,7 @@ if (have_posts()) : ?>
             }
         }
     );
+
     first.selection = Oipa.mainSelection;
     second.selection = Oipa.mainSelection;
     third.selection = Oipa.mainSelection;

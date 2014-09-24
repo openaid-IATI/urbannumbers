@@ -1,5 +1,5 @@
 
-function OipaVis (){
+function OipaVis () {
     this.type = null; // override
     this.data = null;
     this.selection = null;
@@ -31,13 +31,10 @@ function OipaVis (){
         html +=    '<canvas height="340" width="340"></canvas>';
         html +=  '</div>';
         html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
-        /*if (this.limit){
-            html += '<div class="vis-box-note">Showing top '+this.limit+', use filters to show a different selection, <a class="vis-box-show-all" href="#">click here to show all</a></div>';
-        }*/
+
         html += '</div></section></li>';
 
-        $("#visualisation-block-wrapper").append(html);
-
+        $(this.chartwrapper).append(html);
     }
 
     this.destroy = function() {
@@ -628,6 +625,7 @@ function OipaActiveChart(id, options) {
             $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
                 node.appendChild(ctx);
             });
+
             self.chart_obj = new Chart(ctx.getContext("2d"));
             self.chart = self.init_chart(chart_data);
         } else {
@@ -901,7 +899,7 @@ OipaBubbleChart.prototype = new OipaVis();
 
 
 
-function OipaSimpleMapVis(){
+function OipaSimpleMapVis() {
     this.type = "OipaSimpleMapVis";
     this.name = null;
     this.geotype = null; // point / polygon / line
@@ -1154,29 +1152,6 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
                 self.charts[chart_id].holder.label.innerHTML = chart_data[chart_id].label;
                 self.charts[chart_id].holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
             }
-            // Refresh
- //            if (chart_data.labels) {
- //                $.each(chart_data.labels, function(_id, label) {
- //                    self.get_chart_labels(self.charts[chart_id].chart)[_id] = label;
- //                    self.get_chart_points(self.charts[chart_id].chart)[_id].value = chart_data.datasets[0].data[_id];
- //                    self.get_chart_points(self.charts[chart_id].chart)[_id].label = label;
- //                });
- //            } else {
- //
- //                // pie, radar etc
- //                // Redraw chart only if data isset
- //                if (chart_data[0].value !== undefined) {
- //                     $.each(chart_data, function(i, v) {
- //                         var _data = self.normalize_data_for_pie(chart_data, chart_id);
- //                         console.log(_data[0].value);
- //                         self.charts[chart_id].chart.segments[0].label = _data[0].label;
- //                         self.charts[chart_id].chart.segments[0].value = _data[0].value;
- //                         self.charts[chart_id].chart.segments[1].label = _data[1].label;
- //                         self.charts[chart_id].chart.segments[1].value = _data[1].value;
- //                     });
- //                }
- //                self.charts[chart_id].chart.update();
- //            }
         }
         
     }

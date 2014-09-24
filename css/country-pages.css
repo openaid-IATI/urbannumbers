@@ -1,0 +1,39 @@
+#main {
+    padding: 0px;
+}
+
+#chart_cpi,
+#chart_cpi div,
+.sort-columns #chart_cpi.column,
+
+#chart_road,
+#chart_road div,
+.sort-columns #chart_road.column {
+    background: none;
+    border: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#chart_cpi .info-overlay,
+#chart_road .info-overlay {
+    display: block;
+    float: left;
+    line-height: 40px;
+    margin-left: 20px;
+}
+#chart_cpi canvas,
+#chart_road canvas {
+    display: block;
+    float: left;
+}
+
+
+.sort-columns .column:before,
+.sort-columns #chart_cpi.column:before,
+.container-map #chart_cpi.columns-holder:after,
+.sort-columns #chart_road.column:before,
+.container-map #chart_road.columns-holder:after {
+    
+    display: none;
+}
