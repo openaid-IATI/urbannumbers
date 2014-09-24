@@ -24,10 +24,6 @@ $(".filters-save-button").click(function(e){
 	}
 });
 
-$("#reset-filters").click(function(e){
-	e.preventDefault();
-	filter.reset_filters();
-});
 
 $(".compare-filters-save-button").click(function(e){
 	e.preventDefault();
@@ -112,6 +108,12 @@ $(".close-login").click(function(e){
 
 $("#map-indicator-filter-wrapper .map-indicator-header").click(function(e) {
     e.preventDefault();
+    $("#map-indicator-filter-wrapper .sort-list").toggle();
+});
+
+$("#reset-filters").click(function(e){
+	e.preventDefault();
+	filter.reset_filters();
     $("#map-indicator-filter-wrapper .sort-list").toggle();
 });
 

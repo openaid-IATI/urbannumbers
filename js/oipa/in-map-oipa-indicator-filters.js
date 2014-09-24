@@ -43,7 +43,8 @@ function UnhabitatInMapOipaIndicatorFilters() {
                         var _category_counts = {
                             'Publicspaces': 0,
                             'Cityprosperity': 0,
-                            'Slumdwellers': 0
+                            'Slumdwellers': 0,
+                            'Other': 0
                         };
                         $.each(value, function(_k, _v) {
                             if (_data['indicators'][_v.id] !== undefined) {
@@ -263,7 +264,6 @@ function UnhabitatInMapOipaIndicatorFilters() {
             category_name = category_name == "" ? "Other" : category_name;
 
             var category_id = self.string_to_id(category_name);
-            console.log(category_id);
             $("#" + self.filter_wrapper_div + " ." + category_id + "-list").html(value.items.join(''));
         });
     }
