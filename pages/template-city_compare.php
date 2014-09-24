@@ -90,6 +90,11 @@ get_header(); the_post(); ?>
         //OipaCompare.randomize(1);
         filter.init();
 
+        $("#compare-cities-randomize").click(function(e){
+            e.preventDefault();
+            OipaCompare.randomize(undefined, true);
+        });
+
     </script>
 
     <?php get_template_part("footer", "bus_scripts"); ?>

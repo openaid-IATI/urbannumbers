@@ -34,12 +34,6 @@ $(".compare-filters-save-button").click(function(e){
 
 });
 
-$("#compare-cities-randomize").click(function(e){
-
-	e.preventDefault();
-	OipaCompare.randomize();
-
-});
 
 $("#indicator-filter-wrapper .filter-open").click(function(e){
 	var filtername = $(this).attr("name");

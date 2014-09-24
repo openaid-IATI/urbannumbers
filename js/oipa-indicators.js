@@ -4,15 +4,70 @@ function OipaCompareSelection(main){
         this.left.cities = [];
         this.left.countries = [];
         this.left.regions = [];
+        this.left.indicators = [];
 
         this.right = [];
         this.right.cities = [];
         this.right.countries = [];
         this.right.regions = [];
+        this.right.indicators = [];
 
         this.indicators = [];
         this.url = new OipaUrl(this);
-        
+
+        this.update_selection = function(type, id, i_name, i_type, options) {
+            var _found = false;
+            var _type = type.split('_');
+            var side = 'left';
+            if (_type.length > 1) {
+                side = _type[0];
+                type = _type[1];
+            }
+
+            console.log(this, side, type)
+            $.each(this[side][type], function(i, indicator) {
+                if (indicator.id == id) {
+                    _found = true;
+                }
+            });
+
+            options = options !== undefined ? options : this.indicator_options;
+
+            if (!_found) {
+                this[side][type].push({
+                    id: id,
+                    name: i_name,
+                    type: i_type,
+                    options: options
+                });
+            }
+        }
+
+    self.clean = function(type) {
+        console.log('clean', type);
+        //self[type] = [];
+    }
+
+    self.remove_from_selection = function(type, id) {
+        console.log('remove', type, id);
+        var _tmp = self[type].slice(0);
+
+        var _found = -1;
+        $.each(self[type], function(i, indicator) {
+            if (indicator.id == id) {
+                _found = i;
+            }
+        });
+
+        if (_found !== -1) {
+            _tmp.splice(_found, 1);
+        }
+        return _tmp;
+    }
+
+    self.add_indicator = function(id, i_name, i_type) {
+        self.update_selection('indicators', id, i_name, i_type);
+    }
 }
 OipaCompareSelection.prototype = new OipaIndicatorSelection();
 
@@ -44,7 +99,7 @@ var OipaCompare = {
             return _val;
         },
 
-        randomize: function(initial) {
+        randomize: function(initial, reset) {
                 // get cities
                 var left_cities = [];
                 var city_id_1, city_id_2;
@@ -78,9 +133,11 @@ var OipaCompare = {
                 this.item2 = city_2;
                 Oipa.mainSelection.right.cities = [{"id": city_2.id, "name": city_2.name}];
 
-                if (initial !== undefined) {
+                if (initial !== undefined || reset !== undefined) {
                     this.create_visualisations();
-                } else {
+                }
+
+                if (initial == undefined) {
                     filter.save(true);
                 }
         },

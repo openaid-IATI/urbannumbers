@@ -286,31 +286,6 @@ function OipaIndicatorSelection(main){
             });
         }
     }
-
-    self.clean = function(type) {
-        self[type] = [];
-    }
-
-    self.remove_from_selection = function(type, id) {
-        var _tmp = self[type].slice(0);
-
-        var _found = -1;
-        $.each(self[type], function(i, indicator) {
-            if (indicator.id == id) {
-                _found = i;
-            }
-        });
-
-        console.log(_found, type, id);
-        if (_found !== -1) {
-            _tmp.splice(_found, 1);
-        }
-        return _tmp;
-    }
-
-    self.add_indicator = function(id, i_name, i_type) {
-        self.update_selection('indicators', id, i_name, i_type);
-    }
 }
 
 
@@ -952,7 +927,6 @@ function OipaFilters() {
 				var pair = vars[i].split("=");
 				var vals = pair[1].split(",");
 				for(var y=0;y<vals.length;y++){
-
 					// To do when selection box is in place -> update name / type when filters are loaded
 					this.selection.update_selection(pair[0], vals[y], "Loading...", "Slum dwellers");
 				}
