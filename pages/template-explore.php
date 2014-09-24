@@ -38,6 +38,14 @@ get_header(); the_post(); ?>
                                 <ul class="Publicspaces-list subul">
                                 </ul>
                             </li>
+                            <li class="Other-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-grey"></i>
+                                    <a name="Other" class="opener filter-open" href="#"><label class="top">Other data</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Other-list subul">
+                                </ul>
+                            </li>
                             <li class="regions-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-white"></i>

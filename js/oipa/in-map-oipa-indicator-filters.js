@@ -222,7 +222,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             }
             categories[categoryname].items.push(indicatoroptionhtml);
         });
-        
+
         self.create_categories(categories);
         
         $("#" + self.filter_wrapper_div + " .filter-open").click(function(e) {
@@ -260,11 +260,10 @@ function UnhabitatInMapOipaIndicatorFilters() {
     
     self.create_categories = function(categories) {
         $.each(categories, function(category_name, value) {
-            if (category_name == "") {
-                return;
-            }
+            category_name = category_name == "" ? "Other" : category_name;
 
             var category_id = self.string_to_id(category_name);
+            console.log(category_id);
             $("#" + self.filter_wrapper_div + " ." + category_id + "-list").html(value.items.join(''));
         });
     }
