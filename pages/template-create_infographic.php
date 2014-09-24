@@ -136,6 +136,11 @@ get_header(); the_post(); ?>
                                     <a name="Publicspaces" class="opener filter-open" href="#"><label class="top">Public spaces</label> <span class="counts"></span></a>
                                 </div>
                             </li>
+                            <li class="Other-li">
+                                <div>
+                                    <a name="Other" class="opener filter-open" href="#"><label class="top">Other Date</label> <span class="counts"></span></a>
+                                </div>
+                            </li>
                         </ul>
                         <div class="tabs-body">
                             <div class="Cityprosperity-list subul open">
@@ -145,6 +150,9 @@ get_header(); the_post(); ?>
                             </div>
 
                             <div class="Publicspaces-list subul">
+                            </div>
+
+                            <div class="Other-list subul">
                             </div>
                         </div>
                     </div>
