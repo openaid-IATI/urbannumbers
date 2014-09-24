@@ -24,7 +24,6 @@ function OipaCompareSelection(main){
                 type = _type[1];
             }
 
-            console.log(this, side, type)
             $.each(this[side][type], function(i, indicator) {
                 if (indicator.id == id) {
                     _found = true;

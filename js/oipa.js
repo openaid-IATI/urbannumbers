@@ -286,6 +286,30 @@ function OipaIndicatorSelection(main){
             });
         }
     }
+
+    self.clean = function(type) {
+        self[type] = [];
+    }
+
+    self.remove_from_selection = function(type, id) {
+        var _tmp = self[type].slice(0);
+
+        var _found = -1;
+        $.each(self[type], function(i, indicator) {
+            if (indicator.id == id) {
+                _found = i;
+            }
+        });
+
+        if (_found !== -1) {
+            _tmp.splice(_found, 1);
+        }
+        return _tmp;
+    }
+
+    self.add_indicator = function(id, i_name, i_type) {
+        self.update_selection('indicators', id, i_name, i_type);
+    }
 }
 
 
