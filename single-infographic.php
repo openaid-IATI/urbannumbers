@@ -18,9 +18,11 @@ $the_content = ob_get_clean();
         <div class="container ci-main">
             <div class="ci-controls row">
                 <div class="steps-nav col-md-8">
-                    <a href="#save" class="btn btn-info">Save to dashboard</a>
-                    <a href="#export" class="btn btn-info">Export</a>
-                    <a href="#share" class="btn btn-info">Share</a>
+                    <?php if (is_user_logged_in()): ?>
+                    <a href="javascript: void(0)" name="<?php the_ID(); ?>" class="save-infographic btn btn-info">Save to dashboard</a>
+                    <?php endif; ?>
+                    <!--a href="#export" class="btn btn-info">Export</a-->
+                    <!--a href="#share" class="btn btn-info">Share</a-->
                 </div>
                 <div class="col-md-4">
                     <a href="/create-infographic/" class="save_btn btn btn-success">Create new</a>

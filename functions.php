@@ -681,6 +681,42 @@ function vb_registration_form() {
 
 
 
+add_action('wp_ajax_favorite_infographic', 'favorite_infographic');
+add_action('wp_ajax_nopriv_favorite_infographic', 'favorite_infographic');
+
+
+function favorite_infographic() {
+    $visdata = $_REQUEST['infographic_id'];
+    $visdata = stripslashes($visdata);
+
+    // check if user is logged in, else return status log_in_first
+    if (!is_user_logged_in()) {
+        wp_send_json(array("status" => "log_in_first"));
+        die();
+    }
+
+    $meta_key = 'oipa_infographic_favorites';
+
+    $favorites = get_user_meta(get_current_user_id(), $meta_key, true);
+
+    if (empty($favorites)) {
+        add_user_meta(get_current_user_id(), $meta_key, array($visdata));
+    } else {
+
+        // user already has favorites, so we add this one
+        if (in_array($visdata, $favorites)){
+            wp_send_json(array("status" => "already_in_favorites"));
+            die();
+        } else {
+            array_push($favorites, $visdata);
+            update_user_meta(get_current_user_id(), $meta_key, $favorites);
+        }
+    }
+    // save visdata to usermeta
+    wp_send_json(array("status" => "saved"));
+    die(); 
+}
+
 
 
 

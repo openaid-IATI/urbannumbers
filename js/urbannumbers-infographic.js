@@ -79,8 +79,6 @@ function InfographicsChart(object_id, options) {
                 return;
             }
 
-            
-            console.log(data);
             var base = '.' + this.filter.string_to_id(data[this.id].category) + '-list';
             $(base).show();
             $('.' + this.filter.string_to_id(data[this.id].category) + '-head').show();

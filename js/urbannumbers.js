@@ -319,3 +319,25 @@ $('#ur-registration').submit(function(e) {
         
     });
 });
+
+
+$('.save-infographic').click(function(e) {
+    e.preventDefault();
+    if (this.name !== undefined && this.name.trim() !== "") {
+        $.ajax({
+          type: "POST",
+          url: vb_reg_vars.vb_ajax_url,
+          data: {
+              action: 'favorite_infographic',
+              infographic_id: this.name
+          },
+          success: function(data) {
+              console.log('response', data);
+          },
+          error: function(xhr, status, e) {
+              console.log(xhr, status, e);
+          },
+          dataType: 'json'
+        });
+    }
+});
