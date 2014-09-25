@@ -1,3 +1,7 @@
+<?php
+/*
+Template Name: City compare
+*/
 get_header(); the_post(); ?>
 <style>
 #visualization_wheel {
