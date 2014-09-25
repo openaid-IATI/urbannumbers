@@ -40,6 +40,18 @@ function OipaCity(city_id) {
         self.year = year;
         $('.horizontal_vis_block_year').html(self.year);
     }
+
+    self.update_indicator = function(data, id) {
+        var _data = "No data available";
+        if (data[id] !== undefined
+            && data[id].locs[self.city_id] !== undefined 
+            && data[id].locs[self.city_id].years[self.year] !== undefined
+        ) {
+            _data = data[id].locs[self.city_id].years[self.year];
+        }
+        $("#" + id + "_data div.info-overlay").html(_data);
+    }
+
     self.refresh_data = function(data) {
         if (data == undefined) {
             data = self.data;
@@ -49,10 +61,18 @@ function OipaCity(city_id) {
             return;
         }
 
-        console.log(data);
+        $.each(['cpi_6_dimensions', 'slum_proportion_living_urban', 'land_allocated_to_street_index_city_core'], function(_, id) {
+            self.update_indicator(data, id);
+        });
+
         if (data.urban_population_cities.locs[self.city_id] !== undefined
             && data.urban_population_cities.locs[self.city_id].years[self.year] !== undefined) {
-            $('.horizontal_vis_block_population').html(humanReadableSize(data.urban_population_cities.locs[self.city_id].years[self.year]));
+            var _number = data.urban_population_cities.locs[self.city_id].years[self.year];
+            if (data.urban_population_cities.type_data == '1000') {
+                _number = _number * 1000;
+            }
+            $('.horizontal_vis_block_population').html(humanReadableSize(_number));
+            
         } else {
             $('.horizontal_vis_block_population').html("Not available");
         }

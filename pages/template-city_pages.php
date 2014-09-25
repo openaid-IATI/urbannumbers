@@ -18,7 +18,7 @@ $city = (count($cities) && !empty($cities[0])) ? $cities[0] : 6139;
 
 get_header(); the_post(); ?>
 <link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/country-pages.css">
-    <div id="main">
+    <div id="main" class="city-page">
         <!-- container-map -->
         <div class="container-map no-shadow">
             <!-- container-sort -->
@@ -36,18 +36,21 @@ get_header(); the_post(); ?>
                         <li><i class="icon-arrow-right"></i> <span class="horizontal_vis_block_year">2000</span></li>
                     </ul>
                 </div>
-                <div class="column style01" id="chart_cpi_wrapper">
+                <div class="column style03" id="chart_cpi_wrapper">
                     <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
-                    <div class="widget row columns-holder" id="chart_cpi">
-                        <canvas height="40" width="40" id="cpi_4_dimensions_canvas"></canvas>
+                    <div class="widget columns-holder" id="cpi_6_dimensions_data">
                         <div class="info-overlay"></div>
                     </div>
                 </div>
-                <div class="column style02" id="chart_road_wrapper">
-                    <span id="horizontal_vis_block_year_ind_2_name" class="heading">Intersection density (in km\2)</span>
-
-                    <div class="widget row columns-holder" id="chart_road">
-                        <canvas height="40" width="40" id="intersection_density_total_canvas"></canvas>
+                <div class="column style01" id="chart_slum_wrapper">
+                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Slum proportion living in urban areas</span>
+                    <div class="widget columns-holder" id="slum_proportion_living_urban_data">
+                        <div class="info-overlay"></div>
+                    </div>
+                </div>
+                <div class="column style01" id="chart_pub_wrapper">
+                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Land allocated to street index – City core</span>
+                    <div class="widget columns-holder" id="land_allocated_to_street_index_city_core_data">
                         <div class="info-overlay"></div>
                     </div>
                 </div>
@@ -150,39 +153,21 @@ get_header(); the_post(); ?>
 
     filter.init();
     <?php if (!count($indicators)): ?>
-        filter.selection.add_indicator("base_year_population_estimate", "Total population", "indicators");
         filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
-        filter.selection.add_indicator("urban_population_share_national", "Urban slum population", "indicators");
-        filter.selection.add_indicator("intersection_density_total", "Rural population", "indicators");
-        filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");
+        filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban slum population", "indicators");
+        filter.selection.add_indicator("slum_proportion_living_urban", "Rural population", "indicators");
+        filter.selection.add_indicator("cpi_6_dimensions", "City Prosperity", "indicators");
     <?php else: ?>
     <?php foreach ($indicators as $id => $indicator): ?>
         filter.selection.add_indicator("<?php echo $indicator; ?>", "Rural population", "indicators");
     <?php endforeach; ?>
     <?php endif; ?>
 
-    filter.selection.update_selection("cities", "<?php echo $city; ?>", "Kenya", "cities");
+    filter.selection.update_selection("cities", "<?php echo $city; ?>", "Nairobi", "cities");
 
     var city = new OipaCity(<?php echo $city; ?>);
 
     OipaWidgetsBus.add_listener(city);
-
-    var cpi = new OipaCountryPieInfographicsVis('cpi_4_dimensions', {
-        color: "#FFBF00",
-    });
-
-    var road = new OipaCountryPieInfographicsVis("intersection_density_total", {
-        color: "#FFBF00",
-        divide_by: 0.01,
-        overlay_transform: function(chart_id_data) {
-            return humanReadableSize(chart_id_data.value);
-        }
-    });
-
-    cpi.init();
-    cpi.chartwrapper = '#chart_cpi';
-    road.init();
-    road.chartwrapper = '#chart_road';
 
     filter.save(true);
 
