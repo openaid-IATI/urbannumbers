@@ -242,14 +242,15 @@ function get_wiki_city_data(city_name, left_right_city){
     	        if (begin_text != ""){
     	        	complete_text += '<div class="city-wikipedia-disclaimer">Source: Wikipedia - Disclaimer: excerpt not endorsed by UN-Habitat. </div>';
     	        }
-        
-
-    	        
-
     	    }
-        } 
+        }
 
+        if (complete_text.trim() == "") {
+            complete_text = "No excerpt availlable for this city";
+        }
         jQuery("."+left_right_city+"-city-wikipedia").html(complete_text);
+	}).error(function(a, b, c) {
+	    console.log('e');
 	});
 }
 
