@@ -225,7 +225,7 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
     }
 
 
-    self.visualize_chart = function(chart_data, chart_id) {
+    self.visualize_chart = function(chart_data, chart_id) {;
         var _transform_func = self.opt("overlay_transform", function(chart_id_data) {
             return chart_id_data.value;
         });
@@ -253,7 +253,6 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
                 self.charts[chart_id].holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
             }
         }
-        
     }
 
     return self;
@@ -267,7 +266,6 @@ function OipaCountryPieChart(id, options) {
 
 
     self.format_year_data = function(data, year, limit) {
-        console.log(data);
         if (year == null) {
             year = self.get_last_data_year(data);
         }

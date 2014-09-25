@@ -34,14 +34,14 @@ get_header(); the_post(); ?>
                         <li class="value"><i class="icon-arrow-right"></i> <span id="horizontal_vis_block_year">2000</span></li>
                     </ul>
                 </div>
-                <div class="column style01" id="cpi_wrapper">
+                <div class="column style01" id="chart_cpi_wrapper">
                     <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
                     <div class="widget row columns-holder" id="chart_cpi">
                         <canvas height="40" width="40" id="cpi_4_dimensions_canvas"></canvas>
                         <div class="info-overlay"></div>
                     </div>
                 </div>
-                <div class="column style02" id="road_wrapper">
+                <div class="column style02" id="chart_road_wrapper">
                     <span id="horizontal_vis_block_year_ind_2_name" class="heading">Total road network (in Km)</span>
 
                     <div class="widget row columns-holder" id="chart_road">
@@ -131,16 +131,16 @@ filter.selection.indicator_options = {
 }
 <?php
 if (!(count($indicators))) { ?>
-    filter.selection.indicators.push({"id": "population", "name": "Total population", "type": "Slum dwellers"});
-    filter.selection.indicators.push({"id": "urban_population_countries", "name": "Urban population", "type": "Slum dwellers"});
-    filter.selection.indicators.push({"id": "urban_slum_population_countries", "name": "Urban slum population", "type": "Slum dwellers"});
-    filter.selection.indicators.push({"id": "rural_population", "name": "Rural population", "type": "Slum dwellers"});
-    filter.selection.indicators.push({"id": "cpi_4_dimensions", "name": "Rural population", "type": "Slum dwellers"});
-    filter.selection.indicators.push({"id": "total_length_road", "name": "Rural population", "type": "Slum dwellers"});
+    filter.selection.add_indicator("population", "Total population", "indicators");
+    filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
+    filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");
+    filter.selection.add_indicator("rural_population", "Rural population", "indicators");
+    filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");
+    filter.selection.add_indicator("total_length_road", "Total length roadwork", "indicators");
 <?php } 
 
 if (!(count($countries))) { ?>
-    filter.selection.countries.push({"id": "KE", "name": "Kenya"});
+    filter.selection.update_selection("countries", "KE", "Kenya", "countries");
 <?php } ?>
 
 
@@ -172,11 +172,7 @@ if (filter.selection.countries.length > 0) {
 
 }
 
-
-
 filter.save(true);
-
-    
 
 </script>
 
