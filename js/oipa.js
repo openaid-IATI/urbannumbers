@@ -1700,10 +1700,10 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 }
 
 
-function humanReadableSize(number) {
+function humanReadableSize(number, units) {
     var thresh = 1000;
     if (number < thresh) {
-        return number;
+        return number.toFixed(1);
     }
 
     var units = ['K','M','B'];
@@ -1712,5 +1712,9 @@ function humanReadableSize(number) {
         number /= thresh;
         ++u;
     } while(number >= thresh);
+
+    if (units[u] == undefined) {
+        return number.toFixed(1);
+    }
     return number.toFixed(1) + ' ' + units[u];
 }

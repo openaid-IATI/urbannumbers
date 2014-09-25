@@ -482,13 +482,13 @@ function OipaIndicatorMap(use_legend) {
                                                 if (score === undefined){
                                                   score = "Not available for " + curyear;
                                                 } else {
-
+                                                  score = parseFloat(score, 1);
                                                   if(pvalue.type_data == "1000"){
-                                                        score = comma_formatted((score * 1000) + '.');
+                                                        score = humanReadableSize((score * 1000)) + '.';
                                                   }
 
                                                   if(pvalue.type_data == "p"){
-                                                        score = score + "%";
+                                                        score = humanReadableSize(score, []) + "%";
                                                   }
                                                 }
                                                 popuptext += '<p>' + pvalue.description + ': ' + score + '</p>';
