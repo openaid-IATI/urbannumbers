@@ -1,46 +1,47 @@
 
 function OipaCompareSelection(main){
-        this.left = [];
-        this.left.cities = [];
-        this.left.countries = [];
-        this.left.regions = [];
-        this.left.indicators = [];
+    var self = this;
+    self.left = [];
+    self.left.cities = [];
+    self.left.countries = [];
+    self.left.regions = [];
+    self.left.indicators = [];
 
-        this.right = [];
-        this.right.cities = [];
-        this.right.countries = [];
-        this.right.regions = [];
-        this.right.indicators = [];
+    self.right = [];
+    self.right.cities = [];
+    self.right.countries = [];
+    self.right.regions = [];
+    self.right.indicators = [];
 
-        this.indicators = [];
-        this.url = new OipaUrl(this);
+    self.indicators = [];
+    self.url = new OipaUrl(self);
 
-        this.update_selection = function(type, id, i_name, i_type, options) {
-            var _found = false;
-            var _type = type.split('_');
-            var side = 'left';
-            if (_type.length > 1) {
-                side = _type[0];
-                type = _type[1];
-            }
-
-            $.each(this[side][type], function(i, indicator) {
-                if (indicator.id == id) {
-                    _found = true;
-                }
-            });
-
-            options = options !== undefined ? options : this.indicator_options;
-
-            if (!_found) {
-                this[side][type].push({
-                    id: id,
-                    name: i_name,
-                    type: i_type,
-                    options: options
-                });
-            }
+    self.update_selection = function(type, id, i_name, i_type, options) {
+        var _found = false;
+        var _type = type.split('_');
+        var side = 'left';
+        if (_type.length > 1) {
+            side = _type[0];
+            type = _type[1];
         }
+
+        $.each(self[side][type], function(i, indicator) {
+            if (indicator.id == id) {
+                _found = true;
+            }
+        });
+
+        options = options !== undefined ? options : self.indicator_options;
+
+        if (!_found) {
+            self[side][type].push({
+                id: id,
+                name: i_name,
+                type: i_type,
+                options: options
+            });
+        }
+    }
 
     self.clean = function(type) {
         console.log('clean', type);
@@ -48,7 +49,6 @@ function OipaCompareSelection(main){
     }
 
     self.remove_from_selection = function(type, id) {
-        console.log('remove', type, id);
         var _tmp = self[type].slice(0);
 
         var _found = -1;
@@ -64,8 +64,8 @@ function OipaCompareSelection(main){
         return _tmp;
     }
 
-    self.add_indicator = function(id, i_name, i_type) {
-        self.update_selection('indicators', id, i_name, i_type);
+    self.add_indicator = function(id, name, itype) {
+        self.update_selection('indicators', id, name, itype);
     }
 }
 OipaCompareSelection.prototype = new OipaIndicatorSelection();
@@ -142,33 +142,12 @@ var OipaCompare = {
         },
         create_visualisations: function() {
             var cursel = Oipa.mainSelection;
-            filter.selection.indicators.push({
-                id: "urban_population_cities",
-                name: "Urban Population Cities",
-                type: "City prosperity",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
-            filter.selection.indicators.push({
-                id: "avg_annual_rate_change_percentage_urban",
-                name: "Infrastructure Development Index",
-                type: "City prosperity",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
-            filter.selection.indicators.push({
-                id: "urban_population_share_national",
-                name: "Productivity Index",
-                type: "City prosperity",
-                options: {
-                    chart_class: OipaBarChart,
-                    all_years: true
-                }
-            });
+            filter.selection.add_indicator("cpi_composite_street_connectivity_index", "Urban population – Countries", 'indicators');
+            filter.selection.add_indicator("cpi_environment_index", "Urban population – Countries", 'indicators');
+            filter.selection.add_indicator("cpi_equity_index", "Urban population – Countries", 'indicators');
+            filter.selection.add_indicator("cpi_infrastructure_index", "Urban population – Countries", 'indicators');
+            filter.selection.add_indicator("cpi_productivity_index", "Urban population – Countries", 'indicators');
+            filter.selection.add_indicator("cpi_quality_of_live_index", "Urban population – Countries", 'indicators');
             // filter.selection.indicators.push({
 //                 id: "cpi_quality_of_live_index",
 //                 name: "Quality of Life Index",

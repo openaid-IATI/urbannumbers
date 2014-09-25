@@ -622,9 +622,6 @@ function OipaActiveChart(id, options) {
             $(".heading-holder[data-indicator='" + self.indicator + "']").find('h3').each(function(_, node) {
                 node.innerHTML = data.indicator_friendly;
             });
-            $("div.widget[data-indicator='" + self.indicator + "']").each(function(_, node) {
-                node.appendChild(ctx);
-            });
 
             self.chart_obj = new Chart(ctx.getContext("2d"));
             self.chart = self.init_chart(chart_data);

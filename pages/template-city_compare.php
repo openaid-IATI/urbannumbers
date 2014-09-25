@@ -1,8 +1,33 @@
-<?php
-/*
-Template Name: City compare
-*/
 get_header(); the_post(); ?>
+<style>
+#visualization_wheel {
+    width: 1000px;
+}
+#visualization_wheel canvas {
+    margin-top: -50px;
+}
+#legend {
+    position: absolute; 
+    z-index: 999;
+    top: 0px;   
+    right: 10px;
+    background: #FFF;
+    padding: 10px;
+    display: inline-block;
+}
+#legend ul li {
+    list-style: none;
+    display: block;
+    width: auto;
+}
+#legend ul li span {
+    width: 20px;
+    font-size: 2px;
+    padding: 0px 10px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+</style>
     <div id="main" class="city-compare-wrapper">
         <!-- container-map -->
         <div class="container-map small">
@@ -57,18 +82,19 @@ get_header(); the_post(); ?>
                 </div>
             </div>
         </div>
-        
         <?php get_template_part("compare", "visualisations"); ?>
 
     </div>
 
 
     <?php get_template_part("footer", "scripts"); ?>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/wheel-chart.js"></script>
 
     <script>
 
         Oipa.pageType = "compare";
         Oipa.mainSelection = new OipaCompareSelection(1);
+        patch_oipa(Oipa);
 
         // Force refresh
         OipaWidgetsBus.use_force_refresh = true;
@@ -83,17 +109,20 @@ get_header(); the_post(); ?>
         rightmap.set_map("right-map");
         rightmap.compare_left_right = "right";
         Oipa.maps.push(rightmap);
-        
+
+
         
         var filter = new UnhabitatOipaCompareFilters();
         filter.selection = Oipa.mainSelection;
+
         //OipaCompare.randomize(1);
         filter.init();
 
-        $("#compare-cities-randomize").click(function(e){
+
+        /*$("#compare-cities-randomize").click(function(e){
             e.preventDefault();
             OipaCompare.randomize(undefined, true);
-        });
+        });*/
 
     </script>
 
