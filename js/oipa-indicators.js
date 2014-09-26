@@ -16,30 +16,50 @@ function OipaCompareSelection(main){
     self.indicators = [];
     self.url = new OipaUrl(self);
 
+    var _original_update_selection = self.update_selection;
     self.update_selection = function(type, id, i_name, i_type, options) {
         var _found = false;
-        var _type = type.split('_');
-        var side = 'left';
-        if (_type.length > 1) {
-            side = _type[0];
-            type = _type[1];
-        }
-
-        $.each(self[side][type], function(i, indicator) {
-            if (indicator.id == id) {
-                _found = true;
-            }
-        });
-
-        options = options !== undefined ? options : self.indicator_options;
-
-        if (!_found) {
-            self[side][type].push({
-                id: id,
-                name: i_name,
-                type: i_type,
-                options: options
+        if (type == 'indicators') {
+            $.each(self[type], function(i, indicator) {
+                if (indicator.id == id) {
+                    _found = true;
+                }
             });
+
+            options = options !== undefined ? options : self.indicator_options;
+
+            if (!_found) {
+                self[type].push({
+                    id: id,
+                    name: i_name,
+                    type: i_type,
+                    options: options
+                });
+            }
+        } else {
+            var _type = type.split('_');
+            var side = 'left';
+            if (_type.length > 1) {
+                side = _type[0];
+                type = _type[1];
+            }
+
+            $.each(self[side][type], function(i, indicator) {
+                if (indicator.id == id) {
+                    _found = true;
+                }
+            });
+
+            options = options !== undefined ? options : self.indicator_options;
+
+            if (!_found) {
+                self[side][type].push({
+                    id: id,
+                    name: i_name,
+                    type: i_type,
+                    options: options
+                });
+            }
         }
     }
 
@@ -142,12 +162,6 @@ var OipaCompare = {
         },
         create_visualisations: function() {
             var cursel = Oipa.mainSelection;
-            filter.selection.add_indicator("cpi_composite_street_connectivity_index", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("cpi_environment_index", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("cpi_equity_index", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("cpi_infrastructure_index", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("cpi_productivity_index", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("cpi_quality_of_live_index", "Urban population – Countries", 'indicators');
             // filter.selection.indicators.push({
 //                 id: "cpi_quality_of_live_index",
 //                 name: "Quality of Life Index",
@@ -651,7 +665,7 @@ function OipaIndicatorFilters(){
         };
 
 
-        this.create_indicator_filter_attributes = function(objects, columns){
+        this.create_indicator_filter_attributes = function(objects, columns) { 
                 var html = '';
                 var paginatehtml = '';
                 var per_col = 6;
@@ -780,11 +794,8 @@ function OipaIndicatorFilters(){
 OipaIndicatorFilters.prototype = new OipaFilters();
 
 
-function OipaCompareFilters(){
-
-        
-
-        this.update_selection_object = function(){
+function OipaCompareFilters() {
+        this.update_selection_object = function() {
                 this.selection.left.countries = this.get_checked_by_filter("left-countries");
                 var left_cities = this.get_checked_by_filter("left-cities");
                 if (left_cities.length > 0){ this.selection.left.cities = left_cities; }
@@ -805,14 +816,14 @@ function OipaCompareFilters(){
         };
 
         this.get_url = function(selection, parameters_set){
-                // get url from filter selection object
-                if (parameters_set){
-                        var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + parameters_set;
-                } else {
-                        var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
-                }
-                
-                return cururl;
+            // get url from filter selection object
+            if (parameters_set){
+                var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + parameters_set;
+            } else {
+                var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+            }
+            
+            return cururl;
         };
 
         this.process_filter_options = function(data){

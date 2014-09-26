@@ -117,16 +117,25 @@ get_header(); the_post(); ?>
 
         
         var filter = new UnhabitatOipaCompareFilters();
+        
         filter.selection = Oipa.mainSelection;
 
         //OipaCompare.randomize(1);
+        filter.selection.add_indicator("cpi_composite_street_connectivity_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("cpi_environment_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("cpi_equity_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("cpi_infrastructure_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("cpi_productivity_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("cpi_quality_of_live_index", "Urban population – Countries", 'indicators');
+
         filter.init();
 
-
-        /*$("#compare-cities-randomize").click(function(e){
+        $("#compare-cities-randomize").click(function(e){
             e.preventDefault();
             OipaCompare.randomize(undefined, true);
-        });*/
+        });
+
+        filter.update_selection_after_filter_load(filter.selection);
 
     </script>
 

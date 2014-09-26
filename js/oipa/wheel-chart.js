@@ -7,7 +7,7 @@ function OipaWheelChart(id, options) {
         var _url = search_url + 'indicator-data/?format=json';
         var _url_data = {
             cities__in: self._initial_selection.left.cities.concat(self._initial_selection.right.cities),
-            indicators__in: self._initial_selection.left.indicators
+            indicators__in: self._initial_selection.indicators
         }
 
         return _url + '&' + $.map(_url_data, function(value, key) {
@@ -37,13 +37,16 @@ function OipaWheelChart(id, options) {
         var _keys = Object.keys(data);
         var _cities = self._initial_selection.left.cities.concat(self._initial_selection.right.cities);
 
+        if (_keys.length == 0) {
+            return;
+        }
+
         var chart_data = {
             labels: $.map(_keys, function(key) {
                 return data[key].indicator_friendly;
             }),
             datasets: $.map(_cities, function(city, num) {
                 var _color = num ? "220,220,220" : "151,187,205";
-
                 return {
                     label: data[_keys[0]].locs[city.id].name,
                     fillColor: "rgba(" + _color + ",0.2)",

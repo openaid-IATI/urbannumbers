@@ -133,7 +133,7 @@ $("#map-indicator-filter-wrapper .filter-open").click(function(e){
 
 
 function UnhabitatOipaCompareFilters(){
-	this.get_url = function(selection, parameters_set){
+	this.get_url = function(selection, parameters_set) {
 		// get url from filter selection object
 		if (parameters_set){
 			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&adm_division__in=city" + parameters_set;
