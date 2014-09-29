@@ -1,6 +1,6 @@
 function OipaWheelChart(id, options) {
     var self = this;
-    self.year = 2013;
+    self.year = 2012;
     OipaRadarChart.call(self, id, options);
 
     self.get_url = function() {
@@ -33,13 +33,25 @@ function OipaWheelChart(id, options) {
         $(self.chartwrapper).append(html);
     }
 
+    this.get_last_data_year = function(data, city) {
+        if (data.locs[city] == undefined) {
+            return '';
+        }
+        return Math.max.apply(null, $.map(
+            Object.keys(data.locs[city].years),
+            function(i) {
+                return parseInt(i);
+            }
+        ));
+    }
+
     self.visualize = function(data) {
         var _keys = Object.keys(data);
         var _cities = self._initial_selection.left.cities.concat(self._initial_selection.right.cities);
 
         if (_keys.length == 0) {
             return;
-        }
+        }        
 
         var chart_data = {
             labels: $.map(_keys, function(key) {
@@ -47,8 +59,12 @@ function OipaWheelChart(id, options) {
             }),
             datasets: $.map(_cities, function(city, num) {
                 var _color = num ? "220,220,220" : "151,187,205";
+                var _label = data[_keys[0]].locs[city.id].name;
+                if (self.get_last_data_year(data[_keys[0]], city.id) !== '') {
+                    _label += ' (' + self.get_last_data_year(data[_keys[0]], city.id) + ')';
+                }
                 return {
-                    label: data[_keys[0]].locs[city.id].name,
+                    label: _label,
                     fillColor: "rgba(" + _color + ",0.2)",
                     strokeColor: "rgba(" + _color + ",1)",
                     pointColor: "rgba(" + _color + ",1)",
@@ -56,6 +72,13 @@ function OipaWheelChart(id, options) {
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(" + _color + ",1)",
                     data: $.map(_keys, function(key) {
+                        var _year = self.get_last_data_year(data[key], city.id);
+                        if (_year == '') {
+                            _year = self.year;
+                        }
+                        if (data[key].locs[city.id] == undefined || data[key].locs[city.id].years[_year] == undefined) {
+                            return 0;
+                        }
                         return data[key].locs[city.id].years[self.year];
                     })
                 };

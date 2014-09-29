@@ -122,12 +122,9 @@ get_header(); the_post(); ?>
         filter.selection = Oipa.mainSelection;
 
         //OipaCompare.randomize(1);
-        filter.selection.add_indicator("cpi_composite_street_connectivity_index", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("cpi_environment_index", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("cpi_equity_index", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("cpi_infrastructure_index", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("cpi_productivity_index", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("cpi_quality_of_live_index", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
 
         filter.init();
 
