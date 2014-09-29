@@ -952,7 +952,7 @@ function OipaFilters() {
 				var vals = pair[1].split(",");
 				for(var y=0;y<vals.length;y++){
 					// To do when selection box is in place -> update name / type when filters are loaded
-					this.selection.update_selection(pair[0], vals[y], "Loading...", "Slum dwellers");
+					//this.selection.update_selection(pair[0], vals[y], "Loading...", "Slum dwellers");
 				}
 			}
 		}

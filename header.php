@@ -174,8 +174,10 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="<?php echo home_url() . "/my-dashboard/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-star"></i></span>My dashboard</a></li>
-						<li><a href="<?php echo home_url() . "/account-settings/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-cog"></i></span>Account settings</a></li>
+						<li><a href="<?php echo home_url() . "/my-dashboard/#city-data"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-star"></i></span>Favorite city data</a></li>
+						<li><a href="<?php echo home_url() . "/my-dashboard/#my-infographics"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-stats"></i></span>My infographics</a></li>
+						<li><a href="<?php echo home_url() . "/create-infographic/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-plus-sign"></i></span>New infographic</a></li>
+						<li><a href="<?php echo home_url() . "/my-dashboard/#account-settings"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-cog"></i></span>Account settings</a></li>
 						<li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="glyphicon glyphicon-arrow-left"></i></span>Sign out</a></li>
 					</ul>
 					<?php } else { ?>

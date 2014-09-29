@@ -21,10 +21,10 @@ function OipaWheelChart(id, options) {
 
         // create html
         var html = '<li id="visualization_' + self.indicator + '">';
-        html += '<section class="container-box" data-vis-type="'+self.type+'" data-indicator="'+self.indicator+'">';
-        html += '<header class="heading-holder" data-indicator="'+self.indicator+'"><h3>Wheel</h3></header>';
+        html += '<section class="container-box" data-vis-type="' + self.type + '" data-indicator="' + self.indicator + '">';
+        html += '<header class="heading-holder" data-indicator="' + self.indicator + '"><h3>Wheel Of Prosperity</h3></header>';
         html += '<div class="box-content">';
-        html +=  '<div class="widget" data-indicator="'+self.indicator+'">';
+        html +=  '<div class="widget" data-indicator="' + self.indicator + '">';
         html +=    '<canvas height="340" width="340"></canvas>';
         html +=  '</div>';
         html +=  '<div id="legend"></div>'

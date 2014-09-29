@@ -86,6 +86,7 @@ get_header(); the_post();
 
     <!-- main-container -->
     <div class="main-container">
+        <a name="my-infographics"></a>
         <div class="heading-container">
             <div class="container-custom">
                 <div class="row">
@@ -125,11 +126,12 @@ get_header(); the_post();
             </div>
         </div>
 
+        <a name="city-data"></a>
         <div class="heading-container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                        <h3>My favourite city data</h3>
+                        <h3>My favorite city data</h3>
                     </div>
                 </div>
                 <form action="" id="dash-md-form" method="POST">
@@ -164,6 +166,7 @@ get_header(); the_post();
     </div>
 
     <!-- main-container -->
+    <a name="account-settings"></a>
     <div class="main-container">
         <div class="heading-container">
             <div class="container-custom">

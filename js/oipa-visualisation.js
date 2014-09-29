@@ -25,7 +25,7 @@ function OipaVis () {
         html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '<div class="box-content">';
         //html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
-        html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
+        //html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
         html +=  '<div class="widget" data-indicator="'+this.indicator+'">';
         html +=    '<div class="no_data">No data for this chart</div>';
         html +=    '<canvas height="340" width="340"></canvas>';

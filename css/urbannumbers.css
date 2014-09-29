@@ -735,3 +735,6 @@ form.registration-form span.input-placeholder-text {
 .map-indicator-filter-icon.icon-yellow {
     border-color: #FDBE2C;
 }
+.visual .text-holder>.btn {
+    background: #56C6C8;
+}

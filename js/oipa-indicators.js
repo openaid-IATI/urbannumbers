@@ -162,37 +162,7 @@ var OipaCompare = {
                 }
         },
         create_visualisations: function() {
-            var cursel = Oipa.mainSelection;
-
-            // filter.selection.indicators.push({
-//                 id: "cpi_quality_of_live_index",
-//                 name: "Quality of Life Index",
-//                 type: "City prosperity",
-//                 options: {
-//                     chart_class: OipaBarChart,
-//                     all_years: true
-//                 }
-//             });
-//             filter.selection.indicators.push({
-//                 id: "cpi_equity_index",
-//                 name: "Equity/Social Inclusion Index",
-//                 type: "City prosperity",
-//                 options: {
-//                     chart_class: OipaBarChart,
-//                     all_years: true
-//                 }
-//             });
-//             filter.selection.indicators.push({
-//                 id: "cpi_composite_street_connectivity_index",
-//                 name: "Composite Street Connectivity Index",
-//                 options: {
-//                     chart_class: OipaBarChart,
-//                     all_years: true
-//                 }
-//             });
-
             filter.save(true);
-
         }
 }
 
@@ -829,19 +799,19 @@ function OipaCompareFilters() {
         };
 
         this.process_filter_options = function(data){
-                var columns = 4;
-                var filter = this;
+            var columns = 4;
+            var filter = this;
 
-                // load filter html and implement it in the page
-                this.create_filter_attributes(data.countries, columns, 'left-countries');
-                this.create_filter_attributes(data.countries, columns, 'right-countries');
+            // load filter html and implement it in the page
+            this.create_filter_attributes(data.countries, columns, 'left-countries');
+            this.create_filter_attributes(data.countries, columns, 'right-countries');
 
-                this.create_filter_attributes(data.cities, columns, 'left-cities');
-                this.create_filter_attributes(data.cities, columns, 'right-cities');
+            this.create_filter_attributes(data.cities, columns, 'left-cities');
+            this.create_filter_attributes(data.cities, columns, 'right-cities');
 
-                this.create_filter_attributes(data.indicators, 2, 'indicators');
+            this.create_filter_attributes(data.indicators, 2, 'indicators');
 
-                if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(1); }
+            if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(1); }
 
 
                 // reload aangevinkte vakjes
