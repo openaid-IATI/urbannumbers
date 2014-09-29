@@ -44,6 +44,16 @@ function OipaWheelChart(id, options) {
             }
         ));
     }
+    
+    self.get_city_name = function(data, city_id, keys) {
+        var _name = '';
+        for (i = 0; i < keys.length; i++) {
+            if (data[keys[i]].locs[city_id] !== undefined) {
+                return data[keys[i]].locs[city_id].name;
+            }
+        }
+        return _name;
+    }
 
     self.visualize = function(data) {
         var _keys = Object.keys(data);
@@ -59,7 +69,8 @@ function OipaWheelChart(id, options) {
             }),
             datasets: $.map(_cities, function(city, num) {
                 var _color = num ? "220,220,220" : "151,187,205";
-                var _label = data[_keys[0]].locs[city.id].name;
+                
+                var _label = self.get_city_name(data, city.id, _keys);
                 if (self.get_last_data_year(data[_keys[0]], city.id) !== '') {
                     _label += ' (' + self.get_last_data_year(data[_keys[0]], city.id) + ')';
                 }
@@ -93,7 +104,7 @@ function OipaWheelChart(id, options) {
 
         self.chart_obj = new Chart(ctx.getContext("2d"));
         self.chart = self.init_chart(chart_data);
-        $("#legend").append(self.chart.generateLegend());
+        $("#legend").html(self.chart.generateLegend());
     }
 
     this.init_chart = function(chart_data) {
