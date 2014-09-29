@@ -4,15 +4,9 @@ Template Name: CPI compare
 */
 get_header(); the_post(); ?>
 <style>
-#visualization_wheel {
-    width: 1000px;
-}
-#visualization_wheel canvas {
-    margin-top: -50px;
-}
+
 #legend {
-    position: absolute; 
-    z-index: 999;
+    
     top: 0px;   
     right: 10px;
     background: #FFF;

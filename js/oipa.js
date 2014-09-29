@@ -1316,7 +1316,6 @@ function OipaFilters() {
 			if (filter_name === "countries") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) ); }
 			if (filter_name === "cities") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) ); }
 
-            console.log(url);
 			jQuery.support.cors = true;
 
 			if(window.XDomainRequest){

@@ -22,11 +22,12 @@ function OipaWheelChart(id, options) {
         // create html
         var html = '<li id="visualization_' + self.indicator + '">';
         html += '<section class="container-box" data-vis-type="'+self.type+'" data-indicator="'+self.indicator+'">';
+        html += '<header class="heading-holder" data-indicator="'+self.indicator+'"><h3>Wheel</h3></header>';
         html += '<div class="box-content">';
-        html +=  '<div id="legend"></div>'
         html +=  '<div class="widget" data-indicator="'+self.indicator+'">';
         html +=    '<canvas height="340" width="340"></canvas>';
         html +=  '</div>';
+        html +=  '<div id="legend"></div>'
 
         html += '</div></section></li>';
 
@@ -56,7 +57,19 @@ function OipaWheelChart(id, options) {
     }
 
     self.visualize = function(data) {
-        var _keys = Object.keys(data);
+        var chart_keys = [
+            'cpi_composite_street_connectivity_index',
+            'cpi_environment_index',
+            'cpi_equity_index',
+            'cpi_infrastructure_index',
+            'cpi_productivity_index',
+            'cpi_quality_of_live_index'
+        ];
+        var _keys = $.map(Object.keys(data), function(key) {
+            if (chart_keys.indexOf(key) >= 0) {
+                return key;
+            }
+        });
         var _cities = self._initial_selection.left.cities.concat(self._initial_selection.right.cities);
 
         if (_keys.length == 0) {
@@ -102,7 +115,7 @@ function OipaWheelChart(id, options) {
         //     node.innerHTML = data.indicator_friendly;
         // });
 
-        self.chart_obj = new Chart(ctx.getContext("2d"));
+        self.chart_obj = new Chart(ctx.getContext("2d"), {showScale: false});
         self.chart = self.init_chart(chart_data);
         $("#legend").html(self.chart.generateLegend());
     }
@@ -112,6 +125,7 @@ function OipaWheelChart(id, options) {
             tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
             multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
             scaleShowLabels: false,
+            lineArc: false
         });
     }
 
