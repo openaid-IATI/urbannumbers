@@ -51,7 +51,7 @@ function OipaWheelChart(id, options) {
 
         if (_keys.length == 0) {
             return;
-        }        
+        }
 
         var chart_data = {
             labels: $.map(_keys, function(key) {
@@ -79,11 +79,12 @@ function OipaWheelChart(id, options) {
                         if (data[key].locs[city.id] == undefined || data[key].locs[city.id].years[_year] == undefined) {
                             return 0;
                         }
-                        return data[key].locs[city.id].years[self.year];
+                        return data[key].locs[city.id].years[_year];
                     })
                 };
             })
         };
+
         var ctx = $("div.widget[data-indicator='" + self.indicator + "'] canvas").get(0);
         //
         // $(".heading-holder[data-indicator='" + self.indicator + "']").find('h3').each(function(_, node) {
