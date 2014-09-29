@@ -14,6 +14,7 @@ function OipaCompareSelection(main){
     self.right.indicators = [];
 
     self.indicators = [];
+    self.indicator_options = {};
     self.url = new OipaUrl(self);
 
     var _original_update_selection = self.update_selection;

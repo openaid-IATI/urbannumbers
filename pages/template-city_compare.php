@@ -92,13 +92,14 @@ get_header(); the_post(); ?>
 
 
     <?php get_template_part("footer", "scripts"); ?>
-    <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/wheel-chart.js"></script>
 
     <script>
 
         Oipa.pageType = "compare";
         Oipa.mainSelection = new OipaCompareSelection(1);
-        patch_oipa(Oipa);
+        Oipa.mainSelection.indicator_options = {
+            chart_class: OipaBarChart
+        }
 
         // Force refresh
         OipaWidgetsBus.use_force_refresh = true;
