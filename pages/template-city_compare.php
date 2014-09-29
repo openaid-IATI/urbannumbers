@@ -98,7 +98,8 @@ get_header(); the_post(); ?>
         Oipa.pageType = "compare";
         Oipa.mainSelection = new OipaCompareSelection(1);
         Oipa.mainSelection.indicator_options = {
-            chart_class: OipaBarChart
+            chart_class: OipaBarChart,
+            chart_reset: true
         }
 
         // Force refresh
@@ -121,11 +122,6 @@ get_header(); the_post(); ?>
         
         filter.selection = Oipa.mainSelection;
 
-        //OipaCompare.randomize(1);
-        filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
-        filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
-
         filter.init();
 
         $("#compare-cities-randomize").click(function(e){
@@ -134,6 +130,11 @@ get_header(); the_post(); ?>
         });
 
         filter.update_selection_after_filter_load(filter.selection);
+        filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
+        filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
+
+        filter.reload_specific_filter('compare-indicators');
 
     </script>
 

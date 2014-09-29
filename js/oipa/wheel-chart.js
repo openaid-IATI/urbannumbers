@@ -25,7 +25,7 @@ function OipaWheelChart(id, options) {
         html += '<div class="box-content">';
         html +=  '<div id="legend"></div>'
         html +=  '<div class="widget" data-indicator="'+self.indicator+'">';
-        html +=    '<canvas height="900" width="900"></canvas>';
+        html +=    '<canvas height="340" width="340"></canvas>';
         html +=  '</div>';
 
         html += '</div></section></li>';
@@ -110,7 +110,8 @@ function OipaWheelChart(id, options) {
     this.init_chart = function(chart_data) {
         return this.chart_obj.Radar(chart_data, {
             tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
-            multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>"
+            multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
+            scaleShowLabels: false,
         });
     }
 

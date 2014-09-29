@@ -163,6 +163,7 @@ var OipaCompare = {
         },
         create_visualisations: function() {
             var cursel = Oipa.mainSelection;
+
             // filter.selection.indicators.push({
 //                 id: "cpi_quality_of_live_index",
 //                 name: "Quality of Life Index",

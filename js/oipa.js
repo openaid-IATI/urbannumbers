@@ -1298,13 +1298,25 @@ function OipaFilters() {
 			selection = this.selection;//this.get_selection_object();
 
 			// get data
-			if (filter_name === "left-cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.left.countries) ); }
-			if (filter_name === "right-cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.right.countries) ); }
-			if (filter_name === "indicators") { var url = this.get_url(null, "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) + "&cities__in=" + get_parameters_from_selection(selection.cities) ); }
-			if (filter_name === "regions") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) ); }
-			if (filter_name === "countries") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) ); }
-			if (filter_name === "cities") { var url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) ); }
+            var url;
+			if (filter_name === "left-cities") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.left.countries) ); }
+			if (filter_name === "right-cities") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.right.countries) ); }
+			if (filter_name === "indicators") { url = this.get_url(null, "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) + "&cities__in=" + get_parameters_from_selection(selection.cities) ); }
+            if (filter_name === "compare-indicators") {
+                var _cities = get_parameters_from_selection(selection.left.cities) + ',' + get_parameters_from_selection(selection.right.cities);
+                url = this.get_url(
+                    null,
+                    "&regions__in=" + get_parameters_from_selection(selection.regions) 
+                    + "&countries__in=" + get_parameters_from_selection(selection.countries) 
+                    //+ "&cities__in=" + _cities
+                );
+                filter_name = 'indicators';
+            }
+			if (filter_name === "regions") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) ); }
+			if (filter_name === "countries") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) ); }
+			if (filter_name === "cities") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) ); }
 
+            console.log(url);
 			jQuery.support.cors = true;
 
 			if(window.XDomainRequest){

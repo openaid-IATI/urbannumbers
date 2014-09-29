@@ -626,8 +626,7 @@ function OipaActiveChart(id, options) {
             self.chart_obj = new Chart(ctx.getContext("2d"));
             self.chart = self.init_chart(chart_data);
         } else {
-            // Refresh
-            if (self.opt('all_years')) {
+            if (self.opt('all_years') || self.opt('chart_reset')) {
                 self.chart.destroy();
                 self.chart = self.init_chart(chart_data);
             } else {
@@ -651,7 +650,6 @@ function OipaActiveChart(id, options) {
                 }
                 self.chart.update();
             }
-
         }
     }
     return this;
