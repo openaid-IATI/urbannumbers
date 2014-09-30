@@ -5,22 +5,19 @@
 		<section id="twocolumns">
 			<header class="main-heading">
 				<h1>Activation</h1>
-                                
-                                <?php
-                                        if (isset($_GET['activation_key'])){
-                                            //check activation key
-                                            if (activate_user($_GET['activation_key'])){
-                                                echo "<p>Your account is activated</p>";
-                                                echo "<a href='/wp-admin'>click to login</a>";
-                                            }else{
-                                                echo "<p>Your account is already activated</p>";
-                                            }
-
-                                        }else{
-                                            echo "geen activatie key";
-                                        }
-
-                                ?>
+                <?php
+                    if (isset($_GET['activation_key'])){
+                        //check activation key
+                        if (activate_user($_GET['activation_key'])) {
+                            echo "<p>Your account is activated</p>";
+                            echo "<a href='" . wp_login_url(site_url() . "/my-dashboard/") . "'>click to login</a>";
+                        } else {
+                            echo "<p>Your account is already activated</p>";
+                        }
+                    } else {
+                        echo "geen activatie key";
+                    }
+                ?>
 			</header>
 			<div class="twocolumns-frame">
 				<!-- content -->
