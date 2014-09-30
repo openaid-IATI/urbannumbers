@@ -550,12 +550,41 @@ function vb_reg_new_user() {
     //execute post
     $result = curl_exec($ch);
 
-
-
+    $info = null;
+    if(!curl_errno($ch))
+    {
+        $info = curl_getinfo($ch);
+    }
+    
     //close connection
     curl_close($ch);
     //we should not create a new user. This is the responsibility of the SSO plugin
     //$user_id = wp_insert_user($userdata);
+
+    if ($info == null) {
+        echo json_encode(array('status' => 'error', 'message' => 'Registration error occured. Please try again later.'));
+    } else {
+        if ($info['http_code'] == 201) {
+            echo json_encode(array(
+                'status' => 'ok',
+                'message' => 'Successfully registered. Now you can <a href="' . wp_login_url(site_url() . "/my-dashboard/") . '">log in</a>.'
+            ));
+        } else {
+            $error_keys = array();
+            $messages = array();
+            foreach (json_decode($result, true) as $type => $_data) {
+                foreach ($_data as $key => $value) {
+                    if (!in_array($key, $error_keys)) {
+                        $error_keys[] = $key;
+                        $messages[] = join('<br />', $value);
+                    }
+                }
+            }
+            echo json_encode(array('status' => 'error', 'message' => join('<br />', $messages)));
+        }
+    }
+
+    die();
 
     // Return
     if (!isset($user_id)) {

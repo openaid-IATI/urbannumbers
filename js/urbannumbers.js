@@ -300,20 +300,18 @@ $('#ur-registration').submit(function(e) {
 
     var ajax_url = vb_reg_vars.vb_ajax_url;
     $.post(ajax_url, data, function(response) {
-	display_success("Successfully registered. Now you can <a href='" + LOGIN_URL + "'>log in</a>.");
-    }).fail(function(e) {
-	//try {
-	    var response = JSON.parse(e.responseText);
-		var _msg = [];
-		$.each(response.profile, function(field, error) {
-		    _msg.push(error.join());
-		});
-		display_error(_msg.join("<br />"));
-	    //}
-	//} catch(e2) {
-        //    display_error("Unable to reach registration database. Please try later.");
-	//}
-        
+        if (response.status == 'ok') {
+            display_success(response.message);
+        } else {
+            display_error(response.message);
+        }
+    }, 'json').fail(function(e) {
+        var response = JSON.parse(e.responseText);
+        var _msg = [];
+        $.each(response.profile, function(field, error) {
+            _msg.push(error.join());
+        });
+        display_error(_msg.join("<br />"));
     });
 });
 
