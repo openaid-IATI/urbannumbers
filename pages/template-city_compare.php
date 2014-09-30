@@ -92,14 +92,16 @@ get_header(); the_post(); ?>
 
 
     <?php get_template_part("footer", "scripts"); ?>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compare.js"></script>
 
     <script>
 
         Oipa.pageType = "compare";
         Oipa.mainSelection = new OipaCompareSelection(1);
         Oipa.mainSelection.indicator_options = {
-            chart_class: OipaBarChart,
-            chart_reset: true
+            chart_class: OipaCompareBarChart,
+            chart_reset: true,
+            all_years: true
         }
 
         // Force refresh

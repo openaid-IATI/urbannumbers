@@ -524,7 +524,7 @@ function OipaActiveChart(id, options) {
     }
 
     // TODO: optimize this crap, it gets slow even with 3 indicators
-    this.format_year_data = function(data, year, limit){
+    this.format_year_data = function(data, year, limit) {
         var self = this;
         if (year == null) {
             year = self.get_last_data_year(data);
