@@ -41,9 +41,16 @@ function UnhabitatInMapOipaIndicatorFilters() {
                     var _data = filter.get_raw_data();
                     if (_data !== null) {
                         var _category_counts = {
-                            'Publicspaces': 0,
+                            'Population': 0,
                             'Cityprosperity': 0,
                             'Slumdwellers': 0,
+                            'Streets': 0,
+                            'Transport': 0,
+                            'Health': 0,
+                            'Resilience': 0,
+                            'Education': 0,
+                            'Crime': 0,
+                            'Landarea': 0,
                             'Other': 0
                         };
                         $.each(value, function(_k, _v) {
