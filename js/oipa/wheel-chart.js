@@ -110,13 +110,14 @@ function OipaWheelChart(id, options) {
         };
 
         var ctx = $("div.widget[data-indicator='" + self.indicator + "'] canvas").get(0);
-        //
-        // $(".heading-holder[data-indicator='" + self.indicator + "']").find('h3').each(function(_, node) {
-        //     node.innerHTML = data.indicator_friendly;
-        // });
 
-        self.chart_obj = new Chart(ctx.getContext("2d"), {showScale: false});
-        self.chart = self.init_chart(chart_data);
+        if (self.chart == undefined) {
+            self.chart_obj = new Chart(ctx.getContext("2d"), {showScale: false});
+            self.chart = self.init_chart(chart_data);
+        } else {
+            self.chart.destroy();
+            self.chart = self.init_chart(chart_data);
+        }
         $("#legend").html(self.chart.generateLegend());
     }
 
