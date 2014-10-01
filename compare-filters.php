@@ -21,30 +21,7 @@
 						</div>
 					</li>
 					*/ ?>
-					<li>
-						<a class="opener" href="#"><i class="icon-share"></i>SHARE</a>
-						<div class="dropdown-box">
-							<span class="heading">Share</span>
-							<ul class="social-networks">
-								<li><a href="#" class="icon-facebook">facebook</a></li>
-								<li><a href="#" class="icon-twitter">twitter</a></li>
-								<li><a href="#" class="icon-linkedin">linkedin</a></li>
-								<li><a href="#" class="icon-google">google</a></li>
-								<li><a href="#" class="icon-mail">mail</a></li>
-							</ul>
-							<form action="#">
-								<fieldset>
-									<label for="item1">Share link</label>
-									<div class="input-wrap"><input id="item1" class="form-control" type="text" placeholder="http://goo.gl/vhjKBq"></div>
-									<label for="item2" class="code">Embed code</label>
-									<div class="input-wrap"><input id="item2" class="form-control" type="text" placeholder="example embed code"></div>
-									<div class="btn-holder">
-										<button type="submit" class="btn btn-blue btn-close">Cancel</button>
-									</div>
-								</fieldset>
-							</form>
-						</div>
-					</li>
+                    <?php get_template_part("share", "widget"); ?>
 				</ul>
 				<div class="row">
 					<div class="col-md-6 col-sm-6 col-xs-6">

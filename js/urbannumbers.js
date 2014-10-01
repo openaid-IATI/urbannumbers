@@ -340,13 +340,46 @@ $('.save-infographic').click(function(e) {
     }
 });
 
-$('.save-filters').click(function(e) {
+$('.share-btn').click(function(e) {
     e.preventDefault();
 
-    var _keys = ['cities', 'countries', 'regions', 'indicators'];
-    console.log($.map(_keys, function(key) {
-        return key + '=' + $.map(filter.selection[key], function(indicator) {
-            return indicator.id;
-        }).join(',')
-    }).join('&'));
+    if ($('.share-widget-input').val().trim() !== '') {
+        return;
+    }
+
+    var _socials = {
+        facebook: function(url) {
+            return 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+        },
+        linkedin: function(url, title) {
+            return 'http://www.linkedin.com/shareArticle?mini=true&url=' + url + '&title=' + title + '&summary=' + title;
+        },
+        twitter: function(url, title) {
+           return  'http://twitter.com/home?status=' + title + ' ' + url;
+        },
+        google: function(url, title) {
+            return 'https://plus.google.com/share?url=' + title + ' ' + url;
+        }
+    }
+
+    var _set_share_url = function(url) {
+        $('.share-widget-input').val(url);
+        
+        var _title = (document.title.trim() !== '') ? document.title : 'UN-Habitat #opendata city data made accessible';
+
+        $.each(_socials, function(name, func) {
+            $('.share-widget .icon-' + name).attr('href', func(url, _title));
+        });
+    }
+
+
+    var b = new jQuery.Bitly({login: 'ngaranko', key: 'R_f120a4d6170b11df97f5fd128cc3feab'});
+    b.shorten(window.location.href, {
+        onSuccess: function(short_url) {
+            _set_share_url(short_url);
+        },
+        onError: function(data) {
+            _set_share_url(window.location.href);
+        }
+    });
 })

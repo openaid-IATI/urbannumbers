@@ -124,21 +124,24 @@ function OipaCountry() {
 
         for (var i = 0;i < this.polygon.coordinates.length;i++){
             for (var y = 0;y < this.polygon.coordinates[i].length;y++){
-                curlat = this.polygon.coordinates[i][y][1];
-                curlng = this.polygon.coordinates[i][y][0];
+                for (var x  =0; x < this.polygon.coordinates[i][y].length; x++) {
 
-                if (first){
-                    minlat = curlat;
-                    maxlat = curlat;
-                    minlng = curlng;
-                    maxlng = curlng;
-                    first = false;
+                    curlat = this.polygon.coordinates[i][y][x][1];
+                    curlng = this.polygon.coordinates[i][y][x][0];
+
+                    if (first){
+                        minlat = curlat;
+                        maxlat = curlat;
+                        minlng = curlng;
+                        maxlng = curlng;
+                        first = false;
+                    }
+
+                    if (curlat < minlat){ minlat = curlat; }
+                    if (curlat > maxlat){ maxlat = curlat; }
+                    if (curlng < minlng){ minlng = curlng; }
+                    if (curlng > maxlng){ maxlng = curlng; }
                 }
-
-                if (curlat < minlat){ minlat = curlat; }
-                if (curlat > maxlat){ maxlat = curlat; }
-                if (curlng < minlng){ minlng = curlng; }
-                if (curlng > maxlng){ maxlng = curlng; }
             }
         }
         return [[minlat, minlng],[maxlat, maxlng]];
@@ -170,7 +173,12 @@ function OipaCountry() {
     }
 
     this.update_population = function(year, type, selector) {
-        var population = Math.round(map.circles.locations[country.id][type].years[year]) * 1000;
+        var population;
+        if (map.circles.locations[country.id][type] !== undefined) {
+            population = Math.round(map.circles.locations[country.id][type].years[year]) * 1000;
+        } else {
+            population = NaN;
+        }
         if (isNaN(population)) {
             $(selector).html("N/A");
         } else {

@@ -738,3 +738,32 @@ form.registration-form span.input-placeholder-text {
 .visual .text-holder>.btn {
     background: #56C6C8;
 }
+
+
+.container-sort.share-hover {
+    position: absolute;
+    width: 80px;
+    right: 130px;
+    padding: 3px 0 3px;
+    top: 17px;
+    z-index: 9999;
+    border-bottom: 0px;
+    background: linear-gradient(to bottom, #626882 0%,#383d4d 100%);
+    border-radius: 4px;
+}
+.container-sort.share-hover:after {
+    display: none;
+}
+
+.container-sort.share-hover .action-list {
+    padding: 0px;
+    margin-top: 5px;
+}
+
+.container-sort.share-hover .action-list a {
+    color: #FFF;
+    font-weight: normal;
+}
+.container-sort.share-hover .action-list a i.icon-share {
+    display: none;
+}

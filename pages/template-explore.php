@@ -14,7 +14,6 @@ get_header(); the_post(); ?>
                     <div class="sort-holder">
                         <div class="map-indicator-header">
                             <a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i> MAP FILTERS</a>
-                            <a href="#" class="save-filters">Save</a>
                             <a href="#" id="reset-filters" class="btn btn-default reset-button">Reset</a></div>
                         <ul class="sort-list">
                             <li class="Cityprosperity-li">
@@ -132,6 +131,11 @@ get_header(); the_post(); ?>
                         </ul>
                     </div>
                 </div>
+            <div class="container-sort share-hover">
+                    <ul class="action-list">
+                        <?php get_template_part("share", "widget"); ?>
+                    </ul>
+            </div>
             <?php 
             $curmapname = "main";
             include( TEMPLATEPATH .'/map.php' ); 
