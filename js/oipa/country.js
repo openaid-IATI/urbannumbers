@@ -124,9 +124,8 @@ function OipaCountry() {
 
         for (var i = 0;i < this.polygon.coordinates.length;i++){
             for (var y = 0;y < this.polygon.coordinates[i].length;y++){
-                
-                curlat = this.polygon.coordinates[i][0][y][1];
-                curlng = this.polygon.coordinates[i][0][y][0];
+                curlat = this.polygon.coordinates[i][y][1];
+                curlng = this.polygon.coordinates[i][y][0];
 
                 if (first){
                     minlat = curlat;
@@ -142,11 +141,10 @@ function OipaCountry() {
                 if (curlng > maxlng){ maxlng = curlng; }
             }
         }
-
         return [[minlat, minlng],[maxlat, maxlng]];
     }
 
-    this.init_country_page = function(){
+    this.init_country_page = function() {
         // use polygon to get outter bounds -> to zoom in
         map.map.setView(this.center_longlat);
         var bounds = this.get_markers_bounds();
