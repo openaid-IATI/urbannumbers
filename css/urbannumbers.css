@@ -742,7 +742,7 @@ form.registration-form span.input-placeholder-text {
 
 .container-sort.share-hover {
     position: absolute;
-    width: 80px;
+    width: 60px;
     right: 130px;
     padding: 3px 0 3px;
     top: 17px;
@@ -756,8 +756,14 @@ form.registration-form span.input-placeholder-text {
 }
 
 .container-sort.share-hover .action-list {
+    right: 0px;
+    margin-left: 5px;
+    width: 40px;
+    position: relative;
     padding: 0px;
-    margin-top: 5px;
+    margin-top: 0px;
+    font: 11px/21px 'HelveticaNeueW02-55Roma',arial,sans-serif;
+    text-align: right;
 }
 
 .container-sort.share-hover .action-list a {

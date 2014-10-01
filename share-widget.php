@@ -1,5 +1,5 @@
 <li>
-    <a class="opener share-btn" href="#"><i class="icon-share"></i>SHARE</a>
+    <a class="opener share-btn" href="#"><i class="icon-share"></i>Share</a>
     <div class="dropdown-box share-widget">
         <span class="heading">Share</span>
         <ul class="social-networks">
