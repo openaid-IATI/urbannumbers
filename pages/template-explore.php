@@ -30,12 +30,68 @@ get_header(); the_post(); ?>
                                 <ul class="Slumdwellers-list subul">
                                 </ul>
                             </li>
-                            <li class="Publicspaces-li">
+                            <li class="Population-li">
                                 <div>
                                     <i class="map-indicator-filter-icon icon-blue"></i>
-                                    <a name="Publicspaces" class="opener filter-open" href="#"><label class="top">Public spaces</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    <a name="Population" class="opener filter-open" href="#"><label class="top">Population</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
                                 </div>
-                                <ul class="Publicspaces-list subul">
+                                <ul class="Population-list subul">
+                                </ul>
+                            </li>
+                            <li class="Streets-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Streets" class="opener filter-open" href="#"><label class="top">Streets</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Streets-list subul">
+                                </ul>
+                            </li>
+                            <li class="Transport-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Transport" class="opener filter-open" href="#"><label class="top">Transport</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Transport-list subul">
+                                </ul>
+                            </li>
+                            <li class="Health-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Health" class="opener filter-open" href="#"><label class="top">Health</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Health-list subul">
+                                </ul>
+                            </li>
+                            <li class="Resilience-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Resilience" class="opener filter-open" href="#"><label class="top">Resilience</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Resilience-list subul">
+                                </ul>
+                            </li>
+                            <li class="Education-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Education" class="opener filter-open" href="#"><label class="top">Education</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Education-list subul">
+                                </ul>
+                            </li>
+                            <li class="Crime-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Crime" class="opener filter-open" href="#"><label class="top">Crime</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Crime-list subul">
+                                </ul>
+                            </li>
+                            <li class="Landarea-li">
+                                <div>
+                                    <i class="map-indicator-filter-icon icon-blue"></i>
+                                    <a name="Landarea" class="opener filter-open" href="#"><label class="top">Landarea</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                </div>
+                                <ul class="Landarea-list subul">
                                 </ul>
                             </li>
                             <li class="Other-li">

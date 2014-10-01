@@ -136,9 +136,9 @@ function UnhabitatOipaCompareFilters(){
 	this.get_url = function(selection, parameters_set) {
 		// get url from filter selection object
 		if (parameters_set){
-			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&adm_division__in=city" + parameters_set;
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Population,City%20prosperity,Slum%20dwellers,Streets,Transport,Health,Resilience,Education,Crime,Land%20area&adm_division__in=city" + parameters_set;
 		} else {
-			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&adm_division__in=city&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+			var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Population,City%20prosperity,Slum%20dwellers,Streets,Transport,Health,Resilience,Education,Crime,Land%20area&adm_division__in=city&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
 		}
 		
 		return cururl;
@@ -151,13 +151,16 @@ function UnhabitatOipaIndicatorFilters() {
     this.get_url = function(selection, parameters_set){
         // get url from filter selection object
         if (parameters_set){
-            var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity" + parameters_set;
+            var cururl = search_url + "indicator-filter-options/?format=json&categories__in=Population,City%20prosperity,Slum%20dwellers,Streets,Transport,Health,Resilience,Education,Crime,Land%20area" + parameters_set;
         } else {
             var cururl = search_url + "indicator-filter-options/?format=json";//"&categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity&indicators__in=" + get_indicator_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
         }
         
         return cururl;
     };
+
+    
+
 
     this.reset_filters = function(){
         jQuery("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
