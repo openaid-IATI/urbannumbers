@@ -129,19 +129,26 @@ filter.selection = Oipa.mainSelection;
 filter.selection.indicator_options = {
     chart_class: OipaCountryPieChart
 }
-<?php
-if (!(count($indicators))) { ?>
+<?php if (count($indicators)): ?>
+    <?php foreach($indicators as $k => $indicator): ?>
+    filter.selection.add_indicator("<?php echo $indicator; ?>", "Total population", "indicators");
+    <?php endforeach; ?>
+<?php else: ?>
     filter.selection.add_indicator("population", "Total population", "indicators");
     filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
     filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");
     filter.selection.add_indicator("rural_population", "Rural population", "indicators");
     filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");
     filter.selection.add_indicator("total_length_road", "Total length roadwork", "indicators");
-<?php } 
+<?php endif; ?>
 
-if (!(count($countries))) { ?>
+<?php if (count($countries)): ?>
+  <?php foreach($countries as $k => $code): ?>
+  filter.selection.update_selection("countries", "<?php echo $code; ?>", "Kenya", "countries");
+  <?php endforeach; ?>
+<?php else: ?>
     filter.selection.update_selection("countries", "KE", "Kenya", "countries");
-<?php } ?>
+<?php endif; ?>
 
 
 filter.init();

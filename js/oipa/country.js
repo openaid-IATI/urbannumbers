@@ -94,7 +94,7 @@ function OipaCountry() {
                             color = "#008b85";
                             radius = 30000;
                             opacity = 0.7;
-                            if (loc.name == thiscountry.capital_city.name){
+                            if (thiscountry.capital_city !== null && loc.name == thiscountry.capital_city.name){
                                 color = "#f06002";
                                 radius = 50000;
                                 opacity = 0.9;
@@ -224,8 +224,7 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
         });
     }
 
-
-    self.visualize_chart = function(chart_data, chart_id) {;
+    self.visualize_chart = function(chart_data, chart_id) {
         var _transform_func = self.opt("overlay_transform", function(chart_id_data) {
             return chart_id_data.value;
         });
