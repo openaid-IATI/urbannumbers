@@ -339,3 +339,14 @@ $('.save-infographic').click(function(e) {
         });
     }
 });
+
+$('.save-filters').click(function(e) {
+    e.preventDefault();
+
+    var _keys = ['cities', 'countries', 'regions', 'indicators'];
+    console.log($.map(_keys, function(key) {
+        return key + '=' + $.map(filter.selection[key], function(indicator) {
+            return indicator.id;
+        }).join(',')
+    }).join('&'));
+})

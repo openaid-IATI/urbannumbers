@@ -12,7 +12,10 @@ get_header(); the_post(); ?>
             <div id="map-wrapper">
                 <div id="map-indicator-filter-wrapper">
                     <div class="sort-holder">
-                        <div class="map-indicator-header"><a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i> MAP FILTERS</a><a href="#" id="reset-filters" class="btn btn-default reset-button">Reset</a></div>
+                        <div class="map-indicator-header">
+                            <a href="javascript:void(0)"><i class="glyphicon glyphicon-align-justify"></i> MAP FILTERS</a>
+                            <a href="#" class="save-filters">Save</a>
+                            <a href="#" id="reset-filters" class="btn btn-default reset-button">Reset</a></div>
                         <ul class="sort-list">
                             <li class="Cityprosperity-li">
                                 <div>

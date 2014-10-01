@@ -103,6 +103,7 @@ get_header(); the_post(); ?>
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     
     var map = new OipaIndicatorMap();
+    map.max_circle_size = 5000;
     map.set_map("main-map");
     map.init();
     

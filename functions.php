@@ -787,6 +787,30 @@ function favorite_visualisation() {
 	die(); 
 }
 
+
+add_action( 'wp_ajax_favorite_filters', 'favorite_filters' );
+add_action( 'wp_ajax_nopriv_favorite_filters', 'favorite_filters' );
+function favorite_filters() {
+    // check if user is logged in, else return status log_in_first
+    if ( !(is_user_logged_in()) ) {
+        wp_send_json(array("status" => "log_in_first"));
+        die();
+    }
+
+    $data = array(
+        'cities' => clean_post('cities', ''),
+        'countries' => clean_post('countries', ''),
+        'regions' => clean_post('regions', ''),
+        'indicators' => clean_post('indicators')
+    );
+
+    var_dump($data);
+
+    // save visdata to usermeta
+    wp_send_json(array("status" => "saved"));
+    die(); 
+}
+
 add_action( 'wp_ajax_unfavorite_visualisation', 'unfavorite_visualisation' );
 add_action( 'wp_ajax_nopriv_unfavorite_visualisation', 'unfavorite_visualisation' );
 
@@ -913,3 +937,11 @@ function un_admin_bar($content) {
     return ( current_user_can( 'moderate_comments' ) ) ? $content : false;
 }
 add_filter( 'show_admin_bar' , 'un_admin_bar');
+
+
+function clean_post($key, $default='') {
+    if (isset($_POST[$key]) && !empty($_POST[$key])) {
+        return sanitize_text_field($_POST[$key]);
+    }
+    return $default;
+}
