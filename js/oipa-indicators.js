@@ -168,6 +168,7 @@ var OipaCompare = {
 
 function OipaIndicatorMap(use_legend) {
     OipaMap.call(this, use_legend);
+    this.max_circle_size = 100000000000;
     this._url_data_cache = {};
 
         this.indicatordata = {};
@@ -420,7 +421,7 @@ function OipaIndicatorMap(use_legend) {
         };
 
         this.refresh_circles = function(year){
-
+            var self = this;
                 var circles = this.circles;
                 //var maxcirclearea = 5000000000000;
                   var maxcirclearea = 700000000000;
@@ -500,16 +501,19 @@ function OipaIndicatorMap(use_legend) {
                                                                 var circle = cvalue[ikey].circle;
                                                                 var score = cvalue[ikey].years[curyear];
 
-                                                                if (!(score === undefined)){
+                                                                if (!(score === undefined)) {
                                                                         circle_radius = Math.round(Math.sqrt(((Math.round(maxcirclearea / ivalue.max_value)) * score) / Math.PI));
+                                                                        if (circle_radius > self.max_circle_size) {
+                                                                            circle_radius = self.max_circle_size;
+                                                                        }
                                                                         circle.setRadius(circle_radius);
                                                                 } else {
                                                                   //circle.setRadius(1);
                                                                 }
-                                                                circle.bindPopup(popuptext);       
+                                                                circle.bindPopup(popuptext);
                                                         }
                                                 });
-                                        }catch(err){
+                                        } catch(err) {
 
                                                 //console.log(err);
                                         }
