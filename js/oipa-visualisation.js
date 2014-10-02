@@ -556,7 +556,12 @@ function OipaActiveChart(id, options) {
             if (data_slice[0].value !== undefined) {
                 // Update dataset only if data available for this year
                 base_data.labels = $.map(data_slice, function(loc, _) { return loc.name;});
-                base_data.datasets[0].data = $.map(data_slice, function(loc, _) { return loc.value;});
+                base_data.datasets[0].data = $.map(data_slice, function(loc, _) {
+                    if (data.type_data == '1000') {
+                        return loc.value * 1000;
+                    }
+                    return loc.value;
+                });
             }
         }
 
@@ -585,7 +590,10 @@ function OipaActiveChart(id, options) {
 
     this.init_chart = function(chart_data) {
         // Defaults to Line
-        return this.chart_obj.Line(chart_data);
+        return this.chart_obj.Line(chart_data, {
+                tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%><%= humanReadableSize(value) %>"
+            });
     }
 
     this.get_chart_points = function(chart) {
@@ -715,11 +723,13 @@ function OipaBarChart(id, options) {
     OipaActiveChart.call(this, id, options);
     this.type = "OipaBarChart";
     this.init_chart = function(chart_data) {
-        var _opts = {};
+        var _opts = {
+            tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
+        };
         if (this.opt('all_years')) {
             _opts = {
-                tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>",
-                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>"
+                tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= humanReadableSize(value) %>",
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= humanReadableSize(value) %>"
             };
         }
         return this.chart_obj.Bar(chart_data, _opts);
