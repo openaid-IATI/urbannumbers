@@ -663,36 +663,32 @@ add_filter('login_redirect', 'numbers_login_redirect', 10, 3);
 
 function vb_registration_form() {
     ?>
-
     <div class="vb-registration-form">
-
         <div class="alert result-message"></div>
         <form class="form-horizontal registration-form" id="ur-registration" role="form">
 
             <div class="form-group">
-                <label for="vb_email" class="sr-only">Your Email</label>
+                <label for="vb_email">Your Email</label>
                 <input type="email" name="vb_email" id="vb_email" value="" placeholder="Your Email" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label for="vb_pass" class="sr-only">Choose Password</label>
+                <label for="vb_pass">Choose Password</label>
                 <input type="password" name="vb_pass" id="vb_pass" value="" placeholder="Choose Password" class="form-control" />
-                <span class="help-block">Minimum 8 characters</span>
             </div>
 
             <div class="form-group">
-                <label for="vb_pass2" class="sr-only">Confirm Password</label>
+                <label for="vb_pass2">Confirm Password</label>
                 <input type="password" name="vb_pass2" id="vb_pass2" value="" placeholder="Confirm Password" class="form-control" />
-                <span class="help-block">Minimum 8 characters</span>
             </div>
 
             <div class="form-group">
-                <label for="vb_first_name" class="sr-only">Your First name</label>
+                <label for="vb_first_name">Your First name</label>
                 <input type="text" name="vb_first_name" id="vb_first_name" value="" placeholder="First name" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label for="vb_last_name" class="sr-only">Your Last name</label>
+                <label for="vb_last_name">Your Last name</label>
                 <input type="text" name="vb_last_name" id="vb_last_name" value="" placeholder="Last name" class="form-control" />
             </div>
 

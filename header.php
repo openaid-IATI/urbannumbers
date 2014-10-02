@@ -44,86 +44,30 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 
 <div id="hoover-wrapper"></div>
 <div id="urbannumbers-login">
-	<div class="standard-page-content page-login">
-		<a class="close-login" href="#"><div class="glyphicon glyphicon-remove"></div></a>
+    <div class="standard-page-content page-login">
+        
+        <h1>Start saving projects to dashboard by signing in.<a class="close-login" href="#"><span class="glyphicon glyphicon-remove"></span></a></h1>
 
-		<?php 
-		$form_action = site_url() . "/wp-login.php";
-        $login_error = false;
+        <div class="row bttns">
+            <div class="col-md-4">
+                <a href="<?php echo wp_login_url( $login_redirect ); ?>">Urban Numbers</a>
+            </div>
+            <?php do_action( 'wordpress_social_login' ); ?>
+        </div>
 
-		if (isset($_GET["login"])){
-			if($_GET["login"] == "failed"){
-                $login_error = true;
-			} 
-		}
-		?>
-
-		<div class="row">
-			<div class="col-md-12">
-				<div class="sidebar-login-form-login-error alert alert-danger" <?php echo ($login_error ? "" : "style='display:none;'"); ?>>
-					The entered username or password incorrect.
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<h1>Log in</h1>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-                <div id="sidebar-login-form-placeholder">
-		  <a href="<?php echo wp_login_url( $login_redirect ); ?>">Sign in</a>
-                </div>
-                <?php do_action( 'wordpress_social_login' ); ?>
-			</div>
-		</div>
-
-		
-		<div class="row">
-			<div class="col-md-12">
-				<div class="dotted-wrapper">
-				  <span style="background-color: white; position: relative;">
-				    <?php _e( 'Or', 'urbannumbers' ); ?>
-				  </span>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<div class="login-register">
-					<a id="register-button" href="<?php echo site_url(); ?>/register/"><?php _e( 'Register', 'urbannumbers' ); ?></a>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<div class="login-socialauth"><?php // do_action( 'wordpress_social_login' ); ?> </div>
-			</div>
-		</div>
-	</div>
+        <div class="row register">
+            <div class="col-md-12">
+                <a id="register-button" href="<?php echo site_url(); ?>/register/">Or register with Urban Numbers</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="urbannumbers-register">
-		<a class="close-login" href="#"><div class="glyphicon glyphicon-remove"></div></a>
+    <h1>Register<a class="close-login" href="#"><span class="glyphicon glyphicon-remove"></span></a></h1>
 
-		<div class="row">
-			<div class="col-md-12">
-				<h1>Register</h1>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<?php vb_registration_form(); ?>
-			</div>
-		</div>
-	</div>
-	
+                <?php vb_registration_form(); ?>
+    
 </div>
 
 
