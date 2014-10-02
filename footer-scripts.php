@@ -30,7 +30,7 @@ var register_url = "http://localhost:18088/rest-auth/register/";
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets-bus.js"></script>
 
 <?php
-if (!empty($_GET['action']) && $_GET['action'] == 'login' || 1) {
+if (!empty($_GET['action']) && $_GET['action'] == 'login') {
 ?>
 <script type="text/javascript">
 $(function() {
