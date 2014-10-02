@@ -142,7 +142,7 @@ filter.selection.indicator_options = {
     <?php endforeach; ?>
 <?php else: ?>
     filter.selection.add_indicator("population", "Total population", "indicators");
-    filter.selection.update_selection("indicators", "urban_population_countries", "Urban population", "indicators", {all_years: true});
+    filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
     filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
     filter.selection.add_indicator("slum_proportion_living_urban", "Urban population", "indicators");
     filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");

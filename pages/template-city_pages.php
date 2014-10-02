@@ -101,6 +101,7 @@ get_header(); the_post(); ?>
     
     Oipa.pageType = "indicator-country-page";
     Oipa.mainSelection = new OipaIndicatorSelection(1);
+    Oipa.invisible_visualizations = ['land_allocated_to_street_index_city_core', 'cpi_6_dimensions'];
     
     var map = new OipaIndicatorMap();
     map.max_circle_size = 5000;
@@ -125,11 +126,12 @@ get_header(); the_post(); ?>
     <?php if (!count($indicators)): ?>
         filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
         filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban slum population", "indicators");
+        filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
         filter.selection.add_indicator("slum_proportion_living_urban", "Rural population", "indicators");
         filter.selection.add_indicator("cpi_6_dimensions", "City Prosperity", "indicators");
     <?php else: ?>
     <?php foreach ($indicators as $id => $indicator): ?>
-        filter.selection.add_indicator("<?php echo $indicator; ?>", "Rural population", "indicators");
+        filter.selection.add_indicator("<?php echo $indicator; ?>", "Loading...", "indicators");
     <?php endforeach; ?>
     <?php endif; ?>
 
