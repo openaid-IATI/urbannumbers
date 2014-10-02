@@ -112,6 +112,13 @@ get_header(); the_post(); ?>
 
 Oipa.pageType = "indicator-country-page";
 Oipa.mainSelection = new OipaIndicatorSelection(1);
+Oipa.invisible_visualizations = [
+    'population',
+    'urban_slum_population_countries',
+    'rural_population',
+    'cpi_4_dimensions',
+    'total_length_road'
+];
 
 var map = new OipaIndicatorMap();
 
@@ -127,7 +134,7 @@ filter.filter_wrapper_div = "indicator-filter-wrapper";
 filter.selection = Oipa.mainSelection;
 
 filter.selection.indicator_options = {
-    chart_class: OipaCountryPieChart
+    chart_class: OipaCountryPieChart,
 }
 <?php if (count($indicators)): ?>
     <?php foreach($indicators as $k => $indicator): ?>
@@ -135,7 +142,9 @@ filter.selection.indicator_options = {
     <?php endforeach; ?>
 <?php else: ?>
     filter.selection.add_indicator("population", "Total population", "indicators");
-    filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
+    filter.selection.update_selection("indicators", "urban_population_countries", "Urban population", "indicators", {all_years: true});
+    filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
+    filter.selection.add_indicator("slum_proportion_living_urban", "Urban population", "indicators");
     filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");
     filter.selection.add_indicator("rural_population", "Rural population", "indicators");
     filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");

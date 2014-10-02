@@ -128,6 +128,7 @@ var Oipa = {
 		}
 	},
 	visualisations : {},
+    invisible_visualizations: [],
 	refresh_visualisations : function(){
 		// remove old visualisation blocks
 		//this.visualisations = [];
@@ -194,6 +195,10 @@ var Oipa = {
         data = this.prefill_blank_visualisations(data);
         // for each indicator
         jQuery.each(data, function(key, value) {
+            if (thisoipa.invisible_visualizations.indexOf(value.id) !== -1) {
+                return;
+            }
+            
             if (thisoipa.visualisations[value.id] == undefined) {
                 // create line chart
                 var _chart_class = OipaLineChart;

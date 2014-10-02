@@ -267,10 +267,9 @@ OipaCountryPieInfographicsVis.prototype = Object.create(OipaPieInfographicsVis.p
 
 function OipaCountryPieChart(id, options) {
     var self = this;
-    OipaPieChart.call(self, id, options);
+    OipaBarChart.call(self, id, options);
 
-
-    self.format_year_data = function(data, year, limit) {
+    /*self.format_year_data = function(data, year, limit) {
         if (year == null) {
             year = self.get_last_data_year(data);
         }
@@ -291,6 +290,6 @@ function OipaCountryPieChart(id, options) {
                 };
             });
         }
-    }
+    }*/
 }
-OipaCountryPieChart.prototype = Object.create(OipaPieChart.prototype);
+OipaCountryPieChart.prototype = Object.create(OipaBarChart.prototype);
