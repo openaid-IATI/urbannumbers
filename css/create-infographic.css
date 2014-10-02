@@ -62,9 +62,9 @@
 }
 
 .sort-list.tabs-header li {
-    font: 18px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font: 12px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
     color: #00b1b5;
-    padding: 10px 25px;
+    padding: 6px 15px 0 15px;
     background: #7fd8d9;
     border: 1px solid #7fd8d9;
     border-bottom: 1px solid #dfdfdf;

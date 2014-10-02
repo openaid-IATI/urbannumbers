@@ -131,14 +131,49 @@ get_header(); the_post(); ?>
                                     <a name="Slumdwellers" class="opener filter-open" href="#"><label class="top">Slum dwellers</label> <span class="counts"></span></a>
                                 </div>
                             </li>
-                            <li class="Publicspaces-li">
+                            <li class="Population-li">
                                 <div>
-                                    <a name="Publicspaces" class="opener filter-open" href="#"><label class="top">Public spaces</label> <span class="counts"></span></a>
+                                    <a name="Population" class="opener filter-open" href="#"><label class="top">Population</label></span><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Streets-li">
+                                <div>
+                                    <a name="Streets" class="opener filter-open" href="#"><label class="top">Streets</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Transport-li">
+                                <div>
+                                    <a name="Transport" class="opener filter-open" href="#"><label class="top">Transport</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Health-li">
+                                <div>
+                                    <a name="Health" class="opener filter-open" href="#"><label class="top">Health</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Resilience-li">
+                                <div>
+                                    <a name="Resilience" class="opener filter-open" href="#"><label class="top">Resilience</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Education-li">
+                                <div>
+                                    <a name="Education" class="opener filter-open" href="#"><label class="top">Education</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Crime-li">
+                                <div>
+                                    <a name="Crime" class="opener filter-open" href="#"><label class="top">Crime</label><span class="counts"></span></a>
+                                </div>
+                            </li>
+                            <li class="Landarea-li">
+                                <div>
+                                    <a name="Landarea" class="opener filter-open" href="#"><label class="top">Landarea</label><span class="counts"></span></a>
                                 </div>
                             </li>
                             <li class="Other-li">
                                 <div>
-                                    <a name="Other" class="opener filter-open" href="#"><label class="top">Other Date</label> <span class="counts"></span></a>
+                                    <a name="Other" class="opener filter-open" href="#"><label class="top">Other Data</label> <span class="counts"></span></a>
                                 </div>
                             </li>
                         </ul>
@@ -149,7 +184,28 @@ get_header(); the_post(); ?>
                             <div class="Slumdwellers-list subul">
                             </div>
 
-                            <div class="Publicspaces-list subul">
+                            <div class="Population-list subul">
+                            </div>
+
+                            <div class="Streets-list subul">
+                            </div>
+
+                            <div class="Transport-list subul">
+                            </div>
+
+                            <div class="Health-list subul">
+                            </div>
+
+                            <div class="Resilience-list subul">
+                            </div>
+
+                            <div class="Education-list subul">
+                            </div>
+
+                            <div class="Crime-list subul">
+                            </div>
+
+                            <div class="Landarea-list subul">
                             </div>
 
                             <div class="Other-list subul">
