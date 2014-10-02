@@ -165,31 +165,18 @@
   user-select: none;
   cursor: pointer;
   font-family: 'HelveticaNeueW01-75Bold';
-  margin-left: -1.68em;
-  bottom:0.4em;
-  border: 1px solid #D3D3D3;
-  background-color: white;
-  color: #505D59;
-  font-size: 1.7em;
+  color: #FFF;
+  font-size: 2em;
   z-index: 2;
-  padding: 0.5em;
-
-   -webkit-box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
-   -moz-box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
-   box-shadow:0 6px 9px rgba(0, 0, 0, 0.7);
+  padding: 0.7em;
+  background: url('../images/slider-urban-nrs.png') top left no-repeat;
+  width: 150px;
+  height: 85px;
+  margin-left: -73px;
+  margin-top: -10px;
+  text-align: center;
 }
 
-#map-slider-tooltip a > div:before {
-  position: absolute;
-  display: inline-block;
-  border-left: 0.6em solid transparent;
-  border-top: 1.3em solid #FFF;
-  border-right: 0.6em solid transparent;
-  left: -0.62em;
-  top: 1.6em;
-  content: '';
-
-}
 
 #visualisation-block-wrapper .widget{
   width: 100%;
