@@ -79,7 +79,7 @@ get_header(); the_post();
 
             <div class="container-custom">
                 <h2>Welcome to Urban Numbers</h2>
-                <p>Pellentesque tristique tempor orci, eget finibus sapien scelerisque non. Donec tincidunt quam ligula. Vivamus aliquam porttitor quam a molestie. Mauris interdum porttitor nisi, id ullamcorper eros consectetur at. Nulla facilisi. Phasellus tristique leo nibh, vitae tincidunt neque mollis eget. Sed eget nulla commodo, semper justo vitae, lacinia lacus. Aenean id ipsum vel sapien aliquet sagittis.</p>
+                <p>Your dashboard contains items you have created and favourites from this platform. You can click on the items in the list or remove them. If you no longer wish to make use of this platform, simply remove your account.</p>
             </div>
         </section>
     </div>
@@ -91,7 +91,7 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                        <h3>My city infographics</h3>
+                        <h3>My infographics</h3>
                     </div>
                 </div>
                 <form action="" id="dash-mi-form" method="POST">
@@ -131,7 +131,7 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                        <h3>My favorite city data</h3>
+                        <h3>My favourite city data</h3>
                     </div>
                 </div>
                 <form action="" id="dash-md-form" method="POST">
@@ -212,11 +212,11 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                      <h3>Delete account</h3>
+                      <h3>Remove account</h3>
                     </div>
                 </div>
-                <p>Permanently delete account? This can not be undone.</p>
-                <a class="btn btn-danger" href="<?php echo site_url(); ?>/delete-account/" id="delete-account-confirmed">Delete Account</a><br />
+                <p>Permanently remove account? This can not be undone!</p>
+                <a class="btn btn-danger" href="<?php echo site_url(); ?>/delete-account/" id="delete-account-confirmed">Remove Account</a><br />
                 <br clear="all" /><br />
             </div>
         </div>
