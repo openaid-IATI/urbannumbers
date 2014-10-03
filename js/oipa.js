@@ -213,7 +213,7 @@ var Oipa = {
                         _chart_class = OipaPolarChart;
                     }
                     if (value.id == 'slum_proportion_living_urban') {
-                        _chart_class = OipaPieChart;
+                        _chart_class = OipaBarChart;
                     }
                     if (value.id == 'avg_annual_rate_change_percentage_urban') {
                         _chart_class = OipaDoughnutChart;

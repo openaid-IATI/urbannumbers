@@ -175,7 +175,6 @@ function OipaCountry() {
 
     this.update_population = function(year, type, selector) {
         var population;
-        console.log(map.circles.locations[country.id][type].years[year]);
         if (map.circles.locations[country.id][type] !== undefined) {
             population = map.circles.locations[country.id][type].years[year];
             if (population > 1) {
@@ -187,7 +186,6 @@ function OipaCountry() {
         if (isNaN(population)) {
             $(selector).html("N/A");
         } else {
-            console.log(type, population);
             $(selector).html(humanReadableSize(population));
         }
     }
