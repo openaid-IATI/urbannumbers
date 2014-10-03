@@ -49,7 +49,7 @@ function OipaCity(city_id) {
         ) {
             _data = data[id].locs[self.city_id].years[self.year];
         }
-        $("#" + id + "_data div.info-overlay").html(_data);
+        $("#" + id + "_data").html(_data);
     }
 
     self.refresh_data = function(data) {
@@ -61,7 +61,7 @@ function OipaCity(city_id) {
             return;
         }
 
-        $.each(['cpi_6_dimensions', 'slum_proportion_living_urban', 'land_allocated_to_street_index_city_core'], function(_, id) {
+        $.each(['cpi_4_dimensions', 'slum_proportion_living_urban', 'land_allocated_to_street_index_city_core'], function(_, id) {
             self.update_indicator(data, id);
         });
 
