@@ -91,7 +91,7 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
-                        <h3>My city infographics</h3>
+                        <h3>My infographics</h3>
                     </div>
                 </div>
                 <form action="" id="dash-mi-form" method="POST">
