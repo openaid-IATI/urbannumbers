@@ -9,6 +9,7 @@ if (is_array($visualisations) && array_key_exists('user-name', $visualisations))
     unset($visualisations['user-name']);
 }
 
+
 ob_start();
 the_content();
 $the_content = ob_get_clean();
@@ -54,8 +55,36 @@ $the_content = ob_get_clean();
                             <ul class="box-list large Slumdwellers-list">
                             </ul>
 
-                            <h2 class="bordered Publicspaces-head">Public spaces</h2>
-                            <ul class="box-list large Publicspaces-list">
+                            <h2 class="Population-head bordered">Population</h2>
+                            <ul class="Population-list box-list large">
+                            </ul>
+
+                            <h2 class="Streets-head bordered">Streets</h2>
+                            <ul class="Streets-list box-list large">
+                            </ul>
+
+                            <h2 class="Transport-head bordered">Transport</h2>
+                            <ul class="Transport-list box-list large">
+                            </ul>
+
+                            <h2 class="Health-head bordered">Health</h2>
+                            <ul class="Health-list box-list large">
+                            </ul>
+
+                            <h2 class="Resilience-head bordered">Resilience</h2>
+                            <ul class="Resilience-list box-list large">
+                            </ul>
+
+                            <h2 class="Education-head bordered">Education</h2>
+                            <ul class="Education-list box-list large">
+                            </ul>
+
+                            <h2 class="Crime-head bordered">Crime</h2>
+                            <ul class="Crime-list box-list large">
+                            </ul>
+
+                            <h2 class="Landarea-head bordered">Landarea</h2>
+                            <ul class="Landarea-list box-list large">
                             </ul>
                         </div>
                         <div class="col-md-4 maps-col">
