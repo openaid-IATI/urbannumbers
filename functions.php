@@ -567,7 +567,7 @@ function vb_reg_new_user() {
         if ($info['http_code'] == 201) {
             echo json_encode(array(
                 'status' => 'ok',
-                'message' => 'Successfully registered. Now you can <a href="' . wp_login_url(site_url() . "/my-dashboard/") . '">log in</a>.'
+                'message' => 'Successfully registered. Now you can <a href="' . wp_login_url(site_url() . "/my-dashboard/") . '">log in using your e-mail adress.</a>.'
             ));
         } else {
             $error_keys = array();
