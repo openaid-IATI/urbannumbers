@@ -502,7 +502,7 @@ function vb_reg_new_user() {
 
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'vb_new_user'))
-        die('Ooops, something went wrong, please try again later.');
+        die(json_encode(array('status' => 'error', 'message' => 'Ooops, something went wrong, please try again later.')));
 
 
     // Post values

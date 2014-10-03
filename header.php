@@ -65,9 +65,7 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 
 <div id="urbannumbers-register">
     <h1>Register<a class="close-login" href="#"><span class="glyphicon glyphicon-remove"></span></a></h1>
-
-                <?php vb_registration_form(); ?>
-    
+    <?php vb_registration_form(); ?>
 </div>
 
 

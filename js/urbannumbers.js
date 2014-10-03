@@ -258,8 +258,6 @@ function get_wiki_city_data(city_name, left_right_city){
 }
 
 function display_login_form() {
-
-
     $("#hoover-wrapper").show();
     $("#urbannumbers-login").show();
 }
@@ -275,33 +273,46 @@ $('#ur-registration').submit(function(e) {
     var reg_last_name  = $('#vb_last_name').val();
 
     var display_error = function(message) {
-	$('.vb-registration-form .result-message').html(message).removeClass('alert-success').addClass('alert-danger');
+        $('.vb-registration-form .result-message')
+            .show()
+            .html(message)
+            .removeClass('alert-success')
+            .addClass('alert-danger');
     }
     var display_success = function(message) {
-	$('.vb-registration-form .result-message').html(message).removeClass('alert-danger').addClass('alert-success');
+        $('.vb-registration-form .result-message')
+            .show()
+            .html(message)
+            .removeClass('alert-danger')
+            .addClass('alert-success');
     }
 
     // Do basic data sanitation
     if (reg_mail.trim() == "" || reg_pass.trim() == "" || reg_pass2.trim() == "") {
-	display_error("Please fill in email and password fields.");
+        display_error("Please fill in email and password fields.");
+        return;
     }
 
     if (reg_pass.trim() !== reg_pass2.trim()) {
-	display_error("Passwords did not match.");
+        display_error("Passwords did not match.");
+        return;
     }
 
     var data = {
-	"action": 'register_user',
+    "action": 'register_user',
         "username": reg_mail,
-	"nonce": reg_nonce,
+    "nonce": reg_nonce,
         "pass": reg_pass,
         "mail": reg_mail,
-	"name": reg_first_name + ' ' + reg_last_name,
+    "name": reg_first_name + ' ' + reg_last_name,
         "first_name": reg_first_name,
         "last_name": reg_last_name
     };
 
     var ajax_url = vb_reg_vars.vb_ajax_url;
+    $('.vb-registration-form .result-message').show();
+    $('.vb-registration-form .result-message').removeClass('alert-danger').removeClass('alert-success').html("<img src='" + pathInfo.base + "images/ajax-loader.gif' alt='Loading...' />");
+
     $.post(ajax_url, data, function(response) {
         if (response.status == 'ok') {
             display_success(response.message);
