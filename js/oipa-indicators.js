@@ -27,6 +27,7 @@ function OipaCompareSelection(main){
                 }
             });
 
+            console.log(options);
             options = options !== undefined ? options : self.indicator_options;
 
             if (!_found) {
@@ -85,8 +86,8 @@ function OipaCompareSelection(main){
         return _tmp;
     }
 
-    self.add_indicator = function(id, name, itype) {
-        self.update_selection('indicators', id, name, itype);
+    self.add_indicator = function(id, name, itype, options) {
+        self.update_selection('indicators', id, name, itype, options);
     }
 }
 OipaCompareSelection.prototype = new OipaIndicatorSelection();

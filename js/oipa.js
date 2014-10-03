@@ -279,7 +279,6 @@ function OipaIndicatorSelection(main){
                 _found = true;
             }
         });
-
         options = options !== undefined ? options : self.indicator_options;
 
         if (!_found) {
@@ -312,8 +311,8 @@ function OipaIndicatorSelection(main){
         return _tmp;
     }
 
-    self.add_indicator = function(id, i_name, i_type) {
-        self.update_selection('indicators', id, i_name, i_type);
+    self.add_indicator = function(id, i_name, i_type, options) {
+        self.update_selection('indicators', id, i_name, i_type, options);
     }
 }
 
@@ -1719,7 +1718,7 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 function humanReadableSize(number, units) {
     var thresh = 1000;
     if (number < thresh) {
-        return number.toFixed(1);
+        return number.toFixed(1) + '%';
     }
 
     var units = ['K','M','B'];

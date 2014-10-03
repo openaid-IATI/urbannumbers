@@ -169,19 +169,25 @@ function OipaCountry() {
         this.update_population(year, 'rural_population', '#horizontal_vis_block_year_ind_5_value');
         this.update_population(year, 'population', '#horizontal_vis_block_year_ind_6_value');
 
-        
+        this.update_population(year, 'total_length_road', '#horizontal_vis_block_chart_road');
+        this.update_population(year, 'income_gini_coefficient_countries', '#horizontal_vis_block_gini');
     }
 
     this.update_population = function(year, type, selector) {
         var population;
+        console.log(map.circles.locations[country.id][type].years[year]);
         if (map.circles.locations[country.id][type] !== undefined) {
-            population = Math.round(map.circles.locations[country.id][type].years[year]) * 1000;
+            population = map.circles.locations[country.id][type].years[year];
+            if (population > 1) {
+                population = population * 1000;
+            }
         } else {
             population = NaN;
         }
         if (isNaN(population)) {
             $(selector).html("N/A");
         } else {
+            console.log(type, population);
             $(selector).html(humanReadableSize(population));
         }
     }

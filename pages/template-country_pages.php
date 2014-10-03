@@ -35,19 +35,16 @@ get_header(); the_post(); ?>
                     </ul>
                 </div>
                 <div class="column style01" id="chart_cpi_wrapper">
-                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
-                    <div class="widget row columns-holder" id="chart_cpi">
-                        <canvas height="40" width="40" id="cpi_4_dimensions_canvas"></canvas>
-                        <div class="info-overlay"></div>
-                    </div>
+                    <span id="horizontal_vis_block_gini_ind_1_name" class="heading">Income Gini Coefficient</span>
+                    <ul class="sort-info">
+                        <li class="value"><i class="icon-arrow-right"></i> <span id="horizontal_vis_block_gini">Loading...</span></li>
+                    </ul>
                 </div>
                 <div class="column style02" id="chart_road_wrapper">
                     <span id="horizontal_vis_block_year_ind_2_name" class="heading">Total road network (in Km)</span>
-
-                    <div class="widget row columns-holder" id="chart_road">
-                        <canvas height="40" width="40" id="total_length_road_canvas"></canvas>
-                        <div class="info-overlay"></div>
-                    </div>
+                    <ul class="sort-info">
+                        <li class="value"><i class="icon-arrow-right"></i> <span id="horizontal_vis_block_chart_road">Loading...</span></li>
+                    </ul>
                 </div>
                 <div class="column style03">
                     <span id="horizontal_vis_block_year_ind_3_name" class="heading">Population</span>
@@ -115,8 +112,9 @@ Oipa.mainSelection = new OipaIndicatorSelection(1);
 Oipa.invisible_visualizations = [
     'population',
     'urban_slum_population_countries',
+    'urban_population_countries',
     'rural_population',
-    'cpi_4_dimensions',
+    'income_gini_coefficient_countries',
     'total_length_road'
 ];
 
@@ -138,17 +136,19 @@ filter.selection.indicator_options = {
 }
 <?php if (count($indicators)): ?>
     <?php foreach($indicators as $k => $indicator): ?>
-    filter.selection.add_indicator("<?php echo $indicator; ?>", "Total population", "indicators");
+    <?php $_options = ($indicator == 'slum_proportion_living_urban') ? ", {chart_class: OipaPieChart}" : ""; ?>
+    filter.selection.add_indicator("<?php echo $indicator; ?>", "Total population", "indicators"<?php echo $_options; ?>);
     <?php endforeach; ?>
 <?php else: ?>
     filter.selection.add_indicator("population", "Total population", "indicators");
     filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
     filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
-    filter.selection.add_indicator("slum_proportion_living_urban", "Urban population", "indicators");
+    filter.selection.add_indicator("slum_proportion_living_urban", "Urban population", "indicators", {chart_class: OipaPieChart});
     filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");
     filter.selection.add_indicator("rural_population", "Rural population", "indicators");
-    filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");
+    filter.selection.add_indicator("income_gini_coefficient_countries", "City Prosperity", "indicators");
     filter.selection.add_indicator("total_length_road", "Total length roadwork", "indicators");
+    filter.selection.add_indicator("street_density_city_core", "Street density - city core", "indicators");
 <?php endif; ?>
 
 <?php if (count($countries)): ?>
@@ -173,18 +173,6 @@ if (filter.selection.countries.length > 0) {
 
     OipaWidgetsBus.add_listener(country);
 
-    var cpi = new OipaCountryPieInfographicsVis('cpi_4_dimensions', {
-        color: "#FFBF00",
-    });
-
-    var road = new OipaCountryPieInfographicsVis('total_length_road', {
-        color: "#FFBF00",
-    });
-
-    cpi.init();
-    cpi.chartwrapper = '#chart_cpi';
-    road.init();
-    road.chartwrapper = '#chart_road';
 
 }
 

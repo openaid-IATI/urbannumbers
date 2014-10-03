@@ -692,8 +692,7 @@ function OipaActiveRoundChart(id, options) {
         if (self.opt('all_years')) {
             return self.get_locations_slice(data.locs, year, limit);
         } else {
-            var data_slice = self.get_year_slice(data.locs, year, limit);
-            return $.map(data_slice, function(i, _) {
+            var _chart_data =  $.map(self.get_year_slice(data.locs, year, limit), function(i, _) {
                 var _color = (i.color==undefined ? self.getRandomColor() : i.color);
                 var _stroke_color = (i.stroke_color==undefined?_color:i.stroke_color);
                 return {
@@ -704,6 +703,25 @@ function OipaActiveRoundChart(id, options) {
                     highlight: _stroke_color
                 };
             });
+            
+            if (_chart_data.length == 1) {
+                var _value = _chart_data[0].value;
+                var _multiply = 1;
+                while (_value > 1) {
+                    _value = _value / 10;
+                    _multiply = _multiply * 10;
+                }
+
+                _chart_data.push({
+                    value: (1 - _value) * _multiply,
+                    label: "Total",
+                    color: "#e2e2e2",
+                    stroke_color: "#e2e2e2",
+                    highlight: "#e2e2e2"
+                })
+            }
+            
+            return _chart_data;
         }
     }
 }
@@ -775,7 +793,11 @@ function OipaPieChart(id, options) {
     this.type = "OipaRadarChart";
 
     this.init_chart = function(chart_data) {
-        return this.chart_obj.Pie(chart_data);
+
+        return this.chart_obj.Pie(chart_data,{
+                tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%><%= humanReadableSize(value) %>"
+            });
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
