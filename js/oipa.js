@@ -1312,7 +1312,7 @@ function OipaFilters() {
                     null,
                     "&regions__in=" + get_parameters_from_selection(selection.regions) 
                     + "&countries__in=" + get_parameters_from_selection(selection.countries) 
-                    //+ "&cities__in=" + _cities
+                    + "&cities__in=" + _cities
                 );
                 filter_name = 'indicators';
             }

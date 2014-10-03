@@ -128,8 +128,9 @@ function UnhabitatInMapOipaIndicatorFilters() {
         //$("#" + self.filter_wrapper_div + " ." + attribute_type + "-list").html(html);
         
         var _changes_map = {
-            regions: ['countries', 'cities'],
-            countries: ['cities']
+            regions:   ['indicators', 'countries', 'cities'],
+            countries: ['indicators', 'cities'],
+            cities:    ['indicators'],
         };
         
 
