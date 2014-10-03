@@ -5,7 +5,7 @@ $subtitle = get_field('subtitle');
 $user_name = get_field('user-name');
 $visualisations = get_field('visualisations');
 
-if (array_key_exists('user-name', $visualisations)) {
+if (is_array($visualisations) && array_key_exists('user-name', $visualisations)) {
     unset($visualisations['user-name']);
 }
 
@@ -78,14 +78,16 @@ $the_content = ob_get_clean();
 $region = null;
 $country = null;
 $city = null;
-if (array_key_exists('regions', $visualisations)) {
-    $region = $visualisations['regions'][0];
-}
-if (array_key_exists('countries', $visualisations)) {
-    $country = $visualisations['countries'][0];
-}
-if (array_key_exists('cities', $visualisations)) {
-    $city = $visualisations['cities'][0];
+if (is_array($visualisations)) {
+    if (array_key_exists('regions', $visualisations)) {
+        $region = $visualisations['regions'][0];
+    }
+    if (array_key_exists('countries', $visualisations)) {
+        $country = $visualisations['countries'][0];
+    }
+    if (array_key_exists('cities', $visualisations)) {
+        $city = $visualisations['cities'][0];
+    }
 }
 
 ?>

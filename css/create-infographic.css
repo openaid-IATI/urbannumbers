@@ -14,6 +14,7 @@
 
 .steps-nav a {
     margin-right: 15px;
+    margin-left: 10px;
 }
 .ci-controls a, .ci-controls input {
     font: 12px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
