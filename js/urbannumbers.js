@@ -355,7 +355,7 @@ $('.share-btn').click(function(e) {
             return 'http://www.linkedin.com/shareArticle?mini=true&url=' + url + '&title=' + title + '&summary=' + title;
         },
         twitter: function(url, title) {
-           return  'http://twitter.com/home?status=' + title + ' ' + url;
+           return  'http://twitter.com/home?status=' + title.replace('|', ':') + ' ' + url;
         },
         google: function(url, title) {
             return 'https://plus.google.com/share?url=' + title + ' ' + url;
