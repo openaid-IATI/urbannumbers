@@ -1552,6 +1552,9 @@ var OipaSelectionBox = {
 
 
 function geo_point_to_latlng(point_string){
+    if (point_string == null) {
+        return;
+    }
 	point_string = point_string.replace("POINT (", "");
 	point_string = point_string.substring(0, point_string.length - 1);
 	lnglat = point_string.split(" ");

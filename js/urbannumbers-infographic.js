@@ -99,6 +99,12 @@ function InfographicsChart(object_id, options) {
         "OipaDoughnutChart"
     ][Math.floor((Math.random() * 5))];
 
-    InfographicsChartFactory.prototype = Object.create(OipaBarChart.prototype);
-    return new InfographicsChartFactory(object_id, options, "OipaBarChart");
+    _chart_type = "OipaBarChart";
+    if (object_id.substring(0, 4) == 'cpi_') {
+        _chart_type = "OipaPieChart";
+        options.all_years = false;
+    }
+
+    InfographicsChartFactory.prototype = Object.create(window[_chart_type].prototype);
+    return new InfographicsChartFactory(object_id, options, _chart_type);
 }

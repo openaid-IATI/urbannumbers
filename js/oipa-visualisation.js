@@ -674,7 +674,7 @@ function OipaActiveRoundChart(id, options) {
             var _color = (loc.color==undefined ? self.getRandomColor() : loc.color);
             var _stroke_color = (loc.stroke_color==undefined ? _color: loc.stroke_color);
             return [{
-                value: loc.years[year],
+                value: loc.years[self.year],
                 label: loc.name,
                 color: _color,
                 stroke_color: _stroke_color,
@@ -714,7 +714,7 @@ function OipaActiveRoundChart(id, options) {
 
                 _chart_data.push({
                     value: (1 - _value) * _multiply,
-                    label: "Total",
+                    label: "Rest",
                     color: "#e2e2e2",
                     stroke_color: "#e2e2e2",
                     highlight: "#e2e2e2"
@@ -1038,9 +1038,12 @@ function OipaSimpleMapVis() {
 
             } else if(this.geo_location == "region"){
                 var longlat = geo_point_to_latlng(data.center_longlat);
-                latitude = longlat[0];
-                longitude = longlat[1];
-                this.map.setView(longlat, 1);
+                if (longlat) {
+                    latitude = longlat[0];
+                    longitude = longlat[1];
+                
+                    this.map.setView(longlat, 1);
+                }
             }
 
             if (latitude){
