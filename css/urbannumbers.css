@@ -821,3 +821,7 @@ form.registration-form span.input-placeholder-text {
 .container-sort.share-hover .action-list a i.icon-share {
     display: none;
 }
+
+.container-custom.description p, .container-custom.description h2 {
+    padding: 0px 17px;
+}

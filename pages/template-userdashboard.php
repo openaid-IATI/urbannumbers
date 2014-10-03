@@ -77,7 +77,7 @@ get_header(); the_post();
                 </div>
             </header>
 
-            <div class="container-custom">
+            <div class="container-custom description">
                 <h2>Welcome to Urban Numbers</h2>
                 <p>Your dashboard contains items you have created and favourites from this platform. You can click on the items in the list or remove them. If you no longer wish to make use of this platform, simply remove your account.</p>
             </div>
