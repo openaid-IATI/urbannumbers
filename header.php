@@ -99,10 +99,9 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 
 	<!-- main container of all the page elements -->
 	<div id="wrapper">
-		<div class="w1 main-block">
+		<div class="w1">
 			<!-- header of the page -->
 			<header id="header" class="nav_my_account">
-                <div class="container">
 				<?php $logo = get_field('logo', 'option'); ?>
 				<strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
 				<!-- Split button -->
@@ -147,5 +146,4 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
 					?>
 				</nav>
 				<?php endif; ?>
-            </div>
 			</header>
