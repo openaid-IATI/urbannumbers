@@ -129,7 +129,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         
         var _changes_map = {
             regions:   ['indicators', 'countries', 'cities'],
-            countries: ['indicators', 'cities'],
+            countries: ['indicators', 'countries', 'cities'],
             cities:    ['indicators'],
         };
         
@@ -138,7 +138,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             if (item.has_change_listener == undefined) {
                 $(item).change(function(e) {
                     if (this.checked) {
-                        filter.selection.clean(attribute_type);
+                        //filter.selection.clean(attribute_type);
                         filter.selection.update_selection(attribute_type, this.value, this.name, attribute_type);
                     } else {
                         filter.selection[attribute_type] = filter.selection.remove_from_selection(attribute_type, this.value);
