@@ -43,13 +43,14 @@ function OipaCountry() {
             url: url,
             contentType: "application/json",
             dataType: 'json',
-            success: function(data){
-
+            success: function(data) {
                 thiscountry.name = data.name;
                 thiscountry.capital_city = data.capital_city;
                 thiscountry.cities = data.cities;
                 thiscountry.region_id = data.region_id;
-                thiscountry.polygon = JSON.parse(data.polygon);
+                if (data.polygon !== "") {
+                    thiscountry.polygon = JSON.parse(data.polygon);
+                }
                 thiscountry.center_longlat = geo_point_to_latlng(data.center_longlat);
 
                 thiscountry.init_country_page();
@@ -115,32 +116,40 @@ function OipaCountry() {
         });
     }
 
-    this.get_markers_bounds = function(){
-        var minlat = 0;
-        var maxlat = 0;
-        var minlng = 0;
-        var maxlng = 0;
-        var first = true;
+    this.get_markers_bounds = function() {
+        var minlat,
+            maxlat,
+            minlng,
+            maxlng,
+            first = true;
 
-        for (var i = 0;i < this.polygon.coordinates.length;i++){
-            for (var y = 0;y < this.polygon.coordinates[i].length;y++){
-                for (var x  =0; x < this.polygon.coordinates[i][y].length; x++) {
+        if (this.polygon == undefined) {
+            return [];
+        }
 
-                    curlat = this.polygon.coordinates[i][y][x][1];
-                    curlng = this.polygon.coordinates[i][y][x][0];
+        var _get_max_min = function(coordinate, min, max) {
+            min = min !== undefined ? min : coordinate;
+            max = max !== undefined ? max : coordinate;
+            return [Math.min(coordinate, min), Math.max(coordinate, max)];
+        }
 
-                    if (first){
-                        minlat = curlat;
-                        maxlat = curlat;
-                        minlng = curlng;
-                        maxlng = curlng;
-                        first = false;
+        for (var i = 0; i < this.polygon.coordinates.length; i++) {
+            for (var y = 0; y < this.polygon.coordinates[i].length; y++) {
+                if (this.polygon.coordinates[i][y].length == 0) {
+                    continue;
+                }
+                if (typeof(this.polygon.coordinates[i][y][0]) == 'number') {
+                    var _tmp = _get_max_min(this.polygon.coordinates[i][y][1], minlat, maxlat);
+                    minlat = _tmp[0], maxlat = _tmp[1];
+                    var _tmp = _get_max_min(this.polygon.coordinates[i][y][0], minlng, maxlng);
+                    minlng = _tmp[0], maxlng = _tmp[1];
+                } else {
+                    for (var x  =0; x < this.polygon.coordinates[i][y].length; x++) {
+                        var _tmp = _get_max_min(this.polygon.coordinates[i][y][x][1], minlat, maxlat);
+                        minlat = _tmp[0], maxlat = _tmp[1];
+                        var _tmp = _get_max_min(this.polygon.coordinates[i][y][x][0], minlng, maxlng);
+                        minlng = _tmp[0], maxlng = _tmp[1];
                     }
-
-                    if (curlat < minlat){ minlat = curlat; }
-                    if (curlat > maxlat){ maxlat = curlat; }
-                    if (curlng < minlng){ minlng = curlng; }
-                    if (curlng > maxlng){ maxlng = curlng; }
                 }
             }
         }
@@ -151,7 +160,12 @@ function OipaCountry() {
         // use polygon to get outter bounds -> to zoom in
         map.map.setView(this.center_longlat);
         var bounds = this.get_markers_bounds();
-        map.map.fitBounds(bounds);
+        if (bounds.length !== 0) {
+            map.map.fitBounds(bounds);
+        } else {
+            map.map.setZoom(6);
+        }
+        
         
         // set country name
         jQuery("#horizontal_vis_block_name").text(this.name);
