@@ -311,8 +311,8 @@ if (have_posts()) : ?>
     OipaWidgetsBus.patch_map(map);
     if (Oipa.mainSelection.indicators.length == 0) {
         var _id = Object.keys(_filters)[Math.floor((Math.random() * 3))];
-        $('#filter_' + _id).click();
-        $('#chart_' + _id).show();
+        $('#filter_cpi').click();
+        $('#chart_cpi').show();
     } else {
         map.refresh();
     }

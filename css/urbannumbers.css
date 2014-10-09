@@ -828,3 +828,7 @@ form.registration-form span.input-placeholder-text {
 .container-custom.description p, .container-custom.description h2 {
     padding: 0px 17px;
 }
+
+.check-row.home-info-controls .chk-area.chk-checked {
+    display: none;
+}
