@@ -1718,10 +1718,14 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 }
 
 
-function humanReadableSize(number, units) {
+function humanReadableSize(number, units, no_suffix) {
     var thresh = 1000;
     if (number < thresh) {
-        return number.toFixed(1) + '%';
+        if (no_suffix == undefined) {
+            return number.toFixed(2) + '%';
+        } else {
+            return number.toFixed(2)
+        }
     }
 
     var units = ['K','M','B'];
@@ -1732,7 +1736,7 @@ function humanReadableSize(number, units) {
     } while(number >= thresh);
 
     if (units[u] == undefined) {
-        return number.toFixed(1);
+        return number.toFixed(2);
     }
-    return number.toFixed(1) + ' ' + units[u];
+    return number.toFixed(2) + ' ' + units[u];
 }

@@ -590,6 +590,7 @@ function OipaActiveChart(id, options) {
 
     this.init_chart = function(chart_data) {
         // Defaults to Line
+        console.log(this.indicator);
         return this.chart_obj.Line(chart_data, {
                 tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%><%= humanReadableSize(value) %>"
@@ -741,13 +742,18 @@ function OipaBarChart(id, options) {
     OipaActiveChart.call(this, id, options);
     this.type = "OipaBarChart";
     this.init_chart = function(chart_data) {
+        var _human_readable = '<%= humanReadableSize(value) %>';
+        if (this.indicator.substring(0, 4) == 'cpi_') {
+            _human_readable = "<%= humanReadableSize(value, undefined, true) %>";
+        }
+
         var _opts = {
-            tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
+            tooltipTemplate: "<%=label%>: " + _human_readable,
         };
         if (this.opt('all_years')) {
             _opts = {
-                tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= humanReadableSize(value) %>",
-                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= humanReadableSize(value) %>"
+                tooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable,
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
             };
         }
         return this.chart_obj.Bar(chart_data, _opts);
