@@ -201,7 +201,7 @@ var Oipa = {
             
             if (thisoipa.visualisations[value.id] == undefined) {
                 // create line chart
-                var _chart_class = OipaLineChart;
+                var _chart_class = OipaBarChart;
                 if (forced_chart_class == undefined) {
                     if (value.id == 'urban_population_countries') {
                         _chart_class = OipaBarChart;
