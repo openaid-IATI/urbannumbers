@@ -27,7 +27,6 @@ function OipaCompareSelection(main){
                 }
             });
 
-            console.log(options);
             options = options !== undefined ? options : self.indicator_options;
 
             if (!_found) {
@@ -145,7 +144,7 @@ var OipaCompare = {
                 if (city_id_2 == undefined) {
                     city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
                 }
-                
+
                 var city_1 = leftmap.set_city(city_id_1);
                 this.item1 = city_1;
                 Oipa.mainSelection.left.cities = [{"id": city_1.id, "name": city_1.name}];
@@ -163,6 +162,11 @@ var OipaCompare = {
                 }
         },
         create_visualisations: function() {
+            if (filter.selection.indicators.length == 0) {
+                filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+                filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
+                filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
+            }
             filter.save(true);
         }
 }
@@ -320,7 +324,7 @@ function OipaIndicatorMap(use_legend) {
                                         circles.indicators[mainvalue.indicator].description = mainvalue.indicator_friendly;
                                         circles.indicators[mainvalue.indicator].type_data = mainvalue.type_data;
                                         circles.indicators[mainvalue.indicator].max_value = mainvalue.max_value;
-                                        
+
                                         // circle info
                                         if(!circles.locations[key]){circles.locations[key] = {};}
                                         if(!circles.locations[key][mainvalue.indicator]){circles.locations[key][mainvalue.indicator] = {};}
@@ -400,12 +404,12 @@ function OipaIndicatorMap(use_legend) {
                                         }
 
 
-                        
+
                                         // main country info
                                         circles.locations[key][mainvalue.indicator].circle = circle;
                                         circles.locations[key].countryname = value.name;
                                         //circles.locations[key].countryregion = value.region;
-                                        
+
                                 }catch(err){
 
                                         console.log(err);
@@ -440,7 +444,7 @@ function OipaIndicatorMap(use_legend) {
                                 } else {
                                     var popuptext = '<a href="/compare-cities/city-pages/?cities='+ckey+'"><h4>'+cvalue.countryname+'</h4></a>';
                                 }
-                                
+
                                 // create pop-up text
                                 $.each(circles.indicators, function(pkey, pvalue){
                                         if(!(cvalue[pkey] === undefined)){
@@ -490,8 +494,8 @@ function OipaIndicatorMap(use_legend) {
 
                                                         var circle = cvalue[ikey].circle;
                                                         circle.bindPopup(popuptext);
-                                                }   
-                                                
+                                                }
+
                                         });
                                 } else {
                                         try{
@@ -522,7 +526,7 @@ function OipaIndicatorMap(use_legend) {
                         });
                 }
         };
-        
+
 
 
         this.draw_available_data_blocks = function(indicator_data){
@@ -585,7 +589,7 @@ function OipaIndicatorMap(use_legend) {
         this.zoom_on_country = function(){
 
         }
-        
+
 
 }
 OipaIndicatorMap.prototype = Object.create(OipaMap.prototype);
@@ -642,7 +646,7 @@ function OipaIndicatorFilters(){
         };
 
 
-        this.create_indicator_filter_attributes = function(objects, columns) { 
+        this.create_indicator_filter_attributes = function(objects, columns) {
                 var html = '';
                 var paginatehtml = '';
                 var per_col = 6;
@@ -652,7 +656,7 @@ function OipaIndicatorFilters(){
                 }).sort(function(a, b){
                         var nameA=a[1].name.toString().toLowerCase(), nameB=b[1].name.toString().toLowerCase();
                         if (nameA < nameB) { //sort string ascending
-                                return -1; 
+                                return -1;
                         }
                         if (nameA > nameB) {
                                 return 1;
@@ -669,7 +673,7 @@ function OipaIndicatorFilters(){
                     sub_urban_area: 'Sub-urban area',
                     sub_urban:'Sub-urban area',
                     total:'Total'
-                }; 
+                };
 
                 for (var i = 0;i < sortable.length;i++){
                         var sortablename = sortable[i][1].name;
@@ -685,7 +689,7 @@ function OipaIndicatorFilters(){
                                 categories[categoryname] = [];
                         }
                         var splitted_name = sortable[i][1].name.split(" – ");
-                        
+
                         if(splitted_name.length > 1){
                                 // indicator with subdivision name example: Urban population - City core
                                 // group by indicator name before -
@@ -703,7 +707,7 @@ function OipaIndicatorFilters(){
                                                 }
                                         }
                                 }
-                                
+
                                 var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="urbnnrs-arrow"></span>'+indicator_name+'</a><div class="filter-indicator-type-inner">';
                                 $.each(subindicators, function( ikey, ivalue ) {
                                         indicatoroptionhtml += '<div class="checkbox"><label><input type="checkbox" selection_type="'+ivalue.filter_name+'" value="'+ikey+'" id="'+ikey+'" name="'+ivalue.display_name+'" />'+ivalue.filter_name+'</label></div>';
@@ -714,7 +718,7 @@ function OipaIndicatorFilters(){
                         }
                         categories[categoryname].push(indicatoroptionhtml);
                 }
-                
+
                 paginatehtml += '<ul>';
                 $.each(categories, function( key, value ) {
 
@@ -728,7 +732,7 @@ function OipaIndicatorFilters(){
                                         html += '</div><div class="col-md-6 col-sm-6 col-xs-12">';
                                 }
                                 html += ivalue;
-                                
+
                         });
 
                         html += '</div></div>';
@@ -799,7 +803,7 @@ function OipaCompareFilters() {
             } else {
                 var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
             }
-            
+
             return cururl;
         };
 
@@ -858,4 +862,4 @@ $(".slider-year").click(function() {
 
         $( ".slider-year").removeClass("active");
         $(this).addClass("active");
-}); 
+});
