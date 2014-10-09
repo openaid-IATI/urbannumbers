@@ -590,10 +590,13 @@ function OipaActiveChart(id, options) {
 
     this.init_chart = function(chart_data) {
         // Defaults to Line
-        console.log(this.indicator);
+        var _human_readable = "<%= humanReadableSize(value) %>";
+        if (this.indicator.substring(0, 4) == 'cpi_') {
+            _human_readable = "<%= humanReadableSize(value, undefined, true) %>"
+        }
         return this.chart_obj.Line(chart_data, {
-                tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
-                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%><%= humanReadableSize(value) %>"
+                tooltipTemplate: "<%=label%>: " + _human_readable,
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%>" + _human_readable
             });
     }
 
@@ -800,9 +803,14 @@ function OipaPieChart(id, options) {
 
     this.init_chart = function(chart_data) {
 
+        var _human_readable = "<%= humanReadableSize(value) %>";
+        if (this.indicator.substring(0, 4) == 'cpi_') {
+            _human_readable = "<%= humanReadableSize(value, undefined, true) %>"
+        }
+
         return this.chart_obj.Pie(chart_data,{
-                tooltipTemplate: "<%=label%>: <%= humanReadableSize(value) %>",
-                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%><%= humanReadableSize(value) %>"
+                tooltipTemplate: "<%=label%>: " + _human_readable,
+                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
             });
     }
     this.get_chart_labels = function(chart) {
