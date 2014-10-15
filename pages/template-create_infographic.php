@@ -69,7 +69,7 @@ get_header(); the_post(); ?>
         <!-- main-container -->
         <div class="main-container">
             <div class="container ci-main">
-                <h1>Create infographic</h1>
+                <h1>Build data report</h1>
             </div>
         </div>
         <div class="main-container">
