@@ -284,6 +284,7 @@ function OipaIndicatorMap(use_legend) {
                 circles.locations = {};
 
                 var circle_colors = ["#2B5A70", "DarkGreen", "Orange", "Pink", "Purple"];
+                var category_colors = {};
                 var indicator_counter = -1;
 
                 this.active_years = function() {
@@ -395,12 +396,44 @@ function OipaIndicatorMap(use_legend) {
                                                 }).addTo(thismap);
 
                                         } else {
-                                                var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
-                                                        color: circle_colors[indicator_counter],
-                                                        weight: '2',
-                                                        fillColor: circle_colors[indicator_counter],
-                                                        fillOpacity: 0.7
-                                                }).setRadius(1000).addTo(thismap);
+                                            if (category_colors[mainvalue.category] == undefined) {
+                                                category_colors[mainvalue.category] = {
+                                                    color: oipa_get_color(mainvalue.category),
+                                                    indicators: {}
+                                                };
+                                            }
+                                            if (category_colors[mainvalue.category].indicators[mainvalue.indicator] == undefined) {
+                                                switch (Object.keys(category_colors[mainvalue.category].indicators).length) {
+                                                    case 0:
+                                                        category_colors[mainvalue.category].indicators[mainvalue.indicator] = 1;
+                                                        break;
+                                                    case 1:
+                                                        category_colors[mainvalue.category].indicators[mainvalue.indicator] = 0.6;
+                                                        break;
+                                                    case 2:
+                                                        category_colors[mainvalue.category].indicators[mainvalue.indicator] = 0.4;
+                                                        break
+                                                    default:
+                                                        category_colors[mainvalue.category].indicators[mainvalue.indicator] = 0.2;
+                                                }
+                                            }
+                                            var _circle_color = 'rgba(' +
+                                                category_colors[mainvalue.category].color + ', ' + 
+                                                category_colors[mainvalue.category].indicators[mainvalue.indicator] + ')';
+                                            var circle = L.circle(new L.LatLng(value.latitude, value.longitude), 1, {
+                                                    color: _circle_color,
+                                                    weight: '2',
+                                                    fillColor: _circle_color,
+                                                    fillOpacity: 0.7
+                                            })
+                                            .setRadius(1000)
+                                            .addTo(thismap)
+                                            .on('mouseover', function() {
+                                                this.openPopup();
+                                            })
+                                            .on('mouseout', function() {
+                                                this.closePopup();  
+                                            });
                                         }
 
 

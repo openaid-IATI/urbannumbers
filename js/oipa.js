@@ -749,6 +749,9 @@ function OipaMap(use_legend){
 					  iconAnchor: [18, 34],
 				  })
 				}).bindPopup('<table><tr><td>YEAR:</td><td>ALL</td></tr><tr><td>PROJECTS:</td><td><a href="'+site_url+'/region/?region_id='+data.objects[i].id+'">'+data.objects[i].total_projects+'</a></td></tr><tr><td>BUDGET:</td><td>US$'+comma_formatted(data.objects[i].total_budget)+'</td></tr></table>', { minWidth: 300, maxWidth: 300, offset: L.point(215, 134), closeButton: false, className: "region-popup"})
+                .on('mouseover', function(e) {
+                    this.openPopup();
+                })
 				.addTo(this.map);
 
 				this.add_marker(curmarker);
@@ -912,7 +915,7 @@ function OipaFilters() {
 	};
 
     this.string_to_id = function(name) {
-        return name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+        return string_to_id(name);
     }
 
     this.get_raw_data = function() {
@@ -1739,4 +1742,32 @@ function humanReadableSize(number, units, no_suffix) {
         return number.toFixed(2);
     }
     return number.toFixed(2) + ' ' + units[u];
+}
+
+function string_to_id(name) {
+    if (!name) {
+        return name;
+    }
+    return name.replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc');
+}
+
+function oipa_get_color(category) {
+    category = string_to_id(category);
+
+    var _colors = {
+        'Cityprosperity': '253, 190, 44',
+        'Slumdwellers': '164, 215, 42',
+        'Population': '23, 131, 251',
+        'Streets': '22, 220, 250',
+        'Transport': '253, 23, 130',
+        'Health': '254, 31, 23',
+        'Resilience': '23, 255, 31',
+        'Education': '248, 255, 23',
+        'Crime': '0, 0, 0',
+        'default': '182, 182, 182'
+    }
+    if (_colors[category] !== undefined) {
+        return _colors[category];
+    }
+    return _colors['default'];
 }
