@@ -180,26 +180,9 @@ if (have_posts()) : ?>
 					</div>
 					<?php endif; ?>
 					<?php if($description): ?>
-					<div class="text-holder">
-						<p><a href="<?php the_permalink(); ?>">“<?php echo $description; ?>”</a></p>
-					</div>
-					<?php endif; ?>
-					<?php if($name || $country || $city): ?>
 					<div class="info-holder">
-						<dl>
-							<?php if($name): ?>
-							<dt>Name:</dt>
-							<dd itemprop="name"><?php echo $name; ?></dd>
-							<?php endif; ?>
-							<?php if($country): ?>
-							<dt>Country:</dt>
-							<dd itemprop="nationality"><?php echo $country; ?></dd>
-							<?php endif; ?>
-							<?php if($city): ?>
-							<dt>City:</dt>
-							<dd itemprop="homeLocation"><?php echo $city; ?></dd>
-							<?php endif; ?>
-						</dl>
+                        <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+						<p>“<?php echo $description; ?>”</p>
 					</div>
 					<?php endif; ?>
 				</div>
