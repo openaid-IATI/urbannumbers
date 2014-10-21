@@ -615,7 +615,7 @@ function OipaMap(use_legend){
 			mapoptions.zoomControl = false;
 		}
 
-		jQuery("#"+div_id).css("min-height", "200px");
+		jQuery("#"+div_id).css("min-height", "800px");
 		this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
 
 		if (zoomposition){

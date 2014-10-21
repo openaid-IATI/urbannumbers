@@ -200,7 +200,6 @@ function OipaIndicatorMap(use_legend) {
                 //      }
                 //      indicatordata[curkey] = {};
                 // }
-
                 this.clear_circles();
 
                 // get url
@@ -427,13 +426,7 @@ function OipaIndicatorMap(use_legend) {
                                                     fillOpacity: 0.7
                                             })
                                             .setRadius(1000)
-                                            .addTo(thismap)
-                                            .on('mouseover', function() {
-                                                this.openPopup();
-                                            })
-                                            .on('mouseout', function() {
-                                                this.closePopup();  
-                                            });
+                                            .addTo(thismap);
                                         }
 
 
@@ -447,8 +440,10 @@ function OipaIndicatorMap(use_legend) {
 
                                         console.log(err);
                                 }
+
                         });
                 });
+                this.circles = circles;
 
         };
 
@@ -558,6 +553,7 @@ function OipaIndicatorMap(use_legend) {
                                 }
                         });
                 }
+                this.circles = circles;
         };
 
 
@@ -603,20 +599,22 @@ function OipaIndicatorMap(use_legend) {
                 return null;
         };
 
-        this.clear_circles = function(){
-
+        this.clear_circles = function() {
                 var circles = this.circles;
                 var map = this.map;
 
                 if(!(circles.locations === undefined)){
                         $.each(circles.locations, function(ckey, cvalue){
+                            console.log(cvalue);
                                 $.each(circles.indicators, function(ikey, ivalue){
                                         if(!(cvalue[ikey] === undefined)){
+                                            console.log(cvalue[ikey].circle);
                                                 map.removeLayer(cvalue[ikey].circle);
                                         }
                                 });
                         });
                 }
+                
         }
 
         this.zoom_on_country = function(){

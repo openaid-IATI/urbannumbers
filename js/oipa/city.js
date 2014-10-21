@@ -25,12 +25,12 @@ function OipaCity(city_id) {
 
                 self.location = geo_point_to_latlng(data.location);
 
-                var circle = L.circle(self.location, 3000, {
+                /*var circle = L.circle(self.location, 3000, {
                         color: "#666",
                         weight: '0.5',
                         fillColor: "#008b85",
                         fillOpacity: 0.7
-                }).addTo(map.map);
+                }).addTo(map.map);*/
                 map.map.setZoomAround(self.location, 8);
             }
         });
@@ -65,7 +65,8 @@ function OipaCity(city_id) {
             self.update_indicator(data, id);
         });
 
-        if (data.urban_population_cities.locs[self.city_id] !== undefined
+        if (data.urban_population_cities !== undefined
+            && data.urban_population_cities.locs[self.city_id] !== undefined
             && data.urban_population_cities.locs[self.city_id].years[self.year] !== undefined) {
             var _number = data.urban_population_cities.locs[self.city_id].years[self.year];
             if (data.urban_population_cities.type_data == '1000') {
