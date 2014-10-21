@@ -605,10 +605,8 @@ function OipaIndicatorMap(use_legend) {
 
                 if(!(circles.locations === undefined)){
                         $.each(circles.locations, function(ckey, cvalue){
-                            console.log(cvalue);
                                 $.each(circles.indicators, function(ikey, ivalue){
                                         if(!(cvalue[ikey] === undefined)){
-                                            console.log(cvalue[ikey].circle);
                                                 map.removeLayer(cvalue[ikey].circle);
                                         }
                                 });
