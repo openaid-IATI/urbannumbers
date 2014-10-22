@@ -176,21 +176,20 @@ function OipaIndicatorMap(use_legend) {
     this.max_circle_size = 100000000000;
     this._url_data_cache = {};
 
-        this.indicatordata = {};
+    this.indicatordata = {};
 
-        this.active_years = {};
+    this.active_years = {};
 
-        this.init = function(){
+    this.init = function(){
+        // set current year
+        this.selected_year = 2015;
+        $("#map-slider-tooltip div").html(this.selected_year);
+        $("#map-slider-tooltip").val(this.selected_year);
+        $("#year-" + this.selected_year).addClass("active");
 
-                // set current year
-                this.selected_year = 2015;
-                $( "#map-slider-tooltip div" ).html(this.selected_year);
-                $( "#map-slider-tooltip" ).val(this.selected_year);
-                $( "#year-" + this.selected_year).addClass("active");
+    }
 
-        }
-
-        this.refresh = function(data){
+    this.refresh = function(data){
             if(!data){
                 // indicatordata = {};
                 // for (var k in this.selection.indicators) {
@@ -612,7 +611,6 @@ function OipaIndicatorMap(use_legend) {
                                 });
                         });
                 }
-                
         }
 
         this.zoom_on_country = function(){
@@ -627,35 +625,33 @@ OipaIndicatorMap.prototype = Object.create(OipaMap.prototype);
 
 
 function OipaIndicatorFilters(){
-
-        this.validate_selection = function (){
-                if (Oipa.pageType == "indicators"){
-                        if (this.selection.indicators.length == 0){
-                                // set error message and break
-                                $(".filter-error-msg").text("Please select at least one indicator.");
-                                return false;
-                        } else {
-                                // empty the error msg div
-                                $(".filter-error-msg").text("");
-                                return true;
-                        }
-                } else {
-                        return true;
-                }
+    this.validate_selection = function () {
+        if (Oipa.pageType == "indicators") {
+            if (this.selection.indicators.length == 0){
+                // set error message and break
+                $(".filter-error-msg").text("Please select at least one indicator.");
+                return false;
+            } else {
+                // empty the error msg div
+                $(".filter-error-msg").text("");
+                return true;
+            }
+        } else {
+            return true;
         }
+    }
 
-        this.get_url = function(selection, parameters_set){
-                // get url from filter selection object
-                if (parameters_set){
-                        var cururl = search_url + "indicator-filter-options/?format=json" + parameters_set;
-                } else {
-                        var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
-                }
+    this.get_url = function(selection, parameters_set) {
+        // get url from filter selection object
+        if (parameters_set){
+            var cururl = search_url + "indicator-filter-options/?format=json" + parameters_set;
+        } else {
+            var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
+        }
+        return cururl;
+    };
 
-                return cururl;
-        };
-
-        this.process_filter_options = function(data){
+        this.process_filter_options = function(data) {
             var columns = 4;
 
             // load filter html and implement it in the page
@@ -797,9 +793,6 @@ function OipaIndicatorFilters(){
                         $(this).closest(".filter-indicator-type-dropdown").children(".filter-indicator-type-inner").toggle(500);
                 });
         }
-
-
-
 }
 OipaIndicatorFilters.prototype = new OipaFilters();
 

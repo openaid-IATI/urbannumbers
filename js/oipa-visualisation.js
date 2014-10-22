@@ -14,7 +14,7 @@ function OipaVis () {
         this.refresh();
         this.check_if_in_favorites();
     };
-    
+
     this.create_html_skeleton = function() {
         // Register event in event bus
         OipaWidgetsBus.add_listener(this);
@@ -62,7 +62,7 @@ function OipaVis () {
         };
 
         var curchart = this;
-        
+
         $.post(ajaxurl, data, function(response) {
             if(response.status == "in_favorites"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
@@ -184,7 +184,7 @@ function OipaVis () {
         var embed = new OipaEmbed(this);
     };
 
-    this.get_url = function(){
+    this.get_url = function() {
         if (this.selection == undefined) {
             return;
         }
@@ -275,7 +275,7 @@ function OipaVis () {
     };
 
     this.visualize = function(data){
-        // override 
+        // override
     };
 
     this.zoom_in = function(){
@@ -290,20 +290,17 @@ function OipaVis () {
         $(window).resize();
     };
 
-    this.load_listeners = function(){
+    this.load_listeners = function() {
 
         var curchart = this;
 
-        
         $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-close").click(function(e){
             e.preventDefault();
-            
             // TO DO: on deletion of vis, remove vis from Oipa.visualisations
 
             $(this).closest("li").hide(500, function(){
                 $(this).remove();
             });
-            
         });
 
         $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-zoom").click(function(e){
@@ -349,6 +346,7 @@ function OipaActiveChart(id, options) {
     this.limit = 5;
     this.chart = null;
     this.year_data = {};
+    this.indicator_change_count = 0;
 
     // parse options
     this.options = (options !== undefined ? options : {});
@@ -356,6 +354,25 @@ function OipaActiveChart(id, options) {
     this.opt = function(opt_name, default_value) {
         return (this.options[opt_name] !== undefined ? this.options[opt_name] : default_value);
     }
+
+    this.set_indicator = function(indicator) {
+
+        // update dom objects first
+
+        $("[data-indicator='" + this.indicator + "']").attr('data-indicator', indicator);
+        this.id = indicator;
+        this.indicator = indicator;
+
+        var url  = $.map(this.get_url().split('&'), function(part) {
+            if (part.split('=')[0] == 'indicators__in') {
+                part = 'indicators__in=' + indicator;
+            }
+            return part;
+        })
+        .join('&');
+        // get data
+        this.get_data(url, true);
+    };
 
     this.get_locations_slice = function(locations, limit) {
         var self = this;
@@ -389,13 +406,43 @@ function OipaActiveChart(id, options) {
         var self = this;
         // Get last year slice if year is null
 
-        year = (year==null?2014:year);
-        var _mapped = $.map(locations, function(i) {
+        year = (year==null?2014:parseInt(year));
+        var _mapped = $.map(locations, function(location) {
+            var years = location.years;
+            var _year_keys = Object.keys(years);
+            var value = null;
+            // Fill gaps in between years
+            if (_year_keys.length > 1) {
+                for (var i = 0; i < _year_keys.length - 1; i++) {
+                    var _first_year = parseInt(_year_keys[i]);
+                    var _last_year = parseInt(_year_keys[i + 1]);
+
+                    if ((_last_year - _first_year) > 1) {
+                        var _yearly_trend = (years[_last_year] - years[_first_year]) / (_last_year - _first_year);
+                        var _year_value = years[_first_year];
+                        for (var _year = _first_year + 1; _year < _last_year; _year++) {
+                            _year_value = _year_value + _yearly_trend;
+                            years[_year] = _year_value;
+                        }
+                    }
+
+                    if (_year_keys.length == i + 2) {
+                        if (_last_year < year) {
+                            value = years[_last_year];
+                        }
+                    }
+
+                }
+            }
+            if (value == null) {
+                value = years[year];
+            }
+
             return [{
-                value: i.years[year],
-                color: i.color,
-                stroke_color: i.stroke_color,
-                name: i.name
+                value: value,
+                color: location.color,
+                stroke_color: location.stroke_color,
+                name: location.name
             }];
         });
         _mapped.sort(function(a, b) {
@@ -439,6 +486,7 @@ function OipaActiveChart(id, options) {
                 pointHighlightStroke: "rgba(151,187,205,1)",
                 data: $.map(data_slice, function(loc, _) { return loc.value;})
             }];
+
             if (data_slice[0].value !== undefined) {
                 // Update dataset only if data available for this year
                 base_data.labels = $.map(data_slice, function(loc, _) { return loc.name;});
@@ -500,12 +548,16 @@ function OipaActiveChart(id, options) {
         if (!data) {
             data = this.data;
         }
-        //data = self.format_data(data);   //You need data...
 
-        if (!data || data[self.indicator] == undefined){
-            // empty data, remove vis
-            $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").show();
-            $("div.widget[data-indicator='" + self.indicator + "'] canvas").hide();
+        if (!data || data[self.indicator] == undefined) {
+            // WARNING: this function relies on `Oipa` variable from global scope
+            self.indicator_change_count += 1;
+            if (self.indicator_change_count <= 10) {
+                Oipa.replace_visualisation(self);
+            } else {
+                // Nothing to show. At all
+                $("section[data-indicator='" + self.indicator + "']").parent().hide();
+            }
             return false;
         }
         $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").hide();
@@ -986,7 +1038,7 @@ OipaInfographicVis = function(indicator, charts_count, options) {
     }
 
     self.visualize_chart = function(chart_data, chart_id) {
-        //console.log(chart_data, chart_id)
+
     }
 }
 OipaInfographicVis.prototype = Object.create(OipaActiveRoundChart.prototype);
@@ -1026,7 +1078,7 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
         if (year == null) {
             year = self.get_last_data_year(data);
         }
-        
+
         var data_slice = self.get_year_slice(data.locs, year, limit);
         return $.map(data_slice, function(i, _) {
             var _color = (i.color==undefined ? self.opt('color', '#00AAB0') : i.color);
@@ -1083,7 +1135,6 @@ OipaPieInfographicsVis = function(indicator, charts_count, options) {
                 self.charts[chart_id].holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
             }
         }
-        
     }
     return self;
 }

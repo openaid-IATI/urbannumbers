@@ -160,9 +160,9 @@ get_header(); the_post(); ?>
                         </ul>
                     </div>
                 </div>
-            <?php 
+            <?php
             $curmapname = "main";
-            include( TEMPLATEPATH .'/map.php' ); 
+            include( TEMPLATEPATH .'/map.php' );
             ?>
                 <?php if(!is_page("city-prosperity")){ ?>
                 <div id="map-timeline-wrapper">
@@ -195,31 +195,33 @@ get_header(); the_post(); ?>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
 
 <script>
-    
     Oipa.pageType = "indicator-country-page";
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     Oipa.invisible_visualizations = ['land_allocated_to_street_index_city_core', 'cpi_6_dimensions'];
-    
+    Oipa.mainSelection.indicator_options = {
+            chart_class: OipaBarChart,
+        }
+
     var map = new OipaIndicatorMap();
     map.max_circle_size = 5000;
     map.set_map("main-map");
     map.init();
-    
+
     map.selection = Oipa.mainSelection;
     Oipa.maps.push(map);
 
     OipaWidgetsBus.patch_map(map);
-    
-    var filter = new UnhabitatInMapOipaIndicatorFilters();
 
-	filter.filter_wrapper_div = "map-indicator-filter-wrapper";
+    var filter = new UnhabitatInMapOipaIndicatorFilters();
+    Oipa.filter = filter;
+
+    filter.filter_wrapper_div = "map-indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
 
     filter.selection.indicator_options = {
         chart_class: OipaCountryPieChart
     }
 
-    filter.init();
     <?php if (!count($indicators)): ?>
         filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
         filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban slum population", "indicators");
@@ -234,11 +236,13 @@ get_header(); the_post(); ?>
 
     filter.selection.update_selection("cities", "<?php echo $city; ?>", "Nairobi", "cities");
 
+    filter.init();
+
     var city = new OipaCity(<?php echo $city; ?>);
 
     OipaWidgetsBus.add_listener(city);
 
-    filter.save(true);
+//filter.save(true);
 
 </script>
 

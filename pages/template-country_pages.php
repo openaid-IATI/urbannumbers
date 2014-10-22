@@ -61,7 +61,7 @@ get_header(); the_post(); ?>
                     </ul>
                 </div>
             </div>
-            
+
             <div id="map-wrapper">
 
                 <div id="map-indicator-filter-wrapper">
@@ -161,9 +161,9 @@ get_header(); the_post(); ?>
                         </ul>
                     </div>
                 </div>
-            <?php 
+            <?php
             $curmapname = "main";
-            include( TEMPLATEPATH .'/map.php' ); 
+            include( TEMPLATEPATH .'/map.php' );
             ?>
                 <?php if(!is_page("city-prosperity")){ ?>
                 <div id="map-timeline-wrapper">
@@ -262,7 +262,6 @@ filter.init();
 
 
 if (filter.selection.countries.length > 0) {
-    
     var country = new OipaCountry();
     country.id = filter.selection.countries[0].id;
     country.set_data();

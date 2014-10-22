@@ -102,7 +102,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         }).sort(function(a, b) {
             var nameA=a[1].toString().toLowerCase(), nameB=b[1].toString().toLowerCase();
             if (nameA < nameB) { //sort string ascending
-                    return -1; 
+                    return -1;
             }
             if (nameA > nameB) {
                     return 1;
@@ -126,13 +126,12 @@ function UnhabitatInMapOipaIndicatorFilters() {
         _res[attribute_type] = html;
         self.create_categories(_res);
         //$("#" + self.filter_wrapper_div + " ." + attribute_type + "-list").html(html);
-        
+
         var _changes_map = {
             regions:   ['indicators', 'countries', 'cities'],
             countries: ['indicators', 'countries', 'cities'],
             cities:    ['indicators'],
         };
-        
 
         $("#" + self.filter_wrapper_div + " ." + attribute_type + "-list .map-filter-checkbox").each(function(_, item) {
             if (item.has_change_listener == undefined) {
@@ -193,7 +192,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         var sortable = without_subs.sort(function(a, b) {
             var nameA=a[1].name.toString().toLowerCase(), nameB=b[1].name.toString().toLowerCase();
             if (nameA < nameB) { //sort string ascending
-                return -1; 
+                return -1;
             }
             if (nameA > nameB) {
                 return 1;
@@ -209,7 +208,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             sub_urban_area: 'Sub-urban area',
             sub_urban:'Sub-urban area',
             total:'Total'
-        }; 
+        };
 
         $.each(sortable, function(_id, v) {
             var sortablename = v[1].name;
@@ -233,7 +232,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
         });
 
         self.create_categories(categories);
-        
+
         $("#" + self.filter_wrapper_div + " .filter-open").click(function(e) {
 
             e.preventDefault();
@@ -266,7 +265,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             }
         });
     }
-    
+
     self.create_categories = function(categories) {
         $.each(categories, function(category_name, value) {
             category_name = category_name == "" ? "Other" : category_name;

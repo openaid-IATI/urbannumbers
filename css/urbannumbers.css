@@ -1,26 +1,26 @@
 #main-map{
-	height: 634px;
+        height: 634px;
 }
 
 .urbnnrs-geo-map .dropdown{
-	z-index: 9999;
+        z-index: 9999;
     margin-right: 20px;
 }
 
 .filter-page{
-	display: none;
+        display: none;
 }
 
 .filter-page.filter-page-1{
-	display: block;
+        display: block;
 }
 
 .pagination-btn-previous{
-	min-width: 78px;
+        min-width: 78px;
 }
 
 .pagination-btn-next{
-	min-width: 47px;
+        min-width: 47px;
 }
 
 .country-marker-icon{
@@ -252,76 +252,76 @@
 
 @media (min-width: 980px) and (max-width: 1439px) {
 
-	.slider-year-inner-left, .slider-year-inner-white{
-	  width: 1px;
-	}
+        .slider-year-inner-left, .slider-year-inner-white{
+          width: 1px;
+        }
 
-	#year-1950{
-	  width: 10px;
-	}
+        #year-1950{
+          width: 10px;
+        }
 
-	.slider-year{
-	  width: 9px;
-	}
+        .slider-year{
+          width: 9px;
+        }
 
-	#map-timeline{
-	  width: 910px;
-	  left: 50%;
-	  margin-left:-455px;
-	}
+        #map-timeline{
+          width: 910px;
+          left: 50%;
+          margin-left:-455px;
+        }
 
-	#timeline-left, #timeline-right{
-	  min-height: 4em;
-	  overflow: hidden;
-	  width: 50%;
-	  background-color: #000;
-	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-	  filter: alpha(opacity=40);
-	  opacity: 0.4;
-	}
+        #timeline-left, #timeline-right{
+          min-height: 4em;
+          overflow: hidden;
+          width: 50%;
+          background-color: #000;
+          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+          filter: alpha(opacity=40);
+          opacity: 0.4;
+        }
 
-	#timeline-left{
-	  left:0;
-	  margin-left:-455px;
-	}
+        #timeline-left{
+          left:0;
+          margin-left:-455px;
+        }
 
-	#timeline-right{
-	  right: 0;
-	  margin-right:-455px;
-	}
+        #timeline-right{
+          right: 0;
+          margin-right:-455px;
+        }
 
 }
 
 
 @media (max-width: 979px) { 
 
-	#year-1950{
-		width: 8px;
-	}
+        #year-1950{
+                width: 8px;
+        }
 
-	.slider-year-inner-left, .slider-year-inner-white{
-		width: 1px;
-	}
+        .slider-year-inner-left, .slider-year-inner-white{
+                width: 1px;
+        }
 
-	.slider-year{
-		width: 7px;
-	}
+        .slider-year{
+                width: 7px;
+        }
 
-	#map-timeline{
-		width: 708px;
-		left: 50%;
-		margin-left:-354px;
-	}
+        #map-timeline{
+                width: 708px;
+                left: 50%;
+                margin-left:-354px;
+        }
 
-	#timeline-left{
-		left:0;
-		margin-left:-354px;
-	}
+        #timeline-left{
+                left:0;
+                margin-left:-354px;
+        }
 
-	#timeline-right{
-		right: 0;
-		margin-right:-354px;
-	}
+        #timeline-right{
+                right: 0;
+                margin-right:-354px;
+        }
 
 }
 
@@ -330,33 +330,33 @@
 /* Portrait tablet to landscape and desktop */
 @media (max-width: 760px) { 
 
-	#year-1950{
-		width: 6px;
-	}
+        #year-1950{
+                width: 6px;
+        }
 
-	.slider-year-inner-left, .slider-year-inner-white{
-		width: 1px;
-	}
+        .slider-year-inner-left, .slider-year-inner-white{
+                width: 1px;
+        }
 
-	.slider-year{
-		width: 5px;
-	}
+        .slider-year{
+                width: 5px;
+        }
 
-	#map-timeline{
-		width: 506px;
-		left: 50%;
-		margin-left:-253px;
-	}
+        #map-timeline{
+                width: 506px;
+                left: 50%;
+                margin-left:-253px;
+        }
 
-	#timeline-left{
-		left:0;
-		margin-left:-253px;
-	}
+        #timeline-left{
+                left:0;
+                margin-left:-253px;
+        }
 
-	#timeline-right{
-		right: 0;
-		margin-right:-253px;
-	}
+        #timeline-right{
+                right: 0;
+                margin-right:-253px;
+        }
 
 }    
    
@@ -731,7 +731,7 @@ form.registration-form span.input-placeholder-text {
 
 #map-indicator-filter-wrapper .subul li {
     display: block;
-    min-width: 298px;
+    min-width: 278px;
     line-height: 25px;
     padding: 0px;
     margin: 0px;
@@ -741,6 +741,8 @@ form.registration-form span.input-placeholder-text {
 }
 #map-indicator-filter-wrapper .subul li div {
     border-left: 1px solid #FFF;
+    width: 200px;
+    max-width: 200px;
     background: #EEEEEE;
 }
 

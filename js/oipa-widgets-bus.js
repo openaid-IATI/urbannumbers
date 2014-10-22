@@ -13,7 +13,7 @@ var OipaWidgetsBus = {
         }
         this.patch_refresh(map);
     },
-    
+
     patch_refresh: function(map) {
         var _original_refresh = map.refresh;
         map.refresh = function(data) {
@@ -26,7 +26,7 @@ var OipaWidgetsBus = {
             return _;
         }
     },
-    
+
     patch_filter: function(filter) {
         var _old_save = filter.save;
         filter.save = function(data) {
@@ -36,7 +36,7 @@ var OipaWidgetsBus = {
                 _params = [null, true];
             }
             OipaWidgetsBus.trigger_event('refresh', _params);
-            
+
             return _;
         }
     },

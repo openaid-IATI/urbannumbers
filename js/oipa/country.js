@@ -23,13 +23,12 @@ function OipaCountry() {
         }
 
         OipaCompare.refresh_state++;
-        
+
         if (OipaCompare.refresh_state > 1){
-            
             OipaCompare.refresh_state = 0;
             // refresh map
             OipaCompare.refresh_comparison();
-        }   
+        }
     }
 
     this.set_data = function() {
@@ -37,7 +36,7 @@ function OipaCountry() {
         url = search_url + "countries/"+this.id+"/?format=json";
 
         jQuery.support.cors = true;
-    
+
         jQuery.ajax({
             type: 'GET',
             url: url,
@@ -68,7 +67,7 @@ function OipaCountry() {
         url += '&indicators__in=cpi_4_dimensions,total_length_road'
 
         jQuery.support.cors = true;
-    
+
         jQuery.ajax({
             type: 'GET',
             url: url,
@@ -76,7 +75,6 @@ function OipaCountry() {
             dataType: 'json',
             success: function(data) {
                 thiscountry.cities = new Object();
-                
 
                 // loop through indicators and get city id, name, latitude, longitude
                 var years = {min: null, max: null};
@@ -165,8 +163,6 @@ function OipaCountry() {
         } else {
             map.map.setZoom(6);
         }
-        
-        
         // set country name
         jQuery("#horizontal_vis_block_name").text(this.name);
 
@@ -211,7 +207,7 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
     var self = this;
 
     OipaPieInfographicsVis.call(self, indicator, 1, options);
-    
+
     this.create_html_skeleton = function() {
         // Register event in event bus
         OipaWidgetsBus.add_listener(this);
@@ -256,7 +252,7 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
         if (self.charts[chart_id] == undefined) {
             var holder = document.createElement("div");
             holder.className = "column";
-        
+
             holder.ctx = $(self.chartwrapper + " #" + self.indicator + "_canvas").get()[0];
             holder.overlay = $(self.chartwrapper + " .info-overlay").get()[0];
             holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
