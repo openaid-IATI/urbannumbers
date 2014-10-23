@@ -653,7 +653,6 @@ function OipaIndicatorFilters(){
 
         this.process_filter_options = function(data) {
             var columns = 4;
-
             // load filter html and implement it in the page
             $.each(data, function(key, value) {
                 if (!$.isEmptyObject(value)) {

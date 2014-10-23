@@ -191,10 +191,18 @@ var Oipa = {
 
         var random_suggested_indicator = available_indicators[Math.floor((Math.random() * available_indicators.length))];
 
-        self.visualisations[random_suggested_indicator] = visualisation;
+        /*self.visualisations[random_suggested_indicator] = visualisation;
         visualisation.set_indicator(random_suggested_indicator);
 
-        delete self.visualisations[visualisation.indicator];
+        delete self.visualisations[visualisation.indicator];*/
+        self.mainSelection.indicators = $.map(self.mainSelection.indicators, function(ind) {
+            if (ind.id == visualisation.indicator) {
+                ind.id = visualisation.indicator;
+            }
+            return ind;
+        });
+
+        self.create_visualisations();
     },
 
     create_visualisations : function(forced_chart_class) {

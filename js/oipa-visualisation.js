@@ -40,7 +40,9 @@ function OipaVis () {
     this.destroy = function() {
         OipaWidgetsBus.remove_listener(this);
         //map.remove_refresh_callback('OipaVis' + this.get_url());
-        var node = document.getElementById('visualization_' + this.indicator);
+        var node = $('section[data-indicator="' + this.indicator + '"]').parent().get()[0];
+        console.log(node);
+        //var node = document.getElementById('visualization_' + this.indicator);
         var holder = document.getElementById('visualisation-block-wrapper');
         if (holder) {
             holder.removeChild(node);
@@ -433,6 +435,8 @@ function OipaActiveChart(id, options) {
                     }
 
                 }
+            } else {
+                value = years[_year_keys[0]];
             }
             if (value == null) {
                 value = years[year];

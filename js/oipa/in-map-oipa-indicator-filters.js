@@ -2,6 +2,13 @@ function UnhabitatInMapOipaIndicatorFilters() {
     var self = this;
     UnhabitatOipaIndicatorFilters.call(self);
 
+    // Monkey patched methods
+    var _old_process_filter_options = self.process_filter_options;
+    self.process_filter_options = function(data) {
+        $("#" + self.filter_wrapper_div + " .main-li").hide();
+        _old_process_filter_options.apply(self, [data]);
+    }
+
     self.make_option_element = function(id, value, sortablename, type, category) {
         return [
             "<li>",
@@ -271,6 +278,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
             category_name = category_name == "" ? "Other" : category_name;
 
             var category_id = self.string_to_id(category_name);
+            $("#" + self.filter_wrapper_div + " ." + category_id + "-li").show();
             $("#" + self.filter_wrapper_div + " ." + category_id + "-list").html(value.items.join(''));
         });
     }
