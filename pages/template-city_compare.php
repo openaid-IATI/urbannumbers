@@ -48,6 +48,10 @@ get_header(); the_post(); ?>
                     <li><a id="compare-cities-randomize" href="#"><i class="icon-reset"></i>RANDOMIZE</a></li>
                 </ul>
             </div>
+        </div>
+
+        <?php get_template_part("compare", "visualisations"); ?>
+        <div class="container-map">
             <div class="columns-holder">
                 <div class="holder">
                     <div id="compare-left-map-border" class="column">
@@ -86,7 +90,6 @@ get_header(); the_post(); ?>
                 </div>
             </div>
         </div>
-        <?php get_template_part("compare", "visualisations"); ?>
 
     </div>
 
