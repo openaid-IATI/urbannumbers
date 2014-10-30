@@ -92,7 +92,7 @@
                 <ul class="Other-list subul">
                 </ul>
             </li>
-            <?php if ($SHOW_FILTER_GEO): ?>
+     <?php if (isset($SHOW_FILTER_GEO) && $SHOW_FILTER_GEO): ?>
             <li class="regions-li">
                 <div>
                     <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>

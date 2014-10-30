@@ -1,4 +1,3 @@
-
 function OipaVis () {
     this.type = null; // override
     this.data = null;
@@ -41,7 +40,6 @@ function OipaVis () {
         OipaWidgetsBus.remove_listener(this);
         //map.remove_refresh_callback('OipaVis' + this.get_url());
         var node = $('section[data-indicator="' + this.indicator + '"]').parent().get()[0];
-        console.log(node);
         //var node = document.getElementById('visualization_' + this.indicator);
         var holder = document.getElementById('visualisation-block-wrapper');
         if (holder) {
@@ -159,6 +157,7 @@ function OipaVis () {
 
     this.refresh_data = function(data, force) {
         this.data = data;
+
         this.refresh(data, force);
     }
 
@@ -173,17 +172,18 @@ function OipaVis () {
             if (data) {
                 this.visualize(data);
             } else {
+
                 this.visualize(this.data);
             }
         }
     };
 
     this.export = function(filetype){
-        new OipaExport(this, filetype);
+        //new OipaExport(this, filetype);
     };
 
     this.embed = function(){
-        var embed = new OipaEmbed(this);
+        //var embed = new OipaEmbed(this);
     };
 
     this.get_url = function() {
@@ -554,15 +554,8 @@ function OipaActiveChart(id, options) {
         }
 
         if (!data || data[self.indicator] == undefined) {
-            // WARNING: this function relies on `Oipa` variable from global scope
-            self.indicator_change_count += 1;
-            if (self.indicator_change_count <= 10) {
-                Oipa.replace_visualisation(self);
-            } else {
-                // Nothing to show. At all
-                $("section[data-indicator='" + self.indicator + "']").parent().hide();
-            }
-            return false;
+
+            return;
         }
         $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").hide();
         $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
@@ -609,6 +602,7 @@ function OipaActiveChart(id, options) {
     return this;
 }
 OipaActiveChart.prototype = new OipaVis();
+
 
 function OipaActiveRoundChart(id, options) {
     OipaActiveChart.call(this, id, options);
@@ -1181,21 +1175,3 @@ OipaRegionPieInfographicsVis = function(indicator, regions, options) {
     return self;
 }
 OipaRegionPieInfographicsVis.prototype = Object.create(OipaPieInfographicsVis.prototype);
-
-function toFixed(x) {
-  if (Math.abs(x) < 1.0) {
-    var e = parseInt(x.toString().split('e-')[1]);
-    if (e) {
-        x *= Math.pow(10,e-1);
-        x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
-    }
-  } else {
-    var e = parseInt(x.toString().split('+')[1]);
-    if (e > 20) {
-        e -= 20;
-        x /= Math.pow(10,e);
-        x += (new Array(e+1)).join('0');
-    }
-  }
-  return x;
-}

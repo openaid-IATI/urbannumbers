@@ -7,6 +7,18 @@ $indicators = array();
 if (isset($_GET['indicators'])) {
     $indicators = explode(',', $_GET['indicators']);
 }
+$required_indicators = array(
+    'cpi_4_dimensions',
+    'slum_proportion_living_urban',
+    'land_allocated_to_street_index_city_core'
+);
+if (count($indicators)) {
+    foreach ($required_indicators as $ind) {
+        if (!in_array($ind, $indicators)) {
+            $indicators[] = $ind;
+        }
+    }
+}
 
 $cities = array();
 if (isset($_GET['cities'])) {
@@ -88,7 +100,7 @@ get_header(); the_post(); ?>
             </div>
         <?php include( TEMPLATEPATH .'/indicator-visualisations.php' ); ?>
         </div>
-        
+
     </div>
 
 
@@ -99,6 +111,7 @@ get_header(); the_post(); ?>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
 
 <script>
+    Oipa.use_prefill = true;
     Oipa.pageType = "indicator-country-page";
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     Oipa.invisible_visualizations = ['land_allocated_to_street_index_city_core', 'cpi_6_dimensions'];
@@ -108,13 +121,18 @@ get_header(); the_post(); ?>
 
     var map = new OipaIndicatorMap();
     map.max_circle_size = 5000;
-    map.set_map("main-map");
+    map.set_map("main-map", "topright");
     map.init();
 
     map.selection = Oipa.mainSelection;
     Oipa.maps.push(map);
 
     OipaWidgetsBus.patch_map(map);
+
+    var city = new OipaCity(<?php echo $city; ?>);
+
+
+    OipaWidgetsBus.add_listener(city);
 
     var filter = new UnhabitatInMapOipaIndicatorFilters();
     Oipa.filter = filter;
@@ -126,13 +144,7 @@ get_header(); the_post(); ?>
         chart_class: OipaCountryPieChart
     }
 
-    <?php if (!count($indicators)): ?>
-        filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
-        filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban slum population", "indicators");
-        filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
-        filter.selection.add_indicator("slum_proportion_living_urban", "Rural population", "indicators");
-        filter.selection.add_indicator("cpi_4_dimensions", "City Prosperity", "indicators");
-    <?php else: ?>
+    <?php if (count($indicators)): ?>
     <?php foreach ($indicators as $id => $indicator): ?>
         filter.selection.add_indicator("<?php echo $indicator; ?>", "Loading...", "indicators");
     <?php endforeach; ?>
@@ -142,9 +154,6 @@ get_header(); the_post(); ?>
 
     filter.init();
 
-    var city = new OipaCity(<?php echo $city; ?>);
-
-    OipaWidgetsBus.add_listener(city);
 
 //filter.save(true);
 

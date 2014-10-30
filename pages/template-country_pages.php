@@ -8,6 +8,24 @@ if (isset($_GET['indicators'])) {
     $indicators = explode(',', $_GET['indicators']);
 }
 
+$required_indicators = array(
+    'urban_population_countries',
+    'urban_slum_population_countries',
+    'rural_population',
+    'population',
+    'total_length_road',
+    'income_gini_coefficient_countries'
+);
+
+if (count($indicators)) {
+    foreach ($required_indicators as $ind) {
+        if (!in_array($ind, $indicators)) {
+            $indicators[] = $ind;
+        }
+    }
+}
+
+
 $countries = array();
 if (isset($_GET['countries'])) {
     $countries = explode(',', $_GET['countries']);
@@ -107,6 +125,7 @@ get_header(); the_post(); ?>
 
 <script>
 
+Oipa.use_prefill = true;
 Oipa.pageType = "indicator-country-page";
 Oipa.mainSelection = new OipaIndicatorSelection(1);
 Oipa.invisible_visualizations = [
@@ -120,7 +139,7 @@ Oipa.invisible_visualizations = [
 
 var map = new OipaIndicatorMap();
 
-map.set_map("main-map");
+map.set_map("main-map", "topright");
 map.init();
 
 map.selection = Oipa.mainSelection;
@@ -138,18 +157,8 @@ filter.selection.indicator_options = {
 <?php if (count($indicators)): ?>
     <?php foreach($indicators as $k => $indicator): ?>
     <?php $_options = ($indicator == 'slum_proportion_living_urban') ? ", {chart_class: OipaPieChart}" : ""; ?>
-    filter.selection.add_indicator("<?php echo $indicator; ?>", "Total population", "indicators"<?php echo $_options; ?>);
+    filter.selection.add_indicator("<?php echo $indicator; ?>", "Indicator data not available", "indicators"<?php echo $_options; ?>);
     <?php endforeach; ?>
-<?php else: ?>
-    filter.selection.add_indicator("population", "Total population", "indicators");
-    filter.selection.add_indicator("urban_population_countries", "Urban population", "indicators");
-    filter.selection.add_indicator("urban_population_cities", "Urban population", "indicators");
-    filter.selection.add_indicator("slum_proportion_living_urban", "Urban population", "indicators", {chart_class: OipaPieChart});
-    filter.selection.add_indicator("urban_slum_population_countries", "Urban slum population", "indicators");
-    filter.selection.add_indicator("rural_population", "Rural population", "indicators");
-    filter.selection.add_indicator("income_gini_coefficient_countries", "City Prosperity", "indicators");
-    filter.selection.add_indicator("total_length_road", "Total length roadwork", "indicators");
-    filter.selection.add_indicator("street_density_city_core", "Street density - city core", "indicators");
 <?php endif; ?>
 
 <?php if (count($countries)): ?>
@@ -172,11 +181,7 @@ if (filter.selection.countries.length > 0) {
     OipaWidgetsBus.patch_map(map);
 
     OipaWidgetsBus.add_listener(country);
-
-
 }
-
-filter.save(true);
 
 </script>
 

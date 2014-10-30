@@ -271,7 +271,7 @@
         }
 
         #timeline-left, #timeline-right{
-          min-height: 4em;
+          min-height: 2em;
           overflow: hidden;
           width: 50%;
           background-color: #000;

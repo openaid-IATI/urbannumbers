@@ -14,7 +14,6 @@ function OipaCity(city_id) {
         url = search_url + "cities/" + self.city_id + "/?format=json";
 
         jQuery.support.cors = true;
-    
         jQuery.ajax({
             type: 'GET',
             url: url,
@@ -73,7 +72,6 @@ function OipaCity(city_id) {
                 _number = _number * 1000;
             }
             $('.horizontal_vis_block_population').html(humanReadableSize(_number));
-            
         } else {
             $('.horizontal_vis_block_population').html("Not available");
         }
@@ -82,5 +80,3 @@ function OipaCity(city_id) {
 
     self.init();
 }
-
-
