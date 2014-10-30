@@ -51,7 +51,7 @@ var Oipa = {
 
     refresh_maps : function(data){
         for (var i = 0; i < this.maps.length; i++){
-            this.maps[i].refresh(data);
+            this.maps[i].refresh();
         }
     },
     refresh_visualisations : function(data) {
