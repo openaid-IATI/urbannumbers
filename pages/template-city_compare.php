@@ -95,7 +95,9 @@ get_header(); the_post(); ?>
 
 
     <?php get_template_part("footer", "scripts"); ?>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
     <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compare.js"></script>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/comparemap.js"></script>
 
     <script>
 
@@ -108,23 +110,23 @@ get_header(); the_post(); ?>
         }
 
         // Force refresh
-        OipaWidgetsBus.use_force_refresh = true;
         var filter_div = "";
 
-        var leftmap = new OipaMap();
+        var leftmap = new OipaCompareMap();
         leftmap.set_map("left-map");
         leftmap.compare_left_right = "left";
+        OipaWidgetsBus.add_listener(leftmap);
         Oipa.maps.push(leftmap);
 
-        var rightmap = new OipaMap();
+        var rightmap = new OipaCompareMap();
         rightmap.set_map("right-map");
         rightmap.compare_left_right = "right";
+        OipaWidgetsBus.add_listener(rightmap);
         Oipa.maps.push(rightmap);
 
 
-        
         var filter = new UnhabitatOipaCompareFilters();
-        
+
         filter.selection = Oipa.mainSelection;
 
         filter.init();
@@ -135,11 +137,13 @@ get_header(); the_post(); ?>
         });
 
         filter.update_selection_after_filter_load(filter.selection);
+/*
         filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
         filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
         filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
 
         filter.reload_specific_filter('compare-indicators');
+*/
 
     </script>
 

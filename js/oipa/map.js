@@ -1,4 +1,4 @@
-function OipaMap(use_legend){
+function OipaMap(use_legend) {
     this.map = null;
     this.selection = null;
     this.slider = null;
@@ -45,20 +45,7 @@ function OipaMap(use_legend){
 
     this.refresh = function(data) {
         if (!data) {
-            // TODO: move this logic into OipaCompare
-            if (this.compare_left_right == "left"){
-                // load map on left selection city
-                if (filter.selection.left.cities.length > 0){
-                    this.set_city(filter.selection.left.cities[0].id);
-                }
-            } else if (this.compare_left_right == "right"){
-                // load map on right selection city
-                if (filter.selection.right.cities.length > 0){
-                    this.set_city(filter.selection.right.cities[0].id);
-                }
-            } else {
-                this.get_data(this.get_url());
-            }
+            this.get_data(this.get_url());
         } else {
             // show data
             this.show_data_on_map(data);
@@ -243,27 +230,6 @@ function OipaMap(use_legend){
     this.change_basemap = function(basemap_id){
         this.tl._url = "https://{s}.tiles.mapbox.com/v3/" + basemap_id + "/{z}/{x}/{y}.png";
         this.tl.redraw();
-    };
-
-    this.set_city = function(city_id) {
-        var city = new OipaCity();
-        city.id = city_id;
-        var thismap = this;
-        url = search_url + "cities/?format=json&id=" + city_id;
-
-        jQuery.support.cors = true;
-
-        jQuery.ajax({
-            type: 'GET',
-            url: url,
-            contentType: "application/json",
-            dataType: 'json',
-            success: function(data){
-                city.set_compare_data(data, thismap.compare_left_right);
-            }
-        });
-
-        return city;
     };
 
     this.zoom_on_dom = function(curelem){

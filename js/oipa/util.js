@@ -96,7 +96,7 @@ function make_parameter_string_from_query_selection(str, parameter_name){
         return str;
 }
 
-function get_activity_based_parameters_from_selection(selection){
+function get_activity_based_parameters_from_selection(selection) {
         var str_region = make_parameter_string_from_selection(selection.regions, "regions__in");
         var str_country = make_parameter_string_from_selection(selection.countries, "countries__in");
         var str_sector = make_parameter_string_from_selection(selection.sectors, "sectors__in");
@@ -157,8 +157,10 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
                         url: url,
                         contentType: "application/json",
                         dataType: 'json',
-                        success: function(data){
+                        success: function(data) {
+                            if (Object.prototype.toString.call(data) === '[object Array]') {
                                 current_object.refresh(data);
+                            }
                         }
                 });
         }

@@ -33,6 +33,7 @@ var Oipa = {
     },
 
     get_url: function() {
+        console.log(this.mainSelection);
         var str_region = get_parameters_from_selection(this.mainSelection.regions);
         var str_country = get_parameters_from_selection(this.mainSelection.countries);
         var str_city = get_parameters_from_selection(this.mainSelection.cities);
@@ -134,6 +135,7 @@ var Oipa = {
     },
 
     create_visualisations : function(indicator_data, forced_chart_class) {
+        console.log('create');
         var thisoipa = this;
 
         if (this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {

@@ -25,6 +25,7 @@ var register_url = "http://localhost:18088/rest-auth/register/";
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/selection.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/indicatorselection.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compareselection.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/map.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/filters.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets.js"></script>

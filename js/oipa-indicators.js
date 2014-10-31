@@ -91,85 +91,6 @@ function OipaCompareSelection(main){
 }
 OipaCompareSelection.prototype = new OipaIndicatorSelection();
 
-var OipaCompare = {
-        item1 : null,
-        item2 : null,
-        refresh_state : 0,
-        refresh_comparison: function(){
-                leftmap.map.setView(this.item1.latlng, 10);
-                rightmap.map.setView(this.item2.latlng, 10);
-                $("#compare-left-title").text(this.item1.name);
-                $("#compare-right-title").text(this.item2.name);
-        },
-
-        get_from_href: function(key) {
-            if (window.location.href.indexOf(key) == -1) {
-                // No such key in href
-                return;
-            }
-
-            var _val;
-            $.each(window.location.href.split('?')[1].split('&'), function(_, i) {
-                if (i.split('=')[0] == key) {
-                    if (i.split('=').length > 1) {
-                        _val = i.split('=')[1];
-                    }
-                }
-            });
-            return _val;
-        },
-
-        randomize: function(initial, reset) {
-                // get cities
-                var left_cities = [];
-                var city_id_1, city_id_2;
-
-                if (initial !== undefined) {
-                    city_id_1 = this.get_from_href('left_cities');
-                    city_id_2 = this.get_from_href('right_cities');
-                }
-                $("#left-cities-filters input").each(function(){
-                    left_cities.push($(this).val());
-                });
-
-                var right_cities = [];
-                $("#right-cities-filters input").each(function(){
-                    right_cities.push($(this).val());
-                });
-
-                if (city_id_1 == undefined) {
-                    // choose 2 random ones
-                    city_id_1 = get_random_city_within_selection(left_cities);
-                }
-                if (city_id_2 == undefined) {
-                    city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
-                }
-
-                var city_1 = leftmap.set_city(city_id_1);
-                this.item1 = city_1;
-                Oipa.mainSelection.left.cities = [{"id": city_1.id, "name": city_1.name}];
-
-                var city_2 = rightmap.set_city(city_id_2);
-                this.item2 = city_2;
-                Oipa.mainSelection.right.cities = [{"id": city_2.id, "name": city_2.name}];
-
-                if (initial !== undefined || reset !== undefined) {
-                    this.create_visualisations();
-                }
-
-                if (initial == undefined) {
-                    filter.save(true);
-                }
-        },
-        create_visualisations: function() {
-            if (filter.selection.indicators.length == 0) {
-                filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
-                filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
-                filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
-            }
-            filter.save(true);
-        }
-}
 
 function OipaIndicatorMap(use_legend) {
     OipaMap.call(this, use_legend);
@@ -840,8 +761,6 @@ function OipaCompareFilters() {
             this.create_filter_attributes(data.cities, columns, 'right-cities');
 
             this.create_filter_attributes(data.indicators, 2, 'indicators');
-
-            if (this.firstLoad === true) { firstLoad = false; OipaCompare.randomize(1); }
 
 
                 // reload aangevinkte vakjes

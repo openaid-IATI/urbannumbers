@@ -1,5 +1,6 @@
-function OipaCity(city_id) {
+function OipaCity(city_id, map) {
     var self = this;
+    self.map = map;
     self.city_id = city_id;
     self.data = undefined;
     self.city_data = undefined;
@@ -30,7 +31,7 @@ function OipaCity(city_id) {
                         fillColor: "#008b85",
                         fillOpacity: 0.7
                 }).addTo(map.map);*/
-                map.map.setZoomAround(self.location, 8);
+                self.map.map.setZoomAround(self.location, 8);
             }
         });
     };
