@@ -1,0 +1,80 @@
+#visualization_wheel {
+    width: 1000px;
+}
+#visualization_wheel canvas {
+    margin-top: -50px;
+}
+#legend {
+    position: absolute;
+    z-index: 999;
+    top: 0px;
+    right: 10px;
+    background: #FFF;
+    padding: 10px;
+    display: inline-block;
+}
+#legend ul li {
+    list-style: none;
+    display: block;
+    width: auto;
+}
+#legend ul li span {
+    width: 20px;
+    font-size: 2px;
+    padding: 0px 10px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#indicator-filter-wrapper nav ul li {
+    list-style: none;
+    float: left;
+}
+#indicator-filter-wrapper .slide-content {
+    display: none;
+}
+.holder select {
+    width: 100%;
+    line-height: 40px;
+    font-size: 50px;
+    padding: 10px;
+}
+
+.helper-popup {
+    position: absolute;
+    top: px;
+    z-index: 9999;
+    padding: 10px;
+    background: #3F4452;
+    color: #ffffff;
+    font-weight: normal;
+    margin-left: 100px;
+}
+
+/* vis styling */
+.box-list li {
+    width: 220px;
+}
+#visualisation-block-wrapper .widget {
+    margin-top:0px;
+}
+.container-box .box-content:before {
+    height: auto;
+}
+.container-box .heading-holder {
+    background: none;
+}
+.box-list.large .container-box .heading-holder h3 {
+    font-size: 14px;
+    text-align: center;
+}
+#visualisation-block-wrapper .heading-holder h3, #visualisation-maps-block-wrapper .heading-holder h3 {
+    margin-top: 0px;
+}
+.container-box .heading-holder {
+    margin: 0px;
+    padding: 0px;
+}
+.box-list.large .container-box .heading-holder {
+    min-height: none;
+}

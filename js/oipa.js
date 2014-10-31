@@ -7,8 +7,11 @@ var Oipa = {
     filter: null,
     visualisations : {},
     visualisations_with_no_data: [],
-    use_prefill: false,
+    use_prefill: true,
     max_prefill: 3,
+
+    visualisation_size: 340,
+
     invisible_visualizations: [],
     recreate_timeout: null,
 
@@ -16,12 +19,10 @@ var Oipa = {
 
     // Functions
     refresh: function(data) {
-
         if (data == undefined) {
             return this.get_data(this.get_url());
         }
 
-        console.log('321');
         // reload maps
         this.refresh_maps(data);
 
@@ -34,11 +35,10 @@ var Oipa = {
     },
 
     get_url: function() {
-        console.log(this.mainSelection);
-        var str_region = get_parameters_from_selection(this.mainSelection.regions);
-        var str_country = get_parameters_from_selection(this.mainSelection.countries);
-        var str_city = get_parameters_from_selection(this.mainSelection.cities);
-        var str_indicators = get_parameters_from_selection(this.mainSelection.indicators);
+        var str_region = get_parameters_from_selection(this.mainSelection.get('regions', []));
+        var str_country = get_parameters_from_selection(this.mainSelection.get('countries', []));
+        var str_city = get_parameters_from_selection(this.mainSelection.get('cities', []));
+        var str_indicators = get_parameters_from_selection(this.mainSelection.get('indicators', []));
 
         return search_url + 'indicator-data/?format=json&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
     },
@@ -138,7 +138,7 @@ var Oipa = {
     create_visualisations : function(indicator_data, forced_chart_class) {
         var thisoipa = this;
 
-        if (this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
+        if (this.use_prefill && this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
             // Add 3 indicators if nothing selected yet
             var _prefill_count = 0;
             $.each(indicator_data, function(key, i) {
@@ -157,11 +157,9 @@ var Oipa = {
             return val.id;
         });
 
-        console.log(indicator_data);
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
             if (_new_visualizations.indexOf(id) == -1) {
                 // Remove unused visualisation
-                console.log(vis);
                 vis.destroy();
                 delete thisoipa.visualisations[id];
             }

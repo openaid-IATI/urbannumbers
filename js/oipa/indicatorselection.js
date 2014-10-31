@@ -53,4 +53,9 @@ function OipaIndicatorSelection(main){
     self.add_indicator = function(id, i_name, i_type, options) {
         self.update_selection('indicators', id, i_name, i_type, options);
     }
+
+    this.get = function(option, default_value) {
+        default_value = (default_value == undefined) ? [] : default_value;
+        return (self[option] == undefined) ? default_value : self[option];
+    }
 }

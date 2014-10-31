@@ -197,23 +197,24 @@ function OipaFilters() {
                 return budgetfilters;
         }
 
-        this.initialize_filters = function(selection){
-                if (!selection){
-                        selection = this.selection;
-                }
+    this.initialize_filters = function(selection){
+        if (!selection){
+            selection = this.selection;
+        }
 
-                jQuery('#map-filter-overlay input:checked').prop('checked', false);
-                if (typeof selection.sectors !== "undefined") { this.init_filters_loop(selection.sectors) };
-                if (typeof selection.countries !== "undefined") { this.init_filters_loop(selection.countries) };
-                if (typeof selection.budgets !== "undefined") { this.init_filters_loop(selection.budgets) };
-                if (typeof selection.regions !== "undefined") { this.init_filters_loop(selection.regions) };
-                if (typeof selection.indicators !== "undefined") { this.init_filters_loop(selection.indicators) };
-                if (typeof selection.cities !== "undefined") { this.init_filters_loop(selection.cities) };
-                if (typeof selection.reporting_organisations !== "undefined") { this.init_filters_loop(selection.reporting_organisations) };
-        
-                //fill_selection_box();
-                this.after_initialize_filters();
+        jQuery('#map-filter-overlay input:checked').prop('checked', false);
+        if (typeof selection.sectors !== "undefined") { this.init_filters_loop(selection.get('sectors')) };
+        if (typeof selection.countries !== "undefined") { this.init_filters_loop(selection.get('countries')) };
+        if (typeof selection.budgets !== "undefined") { this.init_filters_loop(selection.get('budgets')) };
+        if (typeof selection.regions !== "undefined") { this.init_filters_loop(selection.get('regions')) };
+        if (typeof selection.indicators !== "undefined") { this.init_filters_loop(selection.get('indicators')) };
+        if (typeof selection.cities !== "undefined") { this.init_filters_loop(selection.get('cities')) };
+        if (typeof selection.reporting_organisations !== "undefined") {
+            this.init_filters_loop(selection.get('reporting_organisations'));
         };
+
+        this.after_initialize_filters();
+    };
 
         this.after_initialize_filters = function(){
                 // override
@@ -226,7 +227,6 @@ function OipaFilters() {
         };
 
         this.create_filter_attributes = function(objects, columns, attribute_type){
-
                 if (attribute_type === "indicators"){
                         this.create_indicator_filter_attributes(objects, columns);
                         return true;
@@ -386,7 +386,6 @@ function OipaFilters() {
         };
 
         this.reload_specific_filter = function(filter_name, data){
-
                 if (!data){
                         filters = this;
 
@@ -399,11 +398,11 @@ function OipaFilters() {
                         if (filter_name === "right-cities") { url = this.get_url(null, "&indicators__in=" + get_parameters_from_selection(selection.indicators) + "&countries__in=" + get_parameters_from_selection(selection.right.countries) ); }
                         if (filter_name === "indicators") { url = this.get_url(null, "&regions__in=" + get_parameters_from_selection(selection.regions) + "&countries__in=" + get_parameters_from_selection(selection.countries) + "&cities__in=" + get_parameters_from_selection(selection.cities) ); }
             if (filter_name === "compare-indicators") {
-                var _cities = get_parameters_from_selection(selection.left.cities) + ',' + get_parameters_from_selection(selection.right.cities);
+                var _cities = get_parameters_from_selection(selection.get('cities', []));
                 url = this.get_url(
                     null,
-                    "&regions__in=" + get_parameters_from_selection(selection.regions) 
-                    + "&countries__in=" + get_parameters_from_selection(selection.countries) 
+                    "&regions__in=" + get_parameters_from_selection(selection.get('regions', []))
+                    + "&countries__in=" + get_parameters_from_selection(selection.get('countries', []))
                     + "&cities__in=" + _cities
                 );
                 filter_name = 'indicators';

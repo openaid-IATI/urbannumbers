@@ -242,7 +242,7 @@
 }
 
 .container-sort{
-  z-index: 2000;
+  position: static;
 }
 
 .indicator-category-button{

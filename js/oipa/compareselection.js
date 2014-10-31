@@ -63,6 +63,22 @@ function OipaCompareSelection(main){
         }
     }
 
+    self.get_side = function(side, option, default_value) {
+        default_value = (default_value == undefined) ? [] : default_value;
+        if (self[side] == undefined || self[side][option] == undefined) {
+            return default_value;
+        }
+        return self[side][option];
+    }
+
+    self.get = function(option, default_value) {
+        default_value = (default_value == undefined) ? [] : default_value;
+        if (['regions', 'countries', 'cities'].indexOf(option)) {
+            return self.get_side('left', option, []).concat(self.get_side('right', option, []));
+        }
+        return (self[option] == undefined) ? default_value : self[option];
+    }
+
     self.clean = function(type) {
         console.log('clean', type);
         //self[type] = [];
