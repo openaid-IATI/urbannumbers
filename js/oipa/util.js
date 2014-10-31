@@ -158,7 +158,7 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
                         contentType: "application/json",
                         dataType: 'json',
                         success: function(data) {
-                            if (Object.prototype.toString.call(data) === '[object Array]') {
+                            if (Object.prototype.toString.call(data) === '[object Object]') {
                                 current_object.refresh(data);
                             }
                         }

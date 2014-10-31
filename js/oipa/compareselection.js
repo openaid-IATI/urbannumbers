@@ -1,4 +1,3 @@
-
 function OipaCompareSelection(main){
     var self = this;
     self.left = [];

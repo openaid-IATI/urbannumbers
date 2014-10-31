@@ -21,11 +21,12 @@ var Oipa = {
             return this.get_data(this.get_url());
         }
 
+        console.log('321');
         // reload maps
         this.refresh_maps(data);
 
         // reload lists
-        this.refresh_lists();
+        this.refresh_lists(data);
 
         // reload visualisations
         this.refresh_visualisations(data);
@@ -157,9 +158,11 @@ var Oipa = {
             return val.id;
         });
 
+        console.log(data);
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
             if (_new_visualizations.indexOf(id) == -1) {
                 // Remove unused visualisation
+                console.log(vis);
                 vis.destroy();
                 delete thisoipa.visualisations[id];
             }
