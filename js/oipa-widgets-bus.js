@@ -22,7 +22,7 @@ var OipaWidgetsBus = {
             if (OipaWidgetsBus.use_force_refresh) {
                 _params = [data, true];
             }
-            //OipaWidgetsBus.trigger_event('refresh_data', _params);
+            OipaWidgetsBus.trigger_event('refresh_data', _params);
             return _;
         }
     },

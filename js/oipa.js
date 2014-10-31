@@ -136,7 +136,6 @@ var Oipa = {
     },
 
     create_visualisations : function(indicator_data, forced_chart_class) {
-        console.log('create');
         var thisoipa = this;
 
         if (this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
@@ -158,7 +157,7 @@ var Oipa = {
             return val.id;
         });
 
-        console.log(data);
+        console.log(indicator_data);
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
             if (_new_visualizations.indexOf(id) == -1) {
                 // Remove unused visualisation

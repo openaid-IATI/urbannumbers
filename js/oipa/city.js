@@ -65,6 +65,8 @@ function OipaCity(city_id, map) {
             self.update_indicator(data, id);
         });
 
+
+        console.log(data);
         if (data.urban_population_cities !== undefined
             && data.urban_population_cities.locs[self.city_id] !== undefined
             && data.urban_population_cities.locs[self.city_id].years[self.year] !== undefined) {

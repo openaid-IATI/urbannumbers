@@ -129,8 +129,7 @@ get_header(); the_post(); ?>
 
     OipaWidgetsBus.patch_map(map);
 
-var city = new OipaCity(<?php echo $city; ?>, map);
-
+    var city = new OipaCity(<?php echo $city; ?>, map);
 
     OipaWidgetsBus.add_listener(city);
 

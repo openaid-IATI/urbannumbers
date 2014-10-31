@@ -5,6 +5,7 @@ function OipaCompareMap(use_legend) {
         if (!data) {
             console.log(this.compare_left_right);
             if (this.compare_left_right == "left" && (filter.selection.left.cities.length > 0)) {
+                console.log(data);
                 this.set_city(filter.selection.left.cities[0].id);
             }
             if (this.compare_left_right == "right") {
