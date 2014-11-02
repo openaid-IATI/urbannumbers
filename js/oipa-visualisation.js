@@ -457,7 +457,6 @@ function OipaActiveChart(id, options) {
     }
 
     this.get_last_data_year = function(data) {
-        console.log(data);
         return Math.max.apply(null, $.map(Object.keys(data.locs[Object.keys(data.locs)[0]].years), function(i) {return parseInt(i);}));
     }
 
@@ -560,7 +559,7 @@ function OipaActiveChart(id, options) {
         }
         $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").hide();
         $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
-        console.log(data);
+
         data = data[self.indicator];
         chart_data = self.format_year_data(data, self.selected_year, 10);
 

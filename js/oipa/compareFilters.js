@@ -82,6 +82,10 @@ OipaCompareFilters.prototype.get_select_status = function(key) {
         return true;
     }
 
+    if (key == 'indicators' && this.selection.get_side('right', 'cities', []).length > 0) {
+        return true;
+    }
+
     return false;
 }
 
@@ -180,6 +184,7 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
     }
 };
 
+
 OipaCompareFilters.prototype.create_filter_attributes = function(objects, columns, key) {
     var self = this;
     if (['left-cities', 'right-cities', 'left-countries', 'right-countries'].indexOf(key) !== -1) {
@@ -193,6 +198,7 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
                 }
                 if (key == 'left-cities') {
                     $('#right-countries-select').get()[0].disabled = false;
+                    $('#right-countries-select').selectric('refresh');
                 }
                 if (key == 'right-cities') {
                     self.reload_specific_filter('indicators');
@@ -220,7 +226,13 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
         _holder._options = {};
         _holder._default_option = document.createElement('option');
         _holder._default_option.value = '';
-        _holder._default_option.innerHTML = "SELECT ME"; // TO DO: Update label
+
+        _holder._default_option.innerHTML = {
+            'left-cities': "SELECT CITY 1",
+            'right-cities': "SELECT CITY 2",
+            'left-countries': "SELECT COUNTRY 1",
+            'right-countries': "SELECT COUNTRY 2"
+        }[key];
         _holder.appendChild(_holder._default_option);
 
         $.each(objects, function(code, name) {
@@ -233,8 +245,32 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
 
         $('#' + key + '-filters').html(_holder);
 
+        var onInit = function() {};
+        if (key == 'left-countries') {
+            onInit = function () {
+                $('.left-countries-helper').fadeIn();
+            }
+        }
+
+        $('#' + key + '-filters select').selectric({
+            responsive: true,
+            onInit: onInit,
+            onOpen: function() {
+                $('.left-countries-helper').fadeOut();
+            }
+        });
+
 
     } else {
         self.create_indicator_filter_attributes(objects, columns);
+
+        var _status = self.get_select_status('indicators');
+        $('#indicator-filter-wrapper li a').each(function(_, a) {
+            if (_status) {
+                $(a).addClass('btn btn-success');
+            } else {
+                $(a).addClass('btn btn-default');
+            }
+        });
     }
 };

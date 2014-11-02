@@ -28,20 +28,20 @@ var OipaCompare = {
 
         randomize: function(initial, reset) {
                 // get cities
-                var left_cities = [];
+                var left_cities = [], right_cities = [];
                 var city_id_1, city_id_2;
 
                 if (initial !== undefined) {
                     city_id_1 = this.get_from_href('left_cities');
                     city_id_2 = this.get_from_href('right_cities');
                 }
-                $("#left-cities-filters input").each(function(){
-                    left_cities.push($(this).val());
-                });
-                var right_cities = [];
-                $("#right-cities-filters input").each(function(){
-                    right_cities.push($(this).val());
-                });
+                if ($('#left-cities-select').get()[0] !== undefined) {
+                    left_cities = Object.keys($('#left-cities-select').get()[0]._options);
+                }
+
+                if ($('#right-cities-select').get()[0] !== undefined) {
+                    right_cities = Object.keys($('#right-cities-select').get()[0]._options);
+                }
 
                 if (city_id_1 == undefined) {
                     // choose 2 random ones
@@ -51,13 +51,34 @@ var OipaCompare = {
                     city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
                 }
 
-                var city_1 = leftmap.set_city(city_id_1);
+                var city_1 = leftmap.set_city(city_id_1, 'left');
                 this.item1 = city_1;
                 Oipa.mainSelection.left.cities = [{"id": city_1.id, "name": city_1.name}];
 
-                var city_2 = rightmap.set_city(city_id_2);
+                var city_2 = rightmap.set_city(city_id_2, 'right');
                 this.item2 = city_2;
                 Oipa.mainSelection.right.cities = [{"id": city_2.id, "name": city_2.name}];
+
+                // Remove helper and refresh selects
+                $('.left-countries-helper').fadeOut();
+
+                $('#left-cities-select').val(city_1.id);
+                $('#left-cities-select').attr('disabled', false);
+                $('#right-cities-select').val(city_2.id);
+                $('#right-cities-select').attr('disabled', false);
+
+                if (city_1.country_id !== undefined) {
+                    $('#left-countries-select').val(city_1.country_id);
+                }
+
+                if (city_2.country_id !== undefined) {
+                    $('#right-countries-select').val(city_2.country_id);
+                }
+
+                $('#right-countries-select').attr('disabled', false);
+                $('#left-cities-select').selectric('refresh');
+                $('#right-countries-select').selectric('refresh');
+                $('#right-cities-select').selectric('refresh');
 
                 if (initial !== undefined || reset !== undefined) {
                     this.create_visualisations();

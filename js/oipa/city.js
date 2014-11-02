@@ -1,7 +1,11 @@
-function OipaCity(city_id, map) {
+function OipaCity(city_id, map, side) {
     var self = this;
     self.map = map;
+    self.side = side;
+    self.id = city_id;
+    self.name = '';
     self.city_id = city_id;
+    self.country_id = null;
     self.data = undefined;
     self.city_data = undefined;
     self.year = 2014;
@@ -22,6 +26,11 @@ function OipaCity(city_id, map) {
             dataType: 'json',
             success: function(data) {
                 $('.horizontal_vis_block_name').html(data.ascii_name);
+
+                self.country_id = data.country;
+                get_wiki_city_data(data.ascii_name, self.side);
+                self.name = data.ascii_name;
+                $('#compare-' + self.side + '-map-border .text-box').show();
 
                 self.location = geo_point_to_latlng(data.location);
 

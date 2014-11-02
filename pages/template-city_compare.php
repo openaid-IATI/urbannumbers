@@ -11,6 +11,7 @@ get_header(); the_post(); ?>
     </div>
     <div class="container">
         <div class="container-map">
+            <h2>CITY INFORMATION WIKIPEDIA</h2>
             <div class="columns-holder">
                 <div class="holder">
                     <div id="compare-left-map-border" class="column">
@@ -18,45 +19,39 @@ get_header(); the_post(); ?>
                         $curmapname = "left";
                         include( TEMPLATEPATH .'/map.php' );
                         ?>
+                        <div class="text-box">
+                            <div class="text-frame left-city-wikipedia"></div>
+                        </div>
                     </div>
                     <div id="compare-right-map-border" class="column">
                         <?php
                         $curmapname = "right";
                         include( TEMPLATEPATH .'/map.php' );
                         ?>
-                    </div>
-                </div>
-            </div>
-            <div class="container-text hidden-xs">
-                <div class="holder">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <div class="text-box">
-                                <div class="text-frame left-city-wikipedia"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <div class="text-box">
-                                <div class="text-frame right-city-wikipedia"></div>
-                            </div>
+                        <div class="text-box">
+                            <div class="text-frame right-city-wikipedia"></div>
                         </div>
                     </div>
+                    <br clear="all" /><br />
                 </div>
             </div>
         </div>
 
-        <div class="row" style="display: none">
-            <div class="col-md-4"><a id="reset-filters" class="btn btn-default" href="#">RESET FILTERS</a></div>
-            <div class="col-md-4"><a id="compare-cities-randomize" class="btn btn-success" href="#">RANDOMIZE</a></div>
-            <div class="col-md-4"><?php get_template_part("share", "widget"); ?></div>
+        <div class="row compare-controls-nav">
+            <div class="col-md-5"><a id="reset-filters" class="btn btn-default" href="/urbannumbers/compare-cities/">RESET FILTERS</a></div>
+            <div class="col-md-4"><a id="compare-cities-randomize" class="btn btn-success" href="#"><i class="glyphicon glyphicon-refresh"></i> RANDOMIZE</a></div>
+                            <?php /*?><div class="col-md-3"><?php get_template_part("share", "widget"); ?></div><?php */?>
         </div>
         <br />
     </div>
 </div>
 <?php get_template_part("footer", "scripts"); ?>
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/compare.css" />
-<script src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
+<link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/selectric.css" />
 
+<script src="<?php echo get_template_directory_uri(); ?>/js/jquery.selectric.min.js"></script>
+
+<script src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compareFilters.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/unhabitat/compareFilters.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compare.js"></script>
