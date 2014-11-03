@@ -24,7 +24,7 @@
 <!-- sort-list -->
 <div id="indicator-filter-wrapper" class="container-sort">
     <nav id="indicators-pagination" class="pagination"></nav>
-    <div class="slide-content">
+    <div class="slide-content container">
         <div id="indicators-filters" class="holder"></div>
         <div class="btns-holder">
           <div class="holder"><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></div>

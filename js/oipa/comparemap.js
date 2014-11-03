@@ -22,8 +22,8 @@ function OipaCompareMap(use_legend) {
         }
     }
 
-    this.set_city = function(city_id, side) {
-        return new OipaCity(city_id, this, side);
+    this.set_city = function(city_id, side, update_country_select) {
+        return new OipaCity(city_id, this, side, update_country_select);
     }
 
 }

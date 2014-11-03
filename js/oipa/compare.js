@@ -51,12 +51,13 @@ var OipaCompare = {
                     city_id_2 = get_random_city_within_selection(right_cities, city_id_1);
                 }
 
-                var city_1 = leftmap.set_city(city_id_1, 'left');
+                var city_1 = leftmap.set_city(city_id_1, 'left', '#left-countries-select');
                 this.item1 = city_1;
                 Oipa.mainSelection.left.cities = [{"id": city_1.id, "name": city_1.name}];
 
-                var city_2 = rightmap.set_city(city_id_2, 'right');
+                var city_2 = rightmap.set_city(city_id_2, 'right', '#right-countries-select');
                 this.item2 = city_2;
+
                 Oipa.mainSelection.right.cities = [{"id": city_2.id, "name": city_2.name}];
 
                 // Remove helper and refresh selects
@@ -64,21 +65,14 @@ var OipaCompare = {
 
                 $('#left-cities-select').val(city_1.id);
                 $('#left-cities-select').attr('disabled', false);
+                $('#left-cities-select').selectric('refresh');
+
                 $('#right-cities-select').val(city_2.id);
                 $('#right-cities-select').attr('disabled', false);
-
-                if (city_1.country_id !== undefined) {
-                    $('#left-countries-select').val(city_1.country_id);
-                }
-
-                if (city_2.country_id !== undefined) {
-                    $('#right-countries-select').val(city_2.country_id);
-                }
+                $('#right-cities-select').selectric('refresh');
 
                 $('#right-countries-select').attr('disabled', false);
-                $('#left-cities-select').selectric('refresh');
                 $('#right-countries-select').selectric('refresh');
-                $('#right-cities-select').selectric('refresh');
 
                 if (initial !== undefined || reset !== undefined) {
                     this.create_visualisations();

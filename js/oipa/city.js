@@ -1,20 +1,20 @@
-function OipaCity(city_id, map, side) {
+function OipaCity(city_id, map, side, country_select) {
     var self = this;
     self.map = map;
     self.side = side;
     self.id = city_id;
     self.name = '';
     self.city_id = city_id;
-    self.country_id = null;
+    self.country_id = undefined;
     self.data = undefined;
     self.city_data = undefined;
     self.year = 2014;
 
-    self.init = function() {
-        self.set_city_data();
+    self.init = function(country_select) {
+        self.set_city_data(country_select);
     }
 
-    self.set_city_data = function() {
+    self.set_city_data = function(country_select) {
 
         url = search_url + "cities/" + self.city_id + "/?format=json";
 
@@ -27,20 +27,17 @@ function OipaCity(city_id, map, side) {
             success: function(data) {
                 $('.horizontal_vis_block_name').html(data.ascii_name);
 
-                self.country_id = data.country;
+                self.country_id = data.country_id;
                 get_wiki_city_data(data.ascii_name, self.side);
                 self.name = data.ascii_name;
                 $('#compare-' + self.side + '-map-border .text-box').show();
 
                 self.location = geo_point_to_latlng(data.location);
+                self.map.map.panTo(self.location).setZoom(8);
 
-                /*var circle = L.circle(self.location, 3000, {
-                        color: "#666",
-                        weight: '0.5',
-                        fillColor: "#008b85",
-                        fillOpacity: 0.7
-                }).addTo(map.map);*/
-                self.map.map.setZoomAround(self.location, 8);
+                if (country_select) {
+                    self.update_country_select(country_select, data);
+                }
             }
         });
     };
@@ -53,7 +50,7 @@ function OipaCity(city_id, map, side) {
     self.update_indicator = function(data, id) {
         var _data = "No data available";
         if (data[id] !== undefined
-            && data[id].locs[self.city_id] !== undefined 
+            && data[id].locs[self.city_id] !== undefined
             && data[id].locs[self.city_id].years[self.year] !== undefined
         ) {
             _data = data[id].locs[self.city_id].years[self.year];
@@ -74,8 +71,6 @@ function OipaCity(city_id, map, side) {
             self.update_indicator(data, id);
         });
 
-
-        console.log(data);
         if (data.urban_population_cities !== undefined
             && data.urban_population_cities.locs[self.city_id] !== undefined
             && data.urban_population_cities.locs[self.city_id].years[self.year] !== undefined) {
@@ -89,6 +84,16 @@ function OipaCity(city_id, map, side) {
         }
     }
 
+    self.update_country_select = function(selector, data) {
+        if (data.country_id !== undefined) {
+            if ($(selector).get()[0] !== undefined
+                && $(selector).get()[0]._options[data.country_id] !== undefined) {
+                $(selector).get()[0]._options[data.country_id].selected = true;
+            }
+            $(selector).selectric('refresh');
+        }
+    }
 
-    self.init();
+
+    self.init(country_select);
 }
