@@ -354,3 +354,15 @@ $('.share-btn').click(function(e) {
         }
     });
 })
+
+
+$('.helper')
+    .click(function() {
+        $(this).find('.helper-popup').show();
+    })
+    .mouseover(function() {
+        $(this).find('.helper-popup').show();
+    })
+    .mouseout(function() {
+        $(this).find('.helper-popup').hide();
+    });

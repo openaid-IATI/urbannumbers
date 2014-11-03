@@ -10,12 +10,15 @@
     width: 400px;
     text-transform: uppercase;
     font: 42px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    float: left;
 }
-
-.steps-nav a {
-    margin-right: 15px;
+.ci-main .helper {
+    float: left;
+    margin-top: 25px;
     margin-left: 10px;
 }
+
+
 .ci-controls a, .ci-controls input {
     font: 12px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
     text-transform: uppercase;
@@ -27,7 +30,49 @@
 
 .ci-controls .next_step, .ci-controls .save_btn {
     float: right;
+    margin-top: 10px;
+    background: #00b1b5;
 }
+
+.steps-nav {
+}
+.steps-nav ul {
+    padding: 0px;
+    margin: 0px;
+    background: url('../images/steps_bg.png') bottom left repeat-x;
+}
+.steps-nav ul li {
+    display: inline-table;
+    list-style: none;
+    line-height: 30px;
+    min-height: 55px;
+    min-width: 150px;
+    text-align: center;
+}
+.steps-nav a {
+    font: 13px/21px sans-serif;
+    font-weight: 100;
+    color: #71768a;
+    margin-right: 15px;
+    margin-left: 10px;
+    line-height: 30px;
+    text-transform: none;
+}
+.steps-nav li.nav-selected a {
+    color: #00b1b5;
+}
+
+.steps-nav li.nav-selected {
+    background: url('../images/step_1.png') 60px 36px no-repeat;
+}
+.steps-nav li.nav-enabled {
+    background: url('../images/step_3.png') 60px 35px no-repeat;
+}
+
+.steps-nav li.nav-disabled {
+    background: url('../images/step_3.png') 60px 35px no-repeat;
+}
+
 
 .btn-primary, .btn-primary:hover {
     background: #008ccb;

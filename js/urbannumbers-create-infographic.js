@@ -11,9 +11,9 @@ function Pages(holder_id, controls_holder_id, options) {
         nav_conditions: {},
         nav_options: {},
         nav_selector: '.step_',
-        nav_selected: 'btn-primary',
-        nav_enabled: 'btn-info',
-        nav_disabled: 'btn-default',
+        nav_selected: 'nav-selected',
+        nav_enabled: 'nav-enabled',
+        nav_disabled: 'nav-disabled',
     },
     options !== undefined ? options : {});
 
@@ -40,15 +40,18 @@ function Pages(holder_id, controls_holder_id, options) {
                 var _enabled = cond();
                 $(self.controls_holder)
                     .find(self.opts.nav_selector + id)
+                    .parent()
                     .removeClass(self.opts.nav_selected);
-                if (cond()) {
+                if (_enabled) {
                     $(self.controls_holder)
                         .find(self.opts.nav_selector + id)
+                        .parent()
                         .removeClass(self.opts.nav_disabled)
                         .addClass(self.opts.nav_enabled);
                 } else {
                     $(self.controls_holder)
                         .find(self.opts.nav_selector + id)
+                        .parent()
                         .removeClass(self.opts.nav_enabled)
                         .addClass(self.opts.nav_disabled);
                 }
@@ -57,6 +60,7 @@ function Pages(holder_id, controls_holder_id, options) {
 
         $(self.controls_holder)
             .find(self.opts.nav_selector + self.page_id)
+            .parent()
             .removeClass(self.opts.nav_disabled)
             .removeClass(self.opts.nav_enabled)
             .addClass(self.opts.nav_selected);
@@ -266,4 +270,5 @@ window.CI = null;
             });
         }
     });
+
 })();

@@ -70,6 +70,10 @@ get_header(); the_post(); ?>
         <div class="main-container">
             <div class="container ci-main">
                 <h1>Build data report</h1>
+                  <div class="helper">
+                      <i class="helper-icon glyphicon glyphicon-question-sign"></i>
+                      <div class="helper-popup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam finibus, massa ut tempor congue, tellus massa eleifend est, et porttitor tellus eros in nisi. Vestibulum id pharetra magna, at gravida nunc. </div>
+                  </div>
             </div>
         </div>
         <div class="main-container">
@@ -77,14 +81,16 @@ get_header(); the_post(); ?>
                 <div class="sort-holder">
                     <div class="container ci-main">
                         <div class="ci-controls row">
-                            <div class="steps-nav col-md-8">
-                                <a href="javascript: void(0)" class="step_0 btn">Step 1</a>
-                                <a href="javascript: void(0)" class="step_1 btn">Step 2</a>
-                                <a href="javascript: void(0)" class="step_2 btn">Step 3</a>
-                                <a href="javascript: void(0)" class="step_3 btn">Step 4</a>
-                                <a href="javascript: void(0)" class="step_4 btn">Step 5</a>
+                            <div class="steps-nav col-md-9">
+                                <ul>
+                                  <li><a href="javascript: void(0)" class="step_0">Describe</a></li>
+                                  <li><a href="javascript: void(0)" class="step_1">Select indicators</a></li>
+                                  <li><a href="javascript: void(0)" class="step_2">Select regions</a></li>
+                                  <li><a href="javascript: void(0)" class="step_3">Select countries</a></li>
+                                  <li><a href="javascript: void(0)" class="step_4">Select cities</a></li>
+                                </ul>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <a href="javascript:void(0)" class="next_step btn btn-success">Next step</a>
                                 <a href="javascript: document.getElementById('infographic-form').submit()" class="save_btn btn btn-success">Create report</a>
                             </div>
@@ -262,11 +268,12 @@ get_header(); the_post(); ?>
 
         <div class="container ci-main">
             <div class="ci-controls row">
-                <br />
                 <div>
                     <a href="javascript:void(0)" class="next_step btn btn-success">Next step</a>
                     <a href="javascript: document.getElementById('infographic-form').submit()" class="save_btn btn btn-success">Create report</a>
                 </div>
+                  <br clear="all" />
+<br />
             </div>
         </div>
     </div>
@@ -274,6 +281,6 @@ get_header(); the_post(); ?>
 
 <?php get_template_part("footer", "scripts"); ?>
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/create-infographic.css" />
-<script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers-crete-infographic.js" type="text/javascript"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers-create-infographic.js" type="text/javascript"></script>
 
 <?php get_footer(); ?>

@@ -61,29 +61,6 @@
     padding: 10px;
 }
 
-.helper-popup {
-    display: none;
-    position: absolute;
-    top: px;
-    z-index: 9999;
-    padding: 10px;
-    background: #3F4452;
-    color: #ffffff;
-    font-weight: normal;
-    margin-left: 100px;
-}
-.helper-popup::before {
-    position: absolute;
-    display: inline-block;
-    border-left: 0.6em solid transparent;
-    border-bottom: 1.3em solid #3F4452;
-    border-right: 0.6em solid transparent;
-    left: 1em;
-    top: -1.3em;
-    content: '';
-
-}
-
 /* vis styling */
 .box-list li {
     width: 220px;
@@ -185,4 +162,13 @@ nav#indicators-pagination li.active .btn-success {
 }
 .filter-indicator-type-text, .sort-list .active a.filter-indicator-type-text {
     margin-left: 0px;
+}
+
+.left-countries-helper.helper-popup {
+    margin-left: 100px;
+    margin-top: 0px;
+}
+
+.helper {
+    float: right;
 }

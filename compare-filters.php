@@ -2,7 +2,9 @@
 <div id="indicator-filter-wrapper" class="container-sort">
     <div class="row compare-controls-nav">
         <div class="col-md-5"><a id="reset-filters" class="btn btn-default" href="/urbannumbers/compare-cities/">RESET FILTERS</a></div>
-        <div class="col-md-4"><a id="compare-cities-randomize" class="btn btn-success" href="#"><i class="glyphicon glyphicon-refresh"></i> RANDOMIZE</a></div>
+        <div class="col-md-4">
+            <a id="compare-cities-randomize" class="btn btn-success" href="#"><i class="glyphicon glyphicon-refresh"></i> RANDOMIZE</a>
+        </div>
     </div>
 </div>
 <div id="indicator-filter-wrapper" class="container-sort">
@@ -22,8 +24,10 @@
     </div>
 </div>
 <!-- sort-list -->
-<div id="indicator-filter-wrapper" class="container-sort">
+<div id="indicator-filter-wrapper" class="container-sort row">
+
     <nav id="indicators-pagination" class="pagination"></nav>
+
     <div class="slide-content container">
         <div id="indicators-filters" class="holder"></div>
         <div class="btns-holder">
