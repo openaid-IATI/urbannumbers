@@ -27,7 +27,10 @@
     <div class="slide-content container">
         <div id="indicators-filters" class="holder"></div>
         <div class="btns-holder">
-          <div class="holder"><a href="#" class="compare-filters-save-button btn btn-blue">Save</a></div>
+          <div class="holder">
+              <a href="#" class="compare-filters-save-button btn btn-blue">Save</a>
+              <a href="#" class="compare-filters-close-button btn btn-default">Close</a>
+          </div>
         </div>
     </div>
 </div>

@@ -26,12 +26,18 @@ $(".filters-save-button").click(function(e){
 
 
 $(".compare-filters-save-button").click(function(e){
-        e.preventDefault();
-        var saved = filter.save();
-        if (saved){
-                $(".sort-list .active .opener").click();
-        }
+    e.preventDefault();
+    var saved = filter.save();
+    if (saved){
+        $(".sort-list .active .opener").click();
+    }
+});
 
+$('.compare-filters-close-button').click(function(e) {
+    e.preventDefault();
+
+    $("#indicators-pagination li").removeClass("active");
+    $('#indicator-filter-wrapper .slide-content').hide();
 });
 
 

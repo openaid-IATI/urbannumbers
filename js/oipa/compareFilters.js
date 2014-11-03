@@ -172,12 +172,6 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
         }
         if (filter_name === "indicators") {
             self.create_filter_attributes(data.indicators, 2, 'indicators');
-            $('#indicator-filter-wrapper li a').each(function(_, a) {
-                $(a).addClass('btn btn-success');
-                $(a).click(function(e) {
-                    $('#indicator-filter-wrapper .slide-content').show();
-                })
-            });
         }
 
         self.initialize_filters(self.selection);
@@ -248,7 +242,9 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
         var onInit = function() {};
         if (key == 'left-countries') {
             onInit = function () {
-                $('.left-countries-helper').fadeIn();
+                if ($('#left-cities-filters select').val() == undefined) {
+                    $('.left-countries-helper').fadeIn();
+                }
             }
         }
 
@@ -263,14 +259,42 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
 
     } else {
         self.create_indicator_filter_attributes(objects, columns);
-
-        var _status = self.get_select_status('indicators');
-        $('#indicator-filter-wrapper li a').each(function(_, a) {
-            if (_status) {
-                $(a).addClass('btn btn-success');
-            } else {
-                $(a).addClass('btn btn-default');
-            }
-        });
     }
 };
+
+OipaCompareFilters.prototype.load_indicator_paginate_listeners = function(){
+    var self = this;
+    var _status = self.get_select_status('indicators');
+    $('#indicator-filter-wrapper li a').each(function(_, a) {
+        if (_status) {
+            $(a).addClass('btn btn-success');
+        } else {
+            $(a).addClass('btn btn-default');
+        }
+    });
+
+    $("#indicators-pagination li a").click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var is_active = $(this).parent().hasClass('active');
+        $("#indicators-pagination li").removeClass("active");
+        $("#indicators-filters .filter-page").hide();
+
+        if (is_active) {
+            $('#indicator-filter-wrapper .slide-content').hide();
+        } else {
+            $('#indicator-filter-wrapper .slide-content').show();
+            $(this).parent().addClass("active");
+
+            var name = $(this).attr("name");
+            $(".filter-page-"+name).show();
+        }
+    });
+
+    $(".filter-indicator-type-text").click(function(e){
+        e.preventDefault();
+        $(this).find("span.urbnnrs-arrow").toggleClass("urbnnrs-arrow-active");
+        $(this).closest(".filter-indicator-type-dropdown").children(".filter-indicator-type-inner").toggle(500);
+    });
+}
