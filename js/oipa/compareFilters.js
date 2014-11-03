@@ -14,9 +14,9 @@ function OipaCompareFilters() {
         if (parameters_set){
             var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + parameters_set;
         } else {
-            var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+            var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
         }
-
+        console.log(cururl);
         return cururl;
     };
 
