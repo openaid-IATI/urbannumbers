@@ -179,7 +179,6 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
 
     $.each(data, function(_, indicator_data) {
         var indicator_max = self.get_max_indicator_value(indicator_data);
-        console.log(indicator_data);
 
         $.each(indicator_data.locs, function(_, location_data) {
             var latlng = L.latLng(location_data.latitude, location_data.longitude);
@@ -243,9 +242,5 @@ OipaIndicatorMap.prototype.init = function() {
     $("#map-slider-tooltip").val(self.selected_year);
     $("#year-" + self.selected_year).addClass("active");
 
-    self.map.on('zoomend', function () {
-        $.each(self.locations, function(_, location) {
-            location.refresh();
-        });
-    });
+    
 }
