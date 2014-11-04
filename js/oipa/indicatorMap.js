@@ -179,6 +179,7 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
 
     $.each(data, function(_, indicator_data) {
         var indicator_max = self.get_max_indicator_value(indicator_data);
+        console.log(indicator_data);
 
         $.each(indicator_data.locs, function(_, location_data) {
             var latlng = L.latLng(location_data.latitude, location_data.longitude);
@@ -186,6 +187,12 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
                 self.locations[latlng] = new OipaIndicatorLocation(self, location_data.id, location_data.name, latlng, self.active_years);
                 self.bounds.extend(latlng);
             }
+
+            var location_type = 'country';
+            if (location_data.country_id !== undefined) {
+                location_type = 'city';
+            }
+            self.locations[latlng].set_type(location_type);
 
             self.locations[latlng].add_indicator_data(
                 indicator_data.indicator,
@@ -242,4 +249,3 @@ OipaIndicatorMap.prototype.init = function() {
         });
     });
 }
-

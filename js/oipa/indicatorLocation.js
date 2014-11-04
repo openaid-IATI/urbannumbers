@@ -4,6 +4,7 @@ OipaIndicatorLocation = function(map, id, name, latlng, active_years) {
     this.name = name;
     this.latlng = latlng;
     this.active_years = active_years;
+    this.type = undefined;
 
     this.circles = {};
 }
@@ -14,6 +15,10 @@ OipaIndicatorLocation.prototype.add_indicator_data = function(id, name, category
         this.circles[id] = new OipaIndicatorCircle(this, id, name, type_data, color, 0.6);
     }
     this.circles[id].set_data(this.mutate_years(years), max_value);
+}
+
+OipaIndicatorLocation.prototype.set_type = function(type) {
+    this.type = type;
 }
 
 OipaIndicatorLocation.prototype.set_year = function(year) {
@@ -31,8 +36,12 @@ OipaIndicatorLocation.prototype.refresh = function() {
 }
 
 OipaIndicatorLocation.prototype.update_popup_content = function () {
+    var base_url = '/compare-cities/country-pages/?countries=' + this.id;
+    if (this.type == 'city') {
+        base_url = '/compare-cities/city-pages/?cities=' + this.id;
+    }
     var content = [
-        "<a href='" + this.id + "'>" + this.name + "</a>",
+        "<a href='" + base_url + "'>" + this.name + "</a>",
         "",
     ];
     $.each(this.circles, function(_, circle) {
