@@ -135,7 +135,7 @@ function OipaIndicatorFilters(){
 
                         html += '</div></div>';
 
-                        paginatehtml += '<li><a href="#" class="indicator-category-button" name="'+ugly_category_name+'">'+key+'</a></li>';
+                        paginatehtml += '<li><a href="#" class="indicator-category-button" name="'+ugly_category_name+'">'+key+'<i class="glyphicon glyphicon-chevron-down"></i></a></li>';
 
                 });
 

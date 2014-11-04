@@ -2061,7 +2061,7 @@ img.aligncenter{
 	box-sizing:content-box;
 	-moz-box-sizing:content-box;
 	-webkit-box-sizing:content-box;
-	margin:0 0 7px;
+	margin:7px 0 0 0px;
 	min-height:50px;
 	text-align:left;
 	background:#fff;

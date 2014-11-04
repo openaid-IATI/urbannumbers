@@ -99,6 +99,11 @@ nav#indicators-pagination .btn,
     padding: 4px 10px;
 }
 
+nav#indicators-pagination .btn i.glyphicon {
+    font-size: 11px;
+    margin-left: 5px;
+}
+
 nav#indicators-pagination .btn-default,
 .compare-controls-nav .btn-default {
     background: #dbdbdb;

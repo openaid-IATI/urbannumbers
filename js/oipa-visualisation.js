@@ -21,7 +21,6 @@ function OipaVis () {
         // create html
         var html = '<li id="visualization_' + this.indicator + '">';
         html += '<section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'">';
-        html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '<div class="box-content">';
         //html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
         //html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
@@ -30,8 +29,9 @@ function OipaVis () {
         html +=    '<canvas height="' + Oipa.visualisation_size + '" width="' + Oipa.visualisation_size + '"></canvas>';
         html +=  '</div>';
         //html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
-
-        html += '</div></section></li>';
+        html += '</div>';
+        html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
+        html += '</section></li>';
 
         $(this.chartwrapper).append(html);
     }
@@ -581,8 +581,12 @@ function OipaActiveChart(id, options) {
                     $.each(chart_data.datasets, function(_id, cd) {
                         $.each(chart_data.labels, function(_id, label) {
                             self.get_chart_labels(self.chart)[_id] = label;
-                            self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
-                            self.get_chart_points(self.chart)[_id].label = label;
+                            
+                            var _points = self.get_chart_points(self.chart)[_id];
+                            if (_points !== undefined) {
+                                self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
+                                self.get_chart_points(self.chart)[_id].label = label;
+                            }
                         });
                     });
                 } else {

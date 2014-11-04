@@ -19,6 +19,7 @@ var Oipa = {
 
     // Functions
     refresh: function(data) {
+
         if (data == undefined) {
             return this.get_data(this.get_url());
         }
@@ -140,7 +141,6 @@ var Oipa = {
 
         if (this.use_prefill && this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
             // Add 3 indicators if nothing selected yet
-            var _prefill_count = 0;
             $.each(indicator_data, function(key, i) {
                 if (_prefill_count == thisoipa.max_prefill) {
                     return;
