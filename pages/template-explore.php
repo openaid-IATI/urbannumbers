@@ -41,7 +41,7 @@ get_header(); the_post(); ?>
                     <div id="map-timeline-wrapper">
                         <div id="map-timeline">
                             <div id="map-slider-tooltip"></div>
-                            <?php for ($i = 1950; $i < 2051;$i++): ?><div class="slider-year" id="year-<?php echo $i; ?>"><?php if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';} ?><div class="slider-year-inner-white"></div></div><?php endfor; ?>
+                            <?php for ($i = 1950; $i < 2050;$i++): ?><div class="slider-year" id="year-<?php echo $i; ?>"><?php if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';} ?><div class="slider-year-inner-white"></div></div><?php endfor; ?>
                         </div>
                     </div>
                         <hr />
