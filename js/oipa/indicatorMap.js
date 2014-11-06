@@ -241,6 +241,4 @@ OipaIndicatorMap.prototype.init = function() {
     $("#map-slider-tooltip div").html(self.selected_year);
     $("#map-slider-tooltip").val(self.selected_year);
     $("#year-" + self.selected_year).addClass("active");
-
-    
 }

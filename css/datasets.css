@@ -1,0 +1,41 @@
+.pagination>li a, .pagination>li:last-child>a, .pagination>li:last-child>span, .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    border-radius: 0px;
+    background: none;
+    border: 0px;
+    color: #5f667f;
+    line-height: 20px;
+}
+.pagination>li.active>a{
+    color: #00b2b3;
+    font-size: 18px;
+}
+
+ul.menu li {
+    list-style: none;
+    display: inline-table;
+    font-size: 24px;
+    margin-right: 20px;
+}
+ul.menu li a {
+    color: #5f667f;
+}
+ul.menu li.active a {
+    color: #00b2b3;
+}
+
+hr {
+    padding: 0px;
+    margin: 0px 0px 15px 0px;
+    border-bottom: 1px solid #00b2b3;
+}
+.pagination {
+    margin: 0px 0px 10px 0px;
+}
+
+.pagination-nav {
+    text-align: center;
+}
+
+table thead th {
+    background: #f9f9f9;
+}

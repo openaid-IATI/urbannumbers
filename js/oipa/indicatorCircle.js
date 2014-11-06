@@ -61,7 +61,7 @@ OipaIndicatorCircle.prototype.refresh = function() {
         .addTo(this.location.map.map);
     }
 
-    var radius = (Math.round(this.max_radius / this.max_value) * this.get_value()) * (10 / this.location.map.map.getZoom());
+    var radius = Math.round(this.max_radius / this.max_value) * this.get_value();//* (10 / this.location.map.map.getZoom());
     if (!isNaN(radius)) {
         this.circle.setRadius(radius);
     }
