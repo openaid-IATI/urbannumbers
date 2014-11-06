@@ -26,18 +26,29 @@ function Pages(holder_id, controls_holder_id, options) {
 
     self.next = function() {
         var _valid = true;
+        var _message = '';
         if (self.opts.nav_conditions && self.opts.nav_conditions[self.page_id + 1] !== undefined) {
-            _valid = self.opts.nav_conditions[self.page_id + 1]();
+            _ = self.opts.nav_conditions[self.page_id + 1]();
+
+            _valid = _[0];
+            _message = _[1];
         }
+
+        $('#form-alert').fadeOut();
+
         if (_valid) {
             self.show(self.page_id + 1);
+        } else {
+            if (_message !== '') {
+                $('#form-alert').html(_message).fadeIn();
+            }
         }
     }
 
     self.update_nav_status = function() {
         if (self.opts.nav_conditions) {
             $.each(self.opts.nav_conditions, function(id, cond) {
-                var _enabled = cond();
+                var _enabled = cond()[0];
                 $(self.controls_holder)
                     .find(self.opts.nav_selector + id)
                     .parent()
@@ -184,7 +195,7 @@ function CreateInfographicFilters() {
             category_name = category_name == "" ? "Other" : category_name;
 
             var category_id = self.string_to_id(category_name);
-            
+
             $("#" + self.filter_wrapper_div + " ." + category_id + "-list").html('<div class="col">' + value.items.join('') + '</div>');
         });
     }
@@ -221,20 +232,22 @@ window.CI = null;
     filter.save(true);
 
     var _validate_first_step = function() {
-        if ($('#page_0').find('input[name="title"]').get()[0].value.trim() !== "") {
-            return true;
+        if ($('#page_0').find('input[name="title"]').get()[0].value.trim() !== "" &&
+           $('#page_0').find('input[name="user-name"]').get()[0].value.trim() !== "") {
+            return [true, ''];
         }
-        return false;
+        return [false, 'Please fill in required fields'];
     }
     var _validate_second_step = function() {
-        if (!_validate_first_step()) {
-            return false;
+        var _first_step_status = _validate_first_step();
+        if (!_first_step_status[0]) {
+            return [false, ''];
         }
 
         if ($("#page_1").find('input[type="checkbox"]:checked').get().length > 0) {
-            return true;
+            return [true, ''];
         }
-        return false;
+        return [false, 'Please select at least one indicator.'];
     }
 
     CI = new Pages('#ci-pages', '.ci-controls', {
@@ -255,11 +268,11 @@ window.CI = null;
     $('.next_step').click(function(e) {
         CI.next();
     })
-    
+
     $('#ci-pages').find('input').change(function(e) {
         CI.update_nav_status();
     });
-    
+
     $('.steps-nav .btn').click(function(e) {
         if (this.className.indexOf(CI.opts.nav_disabled) == -1) {
             var _page = 0;

@@ -106,12 +106,12 @@ get_header(); the_post(); ?>
                 <div id="ci-pages">
                     <div id="page_0" class="page">
                         <div class="form-group">
-                          <label for="title" class="label">Title</label>
+                          <label for="title" class="label">Title <span class="required">*</span></label>
                           <input value="<?php if (isset($_POST["title"])){ echo $_POST["title"]; } ?>" name="title" type="text" class="form-control">
                         </div>
 
                         <div class="form-group">
-                          <label for="user-name" class="label">Name</label>
+                          <label for="user-name" class="label">Name <span class="required">*</span></label>
                           <input value="<?php
                               if(is_user_logged_in()) {
                                   $current_user->display_name;
@@ -278,6 +278,8 @@ get_header(); the_post(); ?>
         </div>
     </div>
 </form>
+
+<div class="alert alert-danger" id="form-alert"></div>
 
 <?php get_template_part("footer", "scripts"); ?>
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/create-infographic.css" />

@@ -190,3 +190,12 @@
 .counts {
     display: none;
 }
+
+#form-alert {
+    display: none;
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    width: 300px;
+    margin-left: -150px;
+}
