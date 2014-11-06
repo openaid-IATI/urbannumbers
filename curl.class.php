@@ -45,7 +45,7 @@ class cURL {
             curl_setopt($process, CURLOPT_PROXY, $this->proxy);
 
         curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);
+        //curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);
 
         $return = curl_exec($process);
         curl_close($process);

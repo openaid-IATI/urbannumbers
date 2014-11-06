@@ -173,10 +173,12 @@ var Oipa = {
 
         // for each indicator
         jQuery.each(data, function(key, value) {
+            console.log(thisoipa.invisible_visualizations, indicator_data);
             if (thisoipa.invisible_visualizations.indexOf(value.id) !== -1 ||
                 (indicator_data && indicator_data[value.id] == undefined)) {
                 return;
             }
+            console.log(value.id);
 
             if (thisoipa.visualisations[value.id] == undefined) {
                 var _chart_class = OipaBarChart;
