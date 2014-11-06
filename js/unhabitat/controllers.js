@@ -11,7 +11,26 @@ function get_global_data(page_name, $http, callback) {
             for (var key in data) {
                 global_data[key] = [];
 
-                for (var code in data[key]) {
+                var key_data = data[key];
+                var keys = Object.keys(data[key]);
+
+                if (key !== 'indicators') {
+                    keys.sort(function(a, b) {
+                        var name_1 = key_data[a];
+                        var name_2 = key_data[b];
+
+                        if (name_1 < name_2) {
+                            return -1;
+                        }
+                        if (name_1 > name_1) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }
+
+                for (var code_id in keys) {
+                    var code = keys[code_id];
                     if (key == 'indicators') {
                         data[key][code].code = code;
                         global_data[key].push(data[key][code]);
