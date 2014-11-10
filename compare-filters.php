@@ -22,10 +22,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <a class="btn btn-default add-to-favorites" href="#"><i class="glyphicon glyphicon-plus"></i> ADD TO FAVORITES</a>
-            <a class="opener filtersshare-btn btn btn-success" href="#"><i class="glyphicon glyphicon-share-alt"></i> SHARE</a>
-            <div class="dropdown-box share-widget">
+        <div class="col-md-3 share-col">
+<ul class="action-list">
+            <li><a class="btn btn-default add-to-favorites" href="#"><i class="glyphicon glyphicon-plus"></i> ADD TO FAVORITES</a></li>
+            <li><a class="opener share-btn btn btn-success" href="#"><i class="glyphicon glyphicon-share-alt"></i> SHARE</a>
+            <div class="dropdown-box share-widget open">
                 <span class="heading">Share</span>
                 <ul class="social-networks">
                     <li><a href="#" target="_blank" class="icon-facebook">facebook</a></li>
@@ -42,7 +43,7 @@
                         </div>
                     </fieldset>
                 </form>
-            </div>
+            </div></li></ul>
         </div>
     </div>
 </div>

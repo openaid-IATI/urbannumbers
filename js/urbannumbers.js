@@ -336,7 +336,7 @@ $('.share-btn').click(function(e) {
 
     var _set_share_url = function(url) {
         $('.share-widget-input').val(url);
-        
+
         var _title = (document.title.trim() !== '') ? document.title : 'UN-Habitat #opendata city data made accessible';
 
         $.each(_socials, function(name, func) {
@@ -367,3 +367,10 @@ $('.helper')
     .mouseout(function() {
         $(this).find('.helper-popup').hide();
     });
+
+$('.share-col').contentPopup({
+    mode: 'click',
+    popup: '.dropdown-box',
+    btnOpen: '.opener',
+    btnClose: '.btn-close'
+});

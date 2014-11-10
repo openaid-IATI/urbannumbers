@@ -146,6 +146,12 @@ nav#indicators-pagination .btn-default,
 nav#indicators-pagination .btn-success,
 .compare-controls-nav .btn-success {
     background: #00b1b5;
+    color: #FFF;
+}
+
+nav#indicators-pagination .btn-success:hover,
+.compare-controls-nav .btn-success:hover {
+    color: #fff;
 }
 
 nav#indicators-pagination li.active .btn-success {
@@ -229,4 +235,12 @@ nav#indicators-pagination li.active .btn-success {
 .filter-indicator-type-dropdown+.checkbox,
 .filter-indicator-type-dropdown+.filter-indicator-type-dropdown {
     margin-top: -5px;
+}
+
+.container-sort .share-col {
+    text-align: right;
+}
+ .container-sort .share-col .action-list li {
+    display: inline;
+    margin: 0 0 0 5px;
 }
