@@ -184,6 +184,19 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
     var self = this;
 
     if (['left-cities', 'right-cities', 'left-countries', 'right-countries'].indexOf(key) !== -1) {
+        var mapped_keys = Object.keys(objects).sort(function(a, b) {
+            //if (objects[a] > )
+            var _name_1 = objects[a];
+            var _name_2 = objects[b];
+            if (_name_1 < _name_2) {
+                return -1;
+            }
+            if (_name_1 > _name_2) {
+                return 1;
+            }
+            return 0;
+        });
+
         if ($('#' + key + '-select').get().length == 0) {
             var _holder = document.createElement('select');
             _holder.id = key + '-select';
@@ -240,7 +253,8 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
         }[key];
         _holder.appendChild(_holder._default_option);
 
-        $.each(objects, function(code, name) {
+        $.each(mapped_keys, function(_, code) {
+            var name = objects[code];
             _holder._options[code] = document.createElement('option');
             _holder._options[code].value = code;
             _holder._options[code].innerHTML = name;
