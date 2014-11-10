@@ -74,20 +74,21 @@ var OipaCompare = {
         $('#right-countries-select').attr('disabled', false);
         $('#right-countries-select').selectric('refresh');
 
+
         if (initial !== undefined || reset !== undefined) {
             this.create_visualisations();
         }
-        filter.reload_specific_filter("indicators");
 
+        filter.reload_specific_filter("indicators");
         if (initial == undefined) {
             filter.save(true);
         }
     },
     create_visualisations: function() {
-        if (filter.selection.indicators.length == 0) {
-            filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
-            filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
+        if (Oipa.mainSelection.indicators.length == 0) {
+            Oipa.mainSelection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+            Oipa.mainSelection.add_indicator("avg_annual_rate_change_percentage_urban", "Urban population – Countries", 'indicators');
+            Oipa.mainSelection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
         }
         filter.save(true);
     }
@@ -130,3 +131,13 @@ function OipaCompareBarChart(id, options) {
     }
 }
 OipaCompareBarChart.prototype = Object.create(OipaBarChart.prototype);
+
+
+
+$("#reset-compare-filters").click(function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('btn-success')) {
+        filter.reset_filters();
+        $("#map-indicator-filter-wrapper .sort-list").toggle();
+    }
+});

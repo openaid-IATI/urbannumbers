@@ -182,6 +182,7 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
 
 OipaCompareFilters.prototype.create_filter_attributes = function(objects, columns, key) {
     var self = this;
+
     if (['left-cities', 'right-cities', 'left-countries', 'right-countries'].indexOf(key) !== -1) {
         if ($('#' + key + '-select').get().length == 0) {
             var _holder = document.createElement('select');
@@ -190,7 +191,9 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
                 self.save();
                 if (key.indexOf('-countries') !== -1) {
                     self.reload_specific_filter(key.replace('-countries', '-cities'));
-                    //$('.' + key.replace('-countries', '-cities') + '-helper').fadeIn();
+
+                    $('#' + key.replace('-countries', '-cities') + '-select').get()[0].disabled = false;
+                    $('#' + key.replace('-countries', '-cities') + '-select').selectric('refresh');
                     self.show_helper(key.replace('-countries', '-cities'));
                 }
 
@@ -205,6 +208,7 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
                     $('#indicator-filter-wrapper nav').show();
                     $('.indicators-helper').css({'display': 'inline'});
                 }
+                self.activate_reset_and_favorites();
             }
 
             if (key == 'left-countries') {
@@ -267,6 +271,8 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
     } else {
         self.create_indicator_filter_attributes(objects, columns);
     }
+
+    self.activate_reset_and_favorites();
 };
 
 OipaCompareFilters.prototype.load_indicator_paginate_listeners = function(){
@@ -283,19 +289,22 @@ OipaCompareFilters.prototype.load_indicator_paginate_listeners = function(){
     $("#indicators-pagination li a").click(function(e){
         e.preventDefault();
         e.stopPropagation();
+        if ($(this).hasClass('btn-success')) {
+            // btn-success determinates whether button is active or not.
 
-        var is_active = $(this).parent().hasClass('active');
-        $("#indicators-pagination li").removeClass("active");
-        $("#indicators-filters .filter-page").hide();
+            var is_active = $(this).parent().hasClass('active');
+            $("#indicators-pagination li").removeClass("active");
+            $("#indicators-filters .filter-page").hide();
 
-        if (is_active) {
-            $('#indicator-filter-wrapper .slide-content').hide();
-        } else {
-            $('#indicator-filter-wrapper .slide-content').show();
-            $(this).parent().addClass("active");
+            if (is_active) {
+                $('#indicator-filter-wrapper .slide-content').hide();
+            } else {
+                $('#indicator-filter-wrapper .slide-content').show();
+                $(this).parent().addClass("active");
 
-            var name = $(this).attr("name");
-            $(".filter-page-"+name).show();
+                var name = $(this).attr("name");
+                $(".filter-page-"+name).show();
+        }
         }
     });
 
@@ -309,6 +318,49 @@ OipaCompareFilters.prototype.load_indicator_paginate_listeners = function(){
 OipaCompareFilters.prototype.show_helper = function(selector) {
     if ($('#' + selector + '-select').val() == '') {
         $('.' + selector + '-helper').fadeIn();
+    }
+}
+
+OipaCompareFilters.prototype.reset_filters = function(){
+    console.log('reset');
+    $("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
+    $("#location-filter-wrapper select option[value='']").attr('selected', true);
+    $("#location-filter-wrapper select").each(function(_, b) {
+        if (b.id !== 'left-countries-select') {
+            b.disabled = true;
+        }
+        $(b).selectric('refresh')
+    });
+    $('#indicator-filter-wrapper .slide-content').hide();
+
+    $('#indicator-filter-wrapper .indicator-category-button').removeClass('btn-success').addClass('btn-default');
+
+    $('.helper-popup').fadeOut();
+    $('.left-countries-helper').fadeIn();
+
+    this.selection.clean('indicators');
+    this.selection.search = "";
+    this.selection.query = "";
+    this.selection.clean('country');
+    this.selection.clean('city');
+    this.selection.region = "";
+    this.save(true);
+    this.activate_reset_and_favorites();
+}
+
+OipaCompareFilters.prototype.activate_reset_and_favorites = function() {
+    var _ = $('.sort-location select option:selected').map(function(a, b) {
+        if (b.value !== '') {
+            return b;
+        }
+    });
+
+    if (_.length > 0) {
+        $("#reset-compare-filters").removeClass('btn-default').addClass('btn-success');
+        $(".add-to-favorites").removeClass('btn-default').addClass('btn-success');
+    } else {
+        $("#reset-compare-filters").removeClass('btn-success').addClass('btn-default');
+        $(".add-to-favorites").removeClass('btn-success').addClass('btn-default');
     }
 }
 

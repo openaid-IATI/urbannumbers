@@ -841,8 +841,13 @@ form.registration-form span.input-placeholder-text {
     display: inline;
 }
 
-.helper-icon {
+.helper .glyphicon {
     cursor: pointer;
+    color: #bfc2cb;
+    font-size: 16px;
+}
+.helper:hover .glyphicon {
+    color: #3F4452;
 }
 
 .helper-popup {

@@ -73,15 +73,14 @@ function OipaCompareSelection(main){
 
     self.get = function(option, default_value) {
         default_value = (default_value == undefined) ? [] : default_value;
-        if (['regions', 'countries', 'cities'].indexOf(option)) {
+        if (['regions', 'countries', 'cities'].indexOf(option) !== -1) {
             return self.get_side('left', option, []).concat(self.get_side('right', option, []));
         }
         return (self[option] == undefined) ? default_value : self[option];
     }
 
     self.clean = function(type) {
-        console.log('clean', type);
-        //self[type] = [];
+        self[type] = [];
     }
 
     self.remove_from_selection = function(type, id) {

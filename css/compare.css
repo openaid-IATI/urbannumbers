@@ -26,12 +26,13 @@
     margin-right: 10px;
 }
 
-#indicator-filter-wrapper {
-    border-bottom: 1px solid #d1d1d4;
+.container-sort {
+    position: relative;
 }
 
 #indicator-filter-wrapper.container-sort {
     margin: 0px;
+    position: static;
 }
 #indicator-filter-wrapper nav ul li {
     list-style: none;
@@ -58,6 +59,10 @@
 .filter-indicator-type-text, .sort-list .active a.filter-indicator-type-text {
     margin-left: 0px;
     font-size: 14px;
+    padding: 0px;
+}
+.filter-indicator-type-text span, .sort-list .active a.filter-indicator-type-text span {
+    margin-right: 6px;
 }
 .holder select {
     width: 100%;
@@ -72,7 +77,7 @@
     width: 220px;
 }
 #visualisation-block-wrapper .widget {
-    margin-top:0px;
+    margin-top: 15px;
 }
 .container-box .box-content:before {
     height: auto;
@@ -110,6 +115,21 @@ nav#indicators-pagination .btn i.glyphicon {
     margin-left: 5px;
 }
 
+.compare-controls-nav .btn {
+    font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+    padding: 10px 14px;
+}
+.compare-controls-nav .btn i {
+    margin-right: 5px;
+}
+.compare-controls-nav .helper {
+    position: relative;
+    top: -5px;
+}
+.compare-controls-nav .helper-popup {
+    margin-top: 35px;
+}
+
 nav#indicators-pagination .btn-default,
 .compare-controls-nav .btn-default {
     background: #dbdbdb;
@@ -121,8 +141,8 @@ nav#indicators-pagination .btn-success,
 }
 
 nav#indicators-pagination li.active .btn-success {
-    color: #00b1b5;
-    background: #FFF;
+    color: #FFF;
+    background: #008387;
     -webkit-border-top-left-radius: 4px;
     -webkit-border-top-right-radius: 4px;
     -moz-border-radius-topleft: 4px;
@@ -165,9 +185,6 @@ nav#indicators-pagination li.active .btn-success {
     padding: 20px;
 }
 
-.compare-controls-nav {
-    padding-top: 10px;
-}
 .indicator-category-button {
     margin-left: 0px;
 }
@@ -182,4 +199,25 @@ nav#indicators-pagination li.active .btn-success {
 }
 #indicators-pagination ul {
     margin: 0px;
+}
+
+.filter-indicator-type-inner {
+    margin: 0px;
+}
+.container-box .btn-close {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    color: #484e66;
+    font-size: 14px;
+}
+.filter-indicator-type-dropdown {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.radio+.filter-indicator-type-dropdown,
+.checkbox+.filter-indicator-type-dropdown,
+.filter-indicator-type-dropdown+.checkbox,
+.filter-indicator-type-dropdown+.filter-indicator-type-dropdown {
+    margin-top: -5px;
 }
