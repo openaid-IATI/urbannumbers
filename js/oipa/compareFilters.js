@@ -322,7 +322,7 @@ OipaCompareFilters.prototype.show_helper = function(selector) {
 }
 
 OipaCompareFilters.prototype.reset_filters = function(){
-    console.log('reset');
+
     $("#"+this.filter_wrapper_div+" input[type=checkbox]").attr('checked', false);
     $("#location-filter-wrapper select option[value='']").attr('selected', true);
     $("#location-filter-wrapper select").each(function(_, b) {

@@ -31,7 +31,7 @@ $(".compare-filters-save-button").click(function(e){
     if (saved){
         $(".sort-list .active .opener").click();
     }
-    $('#indicator-filter-wrapper .slide-content').hide();
+    $("#indicators-pagination .active a").click();
 });
 
 $('.compare-filters-close-button').click(function(e) {

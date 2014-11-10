@@ -11,7 +11,6 @@ get_header(); the_post(); ?>
     </div>
     <div class="container">
         <div class="container-map">
-            <h2>CITY INFORMATION WIKIPEDIA</h2>
             <div class="columns-holder">
                 <div class="holder">
                     <div id="compare-left-map-border" class="column">
