@@ -12,6 +12,11 @@ function OipaVis () {
         this.load_listeners();
         this.refresh();
         this.check_if_in_favorites();
+
+        this.after_init();
+    };
+
+    this.after_init = function() {
     };
 
     this.create_html_skeleton = function() {
@@ -28,7 +33,7 @@ function OipaVis () {
         html +=    '<div class="no_data">No data for this chart</div>';
         html +=    '<canvas height="' + Oipa.visualisation_size + '" width="' + Oipa.visualisation_size + '"></canvas>';
         html +=  '</div>';
-        //html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
+        html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
         html += '</div>';
         html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '</section></li>';
@@ -581,7 +586,7 @@ function OipaActiveChart(id, options) {
                     $.each(chart_data.datasets, function(_id, cd) {
                         $.each(chart_data.labels, function(_id, label) {
                             self.get_chart_labels(self.chart)[_id] = label;
-                            
+
                             var _points = self.get_chart_points(self.chart)[_id];
                             if (_points !== undefined) {
                                 self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
@@ -779,8 +784,12 @@ OipaDoughnutChart.prototype = Object.create(OipaActiveRoundChart.prototype);
 function OipaBlankChart(object_id, options) {
     function OipaBlankChartFactory(subobject_id, suboptions, base_type) {
         window[base_type].call(this, subobject_id, suboptions);
-        
+
         this.type = "OipaBlankChart";
+
+        this.after_init = function() {
+            this.visualize({});
+        }
 
         var _old_visualize = this.visualize;
         this.visualize = function(data) {
@@ -850,7 +859,6 @@ function OipaBlankChart(object_id, options) {
                 self.data = data;
             }
             return _old_visualize.apply(self, data);
-        
         }
         return this;
     }

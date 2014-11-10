@@ -1,4 +1,6 @@
 function OipaIndicatorFilters(){
+    this.filter_opener_class = 'urbnnrs-arrow';
+
     this.validate_selection = function () {
         if (Oipa.pageType == "indicators") {
             if (this.selection.indicators.length == 0){
@@ -45,6 +47,7 @@ function OipaIndicatorFilters(){
 
 
         this.create_indicator_filter_attributes = function(objects, columns) {
+            var self = this;
                 var html = '';
                 var paginatehtml = '';
                 var per_col = 6;
@@ -106,7 +109,7 @@ function OipaIndicatorFilters(){
                                         }
                                 }
 
-                                var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="urbnnrs-arrow"></span>'+indicator_name+'</a><div class="filter-indicator-type-inner">';
+                                var indicatoroptionhtml = '<div class="filter-indicator-type-dropdown"><a href="#" class="filter-indicator-type-text"><span class="' + self.filter_opener_class  + '"></span>'+indicator_name+'</a><div class="filter-indicator-type-inner">';
                                 $.each(subindicators, function( ikey, ivalue ) {
                                         indicatoroptionhtml += '<div class="checkbox"><label><input type="checkbox" selection_type="'+ivalue.filter_name+'" value="'+ikey+'" id="'+ikey+'" name="'+ivalue.display_name+'" />'+ivalue.filter_name+'</label></div>';
                                 });

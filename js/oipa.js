@@ -9,6 +9,7 @@ var Oipa = {
     visualisations_with_no_data: [],
     use_prefill: true,
     max_prefill: 3,
+    blank_visualizations_count: 3,
 
     visualisation_size: 340,
 
@@ -67,11 +68,7 @@ var Oipa = {
     },
 
     is_blank_visualization: function(visualization) {
-        var self = this;
-        keys = $.map([0, 1, 2], function(i) {
-            return self._blank_visualization_key + i;
-        });
-        return (keys.indexOf(visualization.id) !== -1);
+        return this._blank_visualization_key == visualization.id.substring(0, this._blank_visualization_key.length);
     },
 
     clean_blank_visualisations: function(data) {
@@ -79,7 +76,7 @@ var Oipa = {
         // Cleanup old ones
         return $.map(data, function(vis, _) {
             if (self.is_blank_visualization(vis)) {
-                        return;
+                return;
             }
             return vis;
         });
@@ -88,8 +85,8 @@ var Oipa = {
     prefill_blank_visualisations: function(data) {
         var new_data = data;
         // Add new blanks
-        if (data.length < 3) {
-            for (var i = data.length; i < 3; i++) {
+        if (data.length < this.blank_visualizations_count) {
+            for (var i = data.length; i < this.blank_visualizations_count; i++) {
                 new_data.push({
                     id: this._blank_visualization_key + i,
                     name: "REPLACEME",
@@ -141,6 +138,7 @@ var Oipa = {
 
         if (this.use_prefill && this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
             // Add 3 indicators if nothing selected yet
+            var _prefill_count = 0;
             $.each(indicator_data, function(key, i) {
                 if (_prefill_count == thisoipa.max_prefill) {
                     return;
@@ -173,12 +171,10 @@ var Oipa = {
 
         // for each indicator
         jQuery.each(data, function(key, value) {
-            console.log(thisoipa.invisible_visualizations, indicator_data);
             if (thisoipa.invisible_visualizations.indexOf(value.id) !== -1 ||
-                (indicator_data && indicator_data[value.id] == undefined)) {
+                (indicator_data && !thisoipa.is_blank_visualization(value) && indicator_data[value.id] == undefined)) {
                 return;
             }
-            console.log(value.id);
 
             if (thisoipa.visualisations[value.id] == undefined) {
                 var _chart_class = OipaBarChart;

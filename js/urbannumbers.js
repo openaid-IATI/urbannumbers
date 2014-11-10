@@ -358,10 +358,10 @@ $('.share-btn').click(function(e) {
 
 $('.helper')
     .click(function() {
-        $(this).find('.helper-popup').show();
+        $(this).find('.helper-popup').css({display: 'inline'});
     })
     .mouseover(function() {
-        $(this).find('.helper-popup').show();
+        $(this).find('.helper-popup').css({display: 'inline'});
     })
     .mouseout(function() {
         $(this).find('.helper-popup').hide();

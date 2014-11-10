@@ -61,6 +61,7 @@ get_header(); the_post(); ?>
 Oipa.use_prefill = false;
 Oipa.visualisation_size = 200;
 Oipa.pageType = "compare";
+Oipa.blank_visualizations_count = 10;
 Oipa.mainSelection = new OipaCompareSelection(1);
 Oipa.mainSelection.indicator_options = {
     chart_class: OipaCompareBarChart,

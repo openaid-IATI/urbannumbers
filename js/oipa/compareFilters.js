@@ -1,4 +1,5 @@
 function OipaCompareFilters() {
+    this.filter_opener_class = 'glyphicon glyphicon-plus';
     this.get_selection_object = function(){
         var new_selection = new OipaCompareSelection();
         new_selection.left.countries = this.get_checked_by_filter("left-countries");
@@ -189,14 +190,20 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
                 self.save();
                 if (key.indexOf('-countries') !== -1) {
                     self.reload_specific_filter(key.replace('-countries', '-cities'));
+                    //$('.' + key.replace('-countries', '-cities') + '-helper').fadeIn();
+                    self.show_helper(key.replace('-countries', '-cities'));
                 }
+
                 if (key == 'left-cities') {
                     $('#right-countries-select').get()[0].disabled = false;
                     $('#right-countries-select').selectric('refresh');
+                    self.show_helper('right-countries');
                 }
+
                 if (key == 'right-cities') {
                     self.reload_specific_filter('indicators');
                     $('#indicator-filter-wrapper nav').show();
+                    $('.indicators-helper').css({'display': 'inline'});
                 }
             }
 
@@ -252,7 +259,7 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
             responsive: true,
             onInit: onInit,
             onOpen: function() {
-                $('.left-countries-helper').fadeOut();
+                $('.helper-popup').fadeOut();
             }
         });
 
@@ -298,3 +305,13 @@ OipaCompareFilters.prototype.load_indicator_paginate_listeners = function(){
         $(this).closest(".filter-indicator-type-dropdown").children(".filter-indicator-type-inner").toggle(500);
     });
 }
+
+OipaCompareFilters.prototype.show_helper = function(selector) {
+    if ($('#' + selector + '-select').val() == '') {
+        $('.' + selector + '-helper').fadeIn();
+    }
+}
+
+$('.indicators-pagination a').click(function(e) {
+    $('.indicators-helper').hide();
+})
