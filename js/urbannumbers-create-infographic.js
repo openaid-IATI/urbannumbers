@@ -134,15 +134,16 @@ function CreateInfographicFilters() {
             if (self.option_element_num[_split] == undefined) {
                 self.option_element_num[_split] = 1;
             };
+            //console.log(self.option_element_num[_split] % 40);
             if (self.option_element_num[_split] % 40 == 0) {
+                //console.log(_split);
                 _append = '</div><div class="col">';
             }
 
             self.option_element_num[_split] += 1;
-            //console.log(_split, self.option_element_num[_split]);
         }
 
-        var _input_type = type == 'indicators' ? 'checkbox' : 'radio';
+        var _input_type = type == 'indicators' ? 'checkbox' : 'checkbox';
         var _parts = [
             "<div class='line'>",
                 "<label>",
@@ -168,6 +169,7 @@ function CreateInfographicFilters() {
                 self.option_element_num[category] = 1;
             };
             if (self.option_element_num[category] % 40 == 0) {
+                //console.log(category);
                 _append = '</div><div class="col">';
             }
 
@@ -210,6 +212,8 @@ function CreateInfographicFilters() {
         }
         $('#page_' + CI.page_id + ' .tabs-body').find('div.' + filtername + '-list').addClass('open');
         $('#page_' + CI.page_id + ' .tabs-header').find('li.' + filtername + '-li').addClass('open');
+
+        self.option_element_num = {}
 
         _original_reload_specific_filter.apply(self, [filtername, data]);
     }

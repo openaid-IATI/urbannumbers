@@ -113,14 +113,14 @@ function OipaVis () {
         var savestring = this.get_save_string();
         var curchart = this;
 
-        
+
         var htmlencoded = $('<div/>').text(savestring).html();
         var data = {
             'action': 'favorite_visualisation',
             'visdata': savestring
         };
 
-        
+
         $.post(ajaxurl, data, function(response) {
             if(response.status == "log_in_first"){
                 $("#header-login-register-button").click();
@@ -128,7 +128,7 @@ function OipaVis () {
 
             } else if (response.status == "already_in_favorites"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
-            
+
             } else if (response.status == "saved"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star-empty").removeClass("glyphicon-star-empty").addClass("glyphicon-star");
             }
@@ -144,15 +144,15 @@ function OipaVis () {
         };
 
         var curchart = this;
-        
+
         $.post(ajaxurl, data, function(response) {
-            
+
             if(response.status == "log_in_first"){
                 $("#header-login-register-button").click();
 
             } else if (response.status == "not_in_favorites"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
-                
+
             } else if (response.status == "removed_from_favorites"){
                 $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .glyphicon-star").removeClass("glyphicon-star").addClass("glyphicon-star-empty");
             }
@@ -570,6 +570,9 @@ function OipaActiveChart(id, options) {
 
         if (!self.chart) {
             var ctx = $("div.widget[data-indicator='" + self.indicator + "'] canvas").get(0);
+            if (ctx == undefined) {
+                return;
+            }
 
             $(".heading-holder[data-indicator='" + self.indicator + "']").find('h3').each(function(_, node) {
                 node.innerHTML = data.indicator_friendly;
@@ -652,7 +655,7 @@ function OipaActiveRoundChart(id, options) {
                     highlight: _stroke_color
                 };
             });
-            
+
             if (_chart_data.length == 1) {
                 var _value = _chart_data[0].value;
                 var _multiply = 1;
@@ -669,7 +672,7 @@ function OipaActiveRoundChart(id, options) {
                     highlight: "#e2e2e2"
                 })
             }
-            
+
             return _chart_data;
         }
     }
@@ -971,9 +974,9 @@ function OipaSimpleMapVis() {
     }
 
     this.format_data = function(data){
-        
+
     };
-  
+
 
     this.visualize = function(data) {
         if (this.geotype == "point"){
@@ -985,7 +988,7 @@ function OipaSimpleMapVis() {
 
 
             } else if(this.geo_location == "city"){
-                
+
                 var longlat = geo_point_to_latlng(data.location);
                 latitude = longlat[0];
                 longitude = longlat[1];
@@ -1003,14 +1006,14 @@ function OipaSimpleMapVis() {
                 if (longlat) {
                     latitude = longlat[0];
                     longitude = longlat[1];
-                
+
                     this.map.setView(longlat, 1);
                 }
             }
 
             if (latitude){
                 if (this.marker){
-                    this.marker.setLatLng([latitude, longitude]).update(); 
+                    this.marker.setLatLng([latitude, longitude]).update();
                 } else {
                     curmarker = L.marker([latitude, longitude]).addTo(this.map);
                     this.marker = curmarker;

@@ -136,7 +136,7 @@ function UnhabitatInMapOipaIndicatorFilters() {
 
         var _changes_map = {
             regions:   ['indicators', 'countries', 'cities'],
-            countries: ['indicators', 'countries', 'cities'],
+            countries: ['indicators', 'cities'],
             cities:    ['indicators'],
         };
 
