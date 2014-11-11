@@ -240,9 +240,14 @@ nav#indicators-pagination li.active .btn-success {
 .container-sort .share-col {
     text-align: right;
 }
- .container-sort .share-col .action-list li {
+.container-sort .share-col .action-list li {
     display: inline;
     margin: 0 0 0 5px;
+}
+.container-sort .share-col .action-list {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
 }
 
 .fav-alert {
