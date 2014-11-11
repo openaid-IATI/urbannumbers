@@ -223,7 +223,7 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function the_field($field_name, $post_id = false) {
-        
+
     }
 
     function have_rows($field_name, $post_id = false) {
@@ -231,11 +231,11 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function the_row() {
-        
+
     }
 
     function reset_rows($hard_reset = false) {
-        
+
     }
 
     function has_sub_field($field_name, $post_id = false) {
@@ -247,7 +247,7 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function the_sub_field($field_name) {
-        
+
     }
 
     function get_sub_field_object($child_name) {
@@ -259,7 +259,7 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function register_field_group($array) {
-        
+
     }
 
     function get_row_layout() {
@@ -267,11 +267,11 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function acf_form_head() {
-        
+
     }
 
     function acf_form($options = array()) {
-        
+
     }
 
     function update_field($field_key, $value, $post_id = false) {
@@ -279,15 +279,15 @@ if (!class_exists('acf') && !is_admin()) {
     }
 
     function delete_field($field_name, $post_id) {
-        
+
     }
 
     function create_field($field) {
-        
+
     }
 
     function reset_the_repeater_field() {
-        
+
     }
 
     function the_repeater_field($field_name, $post_id = false) {
@@ -374,8 +374,8 @@ add_action('wp_enqueue_scripts', 'vb_register_user_scripts', 100);
 /*
  * Add an action filter to wp-login.php to add our own password recovery through
  * our SSO API
- * 
- * #TODO We need to fix the static urls to the SSO provider. 
+ *
+ * #TODO We need to fix the static urls to the SSO provider.
  */
 add_action('login_init', function() {
     //check if there is any action defined
@@ -454,11 +454,11 @@ add_action('login_init', function() {
 });
 
 /*
- * Change the behaviour of requesting a new password. 
- * 
+ * Change the behaviour of requesting a new password.
+ *
  * This method will call the SSO API to request a new password for the requested
  * user.
- * 
+ *
  * TODO: Fix URL to API in a setting call.
  */
 add_action('lostpassword_post', function( $user ) {
@@ -488,13 +488,13 @@ add_action('lostpassword_post', function( $user ) {
  * Making sure that the SSO plugin does not overwrite the password options
  */
 add_filter('lostpassword_redirect', function(){
-    
+
     return 'wp-login.php?checkemail=confirm&use_sso=false';
 });
 
 /**
  * New User registration
- * 
+ *
  * Will make a call to the SSO API to enter this user in the SSO database
  *
  */
@@ -555,7 +555,7 @@ function vb_reg_new_user() {
     {
         $info = curl_getinfo($ch);
     }
-    
+
     //close connection
     curl_close($ch);
     //we should not create a new user. This is the responsibility of the SSO plugin
@@ -601,9 +601,9 @@ add_action('wp_ajax_nopriv_register_user', 'vb_reg_new_user');
 
 /*
  * Activate user through our SSO API
- * 
+ *
  * related to the wordpress page-activation.php
- * 
+ *
  */
 
 function activate_user($activation_key) {
@@ -627,9 +627,9 @@ function activate_user($activation_key) {
 
 /*
  * Adding dasboard_role for SSO users to only view dashboard
- * 
+ *
  * This function will be executed on theme activation
- * 
+ *
  * We will use to subscriber role for the Urban Numbers demo, because
  * SSO plugin does not know how to handle custom groups.
  */
@@ -705,6 +705,44 @@ function vb_registration_form() {
 
 
 
+add_action('wp_ajax_favorite_compare', 'favorite_compare');
+add_action('wp_ajax_nopriv_favorite_compare', 'favorite_compare');
+
+
+function favorite_compare() {
+    if ( !(is_user_logged_in()) ) {
+        wp_send_json(array("status" => "log_in_first"));
+        die();
+    }
+
+    $data = implode('&', array(
+        'cities=' . clean_post('cities', ''),
+        'countries=' . clean_post('countries', ''),
+        'indicators=' . clean_post('indicators')
+    ));
+
+    $meta_key = 'oipa_compare_fav';
+
+    $favorites = get_user_meta(get_current_user_id(), $meta_key, true);
+
+    if (empty($favorites)) {
+        add_user_meta(get_current_user_id(), $meta_key, array($data));
+    } else {
+        // user already has favorites, so we add this one
+        if (in_array($data, $favorites)){
+            wp_send_json(array("status" => "already_in_favorites"));
+            die();
+        } else {
+            array_push($favorites, $data);
+            update_user_meta(get_current_user_id(), $meta_key, $favorites);
+        }
+
+    }
+
+    // save visdata to usermeta
+    wp_send_json(array("status" => "saved"));
+    die();
+}
 
 add_action('wp_ajax_favorite_infographic', 'favorite_infographic');
 add_action('wp_ajax_nopriv_favorite_infographic', 'favorite_infographic');
@@ -739,7 +777,7 @@ function favorite_infographic() {
     }
     // save visdata to usermeta
     wp_send_json(array("status" => "saved"));
-    die(); 
+    die();
 }
 
 
@@ -766,7 +804,7 @@ function favorite_visualisation() {
 	if (empty($favorites)){
 
 		add_user_meta( get_current_user_id(), 'oipa_visualisation_favorites', array($visdata));
-		
+
 	} else {
 
 		// user already has favorites, so we add this one
@@ -780,7 +818,7 @@ function favorite_visualisation() {
 	}
 	// save visdata to usermeta
 	wp_send_json(array("status" => "saved"));
-	die(); 
+	die();
 }
 
 
@@ -800,11 +838,9 @@ function favorite_filters() {
         'indicators' => clean_post('indicators')
     );
 
-    var_dump($data);
-
     // save visdata to usermeta
     wp_send_json(array("status" => "saved"));
-    die(); 
+    die();
 }
 
 add_action( 'wp_ajax_unfavorite_visualisation', 'unfavorite_visualisation' );
@@ -816,9 +852,9 @@ function unfavorite_visualisation() {
 	// global $wpdb; // this is how you get access to the database
 	$visdata = $_POST['visdata'];
 	$visdata = stripslashes($visdata);
-	
+
 	// check if user is logged in, else return status log_in_first
-	if ( !(is_user_logged_in()) ) { 
+	if ( !(is_user_logged_in()) ) {
 		wp_send_json(array("status" => "log_in_first"));
 		die();
 	}
@@ -828,9 +864,9 @@ function unfavorite_visualisation() {
 	if (empty($favorites)){
 
 		wp_send_json(array("status" => "not_in_favorites"));
-		die(); 
+		die();
 	} else {
-		
+
 		// user already has favorites, so we add this one
 		if (in_array($visdata, $favorites)){
 			$index = array_search($visdata, $favorites);
@@ -840,13 +876,13 @@ function unfavorite_visualisation() {
 			update_user_meta( get_current_user_id(), 'oipa_visualisation_favorites', $favorites);
 			wp_send_json(array("status" => "removed_from_favorites"));
 			die();
-			
+
 		} else {
 			wp_send_json(array("status" => "not_in_favorites"));
 			die();
 		}
 	}
-	die(); 
+	die();
 }
 
 
@@ -860,9 +896,9 @@ function in_favorites() {
 	// global $wpdb; // this is how you get access to the database
 	$visdata = $_POST['visdata'];
 	$visdata = stripslashes($visdata);
-	
+
 	// check if user is logged in, else return status log_in_first
-	if ( !(is_user_logged_in()) ) { 
+	if ( !(is_user_logged_in()) ) {
 		wp_send_json(array("status" => "not_logged_in"));
 		die();
 	}
@@ -875,8 +911,8 @@ function in_favorites() {
 	} else {
 		wp_send_json(array("status" => "not_in_favorites"));
 	}
-	
-	die(); 
+
+	die();
 }
 
 

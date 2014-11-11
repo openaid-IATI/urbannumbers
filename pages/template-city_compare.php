@@ -38,6 +38,9 @@ get_header(); the_post(); ?>
 
     </div>
 </div>
+
+<div class="fav-alert alert alert-success" role="alert"></div>
+
 <?php get_template_part("footer", "scripts"); ?>
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/compare.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/selectric.css" />
