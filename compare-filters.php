@@ -1,3 +1,24 @@
+<?php
+
+class Popups {
+    public function init() {
+        $this->custom = get_post_custom();
+    }
+
+    function get($key, $default="") {
+        $key = 'popup_' . $key;
+
+        if (isset($this->custom[$key])) {
+            return $this->custom[$key][0];
+        }
+        return $default;
+    }
+}
+
+$popups = new Popups();
+$popups->init();
+
+?>
 <!-- container-sort -->
 <div class="container-sort">
     <div class="row compare-controls-nav">
@@ -7,8 +28,7 @@
             <div class="helper">
                 <i class="glyphicon glyphicon-question-sign"></i>
                 <div class="helper-popup">
-                Welcome on the UN-Habitat city compare page.<br />
-                Please select a country.
+                    <?php echo $popups->get('reset_filters', "popup_reset_filters"); ?>
                 </div>
             </div>
         </div>
@@ -17,8 +37,7 @@
             <div class="helper">
                 <i class="glyphicon glyphicon-question-sign"></i>
                 <div class="helper-popup">
-                Welcome on the UN-Habitat city compare page.<br />
-                Please select a country.
+                    <?php echo $popups->get('randomize', "popup_randomize"); ?>
                 </div>
             </div>
         </div>
@@ -52,25 +71,21 @@
         <div class="col-md-6 col-sm-6 col-xs-6">
             <div id="left-countries-filters" class="holder"></div>
             <div class="left-countries-helper helper-popup">
-              Welcome on the UN-Habitat city compare page.<br />
-              Please select a country.
+                <?php echo $popups->get('country_1', "popup_country_1"); ?>
             </div>
             <div id="left-cities-filters" class="holder"></div>
             <div class="left-cities-helper helper-popup">
-              Welcome on the UN-Habitat city compare page.<br />
-              Please select a country.
+                  <?php echo $popups->get('city_1', "popup_city_1"); ?>
             </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6">
             <div id="right-countries-filters" class="holder"></div>
             <div class="right-countries-helper helper-popup">
-              Welcome on the UN-Habitat city compare page.<br />
-              Please select a country.
+                    <?php echo $popups->get('country_2', "popup_country_2"); ?>
             </div>
             <div id="right-cities-filters" class="holder"></div>
             <div class="right-cities-helper helper-popup">
-              Welcome on the UN-Habitat city compare page.<br />
-              Please select a country.
+                    <?php echo $popups->get('city_2', "popup_city_2"); ?>
             </div>
         </div>
     </div>
@@ -83,8 +98,7 @@
     <div class="helper">
         <i class="glyphicon glyphicon-question-sign"></i>
         <div class="helper-popup indicators-helper">
-        Welcome on the UN-Habitat city compare page.<br />
-        Please select a country.
+              <?php echo $popups->get('indicators', "popup_indicators"); ?>
        </div>
     </div>
     <div class="slide-content container">
