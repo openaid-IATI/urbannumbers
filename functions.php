@@ -977,3 +977,19 @@ function clean_post($key, $default='') {
     }
     return $default;
 }
+
+
+class Popups {
+    public function init() {
+        $this->custom = get_post_custom();
+    }
+
+    function get($key, $default="") {
+        $key = 'popup_' . $key;
+
+        if (isset($this->custom[$key])) {
+            return $this->custom[$key][0];
+        }
+        return $default;
+    }
+}

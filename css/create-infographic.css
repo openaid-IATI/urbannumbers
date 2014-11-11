@@ -17,6 +17,10 @@
     margin-top: 25px;
     margin-left: 10px;
 }
+.ci-main .helper-popup {
+    margin-top: 10px;
+    margin-left: -14px;
+}
 
 
 .ci-controls a, .ci-controls input {
@@ -83,7 +87,7 @@
 }
 
 .btn-success, .btn-success:hover {
-    background: #85b200
+    background: #00b1b5
 }
 
 

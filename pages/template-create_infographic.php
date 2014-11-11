@@ -7,6 +7,8 @@ ob_start(); // ensures anything dumped out will be caught
 
 $current_user = wp_get_current_user();
 
+$popups = new Popups();
+$popups->init();
 
 if (!empty($_POST)){
 
@@ -36,7 +38,7 @@ if (!empty($_POST)){
       'post_status'   => 'publish',
       'post_type'     => 'infographic'
     );
-    
+
     $visualisations = $_POST;
     if (array_key_exists("title", $visualisations)) {
         unset($visualisations["title"]);
@@ -70,10 +72,12 @@ get_header(); the_post(); ?>
         <div class="main-container">
             <div class="container ci-main">
                 <h1>Build data report</h1>
-                  <div class="helper">
-                      <i class="helper-icon glyphicon glyphicon-question-sign"></i>
-                      <div class="helper-popup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam finibus, massa ut tempor congue, tellus massa eleifend est, et porttitor tellus eros in nisi. Vestibulum id pharetra magna, at gravida nunc. </div>
-                  </div>
+                <div class="helper">
+                    <i class="helper-icon glyphicon glyphicon-question-sign"></i>
+                    <div class="helper-popup">
+                        <?php echo $popups->get('title_description', 'popup_title_description'); ?>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main-container">
@@ -122,7 +126,7 @@ get_header(); the_post(); ?>
                           <label for="descriptin" class="label">Text <span>max 60 words</span></label>
                           <textarea name="description" class="form-control" rows="10"></textarea>
                         </div>
-                    
+
                     </div>
                     <div id="page_1" class="page">
                         <label class="label">Pick indicators</label>
@@ -268,7 +272,7 @@ get_header(); the_post(); ?>
 
         <div class="container ci-main">
             <div class="ci-controls row">
-                <div>
+                <div class="col-md-3 col-md-offset-9">
                     <a href="javascript:void(0)" class="next_step btn btn-success">Next step</a>
                     <a href="javascript: document.getElementById('infographic-form').submit()" class="save_btn btn btn-success">Create report</a>
                 </div>
