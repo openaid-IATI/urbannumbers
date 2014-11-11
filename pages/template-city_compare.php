@@ -84,6 +84,30 @@ var filter = new UnhabitatOipaCompareFilters();
 filter.filter_wrapper_div = 'indicator-filter-wrapper';
 filter.selection = Oipa.mainSelection;
 
+<?php
+if (isset($_GET['cities']) && !empty($_GET['cities']) && count(explode(',', $_GET['cities']))) {
+    foreach (explode(',', $_GET['cities']) as $city): ?>
+        filter.selection.update_selection('cities', <?php echo $city; ?>, '', 'cities');
+    <?php endforeach;
+}
+?>
+
+<?php
+if (isset($_GET['countries']) && !empty($_GET['countries']) && count(explode(',', $_GET['countries']))) {
+    foreach (explode(',', $_GET['countries']) as $country): ?>
+        filter.selection.update_selection('countries', '<?php echo $country; ?>', '', 'countries');
+    <?php endforeach;
+}
+?>
+
+<?php
+if (isset($_GET['indicators']) && !empty($_GET['indicators']) && count(explode(',', $_GET['indicators']))) {
+    foreach (explode(',', $_GET['indicators']) as $indicator): ?>
+        filter.selection.add_indicator('<?php echo $indicator; ?>', '', 'indicators');
+    <?php endforeach;
+}
+?>
+
 filter.init();
 
 $("#compare-cities-randomize").click(function(e){
@@ -92,6 +116,8 @@ $("#compare-cities-randomize").click(function(e){
 });
 
 filter.update_selection_after_filter_load(filter.selection);
+
+
 
 </script>
 

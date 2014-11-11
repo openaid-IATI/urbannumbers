@@ -42,6 +42,12 @@ function OipaCompareSelection(main){
             if (_type.length > 1) {
                 side = _type[0];
                 type = _type[1];
+            } else {
+                if (self.left[type].length == self.right[type].length) {
+                    side = 'left';
+                } else {
+                    side = 'right';
+                }
             }
 
             $.each(self[side][type], function(i, indicator) {

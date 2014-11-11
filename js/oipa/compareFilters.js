@@ -1,44 +1,45 @@
 function OipaCompareFilters() {
     this.filter_opener_class = 'glyphicon glyphicon-plus';
-    this.get_selection_object = function(){
-        var new_selection = new OipaCompareSelection();
-        new_selection.left.countries = this.get_checked_by_filter("left-countries");
-        new_selection.left.cities = this.get_checked_by_filter("left-cities");
-        new_selection.right.countries = this.get_checked_by_filter("right-countries");
-        new_selection.right.cities = this.get_checked_by_filter("right-cities");
-        new_selection.indicators = this.get_checked_by_filter("indicators");
-        return new_selection;
-    };
-
-    this.get_url = function(selection, parameters_set){
+    this.update_only_filters =
+    this.get_url = function(selection, parameters_set) {
         // get url from filter selection object
+        var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city";
         if (parameters_set){
-            var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + parameters_set;
-        } else {
-            var cururl = search_url + "indicator-filter-options/?format=json&adm_division__in=city" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators);
+            cururl += parameters_set;
         }
 
         return cururl;
     };
-
-    this.process_filter_options = function(data){
-        var columns = 4;
-        var filter = this;
-
-        // load filter html and implement it in the page
-        this.create_filter_attributes(data.countries, columns, 'left-countries');
-        this.create_filter_attributes(data.countries, columns, 'right-countries');
-
-        this.create_filter_attributes(data.cities, columns, 'left-cities');
-        this.create_filter_attributes(data.cities, columns, 'right-cities');
-
-        this.create_filter_attributes(data.indicators, 2, 'indicators');
-        //this.initialize_filters();
-    };
-
 }
 OipaCompareFilters.prototype = new OipaIndicatorFilters();
 
+OipaCompareFilters.prototype.get_selection_object = function(){
+    var new_selection = new OipaCompareSelection();
+    new_selection.left.countries = this.get_checked_by_filter("left-countries");
+    new_selection.left.cities = this.get_checked_by_filter("left-cities");
+    new_selection.right.countries = this.get_checked_by_filter("right-countries");
+    new_selection.right.cities = this.get_checked_by_filter("right-cities");
+    new_selection.indicators = this.get_checked_by_filter("indicators");
+    return new_selection;
+};
+
+OipaCompareFilters.prototype.process_filter_options = function(data) {
+    var columns = 4;
+    var filter = this;
+
+    // load filter html and implement it in the page
+    this.create_filter_attributes(data.countries, columns, 'left-countries');
+    this.create_filter_attributes(data.countries, columns, 'right-countries');
+
+    this.create_filter_attributes(data.cities, columns, 'left-cities');
+    this.create_filter_attributes(data.cities, columns, 'right-cities');
+
+    this.create_filter_attributes(data.indicators, 2, 'indicators');
+
+    if (this.selection.get('countries', []).length > 0 || this.selection.get('cities', []).length > 0) {
+        this.reload_specific_filter('indicators');
+    }
+};
 
 OipaCompareFilters.prototype.get_checked_by_select = function(id) {
     var result = $.map($('#' + id + '-select option:selected'), function(option) {
@@ -92,7 +93,7 @@ OipaCompareFilters.prototype.get_select_status = function(key) {
 
 OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data) {
     var self = this;
-    if (!data){
+    if (!data) {
         var url = '';
 
         if (filter_name === "indicators") {
@@ -180,12 +181,103 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
 };
 
 
+OipaCompareFilters.prototype.init_holder =  function(key) {
+    var self = this;
+    var _holder = document.createElement('select');
+    _holder.id = key + '-select';
+    _holder.onchange = function(e) {
+        self.save();
+        if (key.indexOf('-countries') !== -1) {
+            self.reload_specific_filter(key.replace('-countries', '-cities'));
+
+            $('#' + key.replace('-countries', '-cities') + '-select').get()[0].disabled = false;
+            $('#' + key.replace('-countries', '-cities') + '-select').selectric('refresh');
+            self.show_helper(key.replace('-countries', '-cities'));
+        }
+
+        if (key == 'left-cities') {
+            $('#right-countries-select').get()[0].disabled = false;
+            $('#right-countries-select').selectric('refresh');
+            self.show_helper('right-countries');
+        }
+
+        if (key == 'right-cities') {
+            self.reload_specific_filter('indicators');
+            $('#indicator-filter-wrapper nav').show();
+            $('.indicators-helper').css({'display': 'inline'});
+        }
+        self.activate_reset_and_favorites();
+    }
+
+    if (key == 'left-countries') {
+        _holder.onclick = function() {
+            $('.left-countries-helper').fadeOut();
+        }
+    }
+    return _holder;
+}
+
+OipaCompareFilters.prototype.init_option = function(key, name, value, selected) {
+    var _option = document.createElement('option');
+    _option.value = value;
+    _option.innerHTML = name;
+
+    var _selected = false;
+    if (selected.length) {
+        value = isNaN(value) ? value : parseInt(value);
+        _selected = $.inArray(value, selected) > -1;
+    }
+
+    if (!_selected && value == '') {
+        _selected = true;
+    }
+
+    _option.selected = _selected;
+
+    return _option;
+}
+
 OipaCompareFilters.prototype.create_filter_attributes = function(objects, columns, key) {
     var self = this;
+    //console.log(objects);
 
     if (['left-cities', 'right-cities', 'left-countries', 'right-countries'].indexOf(key) !== -1) {
+        //console.log(self.selection.get("cities"));
+
+
+        if ($('#' + key + '-select').get().length == 0) {
+            var _holder = self.init_holder(key);
+        } else {
+            var _holder = $('#' + key + '-select').get()[0];
+
+            var _keys = Object.keys(_holder._options);
+
+            for (var option = 0; option <= _keys.length; option++) {
+                _holder.removeChild(_holder.childNodes[0]);
+            }
+        }
+
+        var _ = key.split('-');
+        var selected = $(this.selection.get_side(_[0], _[1], [])).map(
+            function(__, option) {
+                return option.id;
+            });
+
+        _holder.disabled = !self.get_select_status(key);
+        _holder._options = {};
+        _holder._default_option = self.init_option(
+            key,
+            {
+                'left-cities': "SELECT CITY 1",
+                'right-cities': "SELECT CITY 2",
+                'left-countries': "SELECT COUNTRY 1",
+                'right-countries': "SELECT COUNTRY 2"
+            }[key],
+            '',
+            selected);
+        _holder.appendChild(_holder._default_option);
+
         var mapped_keys = Object.keys(objects).sort(function(a, b) {
-            //if (objects[a] > )
             var _name_1 = objects[a];
             var _name_2 = objects[b];
             if (_name_1 < _name_2) {
@@ -197,81 +289,25 @@ OipaCompareFilters.prototype.create_filter_attributes = function(objects, column
             return 0;
         });
 
-        if ($('#' + key + '-select').get().length == 0) {
-            var _holder = document.createElement('select');
-            _holder.id = key + '-select';
-            _holder.onchange = function(e) {
-                self.save();
-                if (key.indexOf('-countries') !== -1) {
-                    self.reload_specific_filter(key.replace('-countries', '-cities'));
-
-                    $('#' + key.replace('-countries', '-cities') + '-select').get()[0].disabled = false;
-                    $('#' + key.replace('-countries', '-cities') + '-select').selectric('refresh');
-                    self.show_helper(key.replace('-countries', '-cities'));
-                }
-
-                if (key == 'left-cities') {
-                    $('#right-countries-select').get()[0].disabled = false;
-                    $('#right-countries-select').selectric('refresh');
-                    self.show_helper('right-countries');
-                }
-
-                if (key == 'right-cities') {
-                    self.reload_specific_filter('indicators');
-                    $('#indicator-filter-wrapper nav').show();
-                    $('.indicators-helper').css({'display': 'inline'});
-                }
-                self.activate_reset_and_favorites();
-            }
-
-            if (key == 'left-countries') {
-                _holder.onclick = function() {
-                    $('.left-countries-helper').fadeOut();
-                }
-            }
-
-        } else {
-            var _holder = $('#' + key + '-select').get()[0];
-
-            var _keys = Object.keys(_holder._options);
-
-            for (var option = 0; option <= _keys.length; option++) {
-                _holder.removeChild(_holder.childNodes[0]);
-            }
-        }
-
-        _holder.disabled = !self.get_select_status(key);
-        _holder._options = {};
-        _holder._default_option = document.createElement('option');
-        _holder._default_option.value = '';
-
-        _holder._default_option.innerHTML = {
-            'left-cities': "SELECT CITY 1",
-            'right-cities': "SELECT CITY 2",
-            'left-countries': "SELECT COUNTRY 1",
-            'right-countries': "SELECT COUNTRY 2"
-        }[key];
-        _holder.appendChild(_holder._default_option);
-
         $.each(mapped_keys, function(_, code) {
-            var name = objects[code];
-            _holder._options[code] = document.createElement('option');
-            _holder._options[code].value = code;
-            _holder._options[code].innerHTML = name;
-
+            _holder._options[code] = self.init_option(
+                key,
+                objects[code],
+                code,
+                selected);
             _holder.appendChild(_holder._options[code]);
         });
 
         $('#' + key + '-filters').html(_holder);
 
-        var onInit = function() {};
-        if (key == 'left-countries') {
-            onInit = function () {
-                if ($('#left-cities-filters select').val() == undefined) {
+        var onInit = function() {
+            if (key == 'left-countries') {
+                if ($('#left-cities-filters select').val() == undefined
+                    && $(_holder).val() == '') {
                     $('.left-countries-helper').fadeIn();
                 }
             }
-        }
+        };
 
         $('#' + key + '-filters select').selectric({
             responsive: true,
@@ -375,6 +411,16 @@ OipaCompareFilters.prototype.activate_reset_and_favorites = function() {
     } else {
         $("#reset-compare-filters").removeClass('btn-success').addClass('btn-default');
         $(".add-to-favorites").removeClass('btn-success').addClass('btn-default');
+    }
+}
+
+OipaCompareFilters.prototype.change_selection = function(key, value, callback) {
+    if ($('#' + key + '-select').get().length !== 0) {
+        $('#' + key + '-select').val(value);
+        $('#' + key + '-select').get()[0].disabled = false;
+        $('#' + key + '-select').selectric('refresh');
+    } else {
+        console.log('neh');
     }
 }
 

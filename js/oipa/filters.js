@@ -123,6 +123,13 @@ function OipaFilters() {
         // override
     };
 
+    this.get_data_callback = function(data, url) {
+        this.data = data;
+        this.process_filter_options(data);
+        this.after_filter_load();
+        this.save(true);
+    }
+
     this.get_data = function(url) {
         var self = this;
 
@@ -139,8 +146,7 @@ function OipaFilters() {
                 if (jsondata === null || typeof (jsondata) === 'undefined') {
                     jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
                 }
-                self.data = jsondata;
-                self.process_filter_options(jsondata);
+                self.get_data_callback(jsondata, url);
             };
             setTimeout(function () {
                 xdr.send();
@@ -152,10 +158,7 @@ function OipaFilters() {
                 contentType: "application/json",
                 dataType: 'json',
                 success: function(data) {
-                    self.data = data;
-                    self.process_filter_options(data);
-                    self.after_filter_load();
-                    self.save(true);
+                    self.get_data_callback(data, url);
                 }
             });
         }
@@ -242,7 +245,7 @@ function OipaFilters() {
                 sortable.sort(function(a, b){
                         var nameA=a[1].toString().toLowerCase(), nameB=b[1].toString().toLowerCase();
                         if (nameA < nameB) { //sort string ascending
-                                return -1; 
+                                return -1;
                         }
                         if (nameA > nameB) {
                                 return 1;
@@ -252,7 +255,7 @@ function OipaFilters() {
 
                 var page_counter = 1;
                 html += '<div class="row filter-page filter-page-1">';
-        
+
                 for (var i = 0;i < sortable.length;i++){
 
                         if (i%per_col == 0){
@@ -272,12 +275,12 @@ function OipaFilters() {
 
                         html += '<div class="checkbox">';
                         html += '<label><input type="checkbox" value="'+ sortable[i][0] +'" id="'+sortable[i][1].toString().replace(/ /g,'').replace(',', '').replace('&', '').replace('%', 'perc')+'" name="'+sortable[i][1]+'" />'+sortablename+'</label></div>';
-        
+
                         if (i%per_col == (per_col - 1)){
                                 html += '</div>';
                         }
-                        if ((i + 1) > ((page_counter * (per_col * columns))) - 1) { 
-                
+                        if ((i + 1) > ((page_counter * (per_col * columns))) - 1) {
+
                                 html += '</div>';
                                 page_counter = page_counter + 1;
                                 html += '<div class="row filter-page filter-page-' + page_counter + '">';
@@ -320,7 +323,7 @@ function OipaFilters() {
                 var range = 2;
                 var paging_block = "";
 
-                if (cur_page == 1){ paging_block += '<a href="#" class="pagination-btn-previous btn-prev"></a>'; } 
+                if (cur_page == 1){ paging_block += '<a href="#" class="pagination-btn-previous btn-prev"></a>'; }
                 else { paging_block += '<a href="#" class="pagination-btn-previous btn-prev">&lt; previous</a>'; }
                 paging_block += "<ul>";
 
@@ -328,23 +331,23 @@ function OipaFilters() {
                 if (cur_page > (2 + range)){ paging_block += "<li>...</li>"; }
 
                 // loop to show links to range of pages around current page
-                for (var x = (cur_page - range); x < ((cur_page + range) + 1); x++) { 
+                for (var x = (cur_page - range); x < ((cur_page + range) + 1); x++) {
                    // if it's a valid page number...
                    if ((x > 0) && (x <= total_pages)) {
-                          if (x == cur_page) { paging_block += "<li class='active'><a>"+x+"</a></li>"; } 
+                          if (x == cur_page) { paging_block += "<li class='active'><a>"+x+"</a></li>"; }
                           else { paging_block += "<li><a href='#'>"+x+"</a></li>"; } // end else
-                   } // end if 
+                   } // end if
                 } // end for
 
                 if(cur_page < (total_pages - (1 + range))){ paging_block += "<li>...</li>"; }
-                if(cur_page < (total_pages - range)){ paging_block += "<li><a href='#' class='page'><span>"+total_pages+"</span></a></li>"; }      
+                if(cur_page < (total_pages - range)){ paging_block += "<li><a href='#' class='page'><span>"+total_pages+"</span></a></li>"; }
                 paging_block += "</ul>";
 
-                // if not on last page, show forward and last page links                
-                if (cur_page != total_pages) { paging_block += '<a href="#" class="pagination-btn-next btn-next">next &gt;</a>'; } 
+                // if not on last page, show forward and last page links
+                if (cur_page != total_pages) { paging_block += '<a href="#" class="pagination-btn-next btn-next">next &gt;</a>'; }
                 else { paging_block += '<a href="#" class="pagination-btn-next btn-next"></a>'; } // end if
                 /****** end build pagination links ******/
-                
+
                 return paging_block;
         };
 
@@ -376,7 +379,7 @@ function OipaFilters() {
                         filter.load_paginate_page(attribute_type, page_number);
                         filter.load_paginate_listeners(attribute_type, total_pages);
                 });
-                
+
         };
 
         this.load_paginate_page = function(attribute_type, page_number){
@@ -445,7 +448,7 @@ function OipaFilters() {
                         columns = 4;
                         if (filter_name === "left-cities") { this.create_filter_attributes(data.cities, columns, 'left-cities'); }
                         if (filter_name === "right-cities") { this.create_filter_attributes(data.cities, columns, 'right-cities'); }
-                        if (filter_name === "indicators" && Oipa.pageType == "compare") { 
+                        if (filter_name === "indicators" && Oipa.pageType == "compare") {
                                 this.create_filter_attributes(data.countries, columns, 'left-countries');
                                 this.create_filter_attributes(data.countries, columns, 'right-countries');
                                 this.create_filter_attributes(data.cities, columns, 'left-cities');
