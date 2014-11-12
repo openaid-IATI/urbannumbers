@@ -112,28 +112,12 @@ if (have_posts()) : ?>
 		<?php endif; ?>
 
 		
-			<div id="map-wrapper">
+			<div id="map-wrapper" class="map-homepage">
 			<?php 
 			$curmapname = "main";
 			include( TEMPLATEPATH .'/map.php' ); 
 			?>
-				<?php if(!is_page("city-prosperity")){ ?>
-			    <div id="map-timeline-wrapper">
-			        <div id="timeline-left"></div>
-			        <div id="map-timeline">
-			            <div id="map-slider-tooltip">
-			            </div>
-
-			            <?php for ($i = 1950; $i < 2051;$i++){   
-			            echo '<div class="slider-year';
-			            echo '" id="year-' . $i . '">';
-			            if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
-			            echo '<div class="slider-year-inner-white"></div></div>'; 
-			            } ?>
-			        </div>
-			        <div id="timeline-right"></div>
-			    </div>
-			    <?php } ?>
+			
 			</div>
 		
 	</section>
@@ -299,6 +283,7 @@ if (have_posts()) : ?>
     } else {
         map.refresh();
     }
+
 </script>
 
 <?php get_footer(); ?>
