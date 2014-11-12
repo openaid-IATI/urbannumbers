@@ -23,7 +23,7 @@
     position: absolute;
     width: 99%;
     margin: 0 0.1% 4em;
-    bottom: 2em;
+    bottom: 0px;
     left: 0;
     z-index: 1600;
 }
@@ -34,7 +34,7 @@
 
 .box-list li {
     width: 224px;
-    margin: 0px 10px;
+    margin: 0px 19px 0 10px;
 }
 
 .box-list li .heading-holder {
@@ -66,11 +66,15 @@
     margin: 0px;
 }
 #indicators-pagination ul {
-    margin-left: -10px;
+    margin-left: -7px;
 }
 #indicators-pagination ul li {
     list-style: none;
     display: inline-table;
+}
+#indicator-filter-wrapper {
+    border: 0px;
+    padding-top: 14px;
 }
 #indicator-filter-wrapper .slide-content {
     display: none;
@@ -79,6 +83,7 @@
     background: #f4f4f4;
     padding: 20px;
     margin-top: -14px;
+    margin-left: -2px;
     -webkit-border-radius: 4px;
     -webkit-border-top-left-radius: 0;
     -moz-border-radius: 4px;
@@ -91,7 +96,9 @@
 }
 nav#indicators-pagination .btn {
     padding: 4px 8px;
-    margin: 0px 10px;
+    margin: 0px 5px;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 nav#indicators-pagination .btn i.glyphicon {
     font-size: 11px;
@@ -104,8 +111,8 @@ nav#indicators-pagination .btn-default,
     color: #fff;
 }
 .indicator-category-button.btn-success {
-    background: #FFF;
-    color: #333;
+    background: #008589;
+    color: #FFF;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
@@ -117,7 +124,6 @@ nav#indicators-pagination .btn-default,
 
 .legend {
     font-size: 12px;
-    min-height: 200px;
 }
 
 p {
@@ -128,4 +134,109 @@ hr {
     background: rgba(170,170,170,0.5);
     height: 1px;
     margin: 10px 0px;
+}
+
+#map-wrapper .col-md-6 {
+    padding: 0px;
+}
+#map-wrapper .main {
+    border: 0px;
+}
+
+
+.visualization-close {
+    font-size: 10px;
+    color: #979aa7;
+}
+
+#visualisation-block-wrapper .widget {
+    margin-top: 20px;
+}
+
+#map-indicator-filter-wrapper .map-indicator-filter-icon {
+    display: none;
+}
+
+#map-indicator-filter-wrapper {
+    margin-top: 30px;
+}
+#map-indicator-filter-wrapper .sort-list li div {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #62697f;
+    color: #FFF;
+    padding: 2px 10px;
+    margin-bottom: 5px;
+}
+#map-indicator-filter-wrapper .slide,
+#map-indicator-filter-wrapper .subul {
+    padding: 10px 0px;
+    border: 0px;
+    overflow-x: hidden;
+}
+#map-indicator-filter-wrapper .sort-list li label.checkbox_label {
+    width: 300px;
+    min-width: 300px;
+    line-height: 20px;
+    font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+    text-transform: uppercase;
+    padding: 4px 10px;
+}
+#map-indicator-filter-wrapper .sort-list li label.checkbox_label:hover {
+    background: #5b6072;
+    cursor: pointer;
+}
+
+#map-indicator-filter-wrapper .sort-list li div.selector {
+    width: 130px;
+    min-width: 130px;
+}
+#map-indicator-filter-wrapper .sort-list li div.subul {
+    margin-top: -4px;
+    padding: 10px 0px;
+}
+
+#map-indicator-filter-wrapper .sort-list li div label.top {
+    color: #FFF;
+    cursor: pointer;
+}
+#map-indicator-filter-wrapper .sort-list li div label {
+    min-width: 100px;
+}
+#map-indicator-filter-wrapper .sort-list li div input {
+    margin-top: -4px;
+    margin-right: 10px;
+}
+#map-indicator-filter-wrapper .sort-list li div .counts {
+    display: none;
+}
+
+.filter-indicator-type-text,
+.sort-list .active a.filter-indicator-type-text,
+#indicators-filters label {
+    text-transform: uppercase;
+    font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+}
+
+
+.filter-indicator-type-dropdown {
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+.radio+.filter-indicator-type-dropdown,
+.checkbox+.filter-indicator-type-dropdown,
+.filter-indicator-type-dropdown+.checkbox,
+.filter-indicator-type-dropdown+.filter-indicator-type-dropdown {
+    margin-top: -5px;
+}
+
+#indicators-filters .glyphicon {
+    margin-right: 5px;
+}
+
+
+.filter-indicator-type-inner {
+    margin: 0px;
+    margin-top: -10px;
 }

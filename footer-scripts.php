@@ -11,7 +11,6 @@ var register_url = "http://localhost:18088/rest-auth/register/";
 </script>
 
 
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/nouislider.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/d3.min.js"></script>

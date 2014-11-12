@@ -3,8 +3,11 @@
 }
 
 .urbnnrs-geo-map .dropdown{
-        z-index: 9999;
+    z-index: 998;
     margin-right: 20px;
+}
+.leaflet-top, .leaflet-bottom {
+    z-index: 998;
 }
 
 .filter-page{
@@ -164,15 +167,14 @@
   -o-user-select: none;
   user-select: none;
   cursor: pointer;
-  font-family: 'HelveticaNeueW01-75Bold';
+  font: 26px/21px 'HelveticaNeueW02-55Roma',arial,sans-serif;
   color: #FFF;
-  font-size: 2em;
   z-index: 2;
-  padding: 0.7em;
-  background: url('../images/slider-urban-nrs.png') top left no-repeat;
-  width: 150px;
-  height: 85px;
-  margin-left: -73px;
+  padding: 10px 0 0 0px;
+  background: url('../images/slider.png') top left no-repeat;
+  width: 98px;
+  height: 55px;
+  margin-left: -45.5px;
   margin-top: -10px;
   text-align: center;
 }
@@ -244,6 +246,22 @@
 .container-sort{
   position: static;
 }
+.container-sort .share-col {
+    text-align: right;
+}
+.container-sort .share-col .action-list li {
+    display: inline;
+    margin: 0 0 0 5px;
+}
+.container-sort .share-col .action-list {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+.container-sort .share-col .action-list a {
+    color: #FFF;
+}
+
 
 .indicator-category-button{
   margin-left: 12px;
@@ -293,7 +311,7 @@
 }
 
 
-@media (max-width: 979px) { 
+@media (max-width: 979px) {
 
         #year-1950{
                 width: 8px;
@@ -328,7 +346,7 @@
 
 
 /* Portrait tablet to landscape and desktop */
-@media (max-width: 760px) { 
+@media (max-width: 760px) {
 
         #year-1950{
                 width: 6px;
@@ -358,8 +376,8 @@
                 margin-right:-253px;
         }
 
-}    
-   
+}
+
 
 
 
@@ -576,7 +594,7 @@ form.registration-form span.input-placeholder-text {
     padding: 0px;
     min-height: 166px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-} 
+}
 .infobox-container.box-container .columns-holder .column {
     width: 12.5%;
     min-width: 100px;
@@ -861,7 +879,7 @@ form.registration-form span.input-placeholder-text {
     font: 14px arial,sans-serif;
     line-height: 20px;
     font-weight: normal;
-    margin-top: 30px;
+    margin-top: 32px;
     margin-left: -30px;
     width: 350px;
 }

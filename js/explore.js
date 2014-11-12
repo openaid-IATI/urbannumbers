@@ -1,9 +1,86 @@
 function ExploreIndicatorFilters() {
+    this.filter_opener_class = 'glyphicon glyphicon-plus';
 }
 
 ExploreIndicatorFilters.prototype = new OipaIndicatorFilters();
 
-ExploreIndicatorFilters.prototype.load_indicator_paginate_listeners = function(){
+var _old_create_filter_attributes = ExploreIndicatorFilters.prototype.create_filter_attributes;
+ExploreIndicatorFilters.prototype.create_filter_attributes = function(objects, columns, attribute_type) {
+    var self = this;
+    console.log(attribute_type);
+
+    if (attribute_type === "indicators"){
+        self.create_indicator_filter_attributes(objects, columns);
+        return true;
+    }
+
+    var html = '';
+    var per_col = 6;
+
+    var sortable = [];
+    for (var key in objects) {
+        sortable.push([key, objects[key]]);
+    }
+
+    sortable.sort(function(a, b){
+        var nameA=a[1].toString().toLowerCase();
+        var nameB=b[1].toString().toLowerCase();
+        if (nameA < nameB) { //sort string ascending
+                return -1;
+        }
+        if (nameA > nameB) {
+                return 1;
+        }
+        return 0; //default return value (no sorting)
+    });
+
+    var page_counter = 1;
+
+    for (var i = 0; i < sortable.length; i++) {
+        var sortablename = sortable[i][1];
+        if (columns == 4 && sortablename.length > 32){
+                sortablename = sortablename.substr(0,28) + "...";
+        } else if (columns == 3 && sortablename.length > 40){
+                sortablename = sortablename.substr(0,36) + "...";
+        }
+        var _id = self.string_to_id(sortable[i][1]);
+
+        html += '<label class="checkbox_label">';
+        html += '<input type="checkbox" value="'+ sortable[i][0] +'" id="'+ _id +'" name="'+sortable[i][1]+'" />';
+        html += sortablename;
+        html += '</label>';
+    }
+
+    // if no elements found
+    if (sortable.length == 0){
+        html += '<div class="row filter-page filter-page-1">';
+        html += '<div class="col-md-6 col-sm-6 col-xs-12" style="margin-left: 20px;">';
+        html += 'No ' + attribute_type + ' available in the current selection.';
+        html += '</div></div>';
+    }
+
+    // get pagination attributes and add both pagination + filter options to div
+    jQuery("#"+attribute_type+"-pagination").html(self.paginate(1, page_counter));
+    jQuery("#"+attribute_type+"-filters").html(html);
+    $('#' + attribute_type + '-filters input').change(function(e) {
+        self.save();
+
+        var _changes_map = {
+            regions:   ['indicators', 'countries', 'cities'],
+            countries: ['indicators', 'cities'],
+            cities:    ['indicators'],
+        };
+        if (_changes_map[attribute_type] !== undefined) {
+            $.each(_changes_map[attribute_type], function(_, atype) {
+                self.reload_specific_filter(atype);
+            });
+        }
+    });
+    self.load_paginate_listeners(attribute_type, page_counter);
+    self.update_selection_after_filter_load();
+};
+
+ExploreIndicatorFilters.prototype.load_indicator_paginate_listeners = function() {
     $("#indicators-pagination li a").addClass('btn btn-default');
 
     $("#indicators-pagination li a").click(function(e){
@@ -35,12 +112,15 @@ ExploreIndicatorFilters.prototype.load_indicator_paginate_listeners = function()
 
 ExploreIndicatorFilters.prototype.reset_filters = function() {
     this.selection.clean('indicators');
+    this.selection.clean('countries');
+    this.selection.clean('cities');
+    this.selection.clean('regions');
     this.save(true);
 }
 
 ExploreIndicatorFilters.prototype.randomize = function(max_indicators) {
     var self = this;
-    max_indicators = (max_indicators == undefined) ? 3 : max_indicators;
+    max_indicators = (max_indicators == undefined) ? 6 : max_indicators;
 
     if (self.data !== undefined && self.data.indicators !== undefined) {
         var _indicators = self.data.indicators;
@@ -86,5 +166,5 @@ $('.explore-filters-close-button').click(function(e) {
 $('#explore-randomize').click(function(e) {
     e.preventDefault();
     filter.reset_filters();
-    filter.randomize(3);
+    filter.randomize();
 });

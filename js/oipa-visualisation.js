@@ -33,7 +33,7 @@ function OipaVis () {
         html +=    '<div class="no_data">No data for this chart</div>';
         html +=    '<canvas height="' + Oipa.visualisation_size + '" width="' + Oipa.visualisation_size + '"></canvas>';
         html +=  '</div>';
-        html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove"></i></a>';
+        html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove visualization-close"></i></a>';
         html += '</div>';
         html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '</section></li>';

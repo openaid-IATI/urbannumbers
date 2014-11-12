@@ -85,7 +85,7 @@ $("#lost-password-login").click(function(e){
 });
 
 $("#register-button").click(function(e){
-        e.preventDefault();     
+        e.preventDefault();
         $("#urbannumbers-register").show();
         $("#urbannumbers-login").hide();
 });
@@ -113,9 +113,8 @@ $("#map-indicator-filter-wrapper .map-indicator-header").click(function(e) {
 });
 
 $("#reset-filters").click(function(e){
-        e.preventDefault();
-        filter.reset_filters();
-    $("#map-indicator-filter-wrapper .sort-list").toggle();
+    e.preventDefault();
+    filter.reset_filters();
 });
 
 $("#map-indicator-filter-wrapper .filter-open").click(function(e){
