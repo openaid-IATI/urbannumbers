@@ -27,13 +27,13 @@ $image_credits = get_field('image_credits');
 									<?php endif; ?>
 									<div class="post-info">
 										<div class="row">
-										<!-- hide this author stuff and date	<div class="col-md-6 col-sm-6 col-xs-6">
+										<div class="col-md-6 col-sm-6 col-xs-6">
 												<time datetime="<?php the_time('Y-m-d'); ?>"><?php the_time('F j, Y'); ?></time>
 												<dl>
 													<dt>By:</dt>
 													<dd itemprop="knows"><?php the_author_link(); ?></dd>
 												</dl>
-											</div> -->
+											</div> 
 											<?php if($image_credits): ?>
 											<div class="col-md-6 col-sm-6 col-xs-6">
 												<dl>
@@ -49,9 +49,11 @@ $image_credits = get_field('image_credits');
 										<?php the_content(); ?>
 									</div>
 								</article>
-						<!-- hiding
+							</div>
+						</div>
+				
 						<div class="col-sm-4">
-							<!-- sidebar -->
+						
 							<aside id="sidebar">
 								<?php related_entries(array(
 										// Pool options: these determine the "pool" of entities which are considered
@@ -76,7 +78,7 @@ $image_credits = get_field('image_credits');
 								<?php endif; ?>
 							</aside>
 						</div> 
-					</div>-->
+					</div>
 				</div>
 			</section>
 		</div>
