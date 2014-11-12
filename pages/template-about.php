@@ -27,13 +27,13 @@ $image_credits = get_field('image_credits');
 									<?php endif; ?>
 									<div class="post-info">
 										<div class="row">
-											<div class="col-md-6 col-sm-6 col-xs-6">
+										<!-- hide this author stuff and date	<div class="col-md-6 col-sm-6 col-xs-6">
 												<time datetime="<?php the_time('Y-m-d'); ?>"><?php the_time('F j, Y'); ?></time>
 												<dl>
 													<dt>By:</dt>
 													<dd itemprop="knows"><?php the_author_link(); ?></dd>
 												</dl>
-											</div>
+											</div> -->
 											<?php if($image_credits): ?>
 											<div class="col-md-6 col-sm-6 col-xs-6">
 												<dl>
@@ -43,18 +43,13 @@ $image_credits = get_field('image_credits');
 											</div>
 											<?php endif; ?>
 										</div>
-										<ul class="social-networks">
-											<li itemprop="follows"><a itemprop="url" href="#"><i class="icon-share"></i> SHARE</a></li>
-										</ul>
+								
 									</div>
 									<div class="post-content small">
 										<?php the_content(); ?>
 									</div>
 								</article>
-								<!-- box-widget -->
-								<div class="box-widget"><img src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder4.jpg" alt=""></div>
-							</div>
-						</div>
+						<!-- hiding
 						<div class="col-sm-4">
 							<!-- sidebar -->
 							<aside id="sidebar">
@@ -80,8 +75,8 @@ $image_credits = get_field('image_credits');
 								</div>
 								<?php endif; ?>
 							</aside>
-						</div>
-					</div>
+						</div> 
+					</div>-->
 				</div>
 			</section>
 		</div>
