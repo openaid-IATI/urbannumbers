@@ -43,20 +43,13 @@ $image_credits = get_field('image_credits');
 											</div>
 											<?php endif; ?>
 										</div>
-									<!-- hiding share	<ul class="social-networks">
-											<li itemprop="follows"><a itemprop="url" href="#"><i class="icon-share"></i> SHARE</a></li>
-										</ul> -->
+								
 									</div>
 									<div class="post-content small">
 										<?php the_content(); ?>
 									</div>
 								</article>
-								<!-- hiding placeholderimage<!-- box-widget -->
-								<div class="box-widget"><img src="<?php echo get_template_directory_uri(); ?>/images/img-placeholder4.jpg" alt=""></div>
-							</div>
-						</div>
 						
-						end hide -->
 						<div class="col-sm-4">
 							<!-- sidebar -->
 							<aside id="sidebar">
