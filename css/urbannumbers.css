@@ -898,3 +898,7 @@ form.registration-form span.input-placeholder-text {
 .helper:hover .helper-popup {
     display: inline;
 }
+
+#main.city-page {
+    padding: 0px;
+}

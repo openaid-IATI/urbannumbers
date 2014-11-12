@@ -1,3 +1,7 @@
+#main {
+    padding: 0px;
+}
+
 #chart_cpi,
 #chart_cpi div,
 .sort-columns #chart_cpi.column,
