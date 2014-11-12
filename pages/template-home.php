@@ -34,9 +34,7 @@ if (have_posts()) : ?>
 						<?php endif; ?>
 						<?php if($start_exploring): ?><a href="<?php echo $start_exploring; ?>" class="btn btn-primary">Start exploring</a><?php endif; ?>
 					</div>
-				</div>
-				<?php endif; ?>
-				<article class="box">
+					<article class="box">
 					<?php the_field('info'); ?>
 					<div class="btn-holder">
 						<?php if($about_city_prosperity): ?><a href="<?php echo $about_city_prosperity; ?>" class="btn btn-blue">About city prosperity</a><?php endif; ?>
@@ -49,6 +47,9 @@ if (have_posts()) : ?>
 					</dl>
 					<?php endif; ?>
 				</article>
+				</div>
+				<?php endif; ?>
+				
 				<?php if($image) echo '<img class="visual-decor" src="'. $image['sizes']['gallery1500x500'] .'" alt="">'; ?>
 			</div>
 			<?php endwhile; ?>
@@ -58,33 +59,34 @@ if (have_posts()) : ?>
 	<?php endif; wp_reset_query(); ?>
 	<?php if( have_rows('home_blocks') ): ?>
 	<!-- box-container -->
-	<div class="box-container">
-		<div class="columns-holder">
-			<?php while ( have_rows('home_blocks') ) : the_row();
-			$title = get_sub_field('title');
-			$image = get_sub_field('image');
-			$read_more_url = get_sub_field('read_more_url');
-			if($title || $graphic):
-			?>
-				<div class="column">
-					<a href="<?php echo $read_more_url; ?>" class="box">
-						<div class="holder">
-							<?php if($title): ?>
-							<header class="heading-holder">
-								<h2><?php echo $title; ?></h2>
-							</header>
-							<?php endif; ?>
-							<?php if($image): ?>
-							<div class="frame">
-								<img src="<?php echo $image['sizes']['block277']; ?>" alt="">
+		<div class="container homepage-top-buttons">
+			<div class="row">
+				<?php while ( have_rows('home_blocks') ) : the_row();
+				$title = get_sub_field('title');
+				$image = get_sub_field('image');
+				$read_more_url = get_sub_field('read_more_url');
+				if($title || $graphic):
+				?>
+					<div class="col-md-3">
+						<a href="<?php echo $read_more_url; ?>" class="box">
+							<div class="holder">
+								<?php if($title): ?>
+								<header class="heading-holder">
+									<h2><?php echo $title; ?></h2>
+								</header>
+								<?php endif; ?>
+								<?php if($image): ?>
+								<div class="frame">
+									<img src="<?php echo $image['sizes']['block277']; ?>" alt="">
+								</div>
+								<?php endif; ?>
 							</div>
-							<?php endif; ?>
-						</div>
-					</a>
-				</div>
-			<?php endif; endwhile; ?>
+						</a>
+					</div>
+				<?php endif; endwhile; ?>
+			</div>
 		</div>
-	</div>
+
 	<?php endif; ?>
 	<!-- container-map -->
 	<section class="container-map">
@@ -137,42 +139,44 @@ if (have_posts()) : ?>
 					);
 		query_posts($args);
 		if (have_posts()) : ?>
-		<ul class="thumbnails">
-			<?php while (have_posts()) : the_post();
-				$image = get_field('image');
-				$description = get_field('description');
-				$name = get_field('name');
-				$country = get_field('country');
-				$city = get_field('city');
-			?>
-			<li>
-				<div class="box" itemscope itemtype="http://schema.org/Person">
-					<?php if($image): ?>
-					<div class="img-holder">
-						<a href="<?php the_permalink(); ?>">
-							<!-- picturefill html structure example -->
-							<span data-picture data-alt="image description">
-								<span data-src="<?php echo $image['sizes']['dds320x200']; ?>" ></span>
-								<span data-src="<?php echo $image['sizes']['dds640x400']; ?>" data-media="(-webkit-min-device-pixel-ratio:1.5), (min-resolution:144dpi)" ></span>
-								<!--[if (lt IE 9) & (!IEMobile)]>
-									<span data-src="<?php echo $image['sizes']['dds320x200']; ?>"></span>
-								<![endif]-->
-								<!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
-								<noscript><img src="<?php echo $image['sizes']['dds320x200']; ?>" alt="image description" ></noscript>
-							</span>
-						</a>
+		<div class="container">
+			<ul class="thumbnails">
+				<?php while (have_posts()) : the_post();
+					$image = get_field('image');
+					$description = get_field('description');
+					$name = get_field('name');
+					$country = get_field('country');
+					$city = get_field('city');
+				?>
+				<li>
+					<div class="box" itemscope itemtype="http://schema.org/Person">
+						<?php if($image): ?>
+						<div class="img-holder">
+							<a href="<?php the_permalink(); ?>">
+								<!-- picturefill html structure example -->
+								<span data-picture data-alt="image description">
+									<span data-src="<?php echo $image['sizes']['dds320x200']; ?>" ></span>
+									<span data-src="<?php echo $image['sizes']['dds640x400']; ?>" data-media="(-webkit-min-device-pixel-ratio:1.5), (min-resolution:144dpi)" ></span>
+									<!--[if (lt IE 9) & (!IEMobile)]>
+										<span data-src="<?php echo $image['sizes']['dds320x200']; ?>"></span>
+									<![endif]-->
+									<!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+									<noscript><img src="<?php echo $image['sizes']['dds320x200']; ?>" alt="image description" ></noscript>
+								</span>
+							</a>
+						</div>
+						<?php endif; ?>
+						<?php if($description): ?>
+						<div class="info-holder" style="min-height: 170px">
+	                        <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+							<p>“<?php echo $description; ?>”</p>
+						</div>
+						<?php endif; ?>
 					</div>
-					<?php endif; ?>
-					<?php if($description): ?>
-					<div class="info-holder" style="min-height: 150px">
-                        <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-						<p>“<?php echo $description; ?>”</p>
-					</div>
-					<?php endif; ?>
-				</div>
-			</li>
-			<?php endwhile; ?>
-		</ul>
+				</li>
+				<?php endwhile; ?>
+			</ul>
+		</div>
 		<a href="<?php echo get_post_type_archive_link( 'dds' ); ?>" class="btn btn-primary">More stories</a>
 	</section>
 	<?php endif; wp_reset_query(); ?>
