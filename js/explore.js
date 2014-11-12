@@ -1,3 +1,5 @@
+var fav_alert_timeout;
+
 function ExploreIndicatorFilters() {
     this.filter_opener_class = 'glyphicon glyphicon-plus';
 }
@@ -166,4 +168,61 @@ $('#explore-randomize').click(function(e) {
     e.preventDefault();
     filter.reset_filters();
     filter.randomize();
+});
+
+
+
+$('.add-to-favorites').click(function(e) {
+    e.preventDefault();
+    clearTimeout(fav_alert_timeout);
+    $.ajax({
+        type: "POST",
+        url: vb_reg_vars.vb_ajax_url,
+            data: {
+            action: 'favorite_explore',
+            cities: get_parameters_from_selection(filter.selection.get('cities')),
+            countries: get_parameters_from_selection(filter.selection.get('countries')),
+            indicators: get_parameters_from_selection(filter.selection.get('indicators'))
+        },
+        success: function(data) {
+            if (data.status == 'log_in_first') {
+                display_login_form();
+            }
+            if (data.status == 'saved') {
+                $('.fav-alert')
+                    .removeClass('alert-danger')
+                    .removeClass('alert-info')
+                    .addClass('alert-success');
+
+                $('.fav-alert').html("Saved!");
+                $('.fav-alert').fadeIn();
+                fav_alert_timeout = setTimeout(function() {
+                    $('.fav-alert').fadeOut();
+                }, 3000);
+            }
+            if (data.status == 'already_in_favorites') {
+                $('.fav-alert')
+                    .removeClass('alert-danger')
+                    .removeClass('alert-success')
+                    .addClass('alert-info');
+                $('.fav-alert').html("Already saved!");
+                $('.fav-alert').fadeIn();
+                fav_alert_timeout = setTimeout(function() {
+                    $('.fav-alert').fadeOut();
+                }, 3000);
+            }
+        },
+        error: function(xhr, status, e) {
+            $('.fav-alert')
+                .removeClass('alert-info')
+                .removeClass('alert-success')
+                .addClass('alert-danger');
+            $('.fav-alert').html("Error occured, please try again later.");
+            $('.fav-alert').fadeIn();
+            fav_alert_timeout = setTimeout(function() {
+                $('.fav-alert').fadeOut();
+            }, 3000);
+        },
+        dataType: 'json'
+    });
 });

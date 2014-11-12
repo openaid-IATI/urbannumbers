@@ -704,6 +704,44 @@ function vb_registration_form() {
 
 
 
+add_action('wp_ajax_favorite_explore', 'favorite_explore');
+add_action('wp_ajax_nopriv_favorite_explore', 'favorite_explore');
+
+
+function favorite_explore() {
+    if ( !(is_user_logged_in()) ) {
+        wp_send_json(array("status" => "log_in_first"));
+        die();
+    }
+
+    $data = implode('&', array(
+        'cities=' . clean_post('cities', ''),
+        'countries=' . clean_post('countries', ''),
+        'indicators=' . clean_post('indicators')
+    ));
+
+    $meta_key = 'oipa_explore_fav';
+
+    $favorites = get_user_meta(get_current_user_id(), $meta_key, true);
+
+    if (empty($favorites)) {
+        add_user_meta(get_current_user_id(), $meta_key, array($data));
+    } else {
+        // user already has favorites, so we add this one
+        if (in_array($data, $favorites)){
+            wp_send_json(array("status" => "already_in_favorites"));
+            die();
+        } else {
+            array_push($favorites, $data);
+            update_user_meta(get_current_user_id(), $meta_key, $favorites);
+        }
+
+    }
+
+    // save visdata to usermeta
+    wp_send_json(array("status" => "saved"));
+    die();
+}
 
 add_action('wp_ajax_favorite_compare', 'favorite_compare');
 add_action('wp_ajax_nopriv_favorite_compare', 'favorite_compare');
