@@ -902,3 +902,8 @@ form.registration-form span.input-placeholder-text {
 #main.city-page {
     padding: 0px;
 }
+
+
+.map-homepage .urbnnrs-geo-map .dropdown, .map-homepage .leaflet-control-container{
+  display: none;
+}
