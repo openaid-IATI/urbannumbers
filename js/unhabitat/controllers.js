@@ -14,20 +14,23 @@ function get_global_data(page_name, $http, callback) {
                 var key_data = data[key];
                 var keys = Object.keys(data[key]);
 
-                if (key !== 'indicators') {
-                    keys.sort(function(a, b) {
+                keys.sort(function(a, b) {
+                    if (key == 'indicators') {
+                        var name_1 = key_data[a].name;
+                        var name_2 = key_data[b].name;
+                    } else {
                         var name_1 = key_data[a];
                         var name_2 = key_data[b];
+                    }
 
-                        if (name_1 < name_2) {
-                            return -1;
-                        }
-                        if (name_1 > name_1) {
-                            return 1;
-                        }
-                        return 0;
-                    });
-                }
+                    if (name_1 < name_2) {
+                        return -1;
+                    }
+                    if (name_1 > name_1) {
+                        return 1;
+                    }
+                    return 0;
+                });
 
                 for (var code_id in keys) {
                     var code = keys[code_id];
