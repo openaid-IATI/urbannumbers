@@ -121,7 +121,6 @@ function OipaCountry() {
             maxlng,
             first = true;
 
-        console.log('312');
         if (this.polygon == undefined) {
             return [];
         }

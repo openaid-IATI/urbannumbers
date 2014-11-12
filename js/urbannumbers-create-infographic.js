@@ -277,7 +277,7 @@ window.CI = null;
         CI.update_nav_status();
     });
 
-    $('.steps-nav .btn').click(function(e) {
+    $('.steps-nav a').click(function(e) {
         if (this.className.indexOf(CI.opts.nav_disabled) == -1) {
             var _page = 0;
             $.each(this.className.split(' '), function(_, _class) {
