@@ -1,7 +1,8 @@
 function OipaIndicatorMap(use_legend) {
-    this.max_circle_size = 100000000000;
+    this.max_circle_size = 1000000;
     this._url_data_cache = {};
     this.bounds = new L.latLngBounds([]);
+    this.use_fit_bounds = true;
 
     this.locations = {};
     this.indicatordata = {};
@@ -183,7 +184,12 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
         $.each(indicator_data.locs, function(_, location_data) {
             var latlng = L.latLng(location_data.latitude, location_data.longitude);
             if (self.locations[latlng] == undefined) {
-                self.locations[latlng] = new OipaIndicatorLocation(self, location_data.id, location_data.name, latlng, self.active_years);
+                self.locations[latlng] = new OipaIndicatorLocation(
+                    self,
+                    location_data.id,
+                    location_data.name,
+                    latlng,
+                    self.active_years);
                 self.bounds.extend(latlng);
             }
 
@@ -206,7 +212,12 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
         });
     });
 
-    self.map.fitBounds(self.bounds);
+    if (self.use_fit_bounds) {
+        setTimeout(function() {
+            self.map.fitBounds(self.bounds);
+        }, 500);
+    }
+
 
     return;
 };

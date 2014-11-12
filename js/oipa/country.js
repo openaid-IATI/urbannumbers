@@ -121,6 +121,7 @@ function OipaCountry() {
             maxlng,
             first = true;
 
+        console.log('312');
         if (this.polygon == undefined) {
             return [];
         }
@@ -171,6 +172,16 @@ function OipaCountry() {
         this.get_cities_within_country();
     }
 
+    this.refresh_data = function(data) {
+        this.update_population(map.selected_year, 'urban_population_countries', '#horizontal_vis_block_year_ind_3_value');
+        this.update_population(map.selected_year, 'urban_slum_population_countries', '#horizontal_vis_block_year_ind_4_value');
+        this.update_population(map.selected_year, 'rural_population', '#horizontal_vis_block_year_ind_5_value');
+        this.update_population(map.selected_year, 'population', '#horizontal_vis_block_year_ind_6_value');
+
+        this.update_population(map.selected_year, 'total_length_road', '#horizontal_vis_block_chart_road');
+        this.update_population(map.selected_year, 'income_gini_coefficient_countries', '#horizontal_vis_block_gini');
+    }
+
     this.year_changed = function(year) {
         $("#horizontal_vis_block_year").html(year);
 
@@ -183,20 +194,20 @@ function OipaCountry() {
         this.update_population(year, 'income_gini_coefficient_countries', '#horizontal_vis_block_gini');
     }
 
-    this.update_population = function(year, type, selector) {
-        var population;
-        if (map.circles.locations[country.id][type] !== undefined) {
-            population = map.circles.locations[country.id][type].years[year];
-            if (population > 1) {
-                population = population * 1000;
-            }
+    this.update_population = function(year, type, selector, data) {
+        var self = this;
+
+        $(selector).html("N/A");
+
+        if (data == undefined) {
+            $.each(map.locations, function(_, location) {
+                if (location.id == self.id && location.circles[type] !== undefined) {
+                    var _value = location.circles[type].get_value() * 1000;
+                    $(selector).html(humanReadableSize(_value));
+                }
+            });
         } else {
-            population = NaN;
-        }
-        if (isNaN(population)) {
-            $(selector).html("N/A");
-        } else {
-            $(selector).html(humanReadableSize(population));
+            console.log(data);
         }
     }
 }

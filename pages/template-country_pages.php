@@ -92,11 +92,11 @@ get_header(); the_post(); ?>
                         <div id="map-slider-tooltip">
                         </div>
 
-                        <?php for ($i = 1950; $i < 2051;$i++){   
+                        <?php for ($i = 1950; $i < 2051;$i++){
                         echo '<div class="slider-year';
                         echo '" id="year-' . $i . '">';
                         if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
-                        echo '<div class="slider-year-inner-white"></div></div>'; 
+                        echo '<div class="slider-year-inner-white"></div></div>';
                         } ?>
                     </div>
                     <div id="timeline-right"></div>
@@ -110,7 +110,7 @@ get_header(); the_post(); ?>
     </div>
 
 
-<style> 
+<style>
 .widget label{
     display: none;
 }
@@ -138,8 +138,9 @@ Oipa.invisible_visualizations = [
 ];
 
 var map = new OipaIndicatorMap();
-
+map.max_circle_size = 2000;
 map.set_map("main-map", "topright");
+map.use_fit_bounds = false;
 map.init();
 
 map.selection = Oipa.mainSelection;

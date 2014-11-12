@@ -7,7 +7,6 @@ ExploreIndicatorFilters.prototype = new OipaIndicatorFilters();
 var _old_create_filter_attributes = ExploreIndicatorFilters.prototype.create_filter_attributes;
 ExploreIndicatorFilters.prototype.create_filter_attributes = function(objects, columns, attribute_type) {
     var self = this;
-    console.log(attribute_type);
 
     if (attribute_type === "indicators"){
         self.create_indicator_filter_attributes(objects, columns);

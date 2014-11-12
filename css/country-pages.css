@@ -1,7 +1,3 @@
-#main {
-    padding: 0px;
-}
-
 #chart_cpi,
 #chart_cpi div,
 .sort-columns #chart_cpi.column,
@@ -37,7 +33,7 @@
 .sort-columns #chart_road.column:before,
 .container-map #chart_road.columns-holder:after,
 #main.city-page .container-map .columns-holder:after {
-    
+
     display: none;
 }
 

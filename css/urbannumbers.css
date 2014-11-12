@@ -150,8 +150,8 @@
 #map-slider-tooltip{
   position: absolute;
   width: 99%;
-  margin:0 0.5% 4em;
-  bottom: 2em;
+  margin:0 0 4em 0;
+  bottom: 0px;
   left: 0;
   z-index: 1600;
 }
@@ -174,7 +174,7 @@
   background: url('../images/slider.png') top left no-repeat;
   width: 98px;
   height: 55px;
-  margin-left: -45.5px;
+  margin-left: -42px;
   margin-top: -10px;
   text-align: center;
 }

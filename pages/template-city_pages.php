@@ -91,7 +91,7 @@ get_header(); the_post(); ?>
                         echo '<div class="slider-year';
                         echo '" id="year-' . $i . '">';
                         if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
-                        echo '<div class="slider-year-inner-white"></div></div>'; 
+                        echo '<div class="slider-year-inner-white"></div></div>';
                         } ?>
                     </div>
                     <div id="timeline-right"></div>
@@ -120,7 +120,7 @@ get_header(); the_post(); ?>
         }
 
     var map = new OipaIndicatorMap();
-    map.max_circle_size = 5000;
+    map.max_circle_size = 2000;
     map.set_map("main-map", "topright");
     map.init();
 
