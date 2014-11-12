@@ -27,13 +27,13 @@ $image_credits = get_field('image_credits');
 									<?php endif; ?>
 									<div class="post-info">
 										<div class="row">
-											<div class="col-md-6 col-sm-6 col-xs-6">
+										<!-- hide this author stuff and date	<div class="col-md-6 col-sm-6 col-xs-6">
 												<time datetime="<?php the_time('Y-m-d'); ?>"><?php the_time('F j, Y'); ?></time>
 												<dl>
 													<dt>By:</dt>
 													<dd itemprop="knows"><?php the_author_link(); ?></dd>
 												</dl>
-											</div>
+											</div> -->
 											<?php if($image_credits): ?>
 											<div class="col-md-6 col-sm-6 col-xs-6">
 												<dl>
