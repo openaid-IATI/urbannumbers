@@ -75,8 +75,8 @@ $image_credits = get_field('image_credits');
 								</div>
 								<?php endif; ?>
 							</aside>
-						</div> -->
-					</div>
+						</div> 
+					</div>-->
 				</div>
 			</section>
 		</div>
