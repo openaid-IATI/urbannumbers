@@ -497,7 +497,7 @@ img.aligncenter{
 }
 #header .logo{
 	float:left;
-	margin:1px 20px 0 18px;
+	margin:1px 20px 0 0;
 }
 .logo a{
 	display:block;
@@ -585,7 +585,7 @@ img.aligncenter{
 #nav>ul>li>a{
 	display:inline-block;
 	vertical-align:top;
-	padding:0 52px 30px 51px;
+	padding:0 30px 30px;
 }
 #nav li > a:active,
 #nav li > a:focus,
@@ -2595,7 +2595,7 @@ img.aligncenter{
 		width:30%;
 	}
 	#header{padding: 15px 0 0;}
-	#header .logo{margin: 0 0 0 22px;}
+	#header .logo{margin: 0 0 0 0;}
 	.add-nav{margin: 15px 18px 15px 20px;}
 	#nav > ul > li > ul{
 		padding: 12px 0 11px;

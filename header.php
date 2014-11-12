@@ -106,48 +106,50 @@ if (!empty($_GET['redirect']) && substr($_GET['redirect'], 0, 1) == "/") {
         <div class="w1">
             <!-- header of the page -->
             <header id="header" class="nav_my_account">
-                <?php $logo = get_field('logo', 'option'); ?>
-                <strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
-                <!-- Split button -->
-                <div class="btn-group add-nav">
+                <div class="container">
+                    <?php $logo = get_field('logo', 'option'); ?>
+                    <strong class="logo"<?php if($logo) echo ' style="background-image: url(\''. $logo .'\');"'; ?>><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></strong>
+                    <!-- Split button -->
+                    <div class="btn-group add-nav">
 
-                    <?php if (is_user_logged_in()) { ?>
-                    <a id="header-login-register-button" href="<?php echo home_url(); ?>/my-dashboard/" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
-                        My account
-                    </a>
-                    <button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="<?php echo home_url() . "/my-dashboard/#city-data"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-star"></i></span>Favorite city data</a></li>
-                        <li><a href="<?php echo home_url() . "/my-dashboard/#my-infographics"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-stats"></i></span>My infographics</a></li>
-                        <li><a href="<?php echo home_url() . "/create-infographic/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-plus-sign"></i></span>New infographic</a></li>
-                        <li><a href="<?php echo home_url() . "/my-dashboard/#account-settings"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-cog"></i></span>Account settings</a></li>
-                        <li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="glyphicon glyphicon-arrow-left"></i></span>Sign out</a></li>
-                    </ul>
-                    <?php } else { ?>
-                        <a id="header-login-register-button" href="#" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
-                            Sign in or register
+                        <?php if (is_user_logged_in()) { ?>
+                        <a id="header-login-register-button" href="<?php echo home_url(); ?>/my-dashboard/" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
+                            My account
                         </a>
-                        <?php
-                    } ?>
-
-                </div>
-                <?php if(has_nav_menu('navigation')): ?>
-                <nav id="nav">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-blue opener">Menu</button>
-                        <button type="button" class="btn btn-blue opener">
+                        <button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<?php echo home_url() . "/my-dashboard/#city-data"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-star"></i></span>Favorite city data</a></li>
+                            <li><a href="<?php echo home_url() . "/my-dashboard/#my-infographics"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-stats"></i></span>My infographics</a></li>
+                            <li><a href="<?php echo home_url() . "/create-infographic/"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-plus-sign"></i></span>New infographic</a></li>
+                            <li><a href="<?php echo home_url() . "/my-dashboard/#account-settings"; ?>"><span class="img-wrap"><i class="glyphicon glyphicon-cog"></i></span>Account settings</a></li>
+                            <li><a href="<?php echo wp_logout_url(home_url()); ?>"><span class="img-wrap"><i class="glyphicon glyphicon-arrow-left"></i></span>Sign out</a></li>
+                        </ul>
+                        <?php } else { ?>
+                            <a id="header-login-register-button" href="#" class="btn btn-blue" data-toggle="dropdown"><span class="img-wrap"><i class="icon-user"></i></span>
+                                Sign in or register
+                            </a>
+                            <?php
+                        } ?>
+
                     </div>
-                    <?php
-                        wp_nav_menu( array('container' => false,
-                            'theme_location' => 'navigation',
-                            'menu_class' => 'noclass',) );
-                    ?>
-                </nav>
-                <?php endif; ?>
+                    <?php if(has_nav_menu('navigation')): ?>
+                    <nav id="nav">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-blue opener">Menu</button>
+                            <button type="button" class="btn btn-blue opener">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                        </div>
+                        <?php
+                            wp_nav_menu( array('container' => false,
+                                'theme_location' => 'navigation',
+                                'menu_class' => 'noclass',) );
+                        ?>
+                    </nav>
+                    <?php endif; ?>
+                </div>
             </header>
