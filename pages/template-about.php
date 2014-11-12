@@ -49,7 +49,7 @@ $image_credits = get_field('image_credits');
 										<?php the_content(); ?>
 									</div>
 								</article>
-						
+						<!-- hiding
 						<div class="col-sm-4">
 							<!-- sidebar -->
 							<aside id="sidebar">
@@ -75,7 +75,7 @@ $image_credits = get_field('image_credits');
 								</div>
 								<?php endif; ?>
 							</aside>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</section>
