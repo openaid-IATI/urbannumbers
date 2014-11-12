@@ -83,4 +83,5 @@ $image_credits = get_field('image_credits');
 			</section>
 		</div>
 	</div>
+	<?php get_template_part("footer", "scripts"); ?>
 <?php get_footer(); ?>
