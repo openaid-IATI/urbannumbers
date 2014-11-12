@@ -1987,7 +1987,7 @@ img.aligncenter{
 	color:#1aa7ab;
 }
 /* sidebar styles */
-.twocolumns-holder #sidebar{margin:6px -30px 0 -26px;}
+/*.twocolumns-holder #sidebar{margin:6px -30px 0 -26px;}*/
 .twocolumns-frame #sidebar{
 	float:right;
 	width:44%;
