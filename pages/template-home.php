@@ -239,9 +239,8 @@ if (have_posts()) : ?>
 
     var map = new OipaIndicatorMap();
     map.set_map("main-map");
-    map.map.setZoom(3);
     map.init();
-    
+    map.map.setZoom(3);
     map.selection = Oipa.mainSelection;
 
     // Create inforaphics
