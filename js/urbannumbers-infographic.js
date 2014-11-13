@@ -81,7 +81,6 @@ function InfographicsChart(object_id, options) {
 
         var _old_visualize = this.visualize;
         this.visualize = function(data) {
-            console.log(data, this.id);
             if (data[this.id] == undefined) {
                 return;
             }
@@ -97,7 +96,6 @@ function InfographicsChart(object_id, options) {
             _old_visualize.apply(this, [data]);
 
             if (this.chart) {
-                console.log($("div.legend[data-indicator='" + this.indicator + "']").get());
                 $("div.legend[data-indicator='" + this.indicator + "']").html(this.chart.generateLegend());
             }
         }
@@ -112,7 +110,6 @@ function InfographicsChart(object_id, options) {
         "OipaDoughnutChart"
     ][Math.floor((Math.random() * 5))];
 
-    console.log(options.all_years, object_id);
     _chart_type = "OipaBarChart";
     if (object_id.substring(0, 4) == 'cpi_') {
         _chart_type = "OipaPieChart";
@@ -120,7 +117,6 @@ function InfographicsChart(object_id, options) {
         InfographicsChartFactory.prototype = Object.create(window[_chart_type].prototype);
         return new InfographicsChartFactory(object_id, $.extend({}, options, {all_years: false}), _chart_type);
     }
-    console.log(options.all_years);
 
     InfographicsChartFactory.prototype = Object.create(window[_chart_type].prototype);
     return new InfographicsChartFactory(object_id, options, _chart_type);

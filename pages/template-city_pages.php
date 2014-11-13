@@ -115,9 +115,9 @@ get_header(); the_post(); ?>
     Oipa.pageType = "indicator-country-page";
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     Oipa.invisible_visualizations = ['land_allocated_to_street_index_city_core', 'cpi_6_dimensions'];
-    Oipa.mainSelection.indicator_options = {
+    /*Oipa.mainSelection.indicator_options = {
             chart_class: OipaBarChart,
-        }
+        }*/
 
     var map = new OipaIndicatorMap();
     map.max_circle_size = 2000;
@@ -139,9 +139,9 @@ get_header(); the_post(); ?>
     filter.filter_wrapper_div = "map-indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
 
-    filter.selection.indicator_options = {
+    /*filter.selection.indicator_options = {
         chart_class: OipaCountryPieChart
-    }
+    }*/
 
     <?php if (count($indicators)): ?>
     <?php foreach ($indicators as $id => $indicator): ?>

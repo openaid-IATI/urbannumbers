@@ -133,6 +133,99 @@ var Oipa = {
         }, 1000);
     },
 
+    get_chart_class: function(indicator) {
+        var chart_class =  OipaBarChart;
+
+        var chart_map = {
+            'land_area': OipaPieChart,
+            'street_density': OipaPieChart,
+            'slum_proportion_living_urban': OipaPieChart,
+            'urban_agglomeration_density': OipaPieChart,
+            'urban_agglomeration_land_area': OipaPieChart,
+            'urban_population_share_national': OipaPieChart,
+            'cpi_environment_index': OipaPieChart,
+            'cpi_equity_index': OipaPieChart,
+            'cpi_infrastructure_index': OipaPieChart,
+            'cpi_productivity_index': OipaPieChart,
+            'cpi_quality_of_live_index': OipaPieChart,
+            'intersection_density_index_city_core': OipaPieChart,
+            'intersection_density_index_sub_urban_area': OipaPieChart,
+            'land_allocated_to_street_index_city_core': OipaPieChart,
+            'land_allocated_to_street_index_sub_urban_area': OipaPieChart,
+            'street_density_index_city_core': OipaPieChart,
+            'street_density_index_sub_urban_area': OipaPieChart,
+            'total_length_road': OipaPieChart,
+            'road_density': OipaPieChart,
+            'paved_road': OipaPieChart,
+            'owner_bicycle_rural': OipaPieChart,
+            'owner_bicycle_total': OipaPieChart,
+            'owner_bicycle_urban_area': OipaPieChart,
+            'owner_motorcycle_rural_area': OipaPieChart,
+            'owner_motorcycle_total': OipaPieChart,
+            'owner_motorcycle_urban_area': OipaPieChart,
+            'share_public_transport': OipaPieChart,
+            'share_cycling': OipaPieChart,
+            'share_walking': OipaPieChart,
+            'paved_street': OipaPieChart,
+            'intersection_density_city_core': OipaPieChart,
+            'intersection_density_sub_urban_area': OipaPieChart,
+            'intersection_density_total': OipaPieChart,
+            'proportion_land_allocated_to_street_city_core': OipaPieChart,
+            'street_density_city_core': OipaPieChart,
+            'street_density_sub_urban_area': OipaPieChart,
+            'street_density_total': OipaPieChart,
+            'proportion_land_allocated_to_street_city_core': OipaPieChart,
+            'proportion_land_allocated_to_street_sub_urban_area': OipaPieChart,
+            'proportion_land_allocated_to_street_total': OipaPieChart,
+            'cpi_6_dimensions': OipaRadarChart,
+            'cpi_composite_street_connectivity_index': OipaRadarChart,
+        }
+
+        if (chart_map[indicator.id] !== undefined) {
+            chart_class = chart_map[indicator.id];
+        }
+
+        if (indicator.all_years !== undefined ? indicator.all_years : false) {
+            var _all_years_charts = {
+                'urban_population_countries': OipaLineChart,
+                'urban_slum_population': OipaLineChart,
+                'land_allocated_to_street_index_city_core': OipaLineChart,
+                'land_allocated_to_street_index_sub_urban_area': OipaLineChart,
+                'street_density_index_city_core': OipaLineChart,
+                'street_density_index_sub_urban_area': OipaLineChart,
+                'total_length_road': OipaLineChart,
+                'road_density': OipaLineChart,
+                'paved_road': OipaLineChart,
+                'owner_bicycle_rural': OipaLineChart,
+                'owner_bicycle_total': OipaLineChart,
+                'owner_bicycle_urban_area': OipaLineChart,
+                'owner_motorcycle_rural_area': OipaLineChart,
+                'owner_motorcycle_total': OipaLineChart,
+                'owner_motorcycle_urban_area': OipaLineChart,
+                'share_public_transport': OipaLineChart,
+                'share_cycling': OipaLineChart,
+                'share_walking': OipaLineChart,
+                'paved_street': OipaLineChart,
+                'intersection_density_city_core': OipaLineChart,
+                'intersection_density_sub_urban_area': OipaLineChart,
+                'intersection_density_total': OipaLineChart,
+                'proportion_land_allocated_to_street_city_core': OipaLineChart,
+                'street_density_city_core': OipaLineChart,
+                'street_density_sub_urban_area': OipaLineChart,
+                'street_density_total': OipaLineChart,
+                'proportion_land_allocated_to_street_city_core': OipaLineChart,
+                'proportion_land_allocated_to_street_sub_urban_area': OipaLineChart,
+                'proportion_land_allocated_to_street_total': OipaLineChart,
+            }
+
+            if (_all_years_charts[indicator.id] !== undefined) {
+                chart_class = _all_years_charts[indicator.id];
+            }
+        }
+
+        return chart_class;
+    },
+
     create_visualisations : function(indicator_data, forced_chart_class) {
         var thisoipa = this;
 
@@ -179,21 +272,8 @@ var Oipa = {
             if (thisoipa.visualisations[value.id] == undefined) {
                 var _chart_class = OipaBarChart;
                 if (forced_chart_class == undefined) {
-                    if (value.id == 'urban_population_countries') {
-                        _chart_class = OipaBarChart;
-                    }
-                    if (value.id == 'base_year_population_estimate') {
-                        _chart_class = OipaRadarChart;
-                    }
-                    if (value.id == 'urban_population_share_national') {
-                        _chart_class = OipaPolarChart;
-                    }
-                    if (value.id == 'slum_proportion_living_urban') {
-                        _chart_class = OipaBarChart;
-                    }
-                    if (value.id == 'avg_annual_rate_change_percentage_urban') {
-                        _chart_class = OipaDoughnutChart;
-                    }
+                    _chart_class = thisoipa.get_chart_class(value);
+
                     if (thisoipa.is_blank_visualization(value)) {
                         _chart_class = OipaBlankChart;
                     }

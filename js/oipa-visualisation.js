@@ -635,10 +635,17 @@ OipaActiveChart.prototype = new OipaVis();
 
 
 function OipaActiveRoundChart(id, options) {
+    this.mutate_to_bar_chart = false;
     OipaActiveChart.call(this, id, options);
 
+    var _original_get_locations_slice = this.get_locations_slice;
     this.get_locations_slice = function(locations, limit) {
         var self = this;
+
+        if (self.mutate_to_bar_chart) {
+            return _original_get_locations_slice.apply(self, [locations, limit]);
+        }
+
         var _years = [];
         return $.map(locations, function(loc) {
             var _color = (loc.color==undefined ? self.getRandomColor() : loc.color);
@@ -653,8 +660,16 @@ function OipaActiveRoundChart(id, options) {
         }).slice(0, limit);
     }
 
+    var _original_format_year_data = this.format_year_data;
     this.format_year_data = function(data, year, limit){
         var self = this;
+
+        if (Object.keys(data.locs).length > 1) {
+            self.mutate_to_bar_chart = true;
+            return _original_format_year_data.apply(self, [data, year, limit]);
+        }
+
+
         if (year == null) {
             year = self.get_last_data_year(data);
         }
@@ -725,6 +740,7 @@ function OipaBarChart(id, options) {
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
             };
         }
+
         return this.chart_obj.Bar(chart_data, this.get_chart_options(_opts));
     }
     this.get_chart_points = function(chart) {
@@ -767,7 +783,12 @@ function OipaPieChart(id, options) {
     OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
 
+    var _original_init_chart = this.init_chart;
     this.init_chart = function(chart_data) {
+
+        if (this.mutate_to_bar_chart) {
+            return _original_init_chart.apply(this, [chart_data]);
+        }
 
         var _human_readable = "<%= humanReadableSize(value) %>";
         if (this.indicator.substring(0, 4) == 'cpi_') {
