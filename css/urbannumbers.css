@@ -907,3 +907,11 @@ form.registration-form span.input-placeholder-text {
 .map-homepage .urbnnrs-geo-map .dropdown, .map-homepage .leaflet-control-container{
   display: none;
 }
+
+/** MAP POPUP **/
+.leaflet-popup-content-wrapper {
+    border-radius: 0px;
+}
+.leaflet-popup-content {
+    margin: 0px;
+}

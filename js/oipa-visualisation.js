@@ -531,16 +531,22 @@ function OipaActiveChart(id, options) {
         return returned_data;
     }
 
+    this.get_chart_options = function(defaults) {
+        defaults = defaults == undefined ? {} : defaults;
+        return $.extend({}, defaults, this.opt('chart_options', {}));
+    }
+
     this.init_chart = function(chart_data) {
         // Defaults to Line
         var _human_readable = "<%= humanReadableSize(value) %>";
         if (this.indicator.substring(0, 4) == 'cpi_') {
             _human_readable = "<%= humanReadableSize(value, undefined, true) %>"
         }
-        return this.chart_obj.Line(chart_data, {
+
+        return this.chart_obj.Line(chart_data, this.get_chart_options({
                 tooltipTemplate: "<%=label%>: " + _human_readable,
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%>" + _human_readable
-            });
+            }));
     }
 
     this.get_chart_points = function(chart) {
@@ -707,7 +713,7 @@ function OipaBarChart(id, options) {
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
             };
         }
-        return this.chart_obj.Bar(chart_data, _opts);
+        return this.chart_obj.Bar(chart_data, this.get_chart_options(_opts));
     }
     this.get_chart_points = function(chart) {
         return chart.datasets[0].bars;
@@ -721,7 +727,7 @@ function OipaRadarChart(id, options) {
     OipaActiveChart.call(this, id, options);
     this.type = "OipaRadarChart";
     this.init_chart = function(chart_data) {
-        return this.chart_obj.Radar(chart_data);
+        return this.chart_obj.Radar(chart_data, this.get_chart_options());
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -735,7 +741,7 @@ function OipaPolarChart(id, options) {
     OipaActiveRoundChart.call(this, id, options);
     this.type = "OipaRadarChart";
     this.init_chart = function(chart_data) {
-        return this.chart_obj.PolarArea(chart_data);
+        return this.chart_obj.PolarArea(chart_data, this.get_chart_options());
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -756,10 +762,10 @@ function OipaPieChart(id, options) {
             _human_readable = "<%= humanReadableSize(value, undefined, true) %>"
         }
 
-        return this.chart_obj.Pie(chart_data,{
+        return this.chart_obj.Pie(chart_data, this.get_chart_options({
                 tooltipTemplate: "<%=label%>: " + _human_readable,
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
-            });
+            }));
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -774,7 +780,7 @@ function OipaDoughnutChart(id, options) {
     this.type = "OipaRadarChart";
 
     this.init_chart = function(chart_data) {
-        return this.chart_obj.Doughnut(chart_data);
+        return this.chart_obj.Doughnut(chart_data, this.get_chart_options());
     }
     this.get_chart_labels = function(chart) {
         return chart.scale.labels;
@@ -787,6 +793,10 @@ OipaDoughnutChart.prototype = Object.create(OipaActiveRoundChart.prototype);
 function OipaBlankChart(object_id, options) {
     function OipaBlankChartFactory(subobject_id, suboptions, base_type) {
         window[base_type].call(this, subobject_id, suboptions);
+
+        this.options['chart_options'] = {
+            showTooltips: false,
+        };
 
         this.type = "OipaBlankChart";
 
@@ -804,45 +814,40 @@ function OipaBlankChart(object_id, options) {
             if (data[self.indicator] == undefined) {
                 data[self.indicator] = {
                     indicator: this.indicator,
-                    indicator_friendly: "Random chart",
+                    indicator_friendly: "Add indicator for graph",
                     selection_type: null,
                     max_value:19900000,
                     locs: {
                         5208: {
                             latitude: "-1.95359",
                             longitude: "30.060532",
-                            color: "rgba(192,192,192,2)",
-                            stroke_color: "rgba(192,192,192,1)",
-                            years: {},
-                            name: "Kigali",
+                            color: "rgba(192,192,192, 0.3)",
+                            stroke_color: "rgba(192,192,192, 0.3)",
+                            years: {
+                                2010: 40,
+                                2011: 50,
+                                2012: 35
+                            },
+                            name: "",
                             id: 5208
                         },
                         5702: {
                             latitude: "6.801974",
                             longitude: "-58.167029",
-                            color: "rgba(192,192,192,2)",
-                            stroke_color: "rgba(192,192,192,1)",
+                            color: "rgba(192,192,192, 0.3)",
+                            stroke_color: "rgba(192,192,192,0.3)",
                             years: {},
-                            name: "Georgetown",
+                            name: "",
                             id:5702
                         },
-                        5796: {
-                            latitude: "9.083333",
-                            longitude: "7.533328",
-                            color: "rgba(192,192,192,2)",
-                            stroke_color: "rgba(192,192,192,1)",
+                        5752: {
+                            latitude: "6.801974",
+                            longitude: "-58.167029",
+                            color: "rgba(192,192,192, 0.3)",
+                            stroke_color: "rgba(192,192,192,0.3)",
                             years: {},
-                            name: "Abuja",
-                            id:5796
-                        },
-                        5929: {
-                            latitude: "40.181151",
-                            longitude: "44.513551",
-                            color: "rgba(192,192,192,2)",
-                            stroke_color: "rgba(192,192,192,1)",
-                            years: {},
-                            name: "Yerevan",
-                            id: 5929
+                            name: "",
+                            id:5702
                         },
                     },
                     type_data: "1000"
