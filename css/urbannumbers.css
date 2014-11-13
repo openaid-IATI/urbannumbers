@@ -915,3 +915,33 @@ form.registration-form span.input-placeholder-text {
 .leaflet-popup-content {
     margin: 0px;
 }
+
+/** HOMEPAGE **/
+.homepage-top-buttons .col-md-3 > a{
+  display:block;
+  margin:0 0 20px;
+  color:#616880;
+  text-align:center;
+  -webkit-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.25);
+  box-shadow:     2px 2px 3px rgba(0, 0, 0, 0.25);
+  background:#e7e9eb url(../images/bg-noise-transparent.png);
+}
+
+.homepage-top-buttons{
+  overflow:hidden;
+  padding:46px 20px 37px;
+  background:url(../images/bg-box-container.png) no-repeat 50% 0;
+}
+
+.visual .container{
+  position: relative;
+  min-height: 500px;
+}
+
+.visual .box{
+  left: 15px;
+}
+.container-sort .sort-holder{
+  padding: 0;
+}
+

@@ -55,7 +55,7 @@ get_header(); the_post(); ?>
                     </ul>
                 </div>
                 <div class="column style01" id="chart_slum_wrapper">
-                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Slum proportion living in urban areas</span>
+                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Proportion of urban population living in slums</span>
                     <ul class="sort-info">
                         <li><i class="icon-arrow-right"></i> <span id="slum_proportion_living_urban_data">Loading...</span></li>
                     </ul>
