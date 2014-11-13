@@ -37,8 +37,8 @@ if (have_posts()) : ?>
 					<article class="box">
 					<?php the_field('info'); ?>
 					<div class="btn-holder">
-						<?php if($about_city_prosperity): ?><a href="<?php echo $about_city_prosperity; ?>" class="btn btn-blue">About city prosperity</a><?php endif; ?>
-						<?php if($compare_cities): ?><a href="<?php echo $compare_cities; ?>" class="btn btn-blue">Compare cities</a><?php endif; ?>
+					<!--	<?php if($about_city_prosperity): ?><a href="<?php echo $about_city_prosperity; ?>" class="btn btn-blue">About city prosperity</a><?php endif; ?> -->
+						<?php if($compare_cities): ?><a href="<?php echo $compare_cities; ?>" class="btn btn-blue">Compare this city</a><?php endif; ?>
 					</div>
 					<?php if($image_credits): ?>
 					<dl>
@@ -238,8 +238,7 @@ if (have_posts()) : ?>
     Oipa.mainSelection.url.get_selection_from_url();
 
     var map = new OipaIndicatorMap();
-    map.set_map("main-map");
-    map.map.setZoom(3);
+    map.set_map("main-map", null, 3, 3);
     map.init();
     
     map.selection = Oipa.mainSelection;
