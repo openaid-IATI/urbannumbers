@@ -238,7 +238,7 @@ if (have_posts()) : ?>
     Oipa.mainSelection.url.get_selection_from_url();
 
     var map = new OipaIndicatorMap();
-    map.set_map("main-map");
+    map.set_map("main-map", null, 3, 3);
     map.init();
     
     map.selection = Oipa.mainSelection;
@@ -287,7 +287,6 @@ if (have_posts()) : ?>
         map.refresh();
     }
 
-    map.map.setZoom(3);
 </script>
 
 <?php get_footer(); ?>

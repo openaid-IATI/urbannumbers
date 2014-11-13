@@ -15,7 +15,7 @@ function OipaMap(use_legend) {
         this.basemap = standard_basemap;
     }
 
-    this.set_map = function(div_id, zoomposition) {
+    this.set_map = function(div_id, zoomposition, minZoom, maxZoom) {
         var mapoptions = {
             attributionControl: false,
             scrollWheelZoom: false,
@@ -24,6 +24,9 @@ function OipaMap(use_legend) {
             maxZoom:12,
             continuousWorld: 'false'
         }
+
+        if(minZoom){ mapoptions.minZoom = minZoom; }
+        if(maxZoom){ mapoptions.maxZoom = maxZoom; }
 
         if (zoomposition) {
             mapoptions.zoomControl = false;
