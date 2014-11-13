@@ -354,6 +354,7 @@ function OipaActiveChart(id, options) {
     this.chart = null;
     this.year_data = {};
     this.indicator_change_count = 0;
+    this.type_data = "";
 
     // parse options
     this.options = (options !== undefined ? options : {});
@@ -386,11 +387,15 @@ function OipaActiveChart(id, options) {
         var _years = [];
         var _counter = 0;
         return [_years, $.map(locations, function(i) {
-            var _default_color = "151,187,205";
-            if (_counter == 1) {
-                _default_color = "220,220,220";
-            }
+            var _colors = ['71, 143, 180', '118, 161, 70', '73, 99, 144', '163, 158, 146', '134, 84, 149', '86, 125, 130'];
+
+            var _default_color = _colors[_counter];
+
             _counter += 1;
+            if (_counter == _colors.length) {
+                _counter = 0;
+            }
+
             return [{
                 label: i.name,
                 fillColor: (i.color == undefined) ? "rgba(" + _default_color + ",1)" : i.color,
@@ -403,6 +408,11 @@ function OipaActiveChart(id, options) {
                     if (_years.indexOf(y) == -1) {
                         _years.push(y);
                     }
+
+                    if (self.type_data == '1000') {
+                        v = v * 1000;
+                    }
+
                     return [v];
                 })
             }];
@@ -477,6 +487,8 @@ function OipaActiveChart(id, options) {
             labels: [],
             datasets: []
         };
+
+        self.type_data = data.type_data;
 
         if (self.opt('all_years')) {
             var _ = self.get_locations_slice(data.locs, limit);
@@ -1053,10 +1065,6 @@ OipaInfographicVis = function(indicator, charts_count, options) {
         $.each(Array(self.charts_count), function (chart_id, _) {
             self.visualize_chart(chart_data, chart_id);
         });
-    }
-
-    self.visualize_chart = function(chart_data, chart_id) {
-
     }
 }
 OipaInfographicVis.prototype = Object.create(OipaActiveRoundChart.prototype);

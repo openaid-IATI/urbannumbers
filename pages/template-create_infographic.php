@@ -65,7 +65,7 @@ if (!empty($_POST)){
 
 get_header(); the_post(); ?>
 
-<form id="infographic-form" role="form" action="/create-infographic/" method="post" enctype="multipart/form-data">
+<form id="infographic-form" role="form" action="<?php echo site_url('/create-infographic/'); ?>" method="post" enctype="multipart/form-data">
 
     <div id="main">
         <!-- main-container -->

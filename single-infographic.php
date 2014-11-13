@@ -46,7 +46,7 @@ $the_content = ob_get_clean();
 
                 <div class="container-custom">
                     <div class="row">
-                        <div class="col-md-8 data-col">
+                        <div class="col-md-12 data-col">
                             <h2 class="Cityprosperity-head">City prosperity</h2>
                             <ul class="box-list large Cityprosperity-list">
                             </ul>
@@ -87,10 +87,10 @@ $the_content = ob_get_clean();
                             <ul class="Landarea-list box-list large">
                             </ul>
                         </div>
-                        <div class="col-md-4 maps-col">
+                        <!--<div class="col-md-4 maps-col">
                             <ul id="visualisation-maps-block-wrapper" class="box-list large">
                             </ul>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </section>
@@ -131,9 +131,9 @@ $(function() {
         all_years: true,
         chart_class: InfographicsChart
     }
-    filter.init(1);
+    //filter.init(1);
 
-    <?php if ($region !== null): ?>
+    <?php /*if ($region !== null): ?>
     var regionmap = new InfographicOipaMapVis();
         regionmap.name = "South of Sahara";
         regionmap.geotype = "point"; // point / polygon / line
@@ -164,7 +164,7 @@ $(function() {
         citymap.id = "<?php echo $city; ?>";
         citymap.map_div = null;
         citymap.init();
-    <?php endif; ?>
+        <?php endif; */ ?>
 
     // Force refresh
     OipaWidgetsBus.use_force_refresh = true;
@@ -182,6 +182,7 @@ $(function() {
         }
     }
     ?>
+    filter.init();
     filter.update_selection_after_filter_load(filter.selection);
     Oipa.create_visualisations();
 
@@ -189,7 +190,7 @@ $(function() {
         vis.filter = filter;
         // Force refresh of every visualisation
         vis.refresh(undefined, true);
-    })
+        })
 });
 </script>
 <?php get_footer(); ?>

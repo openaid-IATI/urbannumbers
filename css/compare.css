@@ -258,3 +258,7 @@ nav#indicators-pagination li.active .btn-success {
     width: 300px;
     margin-left: -150px;
 }
+
+.selectric .label {
+    font-weight: normal;
+}

@@ -34,7 +34,7 @@
 }
 
 .box-list li {
-    width: 264px;
+    width: 500px;
 }
 .box-list .container-box .box-content:before {
     display: none; 
@@ -74,9 +74,9 @@
 }
 
 
-.data-col {
+/*.data-col {
     border-right:  1px #00b1b4 dotted;
-}
+}*/
 
 .data-col h2.bordered {
     margin-top: 30px;
@@ -135,4 +135,21 @@
 }
 .save_btn {
     margin-right: 19px;
+}
+
+/** LEGEND **/
+
+.data-col ul.bar-legend {
+    margin-top: 20px;
+    display: block;
+}
+.box-list ul.bar-legend li {
+    text-align: left;
+    width: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+.box-list ul.bar-legend li span {
+    padding: 2px 10px;
+    margin-right: 5px;
 }
