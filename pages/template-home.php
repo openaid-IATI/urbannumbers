@@ -240,7 +240,7 @@ if (have_posts()) : ?>
     var map = new OipaIndicatorMap();
     map.set_map("main-map");
     map.init();
-    map.map.setZoom(3);
+    
     map.selection = Oipa.mainSelection;
 
     // Create inforaphics
@@ -287,6 +287,7 @@ if (have_posts()) : ?>
         map.refresh();
     }
 
+    map.map.setZoom(3);
 </script>
 
 <?php get_footer(); ?>
