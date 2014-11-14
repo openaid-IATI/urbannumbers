@@ -15,7 +15,7 @@ function _post_data($name, $default = null) {
   return !empty($_POST[$name]) ? $_POST[$name] : $default;
 }
 
-if ($_SERVER['REQUEST_METHOD']) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $action = 'skip';
   if (!empty($_POST['type']) && !empty($_POST['action'])) {
       $action = implode(array($_POST['type'], $_POST['action']), ':');
@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD']) {
     }
   }
 
-
   if ($action == 'mi:delete' && !empty($_POST['check'])) {
     foreach ($_POST['check'] as $_ => $id) {
       $post = get_post((int)$id);
@@ -45,6 +44,19 @@ if ($_SERVER['REQUEST_METHOD']) {
         wp_redirect(site_url() . '/my-dashboard/');
       }
     }
+  }
+
+
+  if ($action == 'mf:delete' && !empty($_POST['check'])) {
+    $meta = get_user_meta($current_user->ID, 'oipa_infographic_favorites', True);
+    $new_meta = array();
+    foreach ($meta as $id => $value) {
+        if (!in_array($value, $_POST['check']) && !is_null($value)) {
+            $new_meta[] = $value;
+        }
+    }
+    update_user_meta($current_user->ID, 'oipa_infographic_favorites', $new_meta);
+    wp_redirect(site_url() . '/my-dashboard/');
   }
 
 
@@ -136,15 +148,56 @@ get_header(); the_post();
             </div>
         </div>
 
+
+        <div class="heading-container">
+            <div class="container-custom">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>My favorite infographics</h3>
+                    </div>
+                </div>
+                <form action="" id="dash-mf-form" method="POST">
+                <input type="hidden" name="type" value="mf" />
+                <input type="hidden" name="action" value="delete" />
+                <table class="table table-striped table-hover table-condensed my-infographics">
+                  <thead>
+                    <tr>
+                      <th width="10px"><input type="checkbox" name="" id="dash-mf-form-check" /></th>
+                      <th><a href="javascript: void(0);" onclick="dash_select_all('dash-mf-form');">Select all</a></th>
+                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-mf-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
+                    </tr>
+                  </thead>
+                  <?php
+                  $favorites = get_user_meta(get_current_user_id(),'oipa_infographic_favorites',true);
+                  $args = array( 'post_type' => 'infographic', 'posts_per_page' => 12, 'post__in' => $favorites);
+                  $loop = new WP_Query( $args );
+
+                  while ( $loop->have_posts() ) {
+                    $loop->the_post();
+                    ?>
+                    <tr>
+                        <td><input type="checkbox" name="check[]" value="<?php the_ID(); ?>" /></td>
+                        <td><a href="<?php echo get_permalink(); ?>"><?php the_title(); ?></a></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <?php
+                  }
+                  wp_reset_postdata();
+                  ?>
+                </table>
+                </form>
+            </div>
+        </div>
+
         <a name="city-data"></a>
         <div class="heading-container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>My favourite city compare data</h3>
+                        <h3>My favorite city compare data</h3>
                     </div>
                 </div>
-                <form action="" id="dash-me-form" method="POST">
+                <form action="" id="dash-md-form" method="POST">
                 <input type="hidden" name="type" value="md" />
                 <input type="hidden" name="action" value="delete" />
                 <table class="table table-striped table-hover table-condensed my-infographics">
@@ -152,7 +205,7 @@ get_header(); the_post();
                     <tr>
                       <th width="10px"><input type="checkbox" name="" id="dash-md-form-check" /></th>
                       <th><a href="javascript: void(0);" onclick="dash_select_all('dash-md-form');">Select all</a></th>
-                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-me-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
+                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-md-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
                     </tr>
                   </thead>
                   <?php
@@ -186,18 +239,18 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>My favourite explore data</h3>
+                        <h3>My favorite explore data</h3>
                     </div>
                 </div>
-                <form action="" id="dash-md-form" method="POST">
+                <form action="" id="dash-me-form" method="POST">
                 <input type="hidden" name="type" value="me" />
                 <input type="hidden" name="action" value="delete" />
                 <table class="table table-striped table-hover table-condensed my-infographics">
                   <thead>
                     <tr>
-                      <th width="10px"><input type="checkbox" name="" id="dash-md-form-check" /></th>
-                      <th><a href="javascript: void(0);" onclick="dash_select_all('dash-md-form');">Select all</a></th>
-                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-md-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
+                      <th width="10px"><input type="checkbox" name="" id="dash-me-form-check" /></th>
+                      <th><a href="javascript: void(0);" onclick="dash_select_all('dash-me-form');">Select all</a></th>
+                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-me-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
                     </tr>
                   </thead>
                   <?php
