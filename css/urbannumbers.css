@@ -925,9 +925,10 @@ form.registration-form span.input-placeholder-text {
     font-size: 18px;
     color: #62697f;
     margin-left: 6px;
+    font-family: 'HelveticaNeueW01-65Medi',arial,sans-serif
 }
 .leaflet-popup-content .line {
-    font: 11px 'HelvetticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font: 11px 'HelveticaNeueW01-75Bold',arial,sans-serif;
     background: #00b1b5;
     color: #FFF;
     line-height: 14px;

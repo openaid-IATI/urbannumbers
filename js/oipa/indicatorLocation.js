@@ -44,13 +44,18 @@ OipaIndicatorLocation.prototype.update_popup_content = function () {
         "<div class='title'><a href='" + base_url + "'>" + this.name + "</a></div>",
     ];
     var _even_odd = '';
+    var count = 0;
     $.each(this.circles, function(_, circle) {
+        if (count > 10) {
+            return;
+        }
         content.push('<div class="line ' + _even_odd + '">' + circle.name + ': ' + circle.get_human_friendly_value() + '</div>');
         if (_even_odd == '') {
             _even_odd = 'odd';
         } else {
             _even_odd = '';
         }
+        count++;
     });
 
     content.push('<div class="line last"><a href="' + base_url + '">Visit ' + this.type + ' page <i class="glyphicon glyphicon-play"></i></a></div>');

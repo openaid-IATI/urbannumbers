@@ -993,6 +993,7 @@ function create_post_type_infographics() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+        'rewrite' => array('slug' => 'datareport'),
 	);
 	register_post_type( 'infographic', $args );
 
