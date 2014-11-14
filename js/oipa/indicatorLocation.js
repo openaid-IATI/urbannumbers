@@ -41,14 +41,20 @@ OipaIndicatorLocation.prototype.update_popup_content = function () {
         base_url = '/compare-cities/city-pages/?cities=' + this.id;
     }
     var content = [
-        "<a href='" + base_url + "'>" + this.name + "</a>",
-        "",
+        "<div class='title'><a href='" + base_url + "'>" + this.name + "</a></div>",
     ];
+    var _even_odd = '';
     $.each(this.circles, function(_, circle) {
-        content.push(circle.name + ': ' + circle.get_human_friendly_value());
+        content.push('<div class="line ' + _even_odd + '">' + circle.name + ': ' + circle.get_human_friendly_value() + '</div>');
+        if (_even_odd == '') {
+            _even_odd = 'odd';
+        } else {
+            _even_odd = '';
+        }
     });
 
-    content = content.join('<br />');
+    content.push('<div class="line last"><a href="' + base_url + '">Visit ' + this.type + ' page <i class="glyphicon glyphicon-play"></i></a></div>');
+    content = content.join('');
     $.each(this.circles, function(_, circle) {
         circle.set_popup(content);
     });

@@ -25,7 +25,7 @@ OipaIndicatorCircle.prototype.set_year = function(year) {
 }
 
 OipaIndicatorCircle.prototype.set_popup = function(content) {
-    this.circle.bindPopup(content);
+    this.circle.bindPopup(content, {maxWidth: 500});
 }
 
 OipaIndicatorCircle.prototype.get_human_friendly_value = function() {
@@ -61,7 +61,7 @@ OipaIndicatorCircle.prototype.refresh = function() {
         .addTo(this.location.map.map);
     }
 
-    var radius = Math.round(this.location.map.max_circle_size / this.max_value) * this.get_value();//* (10 / this.location.map.map.getZoom());
+    var radius = Math.round(this.location.map.max_circle_size / this.max_value) * this.get_value(); // * (10 / this.location.map.map.getZoom());
     if (!isNaN(radius)) {
         this.circle.setRadius(radius);
     }

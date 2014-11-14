@@ -138,7 +138,7 @@ Oipa.invisible_visualizations = [
 ];
 
 var map = new OipaIndicatorMap();
-map.max_circle_size = 2000;
+map.max_circle_size = 9000;
 map.set_map("main-map", "topright");
 map.use_fit_bounds = false;
 map.init();
@@ -155,12 +155,12 @@ filter.selection = Oipa.mainSelection;
 filter.selection.indicator_options = {
     chart_class: OipaCountryPieChart,
 }
-<?php if (count($indicators)): ?>
+<?php /*if (count($indicators)): ?>
     <?php foreach($indicators as $k => $indicator): ?>
     <?php $_options = ($indicator == 'slum_proportion_living_urban') ? ", {chart_class: OipaPieChart}" : ""; ?>
     filter.selection.add_indicator("<?php echo $indicator; ?>", "Indicator data not available", "indicators"<?php echo $_options; ?>);
     <?php endforeach; ?>
-<?php endif; ?>
+<?php endif; */ ?>
 
 <?php if (count($countries)): ?>
   <?php foreach($countries as $k => $code): ?>

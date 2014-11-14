@@ -112,7 +112,6 @@ function OipaIndicatorMap(use_legend) {
     };
 
     this.zoom_on_country = function() {
-
     }
 
 }

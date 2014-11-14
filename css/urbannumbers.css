@@ -406,7 +406,7 @@
 
 #urbannumbers-login h1, #urbannumbers-register h1 {
     color: #FFF;
-    font: 180% 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font: 180% 'HelvetticaNeueW01-77BdCn 692722',arial,sans-serif;
     padding-bottom: 15px;
     border-bottom: 1px dotted #fff;
 }
@@ -915,6 +915,42 @@ form.registration-form span.input-placeholder-text {
 .leaflet-popup-content {
     margin: 0px;
 }
+.leaflet-popup-close-button {
+    color: #c3c3c3;
+}
+.leaflet-popup-content .title {
+    margin-top: 4px;
+}
+.leaflet-popup-content .title a {
+    font-size: 18px;
+    color: #62697f;
+    margin-left: 6px;
+}
+.leaflet-popup-content .line {
+    font: 11px 'HelvetticaNeueW01-77BdCn 692722',arial,sans-serif;
+    background: #00b1b5;
+    color: #FFF;
+    line-height: 14px;
+    padding: 5px 8px;
+    min-height: 25px;
+    margin-bottom: 1px;
+}
+.leaflet-popup-content .line.odd {
+    background: #008d90;
+}
+.leaflet-popup-content .line.last {
+    background: #FFF;
+    color: #535767;
+}
+
+.leaflet-popup-content .line.last a {
+    color: #535767;
+}
+
+.leaflet-popup-content .line.last .glyphicon {
+    color: #008d90;
+    float: right;
+}
 
 /** HOMEPAGE **/
 .homepage-top-buttons .col-md-3 > a{
@@ -944,4 +980,3 @@ form.registration-form span.input-placeholder-text {
 .container-sort .sort-holder{
   padding: 0;
 }
-

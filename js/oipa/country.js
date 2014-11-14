@@ -58,13 +58,13 @@ function OipaCountry() {
     };
 
 
-    this.get_cities_within_country = function(){
-
+    this.get_cities_within_country = function() {
+        return;
         // This might get really slow when we add more data (it loads all indicator data from the country)
         // TO DO: add functionality to only get Urbnrs data from the indicator-data call -> &categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity
         // this func is in indicator-filter-options already.
         url = search_url + "indicator-data/?format=json&countries__in=" + thiscountry.id;
-        url += '&indicators__in=cpi_4_dimensions,total_length_road'
+        //url += '&indicators__in=cpi_4_dimensions,total_length_road'
 
         jQuery.support.cors = true;
 
@@ -85,8 +85,7 @@ function OipaCountry() {
                     }
 
                     $.each(indicator.locs, function(_, loc) {
-
-                        if (!(loc.id in thiscountry.cities) && !(isNaN(loc.id))){
+                        if (!(loc.id in thiscountry.cities) && !(isNaN(loc.id))) {
                             thiscountry.cities[loc.id] = {"id": loc.id, "name": loc.name, "latitude": loc.latitude, "longitude": loc.longitude};
 
                             // show cities in country as circle with orange color, capital city as green color
