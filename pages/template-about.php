@@ -31,7 +31,7 @@ $image_credits = get_field('image_credits');
 											<?php if($image_credits): ?>
 											<div class="col-md-6 col-sm-6 col-xs-6">
 												<dl>
-													<dt>IMAGE CREDITS:</dt>
+													<dt>Illustration:</dt>
 													<dd itemprop="homeLocation"><?php echo $image_credits; ?></dd>
 												</dl>
 											</div>
