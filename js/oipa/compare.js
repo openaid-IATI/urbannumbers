@@ -153,6 +153,13 @@ $('.fav-alert').click(function(e) {
 $('.add-to-favorites').click(function(e) {
     e.preventDefault();
     clearTimeout(fav_alert_timeout);
+
+    var _name_left = $('#left-cities-select option:selected').html();
+    var _name_right = $('#right-cities-select option:selected').html()
+    if (_name_left.indexOf('SELECT CITY') > -1 || _name_right.indexOf('SELECT CITY') > -1) {
+        return;
+    }
+
     $.ajax({
         type: "POST",
         url: vb_reg_vars.vb_ajax_url,
@@ -160,7 +167,8 @@ $('.add-to-favorites').click(function(e) {
             action: 'favorite_compare',
             cities: get_parameters_from_selection(filter.selection.get('cities')),
             countries: get_parameters_from_selection(filter.selection.get('countries')),
-            indicators: get_parameters_from_selection(filter.selection.get('indicators'))
+            indicators: get_parameters_from_selection(filter.selection.get('indicators')),
+            names: _name_left + ' & ' + _name_right
         },
         success: function(data) {
             if (data.status == 'log_in_first') {

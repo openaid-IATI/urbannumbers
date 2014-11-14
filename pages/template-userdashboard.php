@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD']) {
     $user_id = wp_update_user($data);
 
     if (is_wp_error($user_id)) {
-      print($user_id);
     } else {
       wp_redirect(site_url() . '/my-dashboard/');
     }
@@ -50,16 +49,27 @@ if ($_SERVER['REQUEST_METHOD']) {
 
 
   if ($action == 'md:delete' && !empty($_POST['check'])) {
-    $meta = get_user_meta($current_user->ID, 'oipa_visualisation_favorites', True);
+    $meta = get_user_meta($current_user->ID, 'oipa_compare_fav', True);
     $new_meta = array();
-    foreach ($_POST['check'] as $_ => $id) {
-      if (!array_key_exists($id, array_keys($meta))) {
-        $new_meta[] = $meta[$id];
-      }
+    foreach ($meta as $id => $value) {
+        if (!in_array($id, $_POST['check']) && !is_null($value)) {
+            $new_meta[] = $value;
+        }
     }
-    var_dump($new_meta);
-    //update_user_meta($current_user->ID, 'oipa_visualisation_favorites', $new_meta);
-    //wp_redirect(site_url() . '/my-dashboard/');
+    update_user_meta($current_user->ID, 'oipa_compare_fav', $new_meta);
+    wp_redirect(site_url() . '/my-dashboard/');
+  }
+
+  if ($action == 'me:delete' && !empty($_POST['check'])) {
+    $meta = get_user_meta($current_user->ID, 'oipa_explore_fav', True);
+    $new_meta = array();
+    foreach ($meta as $id => $value) {
+        if (!in_array($id, $_POST['check']) && !is_null($value)) {
+            $new_meta[] = $value;
+        }
+    }
+    update_user_meta($current_user->ID, 'oipa_explore_fav', $new_meta);
+    wp_redirect(site_url() . '/my-dashboard/');
   }
 }
 
@@ -90,7 +100,7 @@ get_header(); the_post();
         <div class="heading-container">
             <div class="container-custom">
                 <div class="row">
-                    <div class="col-md-8 col-sm-8">
+                    <div class="col-md-12">
                         <h3>My infographics</h3>
                     </div>
                 </div>
@@ -130,12 +140,57 @@ get_header(); the_post();
         <div class="heading-container">
             <div class="container-custom">
                 <div class="row">
-                    <div class="col-md-8 col-sm-8">
-                        <h3>My favourite city data</h3>
+                    <div class="col-md-12">
+                        <h3>My favourite city compare data</h3>
+                    </div>
+                </div>
+                <form action="" id="dash-me-form" method="POST">
+                <input type="hidden" name="type" value="md" />
+                <input type="hidden" name="action" value="delete" />
+                <table class="table table-striped table-hover table-condensed my-infographics">
+                  <thead>
+                    <tr>
+                      <th width="10px"><input type="checkbox" name="" id="dash-md-form-check" /></th>
+                      <th><a href="javascript: void(0);" onclick="dash_select_all('dash-md-form');">Select all</a></th>
+                      <th width="100px" class="actions"><a href="javascript: void(0);" onclick="dash_delete_selected('dash-me-form');"><i class="glyphicon glyphicon-trash"></i> Delete</a></th>
+                    </tr>
+                  </thead>
+                  <?php
+                  $favorites = get_user_meta(get_current_user_id(),'oipa_compare_fav',true);
+                  if ($favorites) {
+                      foreach ($favorites as $k=>$v) {
+                          if (is_null($v)) {
+                              continue;
+                          }
+                          if (strpos($v, ';') !== FALSE) {
+                              $_ = explode(';', $v);
+                          } else {
+                              $_ = array($v, 'No title');
+                          }
+                      ?>
+                      <tr>
+                        <td><input type="checkbox" name="check[]" value="<?php echo $k; ?>" /></td>
+                        <td><a href="<?php echo site_url('/compare-cities/?' . $_[0]); ?>"><?php echo $_[1]; ?></a></td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <?php
+                      }
+                  }
+                  ?>
+                </table>
+                </form>
+            </div>
+        </div>
+
+        <div class="heading-container">
+            <div class="container-custom">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>My favourite explore data</h3>
                     </div>
                 </div>
                 <form action="" id="dash-md-form" method="POST">
-                <input type="hidden" name="type" value="md" />
+                <input type="hidden" name="type" value="me" />
                 <input type="hidden" name="action" value="delete" />
                 <table class="table table-striped table-hover table-condensed my-infographics">
                   <thead>
@@ -146,13 +201,21 @@ get_header(); the_post();
                     </tr>
                   </thead>
                   <?php
-                  $favorites = get_user_meta(get_current_user_id(),'oipa_visualisation_favorites',true);
+                  $favorites = get_user_meta(get_current_user_id(),'oipa_explore_fav',true);
                   if ($favorites) {
                       foreach ($favorites as $k=>$v) {
+                          if (is_null($v)) {
+                              continue;
+                          }
+                          if (strpos($v, ';') !== FALSE) {
+                              $_ = explode(';', $v);
+                          } else {
+                              $_ = array($v, 'without date');
+                          }
                       ?>
                       <tr>
                         <td><input type="checkbox" name="check[]" value="<?php echo $k; ?>" /></td>
-                        <td><a href="<?php echo get_permalink(); ?>"><?php echo json_decode($v)->name; ?></a></td>
+                        <td><a href="<?php echo site_url('/explore/?' . $_[0]); ?>">Saved <?php echo $_[1]; ?></a></td>
                         <td>&nbsp;</td>
                       </tr>
                       <?php

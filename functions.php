@@ -718,7 +718,7 @@ function favorite_explore() {
         'cities=' . clean_post('cities', ''),
         'countries=' . clean_post('countries', ''),
         'indicators=' . clean_post('indicators')
-    ));
+    )) . ';' . date('l jS \of F Y h:i:s A');
 
     $meta_key = 'oipa_explore_fav';
 
@@ -757,7 +757,7 @@ function favorite_compare() {
         'cities=' . clean_post('cities', ''),
         'countries=' . clean_post('countries', ''),
         'indicators=' . clean_post('indicators')
-    ));
+    )) . ';' . clean_post('names', '');
 
     $meta_key = 'oipa_compare_fav';
 
