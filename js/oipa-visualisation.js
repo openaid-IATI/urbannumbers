@@ -906,10 +906,8 @@ function OipaBlankChart(object_id, options) {
     var _chart_type = [
         "OipaLineChart",
         "OipaBarChart",
-        "OipaPieChart",
-        "OipaPolarChart",
-        "OipaDoughnutChart"
-    ][Math.floor((Math.random() * 5))];
+        "OipaRadarChart",
+    ][Math.floor((Math.random() * 3))];
 
     OipaBlankChartFactory.prototype = Object.create(window[_chart_type].prototype);
     return new OipaBlankChartFactory(object_id, options, _chart_type);
