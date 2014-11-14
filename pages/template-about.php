@@ -21,19 +21,13 @@ $image_credits = get_field('image_credits');
 							<div id="content">
 								<!-- post -->
 								<article class="post" itemscope itemtype="http://schema.org/Person">
-									<?php if($subtitle): ?><h3><?php echo $subtitle; ?></h3><?php endif; ?>
+									
 									<?php if($single_image): ?>
 									<div class="img-holder"><img src="<?php echo $single_image['sizes']['post748x288']; ?>" alt=""></div>
 									<?php endif; ?>
 									<div class="post-info">
 										<div class="row">
-										<div class="col-md-6 col-sm-6 col-xs-6">
-												<time datetime="<?php the_time('Y-m-d'); ?>"><?php the_time('F j, Y'); ?></time>
-												<dl>
-													<dt>By:</dt>
-													<dd itemprop="knows"><?php the_author_link(); ?></dd>
-												</dl>
-											</div> 
+							
 											<?php if($image_credits): ?>
 											<div class="col-md-6 col-sm-6 col-xs-6">
 												<dl>
