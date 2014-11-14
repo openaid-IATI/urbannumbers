@@ -10,113 +10,110 @@ function OipaIndicatorMap(use_legend) {
     this.active_years = {};
 
 
-        this.get_url = function(){
-            var str_region = get_parameters_from_selection(this.selection.regions);
-            var str_country = get_parameters_from_selection(this.selection.countries);
-            var str_city = get_parameters_from_selection(this.selection.cities);
-            var str_indicators = get_parameters_from_selection(this.selection.indicators);
+    this.get_url = function() {
+        var str_region = get_parameters_from_selection(this.selection.regions);
+        var str_country = get_parameters_from_selection(this.selection.countries);
+        var str_city = get_parameters_from_selection(this.selection.cities);
+        var str_indicators = get_parameters_from_selection(this.selection.indicators);
 
-            return search_url + 'indicator-data/?format=json&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
+        return search_url + 'indicator-data/?format=json&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
+    }
+
+    this.get_data = function(url) {
+        var self = this;
+        var _action = function(data) {
+            self.refresh(data);
         }
 
-        this.get_data = function(url){
-            var self = this;
-            var _action = function(data) {
-                self.refresh(data);
-            }
+        if (this._url_data_cache[url] == undefined) { // Get data and cache it
+            // filters
+            $.support.cors = true;
 
-            if (this._url_data_cache[url] == undefined) { // Get data and cache it
-                // filters
-                $.support.cors = true;
-
-                if(window.XDomainRequest){
-                    var xdr = new XDomainRequest();
-                    xdr.open("get", url);
-                    xdr.onprogress = function () { };
-                    xdr.ontimeout = function () { };
-                    xdr.onerror = function () { };
-                    xdr.onload = function() {
-                        var jsondata = $.parseJSON(xdr.responseText);
-                        if (jsondata === null || typeof (jsondata) === 'undefined')
-                        {
-                            self._url_data_cache[url] = jsondata;
-                            jsondata = $.parseJSON(jsondata.firstChild.textContent);
-                            _action(jsondata);
-                        }
-                    };
-                    setTimeout(function () {xdr.send();}, 0);
-                } else {
-                    $.ajax({
-                            type: 'GET',
-                            url: url,
-                            contentType: "application/json",
-                            dataType: 'json',
-                            success: function(data){
-                                if (data == "No indicator given") {
-                                    data = {};
-                                }
-                                self._url_data_cache[url] = data;
-                                _action(data);
-                            }
-                    });
-                }
+            if(window.XDomainRequest) {
+                var xdr = new XDomainRequest();
+                xdr.open("get", url);
+                xdr.onprogress = function () { };
+                xdr.ontimeout = function () { };
+                xdr.onerror = function () { };
+                xdr.onload = function() {
+                    var jsondata = $.parseJSON(xdr.responseText);
+                    if (jsondata === null || typeof (jsondata) === 'undefined') {
+                        self._url_data_cache[url] = jsondata;
+                        jsondata = $.parseJSON(jsondata.firstChild.textContent);
+                        _action(jsondata);
+                    }
+                };
+                setTimeout(function () {xdr.send();}, 0);
             } else {
-                _action(self._url_data_cache[url]);
-            }
-        };
-
-        this.delete_markers = function(){
-                for (var i = 0; i < this.markers.length; i++) {
-                        this.map.removeLayer(this.markers[i]);
-                }
-        };
-
-
-
-        this.draw_available_data_blocks = function(indicator_data){
-
-                $('.slider-year').removeClass('slider-active');
-
-                $.each(this.active_years, function(yearkey, yearval){
-                        $("#year-" + yearkey).addClass("slider-active");
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data == "No indicator given") {
+                            data = {};
+                        }
+                        self._url_data_cache[url] = data;
+                        _action(data);
+                    }
                 });
-        };
-
-        this.move_slider_to_available_year = function(){
-                var year = this.selected_year;
-                if (year == null) {
-                    return;
-                }
-                $( "#map-slider-tooltip" ).val(year);
-                $( "#map-slider-tooltip div" ).text(year.toString());
-                $( ".slider-year").removeClass("active");
-                $( "#year-" + year.toString()).addClass("active");
-        };
-
-        this.get_first_available_year = function(){
-
-                var years = this.active_years;
-                if (this.selected_year in years){
-                        return this.selected_year;
-                }
-                for (var i = this.selected_year; i > 1949;i--){
-                        if (i in years){
-                                return i;
-                        }
-                }
-
-                for (var i = this.selected_year; i < 2100;i++){
-                        if (i in years){
-                                return i;
-                        }
-                }
-
-                return null;
-        };
-
-        this.zoom_on_country = function(){
-
+            }
+        } else {
+            _action(self._url_data_cache[url]);
         }
+    };
+
+    this.delete_markers = function() {
+        for (var i = 0; i < this.markers.length; i++) {
+            this.map.removeLayer(this.markers[i]);
+        }
+    };
+
+
+
+    this.draw_available_data_blocks = function(indicator_data) {
+        $('.slider-year').removeClass('slider-active');
+
+        $.each(this.active_years, function(yearkey, yearval){
+            $("#year-" + yearkey).addClass("slider-active");
+        });
+    };
+
+    this.move_slider_to_available_year = function() {
+        var year = this.selected_year;
+        if (year == null) {
+            return;
+        }
+        $( "#map-slider-tooltip" ).val(year);
+        $( "#map-slider-tooltip div" ).text(year.toString());
+        $( ".slider-year").removeClass("active");
+        $( "#year-" + year.toString()).addClass("active");
+    };
+
+    this.get_first_available_year = function() {
+        var years = this.active_years;
+        if (this.selected_year in years) {
+            return this.selected_year;
+        }
+        for (var i = this.selected_year; i > 1949;i--) {
+            if (i in years) {
+                return i;
+            }
+        }
+
+        for (var i = this.selected_year; i < 2100;i++) {
+            if (i in years){
+                return i;
+            }
+        }
+
+        return null;
+    };
+
+    this.zoom_on_country = function() {
+
+    }
 
 }
 OipaIndicatorMap.prototype = new OipaMap();

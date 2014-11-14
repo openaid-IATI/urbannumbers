@@ -2,7 +2,7 @@ function OipaMap(use_legend) {
     this.map = null;
     this.selection = null;
     this.slider = null;
-    this.basemap = "zimmerman2014.hmpkg505";
+    this.basemap = "zimmerman2014.ie8dpbpp";
     this.tl = null;
     this.compare_left_right = null;
     this.circles = {};
@@ -230,7 +230,7 @@ function OipaMap(use_legend) {
         }
     };
 
-    this.change_basemap = function(basemap_id){
+    this.change_basemap = function(basemap_id) {
         this.tl._url = "https://{s}.tiles.mapbox.com/v3/" + basemap_id + "/{z}/{x}/{y}.png";
         this.tl.redraw();
     };

@@ -4,7 +4,7 @@ var search_url = '<?php echo SEARCH_URL; ?>';
 var home_url = "<?php echo bloginfo("url"); ?>";
 var template_directory = "<?php echo bloginfo("template_url"); ?>";
 var site_title = "<?php echo wp_title(''); ?>";
-var standard_basemap = "zimmerman2014.hmpkg505";
+var standard_basemap = "zimmerman2014.ie8dpbpp";
 var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
 
 var register_url = "http://localhost:18088/rest-auth/register/";

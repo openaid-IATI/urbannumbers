@@ -709,6 +709,14 @@ function OipaActiveRoundChart(id, options) {
             return _chart_data;
         }
     }
+
+    var _original_get_chart_labels = this.get_chart_labels;
+    this.get_chart_labels = function(chart) {
+        if (this.mutate_to_bar_chart) {
+            return _original_get_chart_labels.apply(this, [chart]);
+        }
+        return chart.scale.labels;
+    }
 }
 OipaActiveRoundChart.prototype = Object.create(OipaActiveChart.prototype);
 
@@ -771,9 +779,6 @@ function OipaPolarChart(id, options) {
     this.init_chart = function(chart_data) {
         return this.chart_obj.PolarArea(chart_data, this.get_chart_options());
     }
-    this.get_chart_labels = function(chart) {
-        return chart.scale.labels;
-    }
     return this;
 }
 OipaPolarChart.prototype = Object.create(OipaActiveRoundChart.prototype);
@@ -800,9 +805,6 @@ function OipaPieChart(id, options) {
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>: <%}%>" + _human_readable
             }));
     }
-    this.get_chart_labels = function(chart) {
-        return chart.scale.labels;
-    }
     return this;
 }
 OipaPieChart.prototype = Object.create(OipaActiveRoundChart.prototype);
@@ -814,9 +816,6 @@ function OipaDoughnutChart(id, options) {
 
     this.init_chart = function(chart_data) {
         return this.chart_obj.Doughnut(chart_data, this.get_chart_options());
-    }
-    this.get_chart_labels = function(chart) {
-        return chart.scale.labels;
     }
     return this;
 }
