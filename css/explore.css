@@ -1,5 +1,9 @@
-.btn-success, .btn-success:hover {
+.btn-success {
     background: #00b1b5;
+}
+
+.btn-success:hover {
+    background: #1aa7ab;
 }
 
 #map-timeline-wrapper {
@@ -109,6 +113,10 @@ nav#indicators-pagination .btn-default,
 .compare-controls-nav .btn-default {
     background: #00b1b5;
     color: #fff;
+}
+nav#indicators-pagination .btn-default:hover,
+.compare-controls-nav .btn-default:hover {
+    background: #1aa7ab;
 }
 .indicator-category-button.btn-success {
     background: #008589;

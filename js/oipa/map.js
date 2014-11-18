@@ -235,7 +235,7 @@ function OipaMap(use_legend) {
         this.tl.redraw();
     };
 
-    this.zoom_on_dom = function(curelem){
+    this.zoom_on_dom = function(curelem) {
         var latitude = curelem.getAttribute("latitude");
         var longitude = curelem.getAttribute("longitude");
         var country_id = curelem.getAttribute("name");

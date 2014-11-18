@@ -85,6 +85,7 @@ function OipaIndicatorMap(use_legend) {
         if (year == null) {
             return;
         }
+
         $( "#map-slider-tooltip" ).val(year);
         $( "#map-slider-tooltip div" ).text(year.toString());
         $( ".slider-year").removeClass("active");

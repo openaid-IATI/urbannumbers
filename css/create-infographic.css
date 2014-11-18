@@ -32,10 +32,15 @@
     display: none;
 }
 
-.ci-controls .next_step, .ci-controls .save_btn {
+.ci-controls .next_step,
+.ci-controls .save_btn {
     float: right;
     margin-top: 10px;
     background: #00b1b5;
+}
+.ci-controls .next_step:hover,
+.ci-controls .save_btn:hover {
+    background: #1aa7ab;
 }
 
 .steps-nav {

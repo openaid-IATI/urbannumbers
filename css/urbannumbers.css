@@ -136,7 +136,7 @@
 }
 
 .slider-active{
-  background-color:#D3F101;
+  background-color: #00b3b5;
 }
 
 .slider-year.slider-active.active{
@@ -576,6 +576,9 @@ form.registration-form span.input-placeholder-text {
     background: #56C6C8;
     text-shadow: none;
 }
+#header.nav_my_account .btn-group .btn-blue:hover {
+    background: #1aa7ab;
+}
 
 #header.nav_my_account .add-nav .dropdown-menu a {
     background: #56C6C8;
@@ -808,6 +811,9 @@ form.registration-form span.input-placeholder-text {
 }
 .visual .text-holder>.btn {
     background: #56C6C8;
+}
+.visual .text-holder>.btn:hover {
+    background: #1aa7ab;
 }
 
 

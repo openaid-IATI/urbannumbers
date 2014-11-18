@@ -151,6 +151,7 @@ nav#indicators-pagination .btn-success,
 
 nav#indicators-pagination .btn-success:hover,
 .compare-controls-nav .btn-success:hover {
+    background: #1aa7ab;
     color: #fff;
 }
 
