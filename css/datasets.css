@@ -1,4 +1,12 @@
-.pagination>li a, .pagination>li:last-child>a, .pagination>li:last-child>span, .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+.pagination>li a,
+.pagination>li:last-child>a,
+.pagination>li:last-child>span,
+.pagination>.active>a,
+.pagination>.active>span,
+.pagination>.active>a:hover,
+.pagination>.active>span:hover,
+.pagination>.active>a:focus,
+.pagination>.active>span:focus {
     border-radius: 0px;
     background: none;
     border: 0px;
@@ -6,7 +14,7 @@
     line-height: 20px;
     padding: 6px 8px;
 }
-.pagination>li.active>a{
+.pagination>li.active>a {
     color: #00b2b3;
     font-size: 18px;
 }
