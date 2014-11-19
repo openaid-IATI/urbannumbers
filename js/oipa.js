@@ -22,6 +22,7 @@ var Oipa = {
     refresh: function(data) {
 
         if (data == undefined) {
+            this.refresh_visualisations();
             return this.get_data(this.get_url());
         }
 

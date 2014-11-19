@@ -113,7 +113,7 @@
 
 .slider-year-inner-left{
   background-color: #FFF;
-  width: 2px;
+  width: 1px;
   float: left;
   height:100%;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
@@ -128,7 +128,7 @@
 .slider-year-inner-white{
   background-color: #FFF;
   width: 2px;
-  float: right;
+  float: left;
   height:100%;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
   filter: alpha(opacity=70);
@@ -174,8 +174,8 @@
   background: url('../images/slider.png') top left no-repeat;
   width: 98px;
   height: 55px;
-  margin-left: -42px;
-  margin-top: -10px;
+  margin-left: -47px;
+  margin-top: -12px;
   text-align: center;
 }
 
