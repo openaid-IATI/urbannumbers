@@ -116,6 +116,7 @@ nav#indicators-pagination .btn-default,
 }
 .compare-controls-nav .btn {
     font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+    padding: 10px 14px;
 }
 
 nav#indicators-pagination .btn-default:hover,

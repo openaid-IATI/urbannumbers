@@ -18,7 +18,7 @@ query_posts($args);
 if (have_posts()) : ?>
     <!-- visual -->
     <div class="visual container">
-        <div class="slideset">
+        <div class="slideset row">
             <?php while (have_posts()) : the_post();
             $title = get_field('title');
             $subtitle = get_field('subtitle');
@@ -28,7 +28,7 @@ if (have_posts()) : ?>
             $image_credits = get_field('image_credits');
             $image = get_field('image');
             ?>
-            <div class="slide">
+            <div class="slide col-md-12">
                 <?php if($title || $subtitle || $start_exploring): ?>
                 <div class="container">
                     <div class="text-holder">
