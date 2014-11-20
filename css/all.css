@@ -651,6 +651,7 @@ img.aligncenter{
 #header .btn-group + .btn-group{margin:0 0 0 1px;}
 /* visual */
 .visual{
+	width: 1150px;
 	overflow:hidden;
 	position:relative;
 }
