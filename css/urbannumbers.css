@@ -595,7 +595,6 @@ form.registration-form span.input-placeholder-text {
 .infobox-container {
     background: none;
     padding: 0px;
-    min-height: 166px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
 .infobox-container.box-container .columns-holder .column {
@@ -607,12 +606,9 @@ form.registration-form span.input-placeholder-text {
     margin: 10px 0px;
     min-width: 100px;
 }
-.infobox-container.box-container .columns-holder .column canvas {
-    margin-bottom: 20px;
-}
 .infobox-container.box-container .columns-holder .column div.info-overlay {
     position: relative;
-    top: -75px;
+    top: -55px;
 }
 .container-map .check-row.home-info-controls label i.icon-pin {
     width:20px;
@@ -986,4 +982,9 @@ form.registration-form span.input-placeholder-text {
 }
 .container-sort .sort-holder{
   padding: 0;
+}
+
+.noshadow {
+    box-shadow: 0px 0px 0px;
+    -webkit-box-shadow: 0px 0px 0px;;
 }
