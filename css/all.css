@@ -577,7 +577,7 @@ img.aligncenter{
 	position:relative;
 	z-index:99;
 	float:right;
-	margin:15px 22px 15px 20px;
+	margin:15px 0px 15px 20px;
 }
 .add-nav > .btn:first-child{min-width:164px;}
 .add-nav .btn{
@@ -748,6 +748,7 @@ img.aligncenter{
 	left:0;
 	top:0;
 	min-height:500px;
+	margin: 0 15px;
 	width:100%;
 }
 .visual .slide.active{z-index:2;}
