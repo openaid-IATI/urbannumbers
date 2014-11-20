@@ -501,11 +501,6 @@
   border-bottom: 0;
 }
 
-
-#visualisation-block-wrapper .heading-holder h3, #visualisation-maps-block-wrapper .heading-holder h3{
-  margin-top: 10px;
-}
-
 .wiki-read-more-hidden{
   display: none;
 }

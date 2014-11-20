@@ -114,6 +114,10 @@ nav#indicators-pagination .btn-default,
     background: #00b1b5;
     color: #fff;
 }
+.compare-controls-nav .btn {
+    font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+}
+
 nav#indicators-pagination .btn-default:hover,
 .compare-controls-nav .btn-default:hover {
     background: #1aa7ab;
@@ -132,6 +136,9 @@ nav#indicators-pagination .btn-default:hover,
 
 .legend {
     font-size: 12px;
+}
+.legend label {
+    font: 14px/24px 'HelveticaNeueW01-45Ligh',arial,sans-serif
 }
 
 p {
@@ -224,7 +231,7 @@ hr {
 .sort-list .active a.filter-indicator-type-text,
 #indicators-filters label {
     text-transform: uppercase;
-    font: 14px 'HelveticaNeueW01-77BdCn 692722', arial, sans-serif;
+    font: 14px 'HelveticaNeueW02-55Roma', arial, sans-serif;
 }
 
 
@@ -257,4 +264,8 @@ hr {
     left: 50%;
     width: 300px;
     margin-left: -150px;
+}
+
+.legend-h4 {
+    font-size: 100%;
 }

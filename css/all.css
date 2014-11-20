@@ -1362,7 +1362,6 @@ img.aligncenter{
 #main{
 	overflow: hidden;
 	position:relative;
-	padding:41px 0 0;
 }
 #main > .social-networks{
 	position:absolute;
@@ -2084,7 +2083,6 @@ img.aligncenter{
 .container-box .box-content:before{
 	content:'';
 	display:inline-block;
-	height:232px;
 	width:1px;
 	overflow:hidden;
 	margin:0 0 0 -6px;
@@ -2114,7 +2112,7 @@ img.aligncenter{
 	-webkit-box-shadow:0 0 0;
 	box-shadow:			0 0 0;
 }
-.container-custom .container-box .box-content:before{height:288px;}
+
 .container-box .box-content .widget{
 	vertical-align:middle;
 	display:inline-block;

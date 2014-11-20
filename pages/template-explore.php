@@ -128,7 +128,7 @@ $popups->init();
                         </div>
                     </div>
                         <hr />
-                        <h4>Legend map colors</h4>
+                        <h4 class="legend-h4">Legend map colors</h4>
                         <hr />
                         <div class="row legend">
                             <div class="col-md-4">
