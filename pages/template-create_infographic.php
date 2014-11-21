@@ -132,60 +132,40 @@ get_header(); the_post(); ?>
                         <label class="label">Pick indicators</label>
                         <ul class="sort-list tabs-header">
                             <li class="Cityprosperity-li open">
-                                <div>
-                                    <a name="Cityprosperity" class="opener filter-open" href="#"><label class="top">City prosperity</label> <span class="counts"></span></a>
-                                </div>
+                                <a name="Cityprosperity" class="opener filter-open" href="#">City prosperity <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Slumdwellers-li">
-                                <div>
-                                    <a name="Slumdwellers" class="opener filter-open" href="#"><label class="top">Slum dwellers</label> <span class="counts"></span></a>
-                                </div>
+                                    <a name="Slumdwellers" class="opener filter-open" href="#">Slum dwellers <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Population-li">
-                                <div>
-                                    <a name="Population" class="opener filter-open" href="#"><label class="top">Population</label></span><span class="counts"></span></a>
-                                </div>
+                                    <a name="Population" class="opener filter-open" href="#">Population <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Streets-li">
-                                <div>
-                                    <a name="Streets" class="opener filter-open" href="#"><label class="top">Streets</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Streets" class="opener filter-open" href="#">Streets <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Transport-li">
-                                <div>
-                                    <a name="Transport" class="opener filter-open" href="#"><label class="top">Transport</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Transport" class="opener filter-open" href="#">Transport <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Health-li">
-                                <div>
-                                    <a name="Health" class="opener filter-open" href="#"><label class="top">Health</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Health" class="opener filter-open" href="#">Health <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Resilience-li">
-                                <div>
-                                    <a name="Resilience" class="opener filter-open" href="#"><label class="top">Resilience</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Resilience" class="opener filter-open" href="#">Resilience <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Education-li">
-                                <div>
-                                    <a name="Education" class="opener filter-open" href="#"><label class="top">Education</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Education" class="opener filter-open" href="#">Education <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Crime-li">
-                                <div>
-                                    <a name="Crime" class="opener filter-open" href="#"><label class="top">Crime</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Crime" class="opener filter-open" href="#">Crime <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                             <li class="Landarea-li">
-                                <div>
-                                    <a name="Landarea" class="opener filter-open" href="#"><label class="top">Landarea</label><span class="counts"></span></a>
-                                </div>
+                                    <a name="Landarea" class="opener filter-open" href="#">Landarea <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
-                            <li class="Other-li">
+                            <!-- <li class="Other-li">
                                 <div>
                                     <a name="Other" class="opener filter-open" href="#"><label class="top">Other Data</label> <span class="counts"></span></a>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                         <div class="tabs-body">
                             <div class="Cityprosperity-list subul open">
@@ -226,9 +206,7 @@ get_header(); the_post(); ?>
                         <label class="label">Choose region</label>
                         <ul class="sort-list tabs-header">
                             <li class="regions-li">
-                                <div>
-                                    <a name="regions" class="opener filter-open" href="#"><label class="top">REGIONS</label> <span class="counts"></span></a>
-                                </div>
+                                <a name="regions" class="opener filter-open" href="#">REGIONS <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                         </ul>
                         <div class="tabs-body">
@@ -240,9 +218,7 @@ get_header(); the_post(); ?>
                         <label class="label">Add country</label>
                         <ul class="sort-list tabs-header">
                             <li class="countries-li">
-                                <div>
-                                    <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label> <span class="counts"></span></a>
-                                </div>
+                                <a name="countries" class="opener filter-open" href="#">COUNTRY <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                        </ul>
 
@@ -255,9 +231,7 @@ get_header(); the_post(); ?>
                         <label class="label">Add city</label>
                         <ul class="sort-list tabs-header">
                             <li class="cities-li">
-                                <div>
-                                    <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label> <span class="counts"></span></a>
-                                </div>
+                                <a name="cities" class="opener filter-open" href="#">CITY <i class="glyphicon glyphicon-chevron-down"></i></a>
                             </li>
                         </ul>
 

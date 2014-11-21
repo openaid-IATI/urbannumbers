@@ -59,7 +59,7 @@
     text-align: center;
 }
 .steps-nav a {
-    font: 13px/21px sans-serif;
+    font: 14px/16px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
     font-weight: 100;
     color: #71768a;
     margin-right: 15px;
@@ -98,11 +98,11 @@
 
 .label {
     font: 22px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
-    color: #7fd8d9;
+    color: #00b1b5;
     text-transform: uppercase;
 }
 #page_0 label span {
-    color: lightgrey;
+    color: #71768a;
 }
 
 .main-container.body {
@@ -117,20 +117,19 @@
 }
 
 .sort-list.tabs-header li {
-    font: 12px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
-    color: #00b1b5;
-    padding: 6px 15px 0 15px;
-    background: #7fd8d9;
-    border: 1px solid #7fd8d9;
+    font: 12px/21px 'HelveticaNeueW02-55Roma',arial,sans-serif;
+    color: #fff;
+    padding: 4px 8px;
+    background: #00b1b5;
     border-bottom: 1px solid #dfdfdf;
     text-transform: uppercase;
     margin: 0px 5px -1px 0px;
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-topright: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .sort-list.tabs-header li a {
@@ -141,17 +140,14 @@
     cursor: pointer;
 }
 .sort-list.tabs-header li.open {
-    color: #00b1b5;
-    background: #f4f4f4;
-    border: 1px solid #dfdfdf;
-    border-bottom: 1px solid #f4f4f4;
-}
-.sort-list.tabs-header li.open a {
-    color: #00b1b6;
+    background: #008589;
+    color: #FFF;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .tabs-body {
-    padding: 30px;
+    padding: 10px 5px;
     z-index: 998;
     background: #f4f4f4;
     border: 1px solid #dfdfdf;
@@ -162,6 +158,7 @@
     display: none;
     list-style: none;
     vertical-align: top;
+    padding-left: 20px;
 }
 .tabs-body div.subul.open {
     display: block;
@@ -192,7 +189,8 @@
 }
 
 .tabs-body div.subul label {
-    font: 14px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font: 14px 'HelveticaNeueW02-55Roma', arial, sans-serif;
+    text-transform: uppercase;
     color: #777777;
 }
 
