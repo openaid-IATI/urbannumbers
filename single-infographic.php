@@ -13,88 +13,109 @@ if (is_array($visualisations) && array_key_exists('user-name', $visualisations))
 ob_start();
 the_content();
 $the_content = ob_get_clean();
+
+
+$popups = new Popups();
+$popups->init();
 ?>
     <div id="main">
 
-        <div class="container ci-main">
-            <div class="ci-controls row">
-                <div class="steps-nav col-md-8">
-                    <?php if (is_user_logged_in()): ?>
-                    <a href="javascript: void(0)" name="<?php the_ID(); ?>" class="save-infographic btn btn-info">Save to dashboard</a>
-                    <?php endif; ?>
-                    <!--a href="#export" class="btn btn-info">Export</a-->
-                    <!--a href="#share" class="btn btn-info">Share</a-->
-                </div>
-                <div class="col-md-4">
+    <div class="container sort-holder">
+        <div class="container-sort sort-columns">
+            <div class="row compare-controls-nav">
+                <div class="col-md-5">
                     <a href="/create-infographic/" class="save_btn btn btn-success">Create new</a>
+
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-4 share-col">
+                    <ul class="action-list">
+                        <li><a href="javascript: void(0)" name="<?php the_ID(); ?>" class="save-infographic btn btn-info"><i class="glyphicon glyphicon-plus"></i> ADD TO FAVORITES</a></li>
+                        <li><a class="opener share-btn btn btn-success" href="#"><i class="glyphicon glyphicon-share-alt"></i> SHARE</a>
+                            <div class="dropdown-box share-widget open">
+                                <span class="heading">Share</span>
+                                <ul class="social-networks">
+                                    <li><a href="#" target="_blank" class="icon-facebook">facebook</a></li>
+                                    <li><a href="#" target="_blank" class="icon-twitter">twitter</a></li>
+                                    <li><a href="#" target="_blank" class="icon-linkedin">linkedin</a></li>
+                                    <li><a href="#" target="_blank" class="icon icon-google">google</a></li>
+                                </ul>
+                                <form action="#">
+                                    <fieldset>
+                                        <label for="item1">Share link</label>
+                                        <div class="input-wrap"><input class="form-control share-widget-input" type="text"></div>
+                                        <div class="btn-holder">
+                                            <a class="close-share btn btn-blue btn-close">Cancel</a>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
         <!-- main-container -->
         <div class="main-container">
-            <section class="main-block">
-                <header class="heading-container">
-                    <div class="container-custom">
-                        <h1><?php the_title(); ?></h1>
-                        <p><?php the_date(); ?></p>
-                        <p>Created by: <?php echo $user_name; ?></p>
-                        <?php if (!empty($the_content)): ?>
-                        <p class="description"><?php echo trim(trim($the_content), "</p>"); ?></p>
-                        <?php endif; ?>
-                    </div>
-                </header>
+            <section class="main-block container row">
+                <div class="col-md-12 heading-container">
+                    <h1><?php the_title(); ?></h1>
+                    <p><?php the_date(); ?></p>
+                    <p>Created by: <?php echo $user_name; ?></p>
+                </div>
 
-                <div class="container-custom">
-                    <div class="row">
-                        <div class="col-md-12 data-col">
-                            <h2 class="Cityprosperity-head">City prosperity</h2>
-                            <ul class="box-list large Cityprosperity-list">
-                            </ul>
+                <div class="col-md-12">
+                <?php if (!empty($the_content)): ?>
+                <div class="description"><?php echo trim($the_content); ?></div>
+                <?php endif; ?>
+                </div>
 
-                            <h2 class="bordered Slumdwellers-head">Slum dwellers</h2>
-                            <ul class="box-list large Slumdwellers-list">
-                            </ul>
+                <div class="col-md-12 data-col">
+                    <h2 class="Cityprosperity-head">City prosperity</h2>
+                    <ul class="box-list large Cityprosperity-list">
+                    </ul>
 
-                            <h2 class="Population-head bordered">Population</h2>
-                            <ul class="Population-list box-list large">
-                            </ul>
+                    <h2 class="bordered Slumdwellers-head">Slum dwellers</h2>
+                    <ul class="box-list large Slumdwellers-list">
+                    </ul>
 
-                            <h2 class="Streets-head bordered">Streets</h2>
-                            <ul class="Streets-list box-list large">
-                            </ul>
+                    <h2 class="Population-head bordered">Population</h2>
+                    <ul class="Population-list box-list large">
+                    </ul>
 
-                            <h2 class="Transport-head bordered">Transport</h2>
-                            <ul class="Transport-list box-list large">
-                            </ul>
+                    <h2 class="Streets-head bordered">Streets</h2>
+                    <ul class="Streets-list box-list large">
+                    </ul>
 
-                            <h2 class="Health-head bordered">Health</h2>
-                            <ul class="Health-list box-list large">
-                            </ul>
+                    <h2 class="Transport-head bordered">Transport</h2>
+                    <ul class="Transport-list box-list large">
+                    </ul>
 
-                            <h2 class="Resilience-head bordered">Resilience</h2>
-                            <ul class="Resilience-list box-list large">
-                            </ul>
+                    <h2 class="Health-head bordered">Health</h2>
+                    <ul class="Health-list box-list large">
+                    </ul>
 
-                            <h2 class="Education-head bordered">Education</h2>
-                            <ul class="Education-list box-list large">
-                            </ul>
+                    <h2 class="Resilience-head bordered">Resilience</h2>
+                    <ul class="Resilience-list box-list large">
+                    </ul>
 
-                            <h2 class="Crime-head bordered">Crime</h2>
-                            <ul class="Crime-list box-list large">
-                            </ul>
+                    <h2 class="Education-head bordered">Education</h2>
+                    <ul class="Education-list box-list large">
+                    </ul>
 
-                            <h2 class="Landarea-head bordered">Landarea</h2>
-                            <ul class="Landarea-list box-list large">
-                            </ul>
-                        </div>
-                        <!--<div class="col-md-4 maps-col">
-                            <ul id="visualisation-maps-block-wrapper" class="box-list large">
-                            </ul>
-                        </div>-->
-                    </div>
+                    <h2 class="Crime-head bordered">Crime</h2>
+                    <ul class="Crime-list box-list large">
+                    </ul>
+
+                    <h2 class="Landarea-head bordered">Landarea</h2>
+                    <ul class="Landarea-list box-list large">
+                    </ul>
+            <br clear="all" />
                 </div>
             </section>
-            <br />
+            <br clear="all" />
         </div>
     </div>
 

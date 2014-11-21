@@ -2,7 +2,7 @@ var datasetsControllers = angular.module('datasetsControllers', []);
 
 var global_data;
 
-function get_global_data(page_name, $http, callback) {
+function get_global_data(page_name, $http, $scope, callback) {
     if (global_data == undefined) {
 
         var url =  BASE_API_URL + '/indicator-filter-options/?format=json';
@@ -48,7 +48,7 @@ function get_global_data(page_name, $http, callback) {
 
 
 function showPage(page_name, id, $scope, $http) {
-    get_global_data(page_name, $http, function(data) {
+    get_global_data(page_name, $http, $scope, function(data) {
         if ($scope.pagination == undefined) {
             $scope.pagination = initPagination(id, data.length);
         }

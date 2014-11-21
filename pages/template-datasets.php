@@ -43,7 +43,13 @@ get_header(); the_post(); ?>
         </thead>
         <tr ng-repeat="object in page_data">
             <td class="col-md-10">
+                <a href="/compare-cities/country-pages/?countries={{ object.code }}" ng-if="page_type == 'countries'">
                 {{ object.name }}
+                </a>
+                <a href="/compare-cities/city-pages/?cities={{ object.code }}" ng-if="page_type == 'cities'">
+                {{ object.name }}
+                </a>
+                <span ng-if="page_type == 'indicators'">{{ object.name }}</span >
             </td>
             <td class="col-md-1">
                 <a href="<?php echo get_template_directory_uri(); ?>/download.php?type={{ page_type }}&code={{ object.code }}&format=csv" class="save-btn"><i class="glyphicon glyphicon-save"></i> csv</a></td>

@@ -35,7 +35,7 @@ ul.menu li.active a {
 hr {
     padding: 0px;
     margin: 0px 0px 15px 0px;
-    border-bottom: 1px solid #00b2b3;
+    border-bottom: 1px solid #cdced0 ;
 }
 .pagination {
     margin: 0px 0px 10px 0px;
@@ -47,4 +47,8 @@ hr {
 
 table thead th {
     background: #f9f9f9;
+}
+
+h1 {
+    text-transform: uppercase;
 }
