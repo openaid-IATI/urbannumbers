@@ -141,36 +141,6 @@ get_header(); the_post();
         <div id="map-wrapper" class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div id="map-indicator-filter-wrapper">
-                        <div class="sort-holder">
-                            <ul class="sort-list">
-                                <li class="regions-li">
-                                    <div class="selector">
-                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
-                                        <a name="regions" class="opener filter-open" href="#"><label class="top">REGION</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
-                                    </div>
-                                    <div id="regions-filters" class="regions-list subul">
-                                    </div>
-                                </li>
-                                <li class="countries-li">
-                                    <div class="selector">
-                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
-                                        <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
-                                    </div>
-                                    <div id="countries-filters" class="countries-list subul">
-                                    </div>
-                                </li>
-                                <li class="cities-li">
-                                    <div class="selector">
-                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
-                                        <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
-                                    </div>
-                                    <div id="cities-filters" class="cities-list subul">
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                     <?php
                     $curmapname = "main";
                     include( TEMPLATEPATH .'/map.php' );
