@@ -1046,8 +1046,8 @@ img.aligncenter{
 /* container-map */
 .container-map{
 	background:#f0f1f4 url(../images/bg-noise.png);
-	box-shadow:			0 1px 3px rgba(0, 0, 0, 0.25) inset;
-	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.25) inset;
+	/*box-shadow:			0 1px 3px rgba(0, 0, 0, 0.25) inset;
+	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.25) inset;*/
 }
 .container-map.no-shadow{
 	box-shadow:none;
@@ -1491,7 +1491,7 @@ img.aligncenter{
 .container-sort{
 	position:relative;
 	z-index:3;
-	padding:11px 0 7px;
+	padding:11px 0 11px;
 	margin:0 0 -1px;
 	border-bottom:1px solid rgb(255,255,255);
 	border-bottom:1px solid rgba(255,255,255,0.5);
@@ -2341,7 +2341,7 @@ img.aligncenter{
 .sort-columns .column.style03 .heading{padding:0 0 19px;}
 .sort-columns .heading{
 	display:block;
-	padding:0 0 19px;
+	/*padding:0 0 19px;*/
 	text-transform:uppercase;
 	font:21px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
 }

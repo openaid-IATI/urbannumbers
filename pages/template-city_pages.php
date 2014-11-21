@@ -3,22 +3,7 @@
 Template Name: City pages
 */
 
-$indicators = array();
-if (isset($_GET['indicators'])) {
-    $indicators = explode(',', $_GET['indicators']);
-}
-$required_indicators = array(
-    'cpi_4_dimensions',
-    'slum_proportion_living_urban',
-    'land_allocated_to_street_index_city_core'
-);
-if (count($indicators)) {
-    foreach ($required_indicators as $ind) {
-        if (!in_array($ind, $indicators)) {
-            $indicators[] = $ind;
-        }
-    }
-}
+get_header(); the_post();
 
 $cities = array();
 if (isset($_GET['cities'])) {
@@ -27,135 +12,262 @@ if (isset($_GET['cities'])) {
 
 $city = (count($cities) && !empty($cities[0])) ? $cities[0] : 6139;
 
+$popups = new Popups();
+$popups->init();
 
-get_header(); the_post(); ?>
-<link media="all" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/country-pages.css">
-    <div id="main" class="city-page">
-        <!-- container-map -->
-        <div class="container-map no-shadow">
-            <!-- container-sort -->
-            <!-- sort-columns -->
-            <div class="sort-columns">
-                <div class="column">
-                    <span class="heading">CITY</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span class="horizontal_vis_block_name">Loading...</span></li>
-                    </ul>
-                </div>
-                <div class="column style00">
-                    <span class="heading">YEAR</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span class="horizontal_vis_block_year">2000</span></li>
-                    </ul>
-                </div>
-                <div class="column style03" id="chart_cpi_wrapper">
-                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span id="cpi_4_dimensions_data">Loading...</span></li>
-                    </ul>
-                </div>
-                <div class="column style01" id="chart_slum_wrapper">
-                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Proportion of urban population living in slums</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span id="slum_proportion_living_urban_data">Loading...</span></li>
-                    </ul>
-                </div>
-                <div class="column style01" id="chart_pub_wrapper">
-                    <span id="horizontal_vis_block_year_ind_1_name" class="heading">Land allocated to street index – City core</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span  id="land_allocated_to_street_index_city_core_data">Loading...</span></li>
-                    </ul>
-                </div>
-                <div class="column style03">
-                    <span class="heading">Urban population</span>
-                    <ul class="sort-info">
-                        <li><i class="icon-arrow-right"></i> <span class="horizontal_vis_block_population">Loading..</span> </li>
-                    </ul>
-                </div>
-            </div>
+?>
+<div id="main">
+    <!-- container-map -->
+    <div class="container sort-holder">
+        <div class="container-sort sort-columns">
+            <div class="row compare-controls-nav">
+                <div class="col-md-5">
+                    <a id="reset-filters" class="btn btn-default" href="#">RESET FILTERS</a>
 
-            <div id="map-wrapper">
-            <?php
-            include( TEMPLATEPATH .'/in-map-filter.php' );
-            $curmapname = "main";
-            include( TEMPLATEPATH .'/map.php' );
-            ?>
-                <?php if(!is_page("city-prosperity")){ ?>
-                <div id="map-timeline-wrapper">
-                    <div id="timeline-left"></div>
-                    <div id="map-timeline">
-                        <div id="map-slider-tooltip">
+                    <div class="helper">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <div class="helper-popup">
+                            <?php echo $popups->get('reset_filters', "popup_reset_filters"); ?>
                         </div>
-
-                        <?php for ($i = 1950; $i < 2051;$i++) {
-                        echo '<div class="slider-year';
-                        echo '" id="year-' . $i . '">';
-                        if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';}
-                        echo '<div class="slider-year-inner-white"></div></div>';
-                        } ?>
                     </div>
-                    <div id="timeline-right"></div>
                 </div>
-                <?php } ?>
+                <div class="col-md-3">
+                    <a id="explore-randomize" class="btn btn-success" href="#"><i class="glyphicon glyphicon-refresh"></i> RANDOMIZE</a>
+
+                    <div class="helper">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <div class="helper-popup">
+                            <?php echo $popups->get('randomize', "popup_randomize"); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 share-col">
+                    <ul class="action-list">
+                        <li><a class="btn btn-default add-to-favorites" href="#"><i class="glyphicon glyphicon-plus"></i> ADD TO FAVORITES</a></li>
+                        <li><a class="opener share-btn btn btn-success" href="#"><i class="glyphicon glyphicon-share-alt"></i> SHARE</a>
+                            <div class="dropdown-box share-widget open">
+                                <span class="heading">Share</span>
+                                <ul class="social-networks">
+                                    <li><a href="#" target="_blank" class="icon-facebook">facebook</a></li>
+                                    <li><a href="#" target="_blank" class="icon-twitter">twitter</a></li>
+                                    <li><a href="#" target="_blank" class="icon-linkedin">linkedin</a></li>
+                                    <li><a href="#" target="_blank" class="icon icon-google">google</a></li>
+                                </ul>
+                                <form action="#">
+                                    <fieldset>
+                                        <label for="item1">Share link</label>
+                                        <div class="input-wrap"><input class="form-control share-widget-input" type="text"></div>
+                                        <div class="btn-holder">
+                                            <a class="close-share btn btn-blue btn-close">Cancel</a>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        <?php include( TEMPLATEPATH .'/indicator-visualisations.php' ); ?>
+        </div>
+    </div>
+    <div id="indicator-filter-wrapper" class="container sort-holder">
+        <div class="container-map container-sort sort-columns">
+        <nav id="indicators-pagination" class="pagination"></nav>
+
+        <div class="helper">
+            <i class="glyphicon glyphicon-question-sign"></i>
+            <div class="helper-popup">
+                <?php echo $popups->get('randomize', "popup_randomize"); ?>
+            </div>
         </div>
 
+        <div class="slide-content container">
+            <div id="indicators-filters" class="holder"></div>
+            <div class="btns-holder">
+              <div class="holder">
+                  <a href="#" class="explore-filters-save-button btn btn-blue">Save</a>
+                  <a href="#" class="explore-filters-close-button btn btn-default">Close</a>
+              </div>
+            </div>
+        </div>
+        </div>
     </div>
 
+    <div class="container">
+        <div class="sort-columns details-row">
+            <div class="col-md-6">
+                <h2 class="horizontal_vis_block_name text-center">Loading...</h2>
+            </div>
+            <div class="col-md-3" id="chart_cpi_wrapper">
+                <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
+                <ul class="sort-info">
+                    <li><i class="icon-arrow-right"></i> <span id="cpi_4_dimensions_data">Loading...</span></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <span class="heading">Urban population</span>
+                <ul class="sort-info">
+                    <li><i class="icon-arrow-right"></i> <span class="horizontal_vis_block_population">Loading..</span> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="map-wrapper" class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="map-indicator-filter-wrapper">
+                        <div class="sort-holder">
+                            <ul class="sort-list">
+                                <li class="regions-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="regions" class="opener filter-open" href="#"><label class="top">REGION</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="regions-filters" class="regions-list subul">
+                                    </div>
+                                </li>
+                                <li class="countries-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="countries-filters" class="countries-list subul">
+                                    </div>
+                                </li>
+                                <li class="cities-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="cities-filters" class="cities-list subul">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php
+                    $curmapname = "main";
+                    include( TEMPLATEPATH .'/map.php' );
+                    ?>
+                    <div id="map-timeline-wrapper">
+                        <div id="map-slider-tooltip"></div>
+                        <div id="map-timeline">
+                            <?php for ($i = 1950; $i < 2050;$i++): ?><div class="slider-year" id="year-<?php echo $i; ?>"><?php if ($i == 1950) { echo '<div class="slider-year-inner-left"></div>';} ?><div class="slider-year-inner-white"></div></div><?php endfor; ?>
+                        </div>
+                    </div>
+                        <hr />
+                        <h4 class="legend-h4">Legend map colors</h4>
+                        <hr />
+                        <div class="row legend">
+                            <div class="col-md-4">
+                                <i class="map-indicator-filter-icon icon-yellow " style="border-color: rgba(253, 190, 44, 1);"></i><label class="top">City prosperity</label><br />
+
+                                <i class="map-indicator-filter-icon icon-green" style="border-color: rgba(164, 215, 42, 1);"></i><label class="top">Slum dwellers</label><br />
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(23, 131, 251, 1);"></i><label class="top">Population</label><br />
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(22, 220, 250, 1)"></i><label class="top">Streets</label><br />
+                            </div>
+                            <div class="col-md-4">
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(253, 23, 130, 1)"></i><label class="top">Transport</label><br />
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(254, 31, 23, 1)"></i><label class="top">Health</label><br />
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(23, 255, 31, 1)"></i><label class="top">Resilience</label><br />
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(248, 255, 23, 1)"></i><label class="top">Education</label><br />
+                            </div>
+                            <div class="col-md-4">
+
+                                <i class="map-indicator-filter-icon icon-blue" style="border-color: rgba(0, 0, 0, 1)"></i><label class="top">Crime</label><br />
+
+                                <i class="map-indicator-filter-icon icon-grey" style="border-color: rgba(182, 182, 182, 1)"></i><label class="top">Landarea</label><br />
+
+                                <i class="map-indicator-filter-icon icon-grey" style="border-color: rgba(182, 182, 182, 1)"></i><label class="top">Other data</label>
+                            </div>
+                        </div>
+                        <hr>
+                        <p>More information on these UN-Habitat indicators can be found <a href="#">here</a>.</p>
+                        <hr>
+                </div>
+                <div class="col-md-6">
+                    <?php include( TEMPLATEPATH .'/indicator-visualisations.php' ); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<div class="fav-alert alert alert-success" role="alert"></div>
 
 <?php get_template_part("footer", "scripts"); ?>
+
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/oipa/country.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/oipa/city.js"></script>
-
+<link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/explore.css" />
+<link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/city.css" />
+<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/explore.js"></script>
 <script>
-    Oipa.use_prefill = true;
-    Oipa.pageType = "indicator-country-page";
-    Oipa.mainSelection = new OipaIndicatorSelection(1);
+    Oipa.visualisation_size = 200;
+    Oipa.pageType = "indicators";
+    Oipa.max_prefill = 6;
+    Oipa.blank_visualizations_count = 6;
     Oipa.invisible_visualizations = ['land_allocated_to_street_index_city_core', 'cpi_6_dimensions'];
-    /*Oipa.mainSelection.indicator_options = {
-            chart_class: OipaBarChart,
-        }*/
+    Oipa.mainSelection = new OipaIndicatorSelection(1);
 
-    var map = new OipaIndicatorMap();
+    var map = new OipaIndicatorMap(true);
     map.max_circle_size = 2000;
     map.set_map("main-map", "topright");
     map.init();
+    map.map.setZoom(3);
 
     map.selection = Oipa.mainSelection;
     Oipa.maps.push(map);
-
-    OipaWidgetsBus.patch_map(map);
 
     var city = new OipaCity(<?php echo $city; ?>, map);
 
     OipaWidgetsBus.add_listener(city);
 
-    var filter = new UnhabitatInMapOipaIndicatorFilters();
+    var filter = new ExploreIndicatorFilters();
     Oipa.filter = filter;
-
     filter.filter_wrapper_div = "map-indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
-
-    /*filter.selection.indicator_options = {
-        chart_class: OipaCountryPieChart
-    }*/
-
-    <?php if (count($indicators)): ?>
-    <?php foreach ($indicators as $id => $indicator): ?>
-        filter.selection.add_indicator("<?php echo $indicator; ?>", "Loading...", "indicators");
-    <?php endforeach; ?>
-    <?php endif; ?>
-
-    filter.selection.update_selection("cities", "<?php echo $city; ?>", "Nairobi", "cities");
-
     filter.init();
 
+    <?php
+    $indicators = array();
+    if (isset($_GET['indicators']) && !empty($_GET['indicators'])) {
+        $indicators = explode(',', $_GET['indicators']);
+    }
 
-//filter.save(true);
+    foreach($cities as $city): ?>
+        filter.selection.update_selection("cities", <?php echo $city;  ?>, "Urban population – Countries", 'cities');
+    <?php endforeach; ?>
+
+    <?php if (count($indicators)): ?>
+        <?php foreach ($indicators as $indicator): ?>
+            filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", 'indicators');
+        <?php endforeach; ?>
+        filter.update_selection_after_filter_load(filter.selection);
+    <?php else: ?>
+        // //filter.randomize(5);
+        // filter.selection.add_indicator("hiv_prevalence_15_to_49_year", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("population", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("slum_proportion_living_urban", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("urban_population_countries", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
+    <?php endif; ?>
+
+    filter.update_selection_after_filter_load(filter.selection);
+        //filter.save(true);
+
+    OipaWidgetsBus.patch_map(map);
 
 </script>
+
+<?php get_template_part("footer", "bus_scripts"); ?>
 
 <?php get_footer(); ?>

@@ -10,8 +10,8 @@ $popups->init();
 ?>
 <div id="main">
     <!-- container-map -->
-    <div class="container-sort">
-        <div class="container">
+    <div class="container sort-holder">
+        <div class="container-sort sort-columns">
             <div class="row compare-controls-nav">
                 <div class="col-md-5">
                     <a id="reset-filters" class="btn btn-default" href="#">RESET FILTERS</a>
@@ -61,8 +61,8 @@ $popups->init();
             </div>
         </div>
     </div>
-    <div id="indicator-filter-wrapper" class="container-map container-sort row">
-        <div class="container">
+    <div id="indicator-filter-wrapper" class="container sort-holder">
+        <div class="container-map container-sort sort-columns">
         <nav id="indicators-pagination" class="pagination"></nav>
 
         <div class="helper">
@@ -83,6 +83,7 @@ $popups->init();
         </div>
         </div>
     </div>
+
     <div class="container">
         <div id="map-wrapper" class="container">
             <div class="row">
