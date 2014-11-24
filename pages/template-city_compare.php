@@ -13,6 +13,14 @@ get_header(); the_post(); ?>
         <div class="container-map">
             <div class="columns-holder">
                 <div class="holder">
+                    <div class="row city-names">
+                        <div class="col-md-6">
+                            <h2 class="compare-left-city-name"></h2>
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="compare-right-city-name"></h2>
+                        </div>
+                    </div>
                     <div id="compare-left-map-border" class="column">
                         <?php
                         $curmapname = "left";
@@ -66,17 +74,17 @@ Oipa.mainSelection.indicator_options = {
 }
 
 // Force refresh
-    var filter_div = "";
+var filter_div = "";
 
 var leftmap = new OipaCompareMap();
-leftmap.set_map("left-map");
+leftmap.set_map("left-map", "no_zoom");
 leftmap.compare_left_right = "left";
 
 OipaWidgetsBus.add_listener(leftmap);
 Oipa.maps.push(leftmap);
 
 var rightmap = new OipaCompareMap();
-rightmap.set_map("right-map");
+rightmap.set_map("right-map", "no_zoom");
 rightmap.compare_left_right = "right";
 
 OipaWidgetsBus.add_listener(rightmap);

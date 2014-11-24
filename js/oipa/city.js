@@ -31,6 +31,7 @@ function OipaCity(city_id, map, side, country_select) {
                 get_wiki_city_data(data.ascii_name, self.side);
                 self.name = data.ascii_name;
                 $('#compare-' + self.side + '-map-border .text-box').show();
+                $('h2.compare-' + self.side + '-city-name').show().html(data.ascii_name);
 
                 self.location = geo_point_to_latlng(data.location);
                 self.map.map.panTo(self.location).setZoom(8);

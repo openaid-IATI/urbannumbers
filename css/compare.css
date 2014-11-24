@@ -100,6 +100,9 @@
 #visualisation-block-wrapper .heading-holder h3, #visualisation-maps-block-wrapper .heading-holder h3 {
     margin-top: 0px;
 }
+#visualisation-block-wrapper .container-box {
+    margin: 0px;
+}
 .container-box .heading-holder {
     margin: 0px;
     padding: 0px;
@@ -262,4 +265,8 @@ nav#indicators-pagination li.active .btn-success {
 
 .selectric .label {
     font-weight: normal;
+}
+.box-content {
+    -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
 }

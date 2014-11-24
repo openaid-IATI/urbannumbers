@@ -28,7 +28,7 @@ function OipaMap(use_legend) {
         if(minZoom){ mapoptions.minZoom = minZoom; }
         if(maxZoom){ mapoptions.maxZoom = maxZoom; }
 
-        if (zoomposition) {
+        if (zoomposition || zoomposition == 'no_zoom') {
             mapoptions.zoomControl = false;
         }
 
@@ -36,10 +36,18 @@ function OipaMap(use_legend) {
         this.map = L.map(div_id, mapoptions).setView([10.505, 25.09], 2);
 
         if (zoomposition) {
-            new L.Control.Zoom({
-                position: zoomposition
-            }).addTo(this.map);
+            if (zoomposition == 'no_zoom') {
+                this.map.dragging.disable();
+                this.map.touchZoom.disable();
+                this.map.doubleClickZoom.disable();
+                this.map.scrollWheelZoom.disable();
+            } else {
+                new L.Control.Zoom({
+                    position: zoomposition
+                }).addTo(this.map);
+            }
         }
+        
 
         this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
             maxZoom: 12

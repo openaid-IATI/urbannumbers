@@ -1764,6 +1764,8 @@ img.aligncenter{
 	font-size:32px;
 	line-height:36px;
 	font-weight:normal;
+	font:32px/36px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    text-transform: uppercase;
 	color:#646b7f;
 }
 #twocolumns h2{
@@ -1915,7 +1917,6 @@ img.aligncenter{
 	left:0;
 	right:0;
 	height:2px;
-	background:url(../images/separator3.png) repeat-x;
 }
 .post-info:before{top:0;}
 .post-info:after{bottom:0;}

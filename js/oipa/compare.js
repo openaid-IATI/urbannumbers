@@ -4,7 +4,7 @@ var OipaCompare = {
     item1 : null,
     item2 : null,
     refresh_state : 0,
-    refresh_comparison: function(){
+    refresh_comparison: function () {
         leftmap.map.setView(this.item1.latlng, 10);
         rightmap.map.setView(this.item2.latlng, 10);
         $("#compare-left-title").text(this.item1.name);

@@ -983,3 +983,19 @@ form.registration-form span.input-placeholder-text {
     box-shadow: 0px 0px 0px;
     -webkit-box-shadow: 0px 0px 0px;;
 }
+
+.city-names {
+    padding-top: 10px;
+}
+
+.city-names h2 {
+    text-transform: uppercase;
+    font: 18px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}
+h2.compare-right-city-name {
+    padding-left: 7px;
+}
+
+.col-sm-12.border-bottom {
+    border-bottom: 1px solid #d0d1d3;
+}
