@@ -148,3 +148,13 @@ class Widget_Recent_Posts_From_Category extends WP_Widget {
 add_action('widgets_init', create_function('', 'return register_widget("Widget_Recent_Posts_From_Category");'));
 
 
+register_sidebar(
+    array (
+        'name' => __( 'About page sidebar', 'zzinclude' ),
+        'id' => 'about-page-sidebar',
+        'before_widget' => '<div class="row"><div class="col-md-12"><section class="content-box">',
+        'after_widget' => '<div class="clearfix"></div></section></div><div class="col-md-12"><div class="spacer"></div></div></div>',
+        'before_title' => '<header><h3>',
+        'after_title' => '</h3></header> ',
+    )
+);

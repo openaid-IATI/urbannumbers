@@ -90,26 +90,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 get_header(); the_post();
 
 ?>
+
+<link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/dashboard.css" />
 <div id="main" class="dashboard">
     <div class="main-container">
-        <section class="main-block">
+        <section class="main-block  container">
             <header class="heading-container">
-                <div class="container-custom">
+                <div class="container-custom container">
                     <h1>My Dashboard</h1>
                 </div>
             </header>
 
-            <div class="container-custom description">
                 <h2>Welcome to Urban Numbers</h2>
                 <p>Your dashboard contains items you have created and favourites from this platform. You can click on the items in the list or remove them. If you no longer wish to make use of this platform, simply remove your account.</p>
-            </div>
         </section>
     </div>
 
     <!-- main-container -->
     <div class="main-container">
         <a name="my-infographics"></a>
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
@@ -149,7 +149,7 @@ get_header(); the_post();
         </div>
 
 
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
@@ -190,7 +190,7 @@ get_header(); the_post();
         </div>
 
         <a name="city-data"></a>
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
@@ -235,7 +235,7 @@ get_header(); the_post();
             </div>
         </div>
 
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
@@ -284,7 +284,7 @@ get_header(); the_post();
     <!-- main-container -->
     <a name="account-settings"></a>
     <div class="main-container">
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">
@@ -324,7 +324,7 @@ get_header(); the_post();
 
     <!-- main-container -->
     <div class="main-container">
-        <div class="heading-container">
+        <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-8 col-sm-8">

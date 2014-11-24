@@ -7,10 +7,13 @@ $subtitle = get_field('subtitle');
 $single_image = get_field('single_image');
 $image_credits = get_field('image_credits');
 ?>
+<link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/about.css" />
+
 	<div id="main">
 		<div class="container">
 			<!-- twocolumns -->
 			<section id="twocolumns">
+                <br />
 				<header class="main-heading">
 					<h1><?php the_title(); ?></h1>
 				</header>
@@ -49,6 +52,8 @@ $image_credits = get_field('image_credits');
 						<div class="col-sm-4">
 						
 							<aside id="sidebar">
+                                <?php dynamic_sidebar('about-page-sidebar'); ?>
+                                
 								<?php related_entries(array(
 										// Pool options: these determine the "pool" of entities which are considered
 										'post_type' => array('post', 'page', 'dds'),
