@@ -1,0 +1,25 @@
+.heading-container h1{
+    text-transform: uppercase;
+    font: 24px/30px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    font-size: 35px;
+    color: #5f667f;
+}
+
+h2 {
+    text-transform: uppercase;
+    font: 24px/30px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}
+h4 {
+    text-transform: uppercase;
+    font: 18px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}
+.heading-container h3 {
+    text-transform: uppercase;
+    font: 18px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    color: #5f667f;
+    border-bottom: 1px solid #cdced2;
+    padding-bottom: 2px;
+}
+.heading-container .container-custom {
+    padding: 28px 0px 10px 0px;
+}

@@ -1,0 +1,23 @@
+#content .img-holder {
+    margin: 0px;
+}
+.post-info {
+    margin: 0px;
+    padding-bottom: 0px;
+}
+
+.post-content {
+    font: 14px/24px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
+}
+.post .small p {
+    font: 14px/24px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
+    
+}
+h2 {
+    text-transform: uppercase;
+    font: 24px/30px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}
+h4 {
+    text-transform: uppercase;
+    font: 18px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}
