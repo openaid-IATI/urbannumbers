@@ -85,16 +85,17 @@ get_header(); the_post(); ?>
                 <div class="sort-holder">
                     <div class="container ci-main">
                         <div class="ci-controls row">
-                            <div class="steps-nav col-md-9">
+                            <div class="steps-nav col-md-10">
                                 <ul>
                                   <li><a href="javascript: void(0)" class="step_0">Describe</a></li>
                                   <li><a href="javascript: void(0)" class="step_1">Select indicators</a></li>
                                   <li><a href="javascript: void(0)" class="step_2">Select regions</a></li>
                                   <li><a href="javascript: void(0)" class="step_3">Select countries</a></li>
                                   <li><a href="javascript: void(0)" class="step_4">Select cities</a></li>
+                                  <li><a href="javascript: void(0)" class="step_5">Create report</a></li>
                                 </ul>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <a href="javascript:void(0)" class="next_step btn btn-success">Next step</a>
                                 <a href="javascript: document.getElementById('infographic-form').submit()" class="save_btn btn btn-success">Create report</a>
                             </div>
@@ -260,6 +261,7 @@ get_header(); the_post(); ?>
 <div class="alert alert-danger" id="form-alert"></div>
 
 <?php get_template_part("footer", "scripts"); ?>
+<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/explore.js"></script>
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/create-infographic.css" />
 <script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers-create-infographic.js" type="text/javascript"></script>
 

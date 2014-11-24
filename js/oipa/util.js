@@ -170,6 +170,7 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 
 function humanReadableSize(number, units, no_suffix) {
     var thresh = 1000;
+    number = parseInt(number);
     if (number < thresh) {
         if (no_suffix == undefined) {
             return number.toFixed(2) + '%';

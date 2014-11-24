@@ -260,7 +260,8 @@ window.CI = null;
             1: _validate_first_step,
             2: _validate_second_step,
             3: _validate_second_step,
-            4: _validate_second_step
+            4: _validate_second_step,
+            5: _validate_second_step
         },
         nav_options: {
             4: function() {
