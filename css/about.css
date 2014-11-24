@@ -11,11 +11,14 @@
 }
 .post .small p {
     font: 14px/24px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
-    
+    margin: 10px 0 0 0px;
 }
 h2 {
     text-transform: uppercase;
     font: 24px/30px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+    border-bottom: 1px solid #cdced2;
+    padding-bottom: 5px;
+    padding-top: 30px;
 }
 h4 {
     text-transform: uppercase;
