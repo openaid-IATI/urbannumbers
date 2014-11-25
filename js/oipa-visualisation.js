@@ -305,9 +305,12 @@ function OipaVis () {
             e.preventDefault();
             // TO DO: on deletion of vis, remove vis from Oipa.visualisations
 
-            $(this).closest("li").hide(500, function(){
+            /*$(this).closest("li").hide(500, function(){
                 $(this).remove();
-            });
+            });*/
+
+            Oipa.mainSelection.indicators = Oipa.mainSelection.remove_from_selection('indicators', curchart.indicator);
+            Oipa.refresh();
         });
 
         $("section[data-indicator='"+curchart.indicator+"'][data-vis-type='"+curchart.type+"'] .btn-vis-zoom").click(function(e){
@@ -338,7 +341,7 @@ function OipaVis () {
 
     this.remove = function(){
         this.destroy();
-    }
+    };
 
 }
 
