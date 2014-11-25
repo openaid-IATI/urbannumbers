@@ -26,7 +26,6 @@
                 $args = array(
                     'post_type' => 'dds',
                     'posts_per_page' => 12,
-                    'author__in' => array(''),
                     'orderby' => 'author', 'order' => 'DESC'
                 );
                 $current_user = wp_get_current_user();
