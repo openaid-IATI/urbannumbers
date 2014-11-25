@@ -149,6 +149,8 @@ get_header(); the_post();
         </div>
 
 
+<!-- START HIDING - SAME AS THE OTHER FAVO BLOCK
+
         <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
@@ -188,6 +190,8 @@ get_header(); the_post();
                 </form>
             </div>
         </div>
+        
+        END HIDING -->
 
         <a name="city-data"></a>
         <div class="heading-container container">
