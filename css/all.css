@@ -47,11 +47,11 @@ body:before{
 /* styles for default page links */
 a{
 	text-decoration:none;
-	color:#00b2b3;
+	color: rgba(26,167,171, 0.8);
 }
 a:hover{
 	text-decoration:none;
-	color:#1aa7ab;
+	color: rgb(26,167,171);
 }
 a:active{background-color:transparent;}
 img{
