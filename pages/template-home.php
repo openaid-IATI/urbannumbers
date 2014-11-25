@@ -264,32 +264,8 @@ if (have_posts()) : ?>
         {
             color: "#FFBF00",
         });
-    var second = new OipaRegionPieInfographicsVis('slum_proportion_living_urban',
-        _regions,
-        {
-            divide_by: 100,
-            color: "#A3D900",
-            overlay_transform: function(chart_id_data) {
-                return chart_id_data.value.toFixed(1) + "%";
-            }
-        }
-    );
-    var third = new OipaRegionPieInfographicsVis('land_allocated_to_street_index_city_core',
-        _regions,
-        {
-            color: "#0074EC",
-            overlay_transform: function(chart_id_data) {
-                return parseFloat(chart_id_data.value) * 1000;
-            }
-        }
-    );
-
     first.selection = Oipa.mainSelection;
-    second.selection = Oipa.mainSelection;
-    third.selection = Oipa.mainSelection;
     first.init();
-    second.init();
-    third.init();
 
     Oipa.maps.push(map);
     OipaWidgetsBus.patch_map(map);
@@ -302,7 +278,7 @@ if (have_posts()) : ?>
             type: "Slum dwellers"
         });
         $('#chart_cpi').show();
-        map.refresh();
+        Oipa.refresh();
 
     } else {
         map.refresh();

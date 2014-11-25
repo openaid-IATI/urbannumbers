@@ -17,15 +17,15 @@ function OipaIndicatorMap(use_legend) {
         var str_indicators = get_parameters_from_selection(this.selection.indicators);
 
         return search_url + 'indicator-data/?format=json&countries__in=' + str_country + '&regions__in=' + str_region + '&cities__in=' + str_city + '&indicators__in=' + str_indicators;
-    }
+    };
 
     this.get_data = function(url) {
         var self = this;
         var _action = function(data) {
             self.refresh(data);
-        }
+        };
 
-        if (this._url_data_cache[url] == undefined) { // Get data and cache it
+        if (this._url_data_cache[url] === undefined) { // Get data and cache it
             // filters
             $.support.cors = true;
 
@@ -82,7 +82,7 @@ function OipaIndicatorMap(use_legend) {
 
     this.move_slider_to_available_year = function() {
         var year = this.selected_year;
-        if (year == null) {
+        if (year === null) {
             return;
         }
 
@@ -103,9 +103,9 @@ function OipaIndicatorMap(use_legend) {
             }
         }
 
-        for (var i = this.selected_year; i < 2100;i++) {
-            if (i in years){
-                return i;
+        for (var j = this.selected_year; j < 2100; j++) {
+            if (j in years){
+                return j;
             }
         }
 
@@ -113,7 +113,7 @@ function OipaIndicatorMap(use_legend) {
     };
 
     this.zoom_on_country = function() {
-    }
+    };
 
 }
 OipaIndicatorMap.prototype = new OipaMap();
@@ -123,7 +123,7 @@ OipaIndicatorMap.prototype.clear_circles = function() {
     $.each(this.locations, function(_, location) {
         location.clear();
     });
-}
+};
 
 OipaIndicatorMap.prototype.get_active_years = function(data) {
     var years = {min: null, max: null};
@@ -137,7 +137,7 @@ OipaIndicatorMap.prototype.get_active_years = function(data) {
         $.each(indicator.locs, function(_, loc) {
             var _years = Object.keys(loc.years);
             years.max = Math.max(years.max, Math.max.apply(null, _years));
-            if (years.min == null) {
+            if (years.min === null) {
                 years.min = _years[0];
             }
             years.min = Math.min(years.min, Math.min.apply(null, _years));
@@ -149,7 +149,7 @@ OipaIndicatorMap.prototype.get_active_years = function(data) {
         result[i] = i;
     }
     return result;
-}
+};
 
 OipaIndicatorMap.prototype.get_max_indicator_value = function(indicator_data) {
     var max = null;
@@ -158,13 +158,13 @@ OipaIndicatorMap.prototype.get_max_indicator_value = function(indicator_data) {
             return value;
         }));
 
-        if (max == null) {
+        if (max === null) {
             max = loc_max;
         }
         max = Math.max(max, loc_max);
     });
     return max;
-}
+};
 
 OipaIndicatorMap.prototype.show_data_on_map = function(data) {
     var self = this;
@@ -180,7 +180,7 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
 
         $.each(indicator_data.locs, function(_, location_data) {
             var latlng = L.latLng(location_data.latitude, location_data.longitude);
-            if (self.locations[latlng] == undefined) {
+            if (self.locations[latlng] === undefined) {
                 self.locations[latlng] = new OipaIndicatorLocation(
                     self,
                     location_data.id,
@@ -209,10 +209,11 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
         });
     });
 
+
     if (self.use_fit_bounds) {
-        setTimeout(function() {
-            self.map.fitBounds(self.bounds);
-        }, 500);
+
+        return;
+        self.map.fitBounds(self.bounds);
     }
 
 
@@ -223,7 +224,7 @@ OipaIndicatorMap.prototype.refresh_circles = function(year) {
     $.each(this.locations, function(_, location) {
         location.set_year(year);
     });
-}
+};
 
 OipaIndicatorMap.prototype.refresh = function(data) {
     if (!data) {
@@ -249,4 +250,4 @@ OipaIndicatorMap.prototype.init = function() {
     $("#map-slider-tooltip div").html(self.selected_year);
     $("#map-slider-tooltip").val(self.selected_year);
     $("#year-" + self.selected_year).addClass("active");
-}
+};

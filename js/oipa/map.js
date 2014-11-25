@@ -47,7 +47,7 @@ function OipaMap(use_legend) {
                 }).addTo(this.map);
             }
         }
-        
+
 
         this.tl = L.tileLayer('https://{s}.tiles.mapbox.com/v3/'+this.basemap+'/{z}/{x}/{y}.png', {
             maxZoom: 12
