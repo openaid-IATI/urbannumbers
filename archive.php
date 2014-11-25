@@ -26,13 +26,8 @@
                 $args = array(
                     'post_type' => 'dds',
                     'posts_per_page' => 12,
-                    'orderby' => 'author', 'order' => 'DESC'
+                    'order' => 'DESC'
                 );
-                $current_user = wp_get_current_user();
-                if ($current_user->ID > 0) {
-                    $args['author__in'][] = $current_user->ID;
-                }
-
                 $loop = new WP_Query($args);
                 while ($loop->have_posts()):
                     $loop->the_post();
