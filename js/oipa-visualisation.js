@@ -310,6 +310,7 @@ function OipaVis () {
             });*/
 
             Oipa.mainSelection.indicators = Oipa.mainSelection.remove_from_selection('indicators', curchart.indicator);
+            $('input[value="' + curchart.indicator + '"]').prop('checked', '');
             Oipa.refresh();
         });
 
