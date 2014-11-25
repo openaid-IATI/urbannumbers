@@ -1,6 +1,6 @@
-<?php 
-get_header(); 
-the_post(); 
+<?php
+get_header();
+the_post();
 $subtitle = get_field('subtitle');
 $user_name = get_field('user-name');
 $visualisations = get_field('visualisations');
@@ -24,7 +24,7 @@ $popups->init();
         <div class="container-sort sort-columns">
             <div class="row compare-controls-nav">
                 <div class="col-md-5">
-                    <a href="/create-infographic/" class="save_btn btn btn-success">Create new</a>
+                    <a href="/build-data-report/" class="save_btn btn btn-success">Create new</a>
 
                 </div>
                 <div class="col-md-3">
@@ -189,7 +189,7 @@ $(function() {
 
     // Force refresh
     OipaWidgetsBus.use_force_refresh = true;
-    
+
     <?php
     foreach($visualisations as $key => $value) {
         if (!in_array($key, array('regions', 'countries', 'cities'))) {
