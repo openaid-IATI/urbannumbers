@@ -22,11 +22,25 @@
 				<?php } ?>
 			</header>
 			<ul class="thumbnails">
-				<?php while (have_posts()) : the_post(); ?>
+                <?php
+                $args = array(
+                    'post_type' => 'dds',
+                    'posts_per_page' => 12,
+                    'author__in' => array(''),
+                    'orderby' => 'author', 'order' => 'DESC'
+                );
+                $current_user = wp_get_current_user();
+                if ($current_user->ID > 0) {
+                    $args['author__in'][] = $current_user->ID;
+                }
+
+                $loop = new WP_Query($args);
+                while ($loop->have_posts()):
+                    $loop->the_post();
+                ?>
 					<?php get_template_part('blocks/content', get_post_type()); ?>
 				<?php endwhile; ?>
 			</ul>
-			<?php get_template_part('blocks/pager'); ?>
 		</section>
 		<?php else : ?>
 			<?php get_template_part('blocks/not_found'); ?>
