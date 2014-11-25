@@ -113,7 +113,7 @@ get_header(); the_post();
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>My infographics</h3>
+                        <h3>My datareports</h3>
                     </div>
                 </div>
                 <form action="" id="dash-mi-form" method="POST">
@@ -149,11 +149,13 @@ get_header(); the_post();
         </div>
 
 
+<!-- START HIDING - SAME AS THE OTHER FAVO BLOCK
+
         <div class="heading-container container">
             <div class="container-custom">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>My favorite infographics</h3>
+                        <h3>My favorite datareports</h3>
                     </div>
                 </div>
                 <form action="" id="dash-mf-form" method="POST">
@@ -188,6 +190,8 @@ get_header(); the_post();
                 </form>
             </div>
         </div>
+        
+        END HIDING -->
 
         <a name="city-data"></a>
         <div class="heading-container container">
