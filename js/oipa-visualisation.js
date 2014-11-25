@@ -545,7 +545,11 @@ function OipaActiveChart(id, options) {
 
     this.get_chart_options = function(defaults) {
         defaults = defaults == undefined ? {} : defaults;
-        return $.extend({scaleLabel: "<%=humanReadableSize(value, undefined, true)%>"}, defaults, this.opt('chart_options', {}));
+        return $.extend({
+            scaleLabel: "<%=humanReadableSize(value, undefined, true)%>",
+            scaleFontSize: 10,
+            tooltipFontSize: 12
+        }, defaults, this.opt('chart_options', {}));
     }
 
     this.init_chart = function(chart_data) {
@@ -557,6 +561,8 @@ function OipaActiveChart(id, options) {
 
         return this.chart_obj.Line(chart_data, this.get_chart_options({
                 scaleLabel: "<%=value%>",
+                pointDotRadius: 2,
+                pointHitDetectionRadius: 0,
                 tooltipTemplate: "<%=label%>: " + _human_readable,
                 multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%>" + _human_readable
             }));
