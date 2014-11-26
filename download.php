@@ -23,6 +23,7 @@ class Downloader {
             "Content-Disposition: attachment; filename=indicator_data_" . $this->code . "." . $this->format . ";",
             "Content-Type: text/" . $this->format . ";"
         );
+        return array();
         return $headers;
     }
 
@@ -67,15 +68,12 @@ class Downloader {
                          'category',
                          'indicator',
                          'indicator_friendly',
-                         'max_value',
                          'type_data',
 
                          // Location information
-                         'longitude',
                          'latitude',
-                         'region_id',
+                         'longitude',
                          'country_id',
-                         'city_id',
                          'name',
 
                          // Yearly data
@@ -92,22 +90,18 @@ class Downloader {
                 $indicator['category'],
                 $indicator['indicator'],
                 $indicator['indicator_friendly'],
-                $indicator['max_value'],
                 $indicator['type_data']
             );
 
             foreach ($indicator['locs'] as $id => $location) {
                 $line = $line_base;
-                $line[] = $location['longitude'];
                 $line[] = $location['latitude'];
-                $line[] = $location['region_id'];
+                $line[] = $location['longitude'];
 
                 if (!empty($location['country_id'])) {
                     $line[] = $location['country_id'];
-                    $line[] = $location['id'];
                 } else {
                     $line[] = $location['id'];
-                    $line[] = '';
                 }
                 $line[] = $location['name'];
 
