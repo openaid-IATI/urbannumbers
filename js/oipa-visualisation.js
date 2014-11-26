@@ -386,7 +386,7 @@ function OipaActiveChart(id, options) {
         this.get_data(url, true);
     };
 
-    this.get_locations_slice = function(locations, limit) {
+    this.get_locations_slice = function(locations, year, limit) {
         var self = this;
         var _years = [];
         var _counter = 0;
@@ -409,12 +409,24 @@ function OipaActiveChart(id, options) {
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(" + _default_color + ",1)",
                 data: $.map(i.years, function(v, y) {
+                    if (year !== undefined) {
+                        var _diff = year - parseInt(y);
+                        if (_diff <= 5 && _diff >= -5) {
+                        } else {
+                            return;
+                        }
+                    }
+
                     if (_years.indexOf(y) == -1) {
                         _years.push(y);
                     }
 
                     if (self.type_data == '1000') {
                         v = v * 1000;
+                    }
+
+                    if (v < 0) {
+                        v = 0;
                     }
 
                     return [v];
@@ -495,7 +507,7 @@ function OipaActiveChart(id, options) {
         self.type_data = data.type_data;
 
         if (self.opt('all_years')) {
-            var _ = self.get_locations_slice(data.locs, limit);
+            var _ = self.get_locations_slice(data.locs, year, limit);
             data_slice = _[1];
             base_data.datasets = data_slice;
             base_data.labels = _[0];
@@ -586,7 +598,7 @@ function OipaActiveChart(id, options) {
             _human_readable = "<%= humanReadableSize(value, undefined, true) %>";
         }
 
-        return this.chart_obj.Line(chart_data, this.get_chart_options({
+        return this.chart_obj.Bar(chart_data, this.get_chart_options({
                 scaleLabel: this.get_scale_label(),
                 pointDotRadius: 2,
                 pointHitDetectionRadius: 0,
@@ -673,11 +685,11 @@ function OipaActiveRoundChart(id, options) {
     OipaActiveChart.call(this, id, options);
 
     var _original_get_locations_slice = this.get_locations_slice;
-    this.get_locations_slice = function(locations, limit) {
+    this.get_locations_slice = function(locations, year, limit) {
         var self = this;
 
         if (self.mutate_to_bar_chart) {
-            return _original_get_locations_slice.apply(self, [locations, limit]);
+            return _original_get_locations_slice.apply(self, [locations, year, limit]);
         }
 
         var _years = [];
@@ -944,10 +956,9 @@ function OipaBlankChart(object_id, options) {
     }
 
     var _chart_type = [
-        "OipaLineChart",
         "OipaBarChart",
         "OipaRadarChart",
-    ][Math.floor((Math.random() * 3))];
+    ][Math.floor((Math.random() * 2))];
 
     OipaBlankChartFactory.prototype = Object.create(window[_chart_type].prototype);
     return new OipaBlankChartFactory(object_id, options, _chart_type);

@@ -103,7 +103,6 @@ function InfographicsChart(object_id, options) {
 
 
     var _chart_type = [
-        "OipaLineChart",
         "OipaBarChart",
         "OipaPieChart",
         "OipaPolarChart",
