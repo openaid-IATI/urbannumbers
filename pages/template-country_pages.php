@@ -221,6 +221,10 @@ get_header(); the_post();
     ];
     Oipa.mainSelection = new OipaIndicatorSelection(1);
 
+    Oipa.mainSelection.indicator_options = {
+        all_years: true
+    }
+
     var map = new OipaIndicatorMap(true);
     map.max_circle_size = 9000;
     map.set_map("main-map", "topright");
