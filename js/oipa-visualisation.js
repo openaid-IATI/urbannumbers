@@ -719,7 +719,8 @@ function OipaActiveRoundChart(id, options) {
             year = self.get_last_data_year(data);
         }
 
-        if (self.opt('all_years')) {
+        if (self.opt('all_years') && 0) {
+            console.log(this.indicator);
             return self.get_locations_slice(data.locs, year, limit);
         } else {
             var _chart_data =  $.map(self.get_year_slice(data.locs, year, limit), function(i, _) {

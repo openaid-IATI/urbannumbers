@@ -194,13 +194,25 @@ var Oipa = {
         if (this.use_prefill && this.mainSelection.indicators.length === 0 && indicator_data !== undefined) {
             // Add 3 indicators if nothing selected yet
             var _prefill_count = 0;
-            $.each(indicator_data, function(key, i) {
-                if (_prefill_count == thisoipa.max_prefill) {
-                    return;
+            $.each(this.invisible_visualizations, function(_, key) {
+                if (indicator_data[key] !== undefined) {
+                    if (_prefill_count == thisoipa.max_prefill) {
+                        return;
+                    }
+                    thisoipa.mainSelection.add_indicator(key, indicator_data[key].indicator_friendly, "indicators");
+                    _prefill_count++;
                 }
-                thisoipa.mainSelection.add_indicator(key, i.indicator_friendly, "indicators");
-                _prefill_count++;
             });
+
+            if (_prefill_count !== thisoipa.max_prefill) {
+                $.each(indicator_data, function(key, i) {
+                    if (_prefill_count == thisoipa.max_prefill) {
+                        return;
+                    }
+                    thisoipa.mainSelection.add_indicator(key, i.indicator_friendly, "indicators");
+                    _prefill_count++;
+                });
+            }
         }
 
         var data = this.clean_blank_visualisations(this.mainSelection.indicators);

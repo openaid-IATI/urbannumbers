@@ -29,7 +29,7 @@ function OipaCountry() {
             // refresh map
             OipaCompare.refresh_comparison();
         }
-    }
+    };
 
     this.set_data = function() {
 

@@ -100,7 +100,7 @@ $popups->init();
             <div class="col-md-3" id="chart_cpi_wrapper">
                 <span id="horizontal_vis_block_year_ind_1_name" class="heading">City prosperity</span>
                 <ul class="sort-info">
-                    <li><i class="icon-arrow-right"></i> <span id="cpi_4_dimensions_data">Loading...</span></li>
+                    <li><i class="icon-arrow-right"></i> <span id="cpi_6_dimensions_data">Loading...</span></li>
                 </ul>
             </div>
             <div class="col-md-3">
@@ -230,7 +230,8 @@ $popups->init();
         filter.update_selection_after_filter_load(filter.selection);
     <?php else: ?>
         // //filter.randomize(5);
-        // filter.selection.add_indicator("hiv_prevalence_15_to_49_year", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban population – Countries", 'indicators');
+        // filter.selection.add_indicator("cpi_6_dimensions", "Urban population – Countries", 'indicators');
         // filter.selection.add_indicator("population", "Urban population – Countries", 'indicators');
         // filter.selection.add_indicator("slum_proportion_living_urban", "Urban population – Countries", 'indicators');
         // filter.selection.add_indicator("urban_population_cities", "Urban population – Countries", 'indicators');
