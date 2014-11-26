@@ -1,14 +1,6 @@
 <!-- twocolumns -->
-<section id="twocolumns">
-	<div class="twocolumns-frame">
-		<!-- content -->
-		<div id="content">
-			<!-- post -->
-			<article class="post">
-				<h1><?php _e('Not Found', 'base'); ?></h1>
-				<p><?php _e('Sorry, but you are looking for something that isn\'t here.', 'base'); ?></p>
-				<?php get_search_form(); ?>
-			</article>
-		</div>
-	</div>
-</section>
+
+<div class="container text-center">
+    <h1 style="text-transform:uppercase; margin-top: 100px; font: 36px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif">OHOH, Could not find what you were looking for.</h1>
+    <img width='500px' src="<?php echo get_template_directory_uri(); ?>/images/not_found.png" alt="Not found." />
+</div>
