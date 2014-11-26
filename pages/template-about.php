@@ -13,24 +13,23 @@ $image_credits = get_field('image_credits');
     <div class="container">
         <!-- twocolumns -->
         <section id="twocolumns">
-            <br />
-            <header class="main-heading">
-                <h1><?php the_title(); ?></h1>
-            </header>
             <div class="twocolumns-holder">
                 <div class="row">
                     <div class="col-sm-8">
                         <!-- content -->
                         <div id="content">
+                            <header class="main-heading">
+                                <h1><?php the_title(); ?></h1>
+                            </header>
                             <!-- post -->
                             <article class="post" itemscope itemtype="http://schema.org/Person">
-                                
+
                                 <?php if($single_image): ?>
                                 <div class="img-holder"><img src="<?php echo $single_image['sizes']['post748x288']; ?>" alt=""></div>
                                 <?php endif; ?>
                                 <div class="post-info">
                                     <div class="row">
-                        
+
                                         <?php if($image_credits): ?>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <dl>
@@ -40,7 +39,7 @@ $image_credits = get_field('image_credits');
                                         </div>
                                         <?php endif; ?>
                                     </div>
-                            
+
                                 </div>
                                 <div class="post-content small">
                                     <?php the_content(); ?>
@@ -48,12 +47,12 @@ $image_credits = get_field('image_credits');
                             </article>
                         </div>
                     </div>
-            
+
                     <div class="col-sm-4">
-                    
+
                         <aside id="sidebar">
                             <?php dynamic_sidebar('about-page-sidebar'); ?>
-                            
+
                             <?php related_entries(array(
                                     // Pool options: these determine the "pool" of entities which are considered
                                     'post_type' => array('post', 'page', 'dds'),
@@ -76,7 +75,7 @@ $image_credits = get_field('image_credits');
                             </div>
                             <?php endif; ?>
                         </aside>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </section>
