@@ -48,7 +48,7 @@ function make_parameter_string_from_budget_selection(arr){
                 }
           }
         }
-  
+
         if (gte != '' && gte != '99999999999'){
                 str += '&total_budget__gt=' + gte;
         }
@@ -77,7 +77,7 @@ function get_indicator_parameters_from_selection(arr){
         return str + selection_type_str;
 }
 
-function make_parameter_string_from_selection(arr, parameter_name){ 
+function make_parameter_string_from_selection(arr, parameter_name){
 
         var parameters = get_parameters_from_selection(arr);
         if (parameters !== ''){
@@ -88,10 +88,10 @@ function make_parameter_string_from_selection(arr, parameter_name){
 }
 
 function make_parameter_string_from_query_selection(str, parameter_name){
-        if (str != ""){
-                var str = "&"+parameter_name+"=" + str;
+        if (str !== ""){
+                str = "&"+parameter_name+"=" + str;
         } else {
-                var str = "";
+                str = "";
         }
         return str;
 }
@@ -103,7 +103,7 @@ function get_activity_based_parameters_from_selection(selection) {
         var str_budget = make_parameter_string_from_budget_selection(selection.budgets);
         var str_start_year = make_parameter_string_from_selection(selection.start_planned_years, "start_planned__in");
         var str_donor = make_parameter_string_from_selection(selection.donors, "participating_organisations__in");
-        var str_reporting_organisation = make_parameter_string_from_selection(selection.reporting_organisations, "reporting_organisation__in"); 
+        var str_reporting_organisation = make_parameter_string_from_selection(selection.reporting_organisations, "reporting_organisation__in");
         var str_search = make_parameter_string_from_query_selection(selection.query, "query");
         var str_country_search = make_parameter_string_from_query_selection(selection.country, "country");
         var str_region_search = make_parameter_string_from_query_selection(selection.region, "region");
@@ -172,21 +172,21 @@ function humanReadableSize(number, units, no_suffix) {
     var thresh = 1000;
     number = parseInt(number);
     if (number < thresh) {
-        if (no_suffix == undefined) {
+        if (no_suffix === undefined) {
             return number.toFixed(2) + '%';
         } else {
-            return number.toFixed(2)
+            return number.toFixed(2);
         }
     }
 
-    var units = ['K','M','B'];
+    units = ['K','M','B'];
     var u = -1;
     do {
         number /= thresh;
         ++u;
     } while(number >= thresh);
 
-    if (units[u] == undefined) {
+    if (units[u] === undefined) {
         return number.toFixed(2);
     }
     return number.toFixed(2) + ' ' + units[u];
@@ -213,7 +213,7 @@ function oipa_get_color(category) {
         'Education': '248, 255, 23',
         'Crime': '0, 0, 0',
         'default': '182, 182, 182'
-    }
+    };
     if (_colors[category] !== undefined) {
         return _colors[category];
     }
@@ -221,19 +221,20 @@ function oipa_get_color(category) {
 }
 
 function toFixed(x) {
-  if (Math.abs(x) < 1.0) {
-    var e = parseInt(x.toString().split('e-')[1]);
-    if (e) {
-        x *= Math.pow(10,e-1);
-        x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+    var e;
+    if (Math.abs(x) < 1.0) {
+        e = parseInt(x.toString().split('e-')[1]);
+        if (e) {
+            x *= Math.pow(10,e-1);
+            x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+        }
+    } else {
+        e = parseInt(x.toString().split('+')[1]);
+        if (e > 20) {
+            e -= 20;
+            x /= Math.pow(10,e);
+            x += (new Array(e+1)).join('0');
+        }
     }
-  } else {
-    var e = parseInt(x.toString().split('+')[1]);
-    if (e > 20) {
-        e -= 20;
-        x /= Math.pow(10,e);
-        x += (new Array(e+1)).join('0');
-    }
-  }
-  return x;
+    return x;
 }

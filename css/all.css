@@ -1745,6 +1745,7 @@ img.aligncenter{
 .action-list a:hover .icon-share{background-position:-325px -50px;}
 /* twocolumns */
 
+#twocolumns{padding:25px;}
 #twocolumns .twocolumns-holder{
 	position:relative;
 	padding:0 0 40px 0;
