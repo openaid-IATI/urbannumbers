@@ -19,7 +19,7 @@ class Downloader {
         $headers = array(
             "Cache-Control: public",
             "Content-Description: File Transfer",
-            "Content-Length: ". $content_length .";",
+            //"Content-Length: ". $content_length .";",
             "Content-Disposition: attachment; filename=indicator_data_" . $this->code . "." . $this->format . ";",
             "Content-Type: text/" . $this->format . ";"
         );
@@ -82,12 +82,13 @@ class Downloader {
                          'year',
                          'value',);
         echo(implode(',', $columns));
+        echo("\n");
 
 
         $decoded = json_decode($data, $assoc=True);
 
         foreach ($decoded as $id => $indicator) {
-            $line = array(
+            $line_base = array(
                 $indicator['category'],
                 $indicator['indicator'],
                 $indicator['indicator_friendly'],
@@ -96,6 +97,7 @@ class Downloader {
             );
 
             foreach ($indicator['locs'] as $id => $location) {
+                $line = $line_base;
                 $line[] = $location['longitude'];
                 $line[] = $location['latitude'];
                 $line[] = $location['region_id'];
@@ -107,10 +109,11 @@ class Downloader {
                     $line[] = $location['id'];
                     $line[] = '';
                 }
+                $line[] = $location['name'];
 
                 foreach ($location['years'] as $year => $value) {
-                    print(implode(',', $line) . ',' . $year . ',' . $value);
-                    print("\n");
+                    echo(implode(',', $line) . ',' . $year . ',' . $value);
+                    echo("\n");
                 }
             }
         }
