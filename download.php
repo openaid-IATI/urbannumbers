@@ -23,7 +23,6 @@ class Downloader {
             "Content-Disposition: attachment; filename=indicator_data_" . $this->code . "." . $this->format . ";",
             "Content-Type: text/" . $this->format . ";"
         );
-        return array();
         return $headers;
     }
 
