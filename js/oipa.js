@@ -196,11 +196,7 @@ var Oipa = {
             var _prefill_count = 0;
             $.each(this.invisible_visualizations, function(_, key) {
                 if (indicator_data[key] !== undefined) {
-                    if (_prefill_count == thisoipa.max_prefill) {
-                        return;
-                    }
                     thisoipa.mainSelection.add_indicator(key, indicator_data[key].indicator_friendly, "indicators");
-                    _prefill_count++;
                 }
             });
 

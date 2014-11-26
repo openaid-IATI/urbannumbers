@@ -209,11 +209,8 @@ OipaIndicatorMap.prototype.show_data_on_map = function(data) {
         });
     });
 
-
     if (self.use_fit_bounds) {
-
-        return;
-        self.map.fitBounds(self.bounds);
+        setTimeout(function() {self.map.fitBounds(self.bounds);}, 500);
     }
 
 

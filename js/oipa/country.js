@@ -158,7 +158,7 @@ function OipaCountry() {
         map.map.setView(this.center_longlat);
         var bounds = this.get_markers_bounds();
         if (bounds.length !== 0) {
-            map.map.fitBounds(bounds);
+            setTimeout(function() {map.map.fitBounds(bounds);}, 500);
         } else {
             map.map.setZoom(6);
         }
