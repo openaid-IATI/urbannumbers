@@ -391,7 +391,7 @@ function OipaActiveChart(id, options) {
         var _years = [];
         var _counter = 0;
         return [_years, $.map(locations, function(i) {
-            var _colors = ['71, 143, 180', '118, 161, 70', '73, 99, 144', '163, 158, 146', '134, 84, 149', '86, 125, 130'];
+            var _colors = ['0, 179, 181', '118, 161, 70', '73, 99, 144', '163, 158, 146', '134, 84, 149', '86, 125, 130'];
 
             var _default_color = _colors[_counter];
 
@@ -411,7 +411,7 @@ function OipaActiveChart(id, options) {
                 data: $.map(i.years, function(v, y) {
                     if (year !== undefined) {
                         var _diff = year - parseInt(y);
-                        if (_diff <= 5 && _diff >= -5) {
+                        if (_diff <= 15 && _diff >= -15 && parseInt(y) % 5 === 0) {
                         } else {
                             return;
                         }
@@ -515,12 +515,12 @@ function OipaActiveChart(id, options) {
             data_slice = self.get_year_slice(data.locs, year, limit);
             base_data.datasets = [{
                 label: data.indicator_friendly,
-                fillColor: (data_slice[0].color === undefined) ? "rgba(151,187,205,1)" : data_slice[0].color,
-                strokeColor: (data_slice[0].stroke_color === undefined) ? "rgba(151,187,205,2)" : data_slice[0].stroke_color,
-                pointColor: (data_slice[0].color === undefined) ? "rgba(151,187,205,1)" : data_slice[0].color,
+                fillColor: (data_slice[0].color === undefined) ? "rgba(0, 179, 181, 1)" : data_slice[0].color,
+                strokeColor: (data_slice[0].stroke_color === undefined) ? "rgba(0, 179, 181, 2)" : data_slice[0].stroke_color,
+                pointColor: (data_slice[0].color === undefined) ? "rgba(0, 179, 181, 1)" : data_slice[0].color,
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                pointHighlightStroke: "rgba(0, 179, 181, 1)",
                 data: $.map(data_slice, function(loc, _) { return loc.value;})
             }];
 
@@ -654,8 +654,7 @@ function OipaActiveChart(id, options) {
                         $.each(chart_data.labels, function(_id, label) {
                             self.get_chart_labels(self.chart)[_id] = label;
 
-                            var _points = self.get_chart_points(self.chart)[_id];
-                            if (_points !== undefined) {
+                            if (self.get_chart_points(self.chart) && self.get_chart_points(self.chart)[_id] !== undefined) {
                                 self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
                                 self.get_chart_points(self.chart)[_id].label = label;
                             }
