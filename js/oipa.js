@@ -21,7 +21,7 @@ var Oipa = {
     // Functions
     refresh: function(data) {
 
-        if (data == undefined) {
+        if (data === undefined) {
             this.refresh_visualisations();
             return this.get_data(this.get_url());
         }
@@ -172,7 +172,7 @@ var Oipa = {
             'transport_share_countries_cycling': OipaPieChart,
             'transport_share_countries_walking': OipaPieChart,
             'total_railway_route': OipaPieChart
-        }
+        };
 
         if (chart_map[indicator.id] !== undefined) {
             chart_class = chart_map[indicator.id];
@@ -191,7 +191,7 @@ var Oipa = {
     create_visualisations : function(indicator_data, forced_chart_class) {
         var thisoipa = this;
 
-        if (this.use_prefill && this.mainSelection.indicators.length == 0 && indicator_data !== undefined) {
+        if (this.use_prefill && this.mainSelection.indicators.length === 0 && indicator_data !== undefined) {
             // Add 3 indicators if nothing selected yet
             var _prefill_count = 0;
             $.each(indicator_data, function(key, i) {
@@ -227,13 +227,13 @@ var Oipa = {
         // for each indicator
         jQuery.each(data, function(key, value) {
             if (thisoipa.invisible_visualizations.indexOf(value.id) !== -1 ||
-                (indicator_data && !thisoipa.is_blank_visualization(value) && indicator_data[value.id] == undefined)) {
+                (indicator_data && !thisoipa.is_blank_visualization(value) && indicator_data[value.id] === undefined)) {
                 return;
             }
 
-            if (thisoipa.visualisations[value.id] == undefined) {
+            if (thisoipa.visualisations[value.id] === undefined) {
                 var _chart_class = OipaBarChart;
-                if (forced_chart_class == undefined) {
+                if (forced_chart_class === undefined) {
                     _chart_class = thisoipa.get_chart_class(value);
 
                     if (thisoipa.is_blank_visualization(value)) {

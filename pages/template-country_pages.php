@@ -204,6 +204,7 @@ get_header(); the_post();
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/explore.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/city.css" />
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/explore.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/countryIndicatorFilters.js"></script>
 <script>
     Oipa.visualisation_size = 200;
     Oipa.pageType = "indicators";
@@ -231,7 +232,7 @@ get_header(); the_post();
     Oipa.maps.push(map);
 
 
-    var filter = new ExploreIndicatorFilters();
+    var filter = new CountryIndicatorFilters();
     Oipa.filter = filter;
     filter.filter_wrapper_div = "map-indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
