@@ -250,6 +250,7 @@ if (have_posts()) : ?>
     Oipa.pageType = "indicators";
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     Oipa.mainSelection.url.get_selection_from_url();
+    Oipa.invisible_visualizations = ['cpi_6_dimensions'];
 
     var map = new OipaIndicatorMap();
     map.set_map("main-map", null, 3, 3);
@@ -269,20 +270,15 @@ if (have_posts()) : ?>
 
     Oipa.maps.push(map);
     OipaWidgetsBus.patch_map(map);
-    if (Oipa.mainSelection.indicators.length == 0) {
 
-        Oipa.mainSelection.indicators = [];
-        Oipa.mainSelection.indicators.push({
-            id: 'cpi_6_dimensions',
-            name: "Urban population – Countries",
-            type: "Slum dwellers"
-        });
-        $('#chart_cpi').show();
-        Oipa.refresh();
-
-    } else {
-        map.refresh();
-    }
+    Oipa.mainSelection.indicators = [];
+    Oipa.mainSelection.indicators.push({
+        id: 'cpi_6_dimensions',
+        name: "Urban population – Countries",
+        type: "Slum dwellers"
+    });
+    $('#chart_cpi').show();
+    Oipa.refresh();
 
 </script>
 
