@@ -1410,7 +1410,7 @@
 			for (var i=0; i<=this.steps; i++){
 				this.yLabels.push(template(this.templateString,{value:(this.min + (i * this.stepValue)).toFixed(stepDecimalPlaces)}));
 			}
-			this.yLabelWidth = (this.display && this.showLabels) ? longestText(this.ctx,this.font,this.yLabels) : 0;
+			this.yLabelWidth = ((this.display && this.showLabels) ? longestText(this.ctx,this.font,this.yLabels) : 0) + 2;
 		},
 		addXLabel : function(label){
 			this.xLabels.push(label);
