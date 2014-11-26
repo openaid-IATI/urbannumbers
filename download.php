@@ -72,6 +72,7 @@ class Downloader {
                          // Location information
                          'latitude',
                          'longitude',
+                         'region_id',
                          'country_id',
                          'name',
 
@@ -96,6 +97,7 @@ class Downloader {
                 $line = $line_base;
                 $line[] = $location['latitude'];
                 $line[] = $location['longitude'];
+                $line[] = $location['region_id'];
 
                 if (!empty($location['country_id'])) {
                     $line[] = $location['country_id'];
