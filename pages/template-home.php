@@ -38,7 +38,7 @@ if (have_posts()) : ?>
                             <?php if($subtitle): ?><p><?php echo $subtitle; ?></p><?php endif; ?>
                         </div>
                         <?php endif; ?>
-                        <?php if($start_exploring): ?><a href="<?php echo $start_exploring; ?>" class="btn btn-primary">Start exploring</a><?php endif; ?>
+                        <?php if($start_exploring): ?><a href="<?php echo $start_exploring; ?>" class="btn btn-primary">Start exploring city data</a><?php endif; ?>
                     </div>
                     <article class="box">
                     <?php the_field('info'); ?>
