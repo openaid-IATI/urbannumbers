@@ -1,5 +1,5 @@
 function geo_point_to_latlng(point_string){
-    if (point_string == null) {
+    if (point_string === null) {
         return;
     }
         point_string = point_string.replace("POINT (", "");
@@ -49,10 +49,10 @@ function make_parameter_string_from_budget_selection(arr){
           }
         }
 
-        if (gte != '' && gte != '99999999999'){
+        if (gte !== '' && gte != '99999999999'){
                 str += '&total_budget__gt=' + gte;
         }
-        if (lte != '' && lte != '0'){
+        if (lte !== '' && lte != '0'){
                 str += '&total_budget__lt=' + lte;
         }
 
@@ -168,14 +168,21 @@ function perform_cors_ajax_call_with_refresh_callback(url, current_object){
 }
 
 
-function humanReadableSize(number, units, no_suffix) {
+function humanReadableSize(number, units, no_suffix, no_number_formatting) {
     var thresh = 1000;
-    number = parseInt(number);
+    var _format_number = function(num) {
+        if ((num - parseInt(num)) === 0) {
+            return num.toFixed(0);
+        }
+
+        return num.toFixed(2);
+    };
+    number = parseFloat(number);
     if (number < thresh) {
         if (no_suffix === undefined) {
-            return number.toFixed(2) + '%';
+            return _format_number(number) + '%';
         } else {
-            return number.toFixed(2);
+            return _format_number(number);
         }
     }
 
@@ -187,9 +194,9 @@ function humanReadableSize(number, units, no_suffix) {
     } while(number >= thresh);
 
     if (units[u] === undefined) {
-        return number.toFixed(2);
+        return _format_number(number);
     }
-    return number.toFixed(2) + ' ' + units[u];
+    return _format_number(number) + ' ' + units[u];
 }
 
 function string_to_id(name) {

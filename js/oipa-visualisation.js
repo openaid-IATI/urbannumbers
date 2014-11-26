@@ -556,19 +556,42 @@ function OipaActiveChart(id, options) {
         }, defaults, this.opt('chart_options', {}));
     };
 
+    this.get_scale_label = function() {
+        var label = "<%= value %>";
+        if (this.type_data == '1000') {
+            label = '<%= humanReadableSize(value, undefined, true, true) %>';
+        }
+        return label;
+    };
+
+    this.get_chart_tooltip = function(tooltip_base) {
+        var tooltip = '<%= humanReadableSize(value, undefined, true) %>';
+        if (this.type_data == 'p') {
+            tooltip = '<%= humanReadableSize(value) %>';
+        }
+        if (this.type_data == '1000' || this.type_data == 'n') {
+            tooltip = '<%= humanReadableSize(value, undefined, true, true) %>';
+        }
+        if (this.indicator.substring(0, 4) == 'cpi_') {
+            tooltip = "<%= humanReadableSize(value, undefined, true) %>";
+        }
+
+        return tooltip_base + tooltip;
+    };
+
     this.init_chart = function(chart_data) {
         // Defaults to Line
-        var _human_readable = "<%= humanReadableSize(value) %>";
+        var _human_readable = "<%= humanReadableSize(value, undefined, true) %>";
         if (this.indicator.substring(0, 4) == 'cpi_') {
             _human_readable = "<%= humanReadableSize(value, undefined, true) %>";
         }
 
         return this.chart_obj.Line(chart_data, this.get_chart_options({
-                scaleLabel: "<%=value%>",
+                scaleLabel: this.get_scale_label(),
                 pointDotRadius: 2,
                 pointHitDetectionRadius: 0,
-                tooltipTemplate: "<%=label%>: " + _human_readable,
-                multiTooltipTemplate: "<%if (datasetLabel){%><%=datasetLabel%>:2 <%}%>" + _human_readable
+                tooltipTemplate: this.get_chart_tooltip("<%=label%>: "),
+                multiTooltipTemplate: this.get_chart_tooltip("<%if (datasetLabel){%><%=datasetLabel%>: <%}%>")
             }));
     };
 
@@ -745,7 +768,13 @@ function OipaBarChart(id, options) {
     OipaActiveChart.call(this, id, options);
     this.type = "OipaBarChart";
     this.init_chart = function(chart_data) {
-        var _human_readable = '<%= humanReadableSize(value) %>';
+        var _human_readable = '<%= humanReadableSize(value, undefined, true) %>';
+        if (this.type_data == 'p') {
+            _human_readable = '<%= humanReadableSize(value) %>';
+        }
+        if (this.type_data == '1000' || this.type_data == 'n') {
+            _human_readable = '<%= humanReadableSize(value, undefined, true, true) %>';
+        }
         if (this.indicator.substring(0, 4) == 'cpi_') {
             _human_readable = "<%= humanReadableSize(value, undefined, true) %>";
         }

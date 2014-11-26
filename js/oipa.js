@@ -135,7 +135,7 @@ var Oipa = {
     },
 
     get_chart_class: function(indicator) {
-        var chart_class =  OipaBarChart;
+        var chart_class =  OipaLineChart;
 
         var chart_map = {
             'cpi_6_dimensions': OipaPieChart,
