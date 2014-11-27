@@ -21,6 +21,7 @@ function OipaIndicatorMap(use_legend) {
 
     this.get_data = function(url) {
         var self = this;
+
         var _action = function(data) {
             self.refresh(data);
         };

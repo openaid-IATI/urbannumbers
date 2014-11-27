@@ -59,7 +59,7 @@ function OipaCountry() {
 
 
     this.get_cities_within_country = function() {
-        return;
+        //return;
         // This might get really slow when we add more data (it loads all indicator data from the country)
         // TO DO: add functionality to only get Urbnrs data from the indicator-data call -> &categories__in=Public%20spaces,Slum%20dwellers,City%20prosperity
         // this func is in indicator-filter-options already.
@@ -74,44 +74,77 @@ function OipaCountry() {
             contentType: "application/json",
             dataType: 'json',
             success: function(data) {
-                thiscountry.cities = new Object();
-
-                // loop through indicators and get city id, name, latitude, longitude
-                var years = {min: null, max: null};
-                $.each(data, function(_, indicator) {
-                    if (typeof(indicator) == "string") {
-                        // do not continue if indicator is undefined
-                        return;
-                    }
-
-                    $.each(indicator.locs, function(_, loc) {
-                        if (!(loc.id in thiscountry.cities) && !(isNaN(loc.id))) {
-                            thiscountry.cities[loc.id] = {"id": loc.id, "name": loc.name, "latitude": loc.latitude, "longitude": loc.longitude};
-
-                            // show cities in country as circle with orange color, capital city as green color
-                            color = "#008b85";
-                            radius = 30000;
-                            opacity = 0.7;
-                            if (thiscountry.capital_city !== null && loc.name == thiscountry.capital_city.name){
-                                color = "#f06002";
-                                radius = 50000;
-                                opacity = 0.9;
-                            }
-
-                            var circle = L.circle([loc.latitude, loc.longitude], radius, {
-                                    color: "#666",
-                                    weight: '0.5',
-                                    fillColor: color,
-                                    fillOpacity: opacity
-                            }).bindPopup('<a href="/compare-cities/city-pages/?cities='+loc.id+'"><h4>'+loc.name+'</h4></a>').addTo(map.map);
-
-                        }
-
-                    });
-                });
+                thiscountry.cities = {};
+                thiscountry.locations = {};
+                map.show_data_on_map(data);
+                // //
+                // // // loop through indicators and get city id, name, latitude, longitude
+                // // var years = {min: null, max: null};
+                // // $.each(data, function(_, indicator) {
+                // //     if (typeof(indicator) == "string") {
+                // //         // do not continue if indicator is undefined
+                // //         return;
+                // //     }
+                // //
+                // //     var indicator_max = map.get_max_indicator_value(indicator);
+                // //
+                // //     $.each(indicator.locs, function(_, location_data) {
+                // //         var latlng = L.latLng(location_data.latitude, location_data.longitude);
+                // //
+                // //         if (thiscountry.locations[latlng] === undefined) {
+                // //             thiscountry.locations[latlng] = new OipaIndicatorLocation(
+                // //                 map,
+                // //                 location_data.id,
+                // //                 location_data.name,
+                // //                 latlng,
+                // //                 map.active_years);
+                // //             map.bounds.extend(latlng);
+                // //         }
+                // //
+                // //         var location_type = 'country';
+                // //         if (location_data.country_id !== undefined) {
+                // //             location_type = 'city';
+                // //         }
+                // //         thiscountry.locations[latlng].set_type(location_type);
+                // //
+                // //         thiscountry.locations[latlng].add_indicator_data(
+                // //             indicator.indicator,
+                // //             indicator.indicator_friendly,
+                // //             indicator.category,
+                //         //     indicator.type_data,
+                //         //     location_data.years,
+                //         //     indicator_max
+                //         // );
+                //
+                //         //thiscountry.locations[latlng].set_year(last_year);
+                //         //
+                //         /*if (!(loc.id in thiscountry.cities) && !(isNaN(loc.id))) {
+                //             thiscountry.cities[loc.id] = {"id": loc.id, "name": loc.name, "latitude": loc.latitude, "longitude": loc.longitude};
+                //
+                //             // show cities in country as circle with orange color, capital city as green color
+                //             color = "#008b85";
+                //             radius = 30000;
+                //             opacity = 0.7;
+                //             if (thiscountry.capital_city !== null && loc.name == thiscountry.capital_city.name){
+                //                 color = "#f06002";
+                //                 radius = 50000;
+                //                 opacity = 0.9;
+                //             }
+                //
+                //             var circle = L.circle([loc.latitude, loc.longitude], radius, {
+                //                     color: "#666",
+                //                     weight: '0.5',
+                //                     fillColor: color,
+                //                     fillOpacity: opacity
+                //             }).bindPopup('<a href="/compare-cities/city-pages/?cities='+loc.id+'"><h4>'+loc.name+'</h4></a>').addTo(map.map);
+                //
+                //         }*/
+                //
+                //     });
+                // });
             }
         });
-    }
+    };
 
     this.get_markers_bounds = function() {
         var minlat,
@@ -197,7 +230,7 @@ function OipaCountry() {
 
         $(selector).html("N/A");
 
-        if (data == undefined) {
+        if (data === undefined) {
             $.each(map.locations, function(_, location) {
                 if (location.id == self.id && location.circles[type] !== undefined) {
                     var _value = location.circles[type].get_value() * 1000;
@@ -207,7 +240,7 @@ function OipaCountry() {
         } else {
             console.log(data);
         }
-    }
+    };
 }
 
 
@@ -221,7 +254,7 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
         // Register event in event bus
         OipaWidgetsBus.add_listener(this);
         return;
-    }
+    };
 
 
     self.normalize_data_for_pie = function(chart_data, chart_id) {

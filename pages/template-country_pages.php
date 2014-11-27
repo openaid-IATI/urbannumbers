@@ -204,6 +204,7 @@ get_header(); the_post();
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/explore.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/city.css" />
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/explore.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/countryIndicatorMap.js"></script>
 <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/js/countryIndicatorFilters.js"></script>
 <script>
     Oipa.visualisation_size = 200;
@@ -225,8 +226,8 @@ get_header(); the_post();
         all_years: true
     }
 
-    var map = new OipaIndicatorMap(true);
-    map.max_circle_size = 9000;
+    var map = new CountryIndicatorMap(true);
+    map.max_circle_size = 100000;
     map.set_map("main-map", "topright");
     map.use_fit_bounds = false;
     map.init();

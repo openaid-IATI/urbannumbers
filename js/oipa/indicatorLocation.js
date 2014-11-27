@@ -7,19 +7,19 @@ OipaIndicatorLocation = function(map, id, name, latlng, active_years) {
     this.type = undefined;
 
     this.circles = {};
-}
+};
 
 OipaIndicatorLocation.prototype.add_indicator_data = function(id, name, category, type_data, years, max_value) {
-    if (this.circles[id] == undefined) {
+    if (this.circles[id] === undefined) {
         var color = 'rgb(' + oipa_get_color(category) + ')';
         this.circles[id] = new OipaIndicatorCircle(this, id, name, type_data, color, 0.6);
     }
     this.circles[id].set_data(this.mutate_years(years), max_value);
-}
+};
 
 OipaIndicatorLocation.prototype.set_type = function(type) {
     this.type = type;
-}
+};
 
 OipaIndicatorLocation.prototype.set_year = function(year) {
     $.each(this.circles, function(id, circle) {
@@ -27,13 +27,13 @@ OipaIndicatorLocation.prototype.set_year = function(year) {
     });
 
     this.update_popup_content();
-}
+};
 
 OipaIndicatorLocation.prototype.refresh = function() {
     $.each(this.circles, function(_, circle) {
         circle.refresh();
     });
-}
+};
 
 OipaIndicatorLocation.prototype.update_popup_content = function () {
     var base_url = '/compare-cities/country-pages/?countries=' + this.id;
@@ -50,7 +50,7 @@ OipaIndicatorLocation.prototype.update_popup_content = function () {
             return;
         }
         content.push('<div class="line ' + _even_odd + '">' + circle.name + ': ' + circle.get_human_friendly_value() + '</div>');
-        if (_even_odd == '') {
+        if (_even_odd === '') {
             _even_odd = 'odd';
         } else {
             _even_odd = '';
@@ -63,14 +63,14 @@ OipaIndicatorLocation.prototype.update_popup_content = function () {
     $.each(this.circles, function(_, circle) {
         circle.set_popup(content);
     });
-}
+};
 
 OipaIndicatorLocation.prototype.clear = function() {
     $.each(this.circles, function(_, circle) {
         circle.destroy();
     });
     this.circles = {};
-}
+};
 
 OipaIndicatorLocation.prototype.mutate_years = function(years) {
     var year_keys = Object.keys(years);
@@ -102,16 +102,16 @@ OipaIndicatorLocation.prototype.mutate_years = function(years) {
     };
 
     if (_.min_years > _.min_active) {
-        for (i = _.min_active; i < _.min_years; i++) {
-            years[i] = years[_.min_years];
+        for (var k = _.min_active; k < _.min_years; k++) {
+            years[k] = years[_.min_years];
         }
     }
 
     if (_.max_years < _.max_active) {
-        for (i = _.max_years + 1; i <= _.max_active; i++) {
-            years[i] = years[_.max_years];
+        for (var j = _.max_years + 1; j <= _.max_active; j++) {
+            years[j] = years[_.max_years];
         }
     }
 
     return years;
-}
+};

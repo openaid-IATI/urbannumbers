@@ -409,7 +409,20 @@ function OipaActiveChart(id, options) {
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(" + _default_color + ",1)",
                 data: $.map(i.years, function(v, y) {
-                    if (year !== undefined) {
+                    var _available_years = Object.keys(i.years),
+                        _min_year = Math.min.apply(null, _available_years),
+                        _max_year = Math.max.apply(null, _available_years);
+
+                    if (year !== undefined &&
+                        _available_years.length > 5) {
+                        if (year - _max_year > 0) {
+                            year = _max_year;
+                        }
+
+                        if (year - _min_year < -0) {
+                            year = _min_year;
+                        }
+
                         var _diff = year - parseInt(y);
                         if (_diff <= 15 && _diff >= -15 && parseInt(y) % 5 === 0) {
                         } else {
@@ -464,13 +477,24 @@ function OipaActiveChart(id, options) {
                             value = years[_last_year];
                         }
                     }
-
                 }
             } else {
                 value = years[_year_keys[0]];
             }
             if (value === null) {
                 value = years[year];
+            }
+
+            if (value === undefined) {
+                var _max_year = Math.max.apply(null, _year_keys),
+                    _min_year = Math.min.apply(null, _year_keys);
+
+                if (year - _max_year > 0) {
+                    value = years[_max_year];
+                }
+                if (_min_year - year > 0) {
+                    value = years[_min_year];
+                }
             }
 
             return [{
@@ -719,8 +743,7 @@ function OipaActiveRoundChart(id, options) {
             year = self.get_last_data_year(data);
         }
 
-        if (self.opt('all_years') && 0) {
-            console.log(this.indicator);
+        if (self.opt('all_years') && !self.opt('disable_all_years', true)) {
             return self.get_locations_slice(data.locs, year, limit);
         } else {
             var _chart_data =  $.map(self.get_year_slice(data.locs, year, limit), function(i, _) {

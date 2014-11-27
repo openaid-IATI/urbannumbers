@@ -10,7 +10,13 @@ var OipaWidgetsBus = {
             var _ = _original_refresh_circles.apply(this, [year]);
             OipaWidgetsBus.trigger_event('year_changed', [year]);
             return _;
-        }
+        };
+        var _original_move_slider_to_available_year = map.move_slider_to_available_year;
+        map.move_slider_to_available_year = function(year) {
+            var _ = _original_move_slider_to_available_year.apply(this, [year]);
+            OipaWidgetsBus.trigger_event('year_changed', [year]);
+            return _;
+        };
         this.patch_refresh(map);
     },
 
