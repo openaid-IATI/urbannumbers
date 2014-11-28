@@ -253,7 +253,9 @@ if (have_posts()) : ?>
     Oipa.invisible_visualizations = ['cpi_6_dimensions'];
 
     var map = new OipaIndicatorMap();
-    map.set_map("main-map", null, 3, 3);
+    map.set_map("main-map", null, 2, 2);
+
+    map.max_circle_size = 500000;
     map.init();
 
     map.selection = Oipa.mainSelection;
