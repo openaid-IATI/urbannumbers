@@ -34,6 +34,7 @@ var register_url = "http://localhost:18088/rest-auth/register/";
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-widgets.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-indicators.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa-visualisation.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/CPIChart.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/unhabitat/indicatorFilters.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/urbannumbers.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/in-map-oipa-indicator-filters.js"></script>

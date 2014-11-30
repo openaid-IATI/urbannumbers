@@ -109,15 +109,16 @@ ExploreIndicatorFilters.prototype.load_indicator_paginate_listeners = function()
         $(this).find("span.urbnnrs-arrow").toggleClass("urbnnrs-arrow-active");
         $(this).closest(".filter-indicator-type-dropdown").children(".filter-indicator-type-inner").toggle(500);
     });
-}
+};
 
 ExploreIndicatorFilters.prototype.reset_filters = function() {
+    jQuery("#indicator-filter-wrapper input[type=checkbox]").attr('checked', false);
     this.selection.clean('indicators');
     this.selection.clean('countries');
     this.selection.clean('cities');
     this.selection.clean('regions');
     this.save(true);
-}
+};
 
 ExploreIndicatorFilters.prototype.randomize = function(max_indicators) {
     var self = this;

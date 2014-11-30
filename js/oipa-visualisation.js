@@ -448,7 +448,7 @@ function OipaActiveChart(id, options) {
         }).slice(0, limit)];
     };
 
-    this.get_year_slice = function(locations, year, limit) {
+    this.get_year_slice = function(locations, year, limit, do_not_slice) {
         var self = this;
         // Get last year slice if year is null
 
@@ -498,6 +498,7 @@ function OipaActiveChart(id, options) {
             }
 
             return [{
+                id: location.id,
                 value: value,
                 color: location.color,
                 stroke_color: location.stroke_color,
@@ -508,7 +509,11 @@ function OipaActiveChart(id, options) {
             return a.value < b.value ? -1 : (a.value > b.value ? 1 : 0);
         });
         _mapped.reverse();
-        return _mapped.slice(0, limit);
+
+        if (do_not_slice === undefined) {
+            return _mapped.slice(0, limit);
+        }
+        return _mapped;
     };
 
     this.get_last_data_year = function(data) {
@@ -636,6 +641,9 @@ function OipaActiveChart(id, options) {
     };
 
     this.get_chart_labels = function(chart) {
+        if (chart.scale === undefined) {
+            return [];
+        }
         return chart.scale.xLabels;
     };
 
@@ -647,9 +655,9 @@ function OipaActiveChart(id, options) {
         }
 
         if (!data || data[self.indicator] === undefined) {
-
             return;
         }
+
         $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").hide();
         $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
 
@@ -676,7 +684,10 @@ function OipaActiveChart(id, options) {
                 if (chart_data.labels) {
                     $.each(chart_data.datasets, function(_id, cd) {
                         $.each(chart_data.labels, function(_id, label) {
-                            self.get_chart_labels(self.chart)[_id] = label;
+                            var _labels = self.get_chart_labels(self.chart);
+                            if (_labels !== undefined) {
+                                _labels[_id] = label;
+                            }
 
                             if (self.get_chart_points(self.chart) && self.get_chart_points(self.chart)[_id] !== undefined) {
                                 self.get_chart_points(self.chart)[_id].value = chart_data.datasets[0].data[_id];
@@ -837,11 +848,14 @@ OipaBarChart.prototype = Object.create(OipaActiveChart.prototype);
 function OipaRadarChart(id, options) {
     OipaActiveChart.call(this, id, options);
     this.type = "OipaRadarChart";
+
+    var _original_init_chart = this.init_chart;
     this.init_chart = function(chart_data) {
+        if (this.mutate_to_bar_chart) {
+            return _original_init_chart.apply(this, [chart_data]);
+        }
+
         return this.chart_obj.Radar(chart_data, this.get_chart_options());
-    };
-    this.get_chart_labels = function(chart) {
-        return chart.scale.labels;
     };
     return this;
 }

@@ -138,7 +138,7 @@ var Oipa = {
         var chart_class =  OipaBarChart;
 
         var chart_map = {
-            'cpi_6_dimensions': OipaPieChart,
+            'cpi_6_dimensions': OipaCPIChart,
             'cpi_composite_street_connectivity_index': OipaPieChart,
             'cpi_4_dimensions': OipaPieChart,
             'cpi_5_dimensions': OipaPieChart,

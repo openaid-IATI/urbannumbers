@@ -68,7 +68,7 @@ Oipa.pageType = "compare";
 Oipa.blank_visualizations_count = 10;
 Oipa.mainSelection = new OipaCompareSelection(1);
 Oipa.mainSelection.indicator_options = {
-    chart_class: OipaCompareBarChart,
+    //chart_class: OipaCompareBarChart,
     chart_reset: true,
     all_years: true
 }

@@ -15,7 +15,7 @@ function OipaIndicatorFilters(){
         } else {
             return true;
         }
-    }
+    };
 
     this.get_url = function(selection, parameters_set) {
         // get url from filter selection object

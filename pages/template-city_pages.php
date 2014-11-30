@@ -187,7 +187,6 @@ $popups->init();
     Oipa.blank_visualizations_count = 6;
     Oipa.invisible_visualizations = [
         'land_allocated_to_street_index_city_core',
-        'cpi_6_dimensions'
     ];
     Oipa.mainSelection = new OipaIndicatorSelection(1);
     Oipa.mainSelection.indicator_options = {
