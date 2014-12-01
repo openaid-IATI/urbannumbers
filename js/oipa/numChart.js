@@ -35,16 +35,19 @@ function OipaNumChart(id, options) {
     this.format_year_data = function(data, year, limit) {
         var chart_data = _original_format_year_data.apply(this, [data, year, limit]);
 
-        var _div;
-        if ($("div.widget[data-indicator='" + this.indicator + "'] div.num").get().length === 0) {
-            _div = document.createElement('div');
-            _div.className = 'num';
-            $("div.widget[data-indicator='" + this.indicator + "']").get()[0].appendChild(_div);
-        } else {
-            _div = $("div.widget[data-indicator='" + this.indicator + "'] div.num").get()[0];
+        if (!this.mutate_to_bar_chart) {
+            var _div;
+            if ($("div.widget[data-indicator='" + this.indicator + "'] div.num").get().length === 0) {
+                _div = document.createElement('div');
+                _div.className = 'num';
+                $("div.widget[data-indicator='" + this.indicator + "']").get()[0].appendChild(_div);
+            } else {
+                _div = $("div.widget[data-indicator='" + this.indicator + "'] div.num").get()[0];
+            }
+
+            _div.innerHTML = chart_data[0].value;
         }
 
-        _div.innerHTML = chart_data[0].value;
         return chart_data;
     };
 
