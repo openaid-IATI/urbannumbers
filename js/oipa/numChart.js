@@ -43,7 +43,7 @@ function OipaNumChart(id, options) {
 
         _div.innerHTML = $.map(chart_data, function(_data) {
             if (_data.label !== 'Rest') {
-                return "<b>" + _data.label + '</b><br />' + self.format_static_num(_data.value);
+                return "<b>" + self.format_static_num(_data.value) + '</b><br />' + _data.label;
             }
         });
         //_div.innerHTML = this.format_static_num(chart_data[0].value);
@@ -80,7 +80,7 @@ function OipaNumChart(id, options) {
 
             _div.innerHTML = $.map(chart_data, function(_data) {
                 if (_data.label !== 'Rest') {
-                    return "<b>" + _data.label + '</b><br />' + self.format_static_num(_data.value);
+                    return "<b>" + self.format_static_num(_data.value) + '</b><br />' + _data.label;
                 }
             });
         }
