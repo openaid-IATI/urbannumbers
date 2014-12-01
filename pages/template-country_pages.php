@@ -96,7 +96,7 @@ get_header(); the_post();
         <div class="helper">
             <i class="glyphicon glyphicon-question-sign"></i>
             <div class="helper-popup">
-                <?php echo $popups->get('randomize', "popup_indicators"); ?>
+                <?php echo $popups->get('indicators', "popup_indicators"); ?>
             </div>
         </div>
 
