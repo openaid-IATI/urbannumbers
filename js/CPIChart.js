@@ -106,7 +106,18 @@ function OipaCPIChart(id, options) {
         }
     };
 
+    var _original_init_chart = this.init_chart;
+    this.init_chart = function(chart_data) {
+        if (this.mutate_to_bar_chart) {
+            return _original_init_chart.apply(this, [chart_data]);
+        }
 
+        return this.chart_obj.Radar(chart_data, this.get_chart_options({
+            tooltipTitleFontSize: 10,
+            tooltipFontSize: 10,
+            tooltipTitleFontStyle: "normal"
+        }));
+    };
 
     return this;
 }

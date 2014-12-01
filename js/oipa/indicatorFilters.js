@@ -19,10 +19,14 @@ function OipaIndicatorFilters(){
 
     this.get_url = function(selection, parameters_set) {
         // get url from filter selection object
+        var cururl = search_url + "indicator-filter-options/?format=json";
         if (parameters_set){
-            var cururl = search_url + "indicator-filter-options/?format=json" + parameters_set;
+            cururl += parameters_set;
         } else {
-            var cururl = search_url + "indicator-filter-options/?format=json" + "&indicators__in=" + get_parameters_from_selection(this.selection.indicators) + "&regions__in=" + get_parameters_from_selection(this.selection.regions) + "&countries__in=" + get_parameters_from_selection(this.selection.countries) + "&cities__in=" + get_parameters_from_selection(this.selection.cities);
+            cururl += "&indicators__in=" + get_parameters_from_selection(this.selection.get('indicators', []));
+            cururl += "&regions__in=" + get_parameters_from_selection(Oipa.mainSelection.get('regions', []));
+            cururl += "&countries__in=" + get_parameters_from_selection(Oipa.mainSelection.get('countries', []));
+            cururl += "&cities__in=" + get_parameters_from_selection(this.selection.get('cities', []));
         }
         return cururl;
     };

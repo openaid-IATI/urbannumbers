@@ -116,6 +116,36 @@ $popups->init();
         <div id="map-wrapper" class="container">
             <div class="row">
                 <div class="col-md-6">
+                    <div id="map-indicator-filter-wrapper" style="display: none;">
+                        <div class="sort-holder">
+                            <ul class="sort-list">
+                                <li class="regions-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="regions" class="opener filter-open" href="#"><label class="top">REGION</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="regions-filters" class="regions-list subul">
+                                    </div>
+                                </li>
+                                <li class="countries-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="countries-filters" class="countries-list subul">
+                                    </div>
+                                </li>
+                                <li class="cities-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="cities-filters" class="cities-list subul">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <?php
                     $curmapname = "main";
                     include( TEMPLATEPATH .'/map.php' );
@@ -158,7 +188,7 @@ $popups->init();
                             </div>
                         </div>
                         <hr>
-                        <p>More information on these UN-Habitat indicators can be found <a href="#">here</a>.</p>
+                        <p>More information on these UN-Habitat indicators can be found <a href="/about/">here</a>.</p>
                         <hr>
                 </div>
                 <div class="col-md-6">
@@ -208,17 +238,16 @@ $popups->init();
 
     var filter = new CountryIndicatorFilters();
     Oipa.filter = filter;
-    filter.filter_wrapper_div = "map-indicator-filter-wrapper";
+    filter.filter_wrapper_div = "indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
-    filter.init();
 
     <?php
     $indicators = array();
     if (isset($_GET['indicators']) && !empty($_GET['indicators'])) {
         $indicators = explode(',', $_GET['indicators']);
     }
-
-    foreach($cities as $city): ?>
+    ?>
+    <?php foreach($cities as $city): ?>
         filter.selection.update_selection("cities", <?php echo $city;  ?>, "Urban population – Countries", 'cities');
     <?php endforeach; ?>
 
@@ -238,6 +267,7 @@ $popups->init();
         // filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
     <?php endif; ?>
 
+    filter.init();
     filter.update_selection_after_filter_load(filter.selection);
         //filter.save(true);
 

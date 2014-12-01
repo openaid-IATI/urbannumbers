@@ -1347,7 +1347,14 @@
 			if (this.x > this.chart.width/2){
 				this.x -= this.xOffset + this.width;
 			} else {
-				this.x += this.xOffset;
+				if (this.width > this.chart.width) {
+					this.x = 0;
+				} else if (this.chart.width - (this.width + this.x) < 0) {
+					//this.x =
+					this.x += this.chart.width - (this.width + this.x);
+				} else {
+					//this.x += this.xOffset;
+				}
 			}
 
 
@@ -1646,7 +1653,8 @@
 	Chart.RadialScale = Chart.Element.extend({
 		initialize: function(){
 			this.size = min([this.height, this.width]);
-			this.drawingArea = (this.display) ? (this.size/2) - (this.fontSize/2 + this.backdropPaddingY) : (this.size/2);
+			//this.drawingArea = (this.display) ? (this.size/2) - (this.fontSize/2) + this.backdropPaddingY) : (this.size/2);
+			this.drawingArea = (this.display) ? (this.size/2 - this.fontSize/2) : (this.size/2);
 		},
 		calculateCenterOffset: function(value){
 			// Take into account half font size + the yPadding of the top value
@@ -1870,7 +1878,7 @@
 							ctx.closePath();
 						}
 						// Extra 3px out for some label spacing
-						var pointLabelPosition = this.getPointPosition(i, this.calculateCenterOffset(this.max) + 5);
+						var pointLabelPosition = this.getPointPosition(i, this.calculateCenterOffset(this.max) - 5);
 						ctx.font = fontString(this.pointLabelFontSize,this.pointLabelFontStyle,this.pointLabelFontFamily);
 						ctx.fillStyle = this.pointLabelFontColor;
 
@@ -1897,8 +1905,9 @@
 						} else {
 							ctx.textBaseline = 'top';
 						}
+						ctx.textAlign = 'center';
 
-						//ctx.fillText(this.labels[i], pointLabelPosition.x, pointLabelPosition.y);
+						ctx.fillText(this.labels[i], pointLabelPosition.x, pointLabelPosition.y);
 					}
 				}
 			}

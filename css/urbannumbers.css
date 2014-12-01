@@ -999,3 +999,9 @@ h2.compare-right-city-name {
 .col-sm-12.border-bottom {
     border-bottom: 1px solid #d0d1d3;
 }
+
+.widget div.num {
+    min-height: 205px;
+    padding-top: 80px;
+    font:42px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
+}

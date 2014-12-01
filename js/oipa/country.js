@@ -153,7 +153,7 @@ function OipaCountry() {
             maxlng,
             first = true;
 
-        if (this.polygon == undefined) {
+        if (this.polygon === undefined) {
             return [];
         }
 
@@ -161,30 +161,36 @@ function OipaCountry() {
             min = min !== undefined ? min : coordinate;
             max = max !== undefined ? max : coordinate;
             return [Math.min(coordinate, min), Math.max(coordinate, max)];
-        }
+        };
 
         for (var i = 0; i < this.polygon.coordinates.length; i++) {
             for (var y = 0; y < this.polygon.coordinates[i].length; y++) {
-                if (this.polygon.coordinates[i][y].length == 0) {
+                if (this.polygon.coordinates[i][y].length === 0) {
                     continue;
                 }
                 if (typeof(this.polygon.coordinates[i][y][0]) == 'number') {
                     var _tmp = _get_max_min(this.polygon.coordinates[i][y][1], minlat, maxlat);
-                    minlat = _tmp[0], maxlat = _tmp[1];
+                    minlat = _tmp[0];
+                    maxlat = _tmp[1];
+
                     var _tmp = _get_max_min(this.polygon.coordinates[i][y][0], minlng, maxlng);
-                    minlng = _tmp[0], maxlng = _tmp[1];
+                    minlng = _tmp[0];
+                    maxlng = _tmp[1];
                 } else {
                     for (var x  =0; x < this.polygon.coordinates[i][y].length; x++) {
                         var _tmp = _get_max_min(this.polygon.coordinates[i][y][x][1], minlat, maxlat);
-                        minlat = _tmp[0], maxlat = _tmp[1];
+                        minlat = _tmp[0];
+                        maxlat = _tmp[1];
+
                         var _tmp = _get_max_min(this.polygon.coordinates[i][y][x][0], minlng, maxlng);
-                        minlng = _tmp[0], maxlng = _tmp[1];
+                        minlng = _tmp[0];
+                        maxlng = _tmp[1];
                     }
                 }
             }
         }
         return [[minlat, minlng],[maxlat, maxlng]];
-    }
+    };
 
     this.init_country_page = function() {
         // use polygon to get outter bounds -> to zoom in
@@ -201,7 +207,7 @@ function OipaCountry() {
 
         // cities
         this.get_cities_within_country();
-    }
+    };
 
     this.refresh_data = function(data) {
         this.update_population(map.selected_year, 'urban_population_countries', '#horizontal_vis_block_year_ind_3_value');
@@ -211,7 +217,7 @@ function OipaCountry() {
 
         this.update_population(map.selected_year, 'total_length_road', '#horizontal_vis_block_chart_road');
         this.update_population(map.selected_year, 'income_gini_coefficient_countries', '#horizontal_vis_block_gini');
-    }
+    };
 
     this.year_changed = function(year) {
         $("#horizontal_vis_block_year").html(year);
@@ -223,7 +229,7 @@ function OipaCountry() {
 
         this.update_population(year, 'total_length_road', '#horizontal_vis_block_chart_road');
         this.update_population(year, 'income_gini_coefficient_countries', '#horizontal_vis_block_gini');
-    }
+    };
 
     this.update_population = function(year, type, selector, data) {
         var self = this;
@@ -270,11 +276,11 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
         });
 
         return _data;
-    }
+    };
 
     self.get_year_slice = function(locations, year, limit) {
         // Get last year slice if year is null
-        year = (year == null ? 2014 : year);
+        year = (year === null ? 2014 : year);
 
         return $.map(locations, function(i) {
             return [{
@@ -284,14 +290,14 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
                 name: i.name
             }];
         });
-    }
+    };
 
     self.visualize_chart = function(chart_data, chart_id) {
         var _transform_func = self.opt("overlay_transform", function(chart_id_data) {
             return chart_id_data.value;
         });
 
-        if (self.charts[chart_id] == undefined) {
+        if (self.charts[chart_id] === undefined) {
             var holder = document.createElement("div");
             holder.className = "column";
 
@@ -303,10 +309,10 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
                 obj: new Chart(holder.ctx.getContext("2d")),
                 holder: holder,
                 chart: null
-            }
+            };
             self.charts[chart_id].chart = self.init_chart(chart_data, chart_id);
         } else {
-            if (chart_data.labels == undefined && chart_data[0].value !== undefined) {
+            if (chart_data.labels === undefined && chart_data[0].value !== undefined) {
                 self.charts[chart_id].chart.destroy();
                 self.charts[chart_id].chart = self.init_chart(chart_data, chart_id);
 
@@ -314,10 +320,10 @@ OipaCountryPieInfographicsVis = function(indicator, options) {
                 self.charts[chart_id].holder.overlay.innerHTML = _transform_func(chart_data[chart_id]);
             }
         }
-    }
+    };
 
     return self;
-}
+};
 OipaCountryPieInfographicsVis.prototype = Object.create(OipaPieInfographicsVis.prototype);
 
 
