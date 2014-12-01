@@ -238,6 +238,7 @@ $popups->init();
 
     var filter = new CountryIndicatorFilters();
     Oipa.filter = filter;
+    filter.adm_division = 'city';
     filter.filter_wrapper_div = "indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
 
@@ -257,7 +258,7 @@ $popups->init();
         <?php foreach ($indicators as $indicator): ?>
             filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", 'indicators');
         <?php endforeach; ?>
-        filter.update_selection_after_filter_load(filter.selection);
+        //filter.update_selection_after_filter_load(filter.selection);
     <?php else: ?>
         // //filter.randomize(5);
         // filter.selection.add_indicator("land_allocated_to_street_index_city_core", "Urban population – Countries", 'indicators');
@@ -268,8 +269,7 @@ $popups->init();
         // filter.selection.add_indicator("urban_population_countries", "Urban population – Countries", 'indicators');
         // filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
     <?php endif; ?>
-    filter.update_selection_after_filter_load(filter.selection);
-        //filter.save(true);
+    filter.initialize_filters(Oipa.mainSelection);
 
     OipaWidgetsBus.patch_map(map);
 

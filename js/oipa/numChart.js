@@ -11,6 +11,8 @@ function OipaNumChart(id, options) {
         }
 
         if (!data || data[self.indicator] === undefined) {
+            $("div.widget[data-indicator='" + self.indicator + "'] canvas").hide();
+            $("div.widget[data-indicator='" + self.indicator + "'] div.no_data").show();
             return;
         }
 

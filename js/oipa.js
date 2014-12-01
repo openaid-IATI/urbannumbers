@@ -209,6 +209,11 @@ var Oipa = {
                     _prefill_count++;
                 });
             }
+
+            // This is nasty.
+            if (filter !== undefined) {
+                filter.initialize_filters(thisoipa.mainSelection);
+            }
         }
 
         var data = this.clean_blank_visualisations(this.mainSelection.indicators);

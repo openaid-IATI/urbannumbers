@@ -128,7 +128,7 @@ function OipaFilters() {
         this.process_filter_options(data);
         this.after_filter_load();
         this.save(true);
-    }
+    };
 
     this.get_data = function(url) {
         var self = this;
@@ -200,7 +200,7 @@ function OipaFilters() {
                 return budgetfilters;
         }
 
-    this.initialize_filters = function(selection){
+    this.initialize_filters = function(selection) {
         if (!selection){
             selection = this.selection;
         }
@@ -309,7 +309,7 @@ function OipaFilters() {
 
 
 
-        this.update_selection_after_filter_load = function(){
+        this.update_selection_after_filter_load = function() {
                 // TO DO
                 // we know the selection
                 // we know the filters
