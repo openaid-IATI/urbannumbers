@@ -1000,7 +1000,9 @@ h2.compare-right-city-name {
     border-bottom: 1px solid #d0d1d3;
 }
 
-.widget div.num {
+.widget div.num,
+.widget div.no_data {
+    display: none;
     min-height: 205px;
     padding-top: 80px;
     font: 18px/22px HelveticaNeueW02-55Roma, Arial, Helvetica, sans-serif;

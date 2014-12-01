@@ -30,7 +30,7 @@ function OipaVis () {
         //html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
         //html +=  '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
         html +=  '<div class="widget" data-indicator="'+this.indicator+'">';
-        html +=    '<div class="no_data">No data for this chart</div>';
+        html +=    '<div class="no_data">Sorry, No data available.</div>';
         html +=    '<canvas height="' + Oipa.visualisation_size + '" width="' + Oipa.visualisation_size + '"></canvas>';
         html +=  '</div>';
         html +=  '<a href="#" class="btn-close btn-vis-close"><i class="glyphicon glyphicon-remove visualization-close"></i></a>';
