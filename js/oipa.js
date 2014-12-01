@@ -214,13 +214,21 @@ var Oipa = {
         var data = this.clean_blank_visualisations(this.mainSelection.indicators);
 
         // cleanup unused charts
-        var _new_visualizations = $.map(data, function(val, _) {
-            return val.id;
+        var _new_visualizations = [];
+
+        data = $.map(data, function(val, index) {
+            if (indicator_data && Object.keys(indicator_data).indexOf(val.id) < 0) {
+                return;
+            } else {
+                _new_visualizations.push(val.id);
+                return val;
+            }
         });
 
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
             if (_new_visualizations.indexOf(id) == -1) {
                 // Remove unused visualisation
+
                 vis.destroy();
                 delete thisoipa.visualisations[id];
             }

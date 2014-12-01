@@ -1003,5 +1003,9 @@ h2.compare-right-city-name {
 .widget div.num {
     min-height: 205px;
     padding-top: 80px;
+    font: 18px/22px HelveticaNeueW02-55Roma, Arial, Helvetica, sans-serif;
+}
+
+.widget div.num b {
     font:42px/24px 'HelveticaNeueW01-77BdCn 692722',arial,sans-serif;
 }
