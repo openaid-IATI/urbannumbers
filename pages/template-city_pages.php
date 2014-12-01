@@ -251,6 +251,8 @@ $popups->init();
         filter.selection.update_selection("cities", <?php echo $city;  ?>, "Urban population – Countries", 'cities');
     <?php endforeach; ?>
 
+    filter.init();
+
     <?php if (count($indicators)): ?>
         <?php foreach ($indicators as $indicator): ?>
             filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", 'indicators');
@@ -266,8 +268,6 @@ $popups->init();
         // filter.selection.add_indicator("urban_population_countries", "Urban population – Countries", 'indicators');
         // filter.selection.add_indicator("urban_population_share_national", "Urban population – Countries", 'indicators');
     <?php endif; ?>
-
-    filter.init();
     filter.update_selection_after_filter_load(filter.selection);
         //filter.save(true);
 

@@ -216,13 +216,8 @@ var Oipa = {
         // cleanup unused charts
         var _new_visualizations = [];
 
-        data = $.map(data, function(val, index) {
-            if (indicator_data && Object.keys(indicator_data).indexOf(val.id) < 0) {
-                return;
-            } else {
-                _new_visualizations.push(val.id);
-                return val;
-            }
+        _new_visualizations = $.map(data, function(val, index) {
+                return val.id;
         });
 
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
