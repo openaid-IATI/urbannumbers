@@ -3,7 +3,7 @@ function OipaIndicatorFilters(){
 
     this.validate_selection = function () {
         if (Oipa.pageType == "indicators") {
-            if (this.selection.indicators.length == 0){
+            if (this.selection.indicators.length === 0) {
                 // set error message and break
                 $(".filter-error-msg").text("Please select at least one indicator.");
                 return false;
@@ -24,8 +24,8 @@ function OipaIndicatorFilters(){
             cururl += parameters_set;
         } else {
             cururl += "&indicators__in=" + get_parameters_from_selection(this.selection.get('indicators', []));
-            cururl += "&regions__in=" + get_parameters_from_selection(Oipa.mainSelection.get('regions', []));
-            cururl += "&countries__in=" + get_parameters_from_selection(Oipa.mainSelection.get('countries', []));
+            cururl += "&regions__in=" + get_parameters_from_selection(this.selection.get('regions', []));
+            cururl += "&countries__in=" + get_parameters_from_selection(this.selection.get('countries', []));
             cururl += "&cities__in=" + get_parameters_from_selection(this.selection.get('cities', []));
         }
         return cururl;

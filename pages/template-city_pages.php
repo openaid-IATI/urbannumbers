@@ -76,7 +76,7 @@ $popups->init();
         <div class="helper">
             <i class="glyphicon glyphicon-question-sign"></i>
             <div class="helper-popup">
-                <?php echo $popups->get('randomize', "popup_randomize"); ?>
+                <?php echo $popups->get('randomize', "popup_indicators"); ?>
             </div>
         </div>
 

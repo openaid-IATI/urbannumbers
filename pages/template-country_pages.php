@@ -96,7 +96,7 @@ get_header(); the_post();
         <div class="helper">
             <i class="glyphicon glyphicon-question-sign"></i>
             <div class="helper-popup">
-                <?php echo $popups->get('randomize', "popup_randomize"); ?>
+                <?php echo $popups->get('randomize', "popup_indicators"); ?>
             </div>
         </div>
 
@@ -141,6 +141,37 @@ get_header(); the_post();
         <div id="map-wrapper" class="container">
             <div class="row">
                 <div class="col-md-6">
+
+                    <div id="map-indicator-filter-wrapper" style="display: none;">
+                        <div class="sort-holder">
+                            <ul class="sort-list">
+                                <li class="regions-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="regions" class="opener filter-open" href="#"><label class="top">REGION</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="regions-filters" class="regions-list subul">
+                                    </div>
+                                </li>
+                                <li class="countries-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="countries" class="opener filter-open" href="#"><label class="top">COUNTRY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="countries-filters" class="countries-list subul">
+                                    </div>
+                                </li>
+                                <li class="cities-li">
+                                    <div class="selector">
+                                        <i class="map-indicator-filter-icon icon-white" style="border-color: rgba(182, 182, 182, 1)"></i>
+                                        <a name="cities" class="opener filter-open" href="#"><label class="top">CITY</label><span class="glyphicon glyphicon-chevron-down"></span><span class="counts"></span></a>
+                                    </div>
+                                    <div id="cities-filters" class="cities-list subul">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <?php
                     $curmapname = "main";
                     include( TEMPLATEPATH .'/map.php' );
@@ -239,9 +270,8 @@ get_header(); the_post();
 
     var filter = new CountryIndicatorFilters();
     Oipa.filter = filter;
-    filter.filter_wrapper_div = "map-indicator-filter-wrapper";
+    filter.filter_wrapper_div = "indicator-filter-wrapper";
     filter.selection = Oipa.mainSelection;
-    filter.init();
 
     <?php if (count($countries)): ?>
       <?php foreach($countries as $k => $code): ?>
@@ -251,6 +281,7 @@ get_header(); the_post();
         filter.selection.update_selection("countries", "KE", "Kenya", "countries");
     <?php endif; ?>
 
+    filter.init();
     <?php if (count($indicators)): ?>
         <?php foreach ($indicators as $indicator): ?>
             filter.selection.add_indicator("<?=$indicator?>", "Urban population – Countries", 'indicators');
