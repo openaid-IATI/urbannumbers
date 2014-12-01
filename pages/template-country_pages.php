@@ -214,7 +214,7 @@ get_header(); the_post();
                             </div>
                         </div>
                         <hr>
-                        <p>More information on these UN-Habitat indicators can be found <a href="#">here</a>.</p>
+                        <p>More information on these UN-Habitat indicators can be found <a href="/about/">here</a>.</p>
                         <hr>
                 </div>
                 <div class="col-md-6">
