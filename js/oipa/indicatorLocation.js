@@ -115,3 +115,10 @@ OipaIndicatorLocation.prototype.mutate_years = function(years) {
 
     return years;
 };
+
+OipaIndicatorLocation.prototype.open_popup = function() {
+    var _keys = Object.keys(this.circles);
+    if (_keys.length > 0) {
+        this.circles[_keys[0]].open_popup();
+    }
+};

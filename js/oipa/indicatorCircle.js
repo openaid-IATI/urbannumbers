@@ -12,7 +12,7 @@ OipaIndicatorCircle = function(location, id, name, type_data, color, opacity) {
     this.year = undefined;
     this.max_value = undefined;
     this.circle = undefined;
-}
+};
 
 OipaIndicatorCircle.prototype.set_data = function(data, max_value) {
     this.data = data;
@@ -22,11 +22,11 @@ OipaIndicatorCircle.prototype.set_data = function(data, max_value) {
 OipaIndicatorCircle.prototype.set_year = function(year) {
     this.year = year;
     this.refresh();
-}
+};
 
 OipaIndicatorCircle.prototype.set_popup = function(content) {
     this.circle.bindPopup(content, {maxWidth: 500});
-}
+};
 
 OipaIndicatorCircle.prototype.get_human_friendly_value = function() {
     var value = this.get_value();
@@ -43,14 +43,14 @@ OipaIndicatorCircle.prototype.get_human_friendly_value = function() {
         }
     }
     return value;
-}
+};
 
 OipaIndicatorCircle.prototype.get_value = function() {
     return this.data[this.year];
-}
+};
 
 OipaIndicatorCircle.prototype.refresh = function() {
-    if (this.circle == undefined) {
+    if (this.circle === undefined) {
         this.circle = L.circle(this.location.latlng, 1, {
             color: this.color,
             weight: '2',
@@ -65,8 +65,16 @@ OipaIndicatorCircle.prototype.refresh = function() {
     if (!isNaN(radius)) {
         this.circle.setRadius(radius);
     }
-}
+};
 
 OipaIndicatorCircle.prototype.destroy = function() {
     this.location.map.map.removeLayer(this.circle);
-}
+};
+
+OipaIndicatorCircle.prototype.open_popup = function() {
+    this.circle.openPopup();
+};
+
+OipaIndicatorCircle.prototype.close_popup = function() {
+    this.circle.closePopup();
+};

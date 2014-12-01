@@ -213,6 +213,7 @@ if (have_posts()) : ?>
         -webkit-box-shadow: 0px 0px 0px;
     }
     </style>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/unhabitat/home.js"></script>
 <script type="text/javascript">
 
     var _filters = {
@@ -281,6 +282,10 @@ if (have_posts()) : ?>
     });
     $('#chart_cpi').show();
     Oipa.refresh();
+
+    $(function() {
+        animate_home_page(map, 5000);
+    });
 
 </script>
 
