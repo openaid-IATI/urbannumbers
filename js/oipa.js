@@ -256,7 +256,7 @@ var Oipa = {
                         _chart_class = OipaBlankChart;
                     }
 
-                    if (value.options !== undefined && value.options.chart_class !== undefined) {
+                    if (value.options !== undefined && value.options.chart_class !== undefined && value.id.substring(0, 5) !== 'cpi_6') {
                         _chart_class = value.options.chart_class;
                     }
                 } else {

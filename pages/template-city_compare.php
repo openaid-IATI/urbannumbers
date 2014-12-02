@@ -60,15 +60,14 @@ get_header(); the_post(); ?>
 <script src="<?php echo get_template_directory_uri(); ?>/js/unhabitat/compareFilters.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/compare.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/oipa/comparemap.js"></script>
-
-<script>
+<script type="text/javascript">
 Oipa.use_prefill = false;
 Oipa.visualisation_size = 200;
 Oipa.pageType = "compare";
 Oipa.blank_visualizations_count = 10;
 Oipa.mainSelection = new OipaCompareSelection(1);
 Oipa.mainSelection.indicator_options = {
-    //chart_class: OipaCompareBarChart,
+    chart_class: OipaCompareBarChart,
     chart_reset: true,
     all_years: true
 }
