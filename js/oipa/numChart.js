@@ -1,6 +1,6 @@
 function OipaNumChart(id, options) {
     OipaActiveRoundChart.call(this, id, options);
-    this.type = "OipaRadarChart";
+    this.type = 'OipaRadarChart';
 
     var _original_visualize = this.visualize;
     this.visualize = function(data) {
@@ -18,6 +18,8 @@ function OipaNumChart(id, options) {
 
         $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
         $("div.widget[data-indicator='" + self.indicator + "'] div.num").hide();
+
+        self.type_data = data[self.indicator].type_data;
 
         chart_data = self.format_year_data(data[self.indicator], self.selected_year, 10);
 
@@ -52,14 +54,15 @@ function OipaNumChart(id, options) {
     };
 
     this.format_static_num = function(value) {
+        var self = this;
         var tooltip = humanReadableSize(value, undefined, true);
-        if (this.type_data == 'p') {
+        if (self.type_data === 'p') {
             tooltip = humanReadableSize(value);
         }
-        if (this.type_data == '1000' || this.type_data == 'n') {
+        if (self.type_data == '1000' || this.type_data == 'n') {
             tooltip = humanReadableSize(value, undefined, true, true);
         }
-        if (this.indicator.substring(0, 4) == 'cpi_') {
+        if (self.indicator.substring(0, 4) == 'cpi_') {
             tooltip = humanReadableSize(value, undefined, true);
         }
         return tooltip;
