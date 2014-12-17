@@ -99,6 +99,7 @@ function OipaFilters() {
 
     this.get_checked_by_filter = function(filtername) {
         var arr = [];
+        var options = (typeof this.selection.indicator_options === 'undefined') ? {} : this.selection.indicator_options;
         // on indicators save selection type (city core, sub urban area etc.)
         if (filtername === "indicators") {
             jQuery('#' + filtername + '-filters input:checked').each(function(index, value){
@@ -108,13 +109,22 @@ function OipaFilters() {
                     selection_type = null;
                 }
 
-                arr.push({"id":value.value, "name":value.name, 'type':selection_type});
+                arr.push({
+                    id: value.value,
+                    name: value.name,
+                    type: selection_type,
+                    options: options
+                });
             });
             return arr;
         }
 
         jQuery('#' + filtername + '-filters input:checked').each(function(index, value){
-            arr.push({"id":value.value, "name":value.name});
+            arr.push({
+                id: value.value,
+                name: value.name,
+                options: options
+            });
         });
         return arr;
     };

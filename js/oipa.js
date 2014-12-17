@@ -136,54 +136,63 @@ var Oipa = {
 
     get_chart_class: function(indicator) {
         var chart_class =  OipaBarChart;
-
-        var chart_map = {
-            'cpi_6_dimensions': OipaCPIChart,
-            'cpi_composite_street_connectivity_index': OipaNumChart,
-            'cpi_4_dimensions': OipaNumChart,
-            'cpi_5_dimensions': OipaNumChart,
-            'cpi_environment_index': OipaNumChart,
-            'cpi_equity_index': OipaNumChart,
-            'cpi_infrastructure_index': OipaNumChart,
-            'cpi_productivity_index': OipaNumChart,
-            'cpi_quality_of_live_index': OipaNumChart,
-            'hiv_prevalence_15_to_49_year': OipaNumChart,
-            'urban_agglomeration_land_area': OipaNumChart,
-            'connection_to_electricity': OipaNumChart,
-            'composite_street_connectivity_index_city_core': OipaNumChart,
-            'composite_street_connectivity_index_sub_urban_area': OipaNumChart,
-            'intersection_density_index_city_core': OipaNumChart,
-            'intersection_density_index_sub_urban_area': OipaNumChart,
-            'land_allocated_to_street_index_city_core': OipaNumChart,
-            'land_allocated_to_street_index_sub_urban_area': OipaNumChart,
-            'intersection_density': OipaNumChart,
-            'intersection_density_city_core': OipaNumChart,
-            'intersection_density_sub_urban_area': OipaNumChart,
-            'intersection_density_total': OipaNumChart,
-            'land_area': OipaNumChart,
-            'road_density_national_roads': OipaNumChart,
-            'owner_bicycle_rural': OipaNumChart,
-            'owner_bicycle_total': OipaNumChart,
-            'owner_bicycle_urban_area': OipaNumChart,
-            'owner_motorcycle_rural_area': OipaNumChart,
-            'owner_motorcycle_total': OipaNumChart,
-            'share_walking': OipaNumChart,
-            'transport_share_cities_public_transport': OipaNumChart,
-            'transport_share_countries_cycling': OipaNumChart,
-            'transport_share_countries_walking': OipaNumChart,
-            'total_railway_route': OipaNumChart
-        };
-
-        if (chart_map[indicator.id] !== undefined) {
-            chart_class = chart_map[indicator.id];
+        
+        if (indicator.options !== undefined
+            && indicator.options.chart_class !== undefined) {
+            chart_class = indicator.options.chart_class;
         }
 
-        if (indicator.all_years !== undefined ? indicator.all_years : false) {
+        var num_charts = [
+            //'cpi_6_dimensions': OipaCPIChart,
+            'cpi_composite_street_connectivity_index',
+            'cpi_4_dimensions',
+            'cpi_5_dimensions',
+            'cpi_environment_index',
+            'cpi_equity_index',
+            'cpi_infrastructure_index',
+            'cpi_productivity_index',
+            'cpi_quality_of_live_index',
+            'hiv_prevalence_15_to_49_year',
+            'urban_agglomeration_land_area',
+            'connection_to_electricity',
+            'composite_street_connectivity_index_city_core',
+            'composite_street_connectivity_index_sub_urban_area',
+            'intersection_density_index_city_core',
+            'intersection_density_index_sub_urban_area',
+            'land_allocated_to_street_index_city_core',
+            'land_allocated_to_street_index_sub_urban_area',
+            'intersection_density',
+            'intersection_density_city_core',
+            'intersection_density_sub_urban_area',
+            'intersection_density_total',
+            'land_area',
+            'road_density_national_roads',
+            'owner_bicycle_rural',
+            'owner_bicycle_total',
+            'owner_bicycle_urban_area',
+            'owner_motorcycle_rural_area',
+            'owner_motorcycle_total',
+            'share_walking',
+            'transport_share_cities_public_transport',
+            'transport_share_countries_cycling',
+            'transport_share_countries_walking',
+            'total_railway_route',
+        ];
+
+        if (num_charts.indexOf(indicator.id) !== -1) {
+            chart_class = numChartMutator(chart_class);
+        }
+        
+        if (indicator.id === 'cpi_6_dimensions') {
+            chart_class = OipaCPIChart;
+        }
+
+        /*if (indicator.all_years !== undefined ? indicator.all_years : false) {
 
             if (_all_years_charts[indicator.id] !== undefined) {
                 chart_class = OipaBarChart;
             }
-        }
+        }*/
 
         return chart_class;
     },
@@ -222,7 +231,7 @@ var Oipa = {
         var _new_visualizations = [];
 
         _new_visualizations = $.map(data, function(val, index) {
-                return val.id;
+            return val.id;
         });
 
         $.each($.extend({}, thisoipa.visualisations), function(id, vis) {
@@ -254,10 +263,6 @@ var Oipa = {
 
                     if (thisoipa.is_blank_visualization(value)) {
                         _chart_class = OipaBlankChart;
-                    }
-
-                    if (value.options !== undefined && value.options.chart_class !== undefined && value.id.substring(0, 5) !== 'cpi_6') {
-                        _chart_class = value.options.chart_class;
                     }
                 } else {
                     _chart_class = forced_chart_class;

@@ -103,7 +103,7 @@ function OipaCompareBarChart(id, options) {
     self.get_locations_slice = function(locations, limit) {
         var _years = [];
         var _counter = 0;
-        var _cities = self._initial_selection.left.cities.concat(self._initial_selection.right.cities);
+        var _cities = this._initial_selection.left.cities.concat(this._initial_selection.right.cities);
         return [_years, $.map(_cities, function(_city) {
             var _default_color = "151,187,205";
             if (_counter == 1) {
@@ -130,7 +130,12 @@ function OipaCompareBarChart(id, options) {
                 })
             }];
         })];
-    }
+    };
+    
+    var _format_year_data = this.format_year_data;
+    this.format_year_data = function(data, year, limit) {
+        return _format_year_data.apply(this, [data, year, limit]);
+    };
 }
 OipaCompareBarChart.prototype = Object.create(OipaBarChart.prototype);
 

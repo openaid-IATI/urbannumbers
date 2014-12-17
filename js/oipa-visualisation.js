@@ -799,6 +799,8 @@ function OipaActiveRoundChart(id, options) {
         }
         return chart.scale.labels;
     };
+
+    return this;
 }
 OipaActiveRoundChart.prototype = Object.create(OipaActiveChart.prototype);
 
