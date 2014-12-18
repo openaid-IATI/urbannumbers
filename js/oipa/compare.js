@@ -105,9 +105,9 @@ function OipaCompareBarChart(id, options) {
         var _counter = 0;
         var _cities = this._initial_selection.left.cities.concat(this._initial_selection.right.cities);
         return [_years, $.map(_cities, function(_city) {
-            var _default_color = "151,187,205";
+            var _default_color = "0,133,178";
             if (_counter == 1) {
-                _default_color = "240,240,225";
+                _default_color = "132,180,0";
             }
             _counter += 1;
             if (locations[_city.id] == undefined) {

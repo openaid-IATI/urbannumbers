@@ -14,13 +14,13 @@
 
 .selectric {
   border: 1px solid #FFF;
-  background: #99bccd;
+  background: #0085b2;
   position: relative;
   border-radius: 2px;
 }
 #right-countries-filters .selectric,
 #right-cities-filters .selectric {
-    background: #f0f0e1;
+    background: #84b400;
 }
 .selectric .label {
   display: block;
@@ -37,7 +37,7 @@
 
 #right-countries-filters .selectric .label,
 #right-cities-filters .selectric .label {
-  color: #62697f;
+  color: #FFF;
 }
 
 .selectric .button {
