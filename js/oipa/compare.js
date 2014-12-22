@@ -1,4 +1,6 @@
 var fav_alert_timeout;
+var compare_oipa_refresh_timeout;
+
 
 var OipaCompare = {
     item1 : null,
@@ -28,8 +30,63 @@ var OipaCompare = {
         return _val;
     },
 
+    randomize_side: function(side) {
+        var countries_list = [];
+        var select_object = $('#' + side + '-countries-select').get()[0];
+        if (typeof select_object !== 'undefined') {
+            countries_list = Object.keys(select_object._options);
+        }
+
+        if (countries_list.length === 0) {
+            return;
+        }
+
+        var random_country = countries_list[Math.floor(Math.random() * countries_list.length)];
+        var random_country_name = select_object._options[random_country].innerHTML;
+
+        filter.selection.update_selection(side + '_countries', random_country, random_country_name);
+
+        filter.reload_specific_filter(side + '-cities', undefined, curry(this.randomize_side_city, side));
+
+        $('#' + side + '-countries-select').val(random_country);
+        $('#' + side + '-countries-select').selectric('refresh');
+
+    },
+
+    randomize_side_city: function(side, data) {
+        clearTimeout(compare_oipa_refresh_timeout);
+
+        var _cities = Object.keys(data.cities);
+        if (_cities.length === 0) {
+            return;
+        }
+
+        var random_city = _cities[Math.floor(Math.random() * _cities.length)];
+        $('#' + side + '-cities-select').val(random_city);
+        $('#' + side + '-cities-select').selectric('refresh');
+
+        filter.selection.update_selection(side + '_cities', random_city, data.cities[random_city]);
+
+        compare_oipa_refresh_timeout = setTimeout(function() {
+            Oipa.refresh();
+        }, 100);
+    },
+
     randomize: function(initial, reset) {
-        // get cities
+        var left_countries = [];
+
+        if (typeof initial !== undefined) {
+        }
+
+        // Clean selection
+        filter.selection.clean('countries');
+        filter.selection.clean('cities');
+
+        this.randomize_side('left');
+        this.randomize_side('right');
+
+        return;
+
         var left_cities = [], right_cities = [];
         var city_id_1, city_id_2;
 
@@ -82,7 +139,7 @@ var OipaCompare = {
         }
 
         filter.reload_specific_filter("indicators");
-        if (initial == undefined) {
+        if (typeof initial === 'undefined') {
             filter.save(true);
         }
     },

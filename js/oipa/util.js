@@ -245,3 +245,13 @@ function toFixed(x) {
     }
     return x;
 }
+
+function curry( fn ){
+    var slice = Array.prototype.slice,
+        storedArgs = slice.call( arguments, 1 );
+
+    return function() {
+        var args = storedArgs.concat( slice.call( arguments ) );
+        return fn.apply( this, args );
+    };
+}

@@ -48,7 +48,7 @@ OipaCompareFilters.prototype.get_checked_by_select = function(id) {
         }
     });
     return result;
-}
+};
 
 OipaCompareFilters.prototype.update_selection_object = function() {
     this.selection.left.countries = this.get_checked_by_select('left-countries');
@@ -89,9 +89,9 @@ OipaCompareFilters.prototype.get_select_status = function(key) {
     }
 
     return false;
-}
+};
 
-OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data) {
+OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data, extra_callback) {
     var self = this;
     if (!data) {
         var url = '';
@@ -134,7 +134,7 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
                 if (jsondata === null || typeof (jsondata) === 'undefined') {
                     jsondata = jQuery.parseJSON(jsondata.firstChild.textContent);
                 }
-                self.reload_specific_filter(filter_name, jsondata);
+                self.reload_specific_filter(filter_name, jsondata, extra_callback);
             };
             setTimeout(function () {xdr.send();}, 0);
         } else {
@@ -144,7 +144,7 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
                 contentType: "application/json",
                 dataType: 'json',
                 success: function(data){
-                    self.reload_specific_filter(filter_name, data);
+                    self.reload_specific_filter(filter_name, data, extra_callback);
                 }
             });
         }
@@ -174,6 +174,10 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
         }
         if (filter_name === "indicators") {
             self.create_filter_attributes(data.indicators, 2, 'indicators');
+        }
+
+        if (typeof extra_callback !== 'undefined') {
+            extra_callback(data);
         }
 
         self.initialize_filters(self.selection);
