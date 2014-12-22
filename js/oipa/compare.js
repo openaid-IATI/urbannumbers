@@ -74,6 +74,7 @@ var OipaCompare = {
     },
 
     randomize: function(initial, reset) {
+        console.log('3123');
         var left_countries = [];
 
         if (typeof initial !== undefined) {

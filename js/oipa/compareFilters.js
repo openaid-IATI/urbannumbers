@@ -7,7 +7,6 @@ function OipaCompareFilters() {
         if (parameters_set){
             cururl += parameters_set;
         }
-
         return cururl;
     };
 }
@@ -243,7 +242,6 @@ OipaCompareFilters.prototype.init_option = function(key, name, value, selected) 
 
 OipaCompareFilters.prototype.create_filter_attributes = function(objects, columns, key) {
     var self = this;
-    //console.log(objects);
 
     if (['left-cities', 'right-cities', 'left-countries', 'right-countries'].indexOf(key) !== -1) {
         //console.log(self.selection.get("cities"));
@@ -383,7 +381,7 @@ OipaCompareFilters.prototype.reset_filters = function(){
         if (b.id !== 'left-countries-select') {
             b.disabled = true;
         }
-        $(b).selectric('refresh')
+        $(b).selectric('refresh');
     });
     $('#indicator-filter-wrapper .slide-content').hide();
 
@@ -426,7 +424,13 @@ OipaCompareFilters.prototype.change_selection = function(key, value, callback) {
     } else {
         console.log('neh');
     }
-}
+};
+
+OipaCompareFilters.prototype.after_filter_load = function() {
+    this.reload_specific_filter('left-cities', undefined);
+    this.reload_specific_filter('right-cities', undefined);
+};
+
 
 $('.indicators-pagination a').click(function(e) {
     $('.indicators-helper').hide();
