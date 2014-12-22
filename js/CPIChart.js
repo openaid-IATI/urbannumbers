@@ -115,7 +115,8 @@ function OipaCPIChart(id, options) {
         return this.chart_obj.Radar(chart_data, this.get_chart_options({
             tooltipTitleFontSize: 10,
             tooltipFontSize: 10,
-            tooltipTitleFontStyle: "normal"
+            tooltipTitleFontStyle: "normal",
+            fixedScaleSizes: true,
         }));
     };
 
