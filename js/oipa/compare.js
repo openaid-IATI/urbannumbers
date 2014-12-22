@@ -68,6 +68,7 @@ var OipaCompare = {
         filter.selection.update_selection(side + '_cities', random_city, data.cities[random_city]);
 
         compare_oipa_refresh_timeout = setTimeout(function() {
+            filter.reload_specific_filter("indicators");
             Oipa.refresh();
         }, 100);
     },
