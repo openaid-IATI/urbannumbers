@@ -49,6 +49,7 @@ var OipaCompare = {
         filter.reload_specific_filter(side + '-cities', undefined, curry(this.randomize_side_city, side));
 
         $('#' + side + '-countries-select').val(random_country);
+        $('#' + side + '-countries-select').attr('disabled', false);
         $('#' + side + '-countries-select').selectric('refresh');
 
     },
@@ -57,24 +58,23 @@ var OipaCompare = {
         clearTimeout(compare_oipa_refresh_timeout);
 
         var _cities = Object.keys(data.cities);
-        if (_cities.length === 0) {
-            return;
+        if (_cities.length !== 0) {
+
+            var random_city = _cities[Math.floor(Math.random() * _cities.length)];
+            $('#' + side + '-cities-select').val(random_city);
+            $('#' + side + '-cities-select').selectric('refresh');
+
+            filter.selection.update_selection(side + '_cities', random_city, data.cities[random_city]);
         }
-
-        var random_city = _cities[Math.floor(Math.random() * _cities.length)];
-        $('#' + side + '-cities-select').val(random_city);
-        $('#' + side + '-cities-select').selectric('refresh');
-
-        filter.selection.update_selection(side + '_cities', random_city, data.cities[random_city]);
 
         compare_oipa_refresh_timeout = setTimeout(function() {
             filter.reload_specific_filter("indicators");
             Oipa.refresh();
-        }, 100);
+            OipaCompare.create_visualisations();
+        }, 200);
     },
 
     randomize: function(initial, reset) {
-        console.log('3123');
         var left_countries = [];
 
         if (typeof initial !== undefined) {
@@ -83,13 +83,16 @@ var OipaCompare = {
         // Clean selection
         filter.selection.clean('countries');
         filter.selection.clean('cities');
+        filter.selection.clean('indicators');
+
+        $('.left-countries-helper').fadeOut();
 
         this.randomize_side('left');
         this.randomize_side('right');
 
-        if (initial !== undefined || reset !== undefined) {
-            this.create_visualisations();
-        }
+        /*if (initial !== undefined || reset !== undefined) {
+            
+        }*/
 
         return;
 
