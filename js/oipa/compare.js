@@ -86,6 +86,10 @@ var OipaCompare = {
         this.randomize_side('left');
         this.randomize_side('right');
 
+        if (initial !== undefined || reset !== undefined) {
+            this.create_visualisations();
+        }
+
         return;
 
         var left_cities = [], right_cities = [];
