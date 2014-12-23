@@ -760,11 +760,11 @@ img.aligncenter{
         top: 25px;
         max-height: 177px;
         z-index:2;
-        font: 32px 'HelveticaNeueW02-55Roma',arial,sans-serif;
+        font: 32px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
         line-height: 1.1;
         left: 25px;
-        width:600px;
-        padding: 15px 23px 40px 23px;
+        width:590px;
+        padding: 15px 20px 40px 23px;
         color:#FFF;
         background:rgb(0, 0, 0);
 
