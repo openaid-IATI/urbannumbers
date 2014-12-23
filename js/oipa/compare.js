@@ -69,7 +69,7 @@ var OipaCompare = {
 
         compare_oipa_refresh_timeout = setTimeout(function() {
             filter.reload_specific_filter("indicators");
-            Oipa.refresh();
+            filter.save(true);
             OipaCompare.create_visualisations();
         }, 200);
     },

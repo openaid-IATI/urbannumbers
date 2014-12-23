@@ -89,6 +89,8 @@ function OipaCompareSelection(main){
         if (['regions', 'countries', 'cities'].indexOf(option) !== -1) {
             self.left[option] = [];
             self.right[option] = [];
+        } else {
+            self[option] = [];
         }
     }
 
