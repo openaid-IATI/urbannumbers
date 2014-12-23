@@ -761,12 +761,13 @@ img.aligncenter{
         max-height: 177px;
         z-index:2;
         font: 32px 'Helvetica W01 Light',arial,sans-serif;
-        line-height: 34px;
+        line-height: 35.2px;
         left: 25px;
         width:590px;
-        padding: 17px 10px 40px 20px;
+        padding: 18px 10px 40px 26px;
         color:#FFF;
         background:rgb(0, 0, 0);
+        letter-spacing: -0.6px;
 
         -webkit-transition: opacity 0.5s ease-in-out;
         -moz-transition: opacity 0.5s ease-in-out;
@@ -784,6 +785,7 @@ img.aligncenter{
 }
 .visual .box b {
     font: 32px/36px 'Helvetica W01 Bold',arial,sans-serif;
+    letter-spacing: -0.6px;
 }
 .visual .box .credits {
     position: absolute;
