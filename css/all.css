@@ -760,11 +760,11 @@ img.aligncenter{
         top: 25px;
         max-height: 177px;
         z-index:2;
-        font: 32px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
-        line-height: 1.1;
+        font: 32px 'Helvetica W01 Light',arial,sans-serif;
+        line-height: 34px;
         left: 25px;
         width:590px;
-        padding: 15px 20px 40px 23px;
+        padding: 17px 10px 40px 20px;
         color:#FFF;
         background:rgb(0, 0, 0);
 
@@ -783,7 +783,7 @@ img.aligncenter{
     opacity: 1;
 }
 .visual .box b {
-    font: 32px/36px 'HelveticaNeueW01-75Bold',arial,sans-serif;
+    font: 32px/36px 'Helvetica W01 Bold',arial,sans-serif;
 }
 .visual .box .credits {
     position: absolute;
@@ -791,7 +791,7 @@ img.aligncenter{
     right: 20px;
 }
 .visual .box .credits small {
-    font: 14px/16px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
+    font: 14px/16px 'Helvetica W01 Light',arial,sans-serif;
 }
 .visual .box .btn-holder{padding:6px 0 5px;}
 .visual .box .heading{
