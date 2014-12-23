@@ -23,7 +23,6 @@ if (have_posts()) : ?>
             $title = get_field('title');
             $subtitle = get_field('subtitle');
             $start_exploring = get_field('start_exploring');
-            $about_city_prosperity = get_field('about_city_prosperity');
             $compare_cities = get_field('compare_cities');
             $image_credits = get_field('image_credits');
             $image = get_field('image');
@@ -31,28 +30,14 @@ if (have_posts()) : ?>
             <div class="slide col-md-12">
                 <?php if($title || $subtitle || $start_exploring): ?>
                 <div class="container">
-                    <div class="text-holder">
-                        <?php if($title || $subtitle): ?>
-                        <div class="text-frame">
-                            <?php if($title): ?><h1><?php echo $title; ?></h1><?php endif; ?>
-                            <?php if($subtitle): ?><p><?php echo $subtitle; ?></p><?php endif; ?>
-                        </div>
-                        <?php endif; ?>
-                        <?php if($start_exploring): ?><a href="<?php echo $start_exploring; ?>" class="btn btn-primary">Start exploring city data</a><?php endif; ?>
-                    </div>
+                <?php if($start_exploring): ?><a href="<?php echo $start_exploring; ?>"><?php endif; ?>
                     <article class="box">
                     <?php the_field('info'); ?>
-                    <div class="btn-holder">
-                    <!--	<?php if($about_city_prosperity): ?><a href="<?php echo $about_city_prosperity; ?>" class="btn btn-blue">About city prosperity</a><?php endif; ?> -->
-                        <?php if($compare_cities): ?><a href="<?php echo $compare_cities; ?>" class="btn btn-blue">Compare this city</a><?php endif; ?>
-                    </div>
                     <?php if($image_credits): ?>
-                    <dl>
-                        <dt>IMAGE CREDITS:</dt>
-                        <dd><?php echo $image_credits; ?></dd>
-                    </dl>
+                        <div class="credits"><small>Image credits: <?php echo $image_credits; ?></small></div>
                     <?php endif; ?>
                 </article>
+                <?php if($start_exploring): ?></a><?php endif; ?>
                 </div>
                 <?php endif; ?>
 
