@@ -90,7 +90,7 @@ OipaCompareFilters.prototype.get_select_status = function(key) {
     return false;
 };
 
-OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data, extra_callback) {
+OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data, extra_callback, do_not_update_indicators) {
     var self = this;
     if (!data) {
         var url = '';
@@ -100,7 +100,9 @@ OipaCompareFilters.prototype.reload_specific_filter = function(filter_name, data
                 + "&countries__in=" + get_parameters_from_selection(self.selection.get('countries'))
                 + "&cities__in=" + get_parameters_from_selection(self.selection.get('cities'));
         } else {
-            url = "&indicators__in=" + get_parameters_from_selection(self.selection.get('indicators'));
+            if (typeof do_not_update_indicators === 'undefined' || do_not_update_indicators === false) {
+                url = "&indicators__in=" + get_parameters_from_selection(self.selection.get('indicators'));
+            }
         }
 
         if (filter_name === "left-cities") {
@@ -427,8 +429,8 @@ OipaCompareFilters.prototype.change_selection = function(key, value, callback) {
 };
 
 OipaCompareFilters.prototype.after_filter_load = function() {
-    this.reload_specific_filter('left-cities', undefined);
-    this.reload_specific_filter('right-cities', undefined);
+    this.reload_specific_filter('left-cities', undefined, undefined, true);
+    this.reload_specific_filter('right-cities', undefined, undefined, true);
 };
 
 
