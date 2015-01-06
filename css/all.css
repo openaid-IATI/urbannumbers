@@ -1550,7 +1550,7 @@ img.aligncenter{
         display:block;
         clear:both;
 }
-.container-sort .row>div{position:static;}
+.container-sort .row>div{position:relative;}
 .container-heading{
         position:relative;
         text-align:center;
@@ -2327,7 +2327,6 @@ img.aligncenter{
         box-shadow:0 1px rgba(255,255,255,0.5);
         -webkit-box-shadow:0 1px rgba(255,255,255,0.5);
         position:relative;
-        z-index:2;
 }
 .sort-columns:after{
         content:"";

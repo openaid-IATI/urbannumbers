@@ -257,6 +257,7 @@
     margin: 0px;
     padding: 0px;
     position: relative;
+    text-align: left;
 }
 .container-sort .share-col .action-list a {
     color: #FFF;
@@ -974,7 +975,7 @@ form.registration-form span.input-placeholder-text {
 
 .visual .box{
     left: 15px;
-    
+
 }
 .container-sort .sort-holder{
   padding: 0;
