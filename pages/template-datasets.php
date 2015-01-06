@@ -43,10 +43,10 @@ get_header(); the_post(); ?>
         </thead>
         <tr ng-repeat="object in page_data">
             <td class="col-md-10">
-                <a href="/compare-cities/country-pages/?countries={{ object.code }}" ng-if="page_type == 'countries'">
+                <a href="/explore/country/?countries={{ object.code }}" ng-if="page_type == 'countries'">
                 {{ object.name }}
                 </a>
-                <a href="/compare-cities/city-pages/?cities={{ object.code }}" ng-if="page_type == 'cities'">
+                <a href="/explore/city/?cities={{ object.code }}" ng-if="page_type == 'cities'">
                 {{ object.name }}
                 </a>
                 <span ng-if="page_type == 'indicators'">{{ object.name }}</span >

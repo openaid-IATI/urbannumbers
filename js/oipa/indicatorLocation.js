@@ -36,9 +36,9 @@ OipaIndicatorLocation.prototype.refresh = function() {
 };
 
 OipaIndicatorLocation.prototype.update_popup_content = function () {
-    var base_url = '/compare-cities/country-pages/?countries=' + this.id;
+    var base_url = '/explore/country/?countries=' + this.id;
     if (this.type == 'city') {
-        base_url = '/compare-cities/city-pages/?cities=' + this.id;
+        base_url = '/explore/city/?cities=' + this.id;
     }
     var content = [
         "<div class='title'><a href='" + base_url + "'>" + this.name + "</a></div>",
