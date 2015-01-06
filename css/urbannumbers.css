@@ -252,12 +252,12 @@
 .container-sort .share-col .action-list li {
     display: inline;
     margin: 0 0 0 5px;
+    text-align: left;
 }
 .container-sort .share-col .action-list {
     margin: 0px;
     padding: 0px;
     position: relative;
-    text-align: left;
 }
 .container-sort .share-col .action-list a {
     color: #FFF;
