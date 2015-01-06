@@ -1240,7 +1240,7 @@ img.aligncenter{
 }
 .dropdown-box form{margin:0;}
 .dropdown-box .input-wrap{margin:0 84px 21px 0;}
-.action-list .dropdown-box{margin:7px 0 0;}
+.action-list .dropdown-box{margin:7px 0 0; z-index: 999}
 .action-list .dropdown-box.export-drop{
         margin:9px 0 0;
         right:-10px;
