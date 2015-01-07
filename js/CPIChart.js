@@ -8,8 +8,20 @@ function OipaCPIChart(id, options) {
         "cpi_quality_of_live_index"
     ];
 
+    var _original_init = this.init;
+    this.init = function() {
+        if (typeof(InfographicsChart) === 'function' && this.options.chart_class === InfographicsChart) {
+            this.chartwrapper = '.Cityprosperity-list';
+
+            $(this.chartwrapper).show();
+            $('.Cityprosperity-head').show();
+        }
+
+        return _original_init.apply(this, []);
+    };
+
     this.refreshed = false;
-    this.original_data = undefined;
+    this.original_data = {};
 
     OipaRadarChart.call(this, id, options);
 
@@ -47,8 +59,8 @@ function OipaCPIChart(id, options) {
         $("div.widget[data-indicator='" + self.indicator + "'] canvas").show();
 
         var _colors = [
-            '151,187,205',
-            '240,240,225',
+            '0,133,178',
+            '132,180,0',
             '73, 99, 144',
             '163, 158, 146',
             '134, 84, 149',
@@ -58,11 +70,21 @@ function OipaCPIChart(id, options) {
         var _get_datasets = function(cities, indicators) {
             var _indicator_slices = {};
 
+            var _get_city_name = function(indicators, city) {
+                for (var id in indicators) {
+                    if (city in indicators[id].locs) {
+                        return indicators[id].locs[city].name;
+                    }
+                }
+
+                return "";
+            };
+
             return $.map(cities, function(city) {
 
                 var _default_color = _colors[cities.indexOf(city)];
                 return {
-                    label: "My First dataset",
+                    label: _get_city_name(indicators, city),
                     fillColor: "rgba(" + _default_color + ",0)",
                     strokeColor: "rgba(" + _default_color + ",2)",
                     pointColor: "rgba(" + _default_color + ",1)",
@@ -70,11 +92,11 @@ function OipaCPIChart(id, options) {
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(" + _default_color + ",1)",
                     data: $.map(indicators, function(indicator) {
-                        if (_indicator_slices[indicator.id] === undefined) {
-                            _indicator_slices[indicator.id] = self.get_year_slice(indicator.locs, self.selected_year, 10, true);
+                        if (_indicator_slices[indicator.indicator] === undefined) {
+                            _indicator_slices[indicator.indicator] = self.get_year_slice(indicator.locs, self.selected_year, 10, true);
                         }
 
-                        return $.map(_indicator_slices[indicator.id], function(a) {
+                        return $.map(_indicator_slices[indicator.indicator], function(a) {
                             if (a.id === parseInt(city)) {
                                 return a.value;
                             }
@@ -117,6 +139,7 @@ function OipaCPIChart(id, options) {
             tooltipFontSize: 10,
             tooltipTitleFontStyle: "normal",
             fixedScaleSizes: true,
+            multiTooltipTemplate: "<%= datasetLabel %>: <%= value %>"
         }));
     };
 

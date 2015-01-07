@@ -5,7 +5,7 @@ function InfographicOipaMapVis() {
 
     self.init_wrapper = function() {
         self.map_div = 'simple-map-chart-' + self.indicator;
-        var html = '<li>'
+        var html = '<li>';
         html += '<section class="container-box" data-vis-type="' + self.type + '" data-indicator="' + self.indicator + '" data-geo-location="' + self.geo_location + '">';
         html  += '<header class="heading-holder"><h3>' + self.name + '</h3></header>';
         html  += '<div class="box-content">';
@@ -16,7 +16,7 @@ function InfographicOipaMapVis() {
         html += '</section></li>';
 
         $(self.chartwrapper).append(html);
-    }
+    };
 
     var _old_visualize = self.visualize;
     self.visualize = function(data) {
@@ -26,7 +26,7 @@ function InfographicOipaMapVis() {
             // This is HELL
             $(_div.parentNode.parentNode.parentNode).find('h3').html(data.name);
         }
-    }
+    };
 }
 InfographicOipaMapVis.prototype = Object.create(OipaSimpleMapVis.prototype);
 
@@ -53,7 +53,7 @@ function InfographicsChart(object_id, options) {
             var html = '<li id="visualization_' + this.indicator + '">';
             html += '<section class="container-box" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'">';
             html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
-            html += '<div class="box-content row">'
+            html += '<div class="box-content row">';
             html +=  '<div class="col-md-6">';
             //html +=  '<a href="#" class="btn-vis-zoom" data-vis-type="'+this.type+'" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-zoom-in"></i></a>';
             html +=   '<a href="#" class="btn-vis-save" data-indicator="'+this.indicator+'"><i class="glyphicon glyphicon-star-empty"></i></a>';
@@ -75,19 +75,19 @@ function InfographicsChart(object_id, options) {
             base = base !== undefined ? base : "#visualisation-block-wrapper";
             $(base).append(html);
 
-        }
+        };
 
         window[base_type].call(this, subobject_id, suboptions);
 
         var _old_visualize = this.visualize;
         this.visualize = function(data) {
-            if (data[this.id] == undefined) {
+            if (data[this.id] === undefined) {
                 return;
             }
 
-            var base = '.' + this.filter.string_to_id(data[this.id].category) + '-list';
+            var base = '.' + string_to_id(data[this.id].category) + '-list';
             $(base).show();
-            $('.' + this.filter.string_to_id(data[this.id].category) + '-head').show();
+            $('.' + string_to_id(data[this.id].category) + '-head').show();
             if (!this.has_skeleton) {
                 this.create_html_skeleton(base);
                 this.has_skeleton = true;
@@ -98,7 +98,7 @@ function InfographicsChart(object_id, options) {
             if (this.chart) {
                 $("div.legend[data-indicator='" + this.indicator + "']").html(this.chart.generateLegend());
             }
-        }
+        };
     }
 
 

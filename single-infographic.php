@@ -207,11 +207,12 @@ $(function() {
     filter.update_selection_after_filter_load(filter.selection);
     Oipa.create_visualisations();
 
-    $.each(Oipa.visualisations, function(key, vis) {
-        vis.filter = filter;
-        // Force refresh of every visualisation
-        vis.refresh(undefined, true);
-        })
+    // $.each(Oipa.visualisations, function(key, vis) {
+    //     vis.filter = filter;
+    //     // Force refresh of every visualisation
+    //     vis.refresh(undefined, true);
+    //     })
+    Oipa.refresh();
 });
 </script>
 <?php get_footer(); ?>

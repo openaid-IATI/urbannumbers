@@ -37,7 +37,6 @@ function OipaVis () {
         html += '</div>';
         html += '<header class="heading-holder" data-indicator="'+this.indicator+'"><h3>'+this.name+'</h3></header>';
         html += '</section></li>';
-
         $(this.chartwrapper).append(html);
     };
 
