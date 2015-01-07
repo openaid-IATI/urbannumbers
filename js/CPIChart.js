@@ -20,6 +20,15 @@ function OipaCPIChart(id, options) {
         return _original_init.apply(this, []);
     };
 
+    var _old_create_html_skeleton = this.create_html_skeleton;
+    this.create_html_skeleton = function() {
+        if (typeof(InfographicsChart) === 'function' && this.options.chart_class === InfographicsChart) {
+            var ic = InfographicsChart(this.id, this.options);
+            return ic.create_html_skeleton.apply(this, ['.Cityprosperity-list']);
+        }
+        return _old_create_html_skeleton.apply(this);
+    };
+
     this.refreshed = false;
     this.original_data = {};
 
@@ -125,6 +134,8 @@ function OipaCPIChart(id, options) {
 
             self.chart_obj = new Chart(ctx.getContext("2d"));
             self.chart = self.init_chart(chart_data, {scaleShowLabels: true});
+
+            $("div.legend[data-indicator='" + self.indicator + "']").html(self.chart.generateLegend());
         }
     };
 

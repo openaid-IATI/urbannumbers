@@ -40,7 +40,7 @@
     width: 500px;
 }
 .box-list .container-box .box-content:before {
-    display: none; 
+    display: none;
 }
 
 .box-list  .container-box {
@@ -148,18 +148,21 @@
 
 /** LEGEND **/
 
-.data-col ul.bar-legend {
+.data-col ul.bar-legend,
+.data-col ul.radar-legend {
     margin-top: 20px;
     display: block;
     font: 20px/24px 'HelveticaNeueW01-45Ligh',arial,sans-serif;
 }
-.box-list ul.bar-legend li {
+.box-list ul.bar-legend li,
+.box-list ul.radar-legend li {
     text-align: left;
     width: auto;
     display: block;
     margin-bottom: 10px;
 }
-.box-list ul.bar-legend li span {
+.box-list ul.bar-legend li span,
+.box-list ul.radar-legend li span {
     padding: 2px 10px;
     margin-right: 5px;
 }
